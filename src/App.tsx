@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetch, Body } from '@tauri-apps/api/http';
 import "./App.css";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import WebSocket from "tauri-plugin-websocket-api";
+import { v4 as uuid } from "uuid";
 
 interface TokenResponse {
   access_token: string;
@@ -12,6 +13,7 @@ const STREAM_KIT_APP_ID = "207646673902501888";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
 function App() {
   const [accessToken, setAccesToken] = useLocalStorage<string | null>("accessToken", null);
+  const [currentChannel, setCurrentChannel] = useState<any>(null);
   const socketRef = useRef<WebSocket>();
 
   async function setupSocket() {
@@ -42,14 +44,14 @@ function App() {
             {
               "cmd": "AUTHENTICATE",
               "args": { "access_token": accessToken },
-              "nonce": "28955db0-ab2e-4bca-a3ae-c6d8701d8385"
+              "nonce": uuid()
             }
           ));
         } else {
 
           // test AUTHENTICATE
           ws.send(JSON.stringify({
-            "nonce": "f48f6176-4afb-4c03-b1b8-d960861f5216",
+            "nonce": uuid(),
             "args": {
               "client_id": STREAM_KIT_APP_ID,
               "scopes": ["rpc"]
@@ -70,11 +72,32 @@ function App() {
 
         setAccesToken(res.data.access_token);
       };
-      
+
+      if (payload?.cmd === "AUTHENTICATE") {
+        // we are ready to do things
+        ws.send(JSON.stringify({
+          cmd: "GET_SELECTED_VOICE_CHANNEL",
+          nonce: uuid()
+        }))
+
+        ws.send(JSON.stringify({
+          cmd: "SUBSCRIBE",
+          args: {},
+          evt: "VOICE_CHANNEL_SELECT",
+          nonce: uuid()
+        }));
+
+      }
+
+      if (payload.evt === "VOICE_CHANNEL_SELECT") {
+        setCurrentChannel(payload.data)
+      }
+
       // log all messages
       console.log("payload", payload)
 
     });
+
   }
 
   useEffect(() => {
@@ -87,6 +110,7 @@ function App() {
 
       {accessToken && <div>has token</div>}
 
+      <pre>{JSON.stringify(currentChannel, null, 2)}</pre>
     </div>
   );
 }

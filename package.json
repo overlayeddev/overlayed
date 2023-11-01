@@ -14,12 +14,14 @@
     "@uidotdev/usehooks": "^2.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tauri-plugin-websocket-api": "github:tauri-apps/tauri-plugin-websocket#v1"
+    "tauri-plugin-websocket-api": "github:tauri-apps/tauri-plugin-websocket#v1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/uuid": "^9.0.6",
     "@vitejs/plugin-react": "^4.0.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.4"
