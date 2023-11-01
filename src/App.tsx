@@ -4,7 +4,7 @@ import socket from "./rpc/manager";
 import { useEffect } from "react";
 
 function App() {
-  const { users } = useAppStore();
+  const { accessToken } = useAppStore();
 
   useEffect(() => {
     socket.init();
@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div className="container">
-      <pre>{JSON.stringify(users)}</pre>
+      <pre>{JSON.stringify(accessToken)}</pre>
     </div>
   );
 }

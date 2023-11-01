@@ -1,8 +1,13 @@
 import { getSelectedChannel, RPCCommand } from "./command";
+import { fetch, Body } from '@tauri-apps/api/http';
 import { RPCEvent, voiceChannelSelect } from "./event";
 import * as uuid from "uuid";
 import WebSocket from "tauri-plugin-websocket-api";
-import { useAppStore as appStore } from "../store";
+import { AppState, useAppStore as appStore } from "../store";
+
+interface TokenResponse {
+  access_token: string;
+}
 
 /**
  * Collection of events that are needed to sub to for voice states
@@ -31,11 +36,13 @@ interface DiscordPayload {
 class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
-
+  public store: AppState | null = null;
   /**
    * Setup the tauri IPC socket
    */
   async init() {
+    this.store = appStore.getState();
+
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
     this.socket = await WebSocket.connect(connectionUrl, {
       headers: {
@@ -54,7 +61,7 @@ class SocketManager {
    * Message listener when we get message from discord
    * @param payload a JSON object of the parsed message
    */
-  private onMessage(event: any) {
+  private async onMessage(event: any) {
     const payload: any = JSON.parse(event.data);
     console.log("debug", payload);
 
@@ -69,6 +76,21 @@ class SocketManager {
       console.log(appStore.getState());
     }
 
+    if (payload.cmd === RPCCommand.AUTHORIZE) {
+      const { code } = payload.data;
+      const res = await fetch<TokenResponse>(
+        "https://streamkit.discord.com/overlay/token",
+        {
+          method: "POST",
+          body: Body.json({ code }),
+        },
+      );
+
+      console.log("got token", res.data.access_token);
+
+      this.store?.setAccessToken(res.data.access_token);
+    }
+
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
       // console.log(payload);
 
@@ -80,12 +102,16 @@ class SocketManager {
       payload.evt === RPCEvent.SPEAKING_START ||
       payload.evt === RPCEvent.SPEAKING_STOP
     ) {
+      // update the store
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
+      // remove user from store
     }
 
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
+      // update the store
+      this.store?.setCurrentChannel(payload.data.channel_id);
     }
   }
 

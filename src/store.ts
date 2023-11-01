@@ -25,14 +25,16 @@ const createUserStateItem = (payload: VoiceStateUser) => {
   return data;
 };
 
-interface AppState {
+export interface AppState {
   // TODO: type
+  accessToken: string;
   currentChannel: any,
   users: Record<string, OverlayedUser>;
   setTalking: FSetTalkingParams;
   setUsers: FSetUsers;
   removeUser: (id: string) => void;
   setCurrentChannel: (channel: any) => void;
+  setAccessToken: (token: string) => void;
 }
 
 type FSetTalkingParams = (id: string, voiceState: boolean) => void;
@@ -62,6 +64,10 @@ export const store = (set: any) => ({
   setCurrentChannel: (channelData: any) =>
     set((state: AppState) => {
       state.currentChannel = channelData;
+    }),
+  setAccessToken: (accessToken: string) =>
+    set((state: AppState) => {
+      state.accessToken = accessToken;
     }),
 });
 
