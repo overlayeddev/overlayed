@@ -1,7 +1,7 @@
 import { getSelectedChannel, RPCCommand } from "./command";
 import { RPCEvent, voiceChannelSelect } from "./event";
 import * as uuid from "uuid";
-import WebSocket  from "tauri-plugin-websocket-api";
+import WebSocket from "tauri-plugin-websocket-api";
 import { useAppStore as appStore } from "../store";
 
 /**
@@ -29,7 +29,6 @@ interface DiscordPayload {
  * A generic manager the socket
  */
 class SocketManager {
-
   public socket: WebSocket | null = null;
   public currentChannelId = null;
 
@@ -41,8 +40,8 @@ class SocketManager {
     this.socket = await WebSocket.connect(connectionUrl, {
       headers: {
         // we need to set the origin header to the discord streamkit domain
-        origin: "https://streamkit.discord.com"
-      }
+        origin: "https://streamkit.discord.com",
+      },
     });
 
     this.socket.addListener(this.onMessage.bind(this));
@@ -59,19 +58,28 @@ class SocketManager {
     const payload: any = JSON.parse(event.data);
     console.log("debug", payload);
 
-    if (payload.evt=== RPCEvent.READY) {
-
+    if (payload.evt === RPCEvent.READY) {
+      this.send({
+        args: {
+          client_id: STREAM_KIT_APP_ID,
+          scopes: ["rpc"],
+        },
+        cmd: "AUTHORIZE",
+      });
       console.log(appStore.getState());
     }
 
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
-      // console.log(payload);      
+      // console.log(payload);
 
       // sub to channels events - do we always want to do this????
       this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
     }
 
-    if (payload.evt === RPCEvent.SPEAKING_START || payload.evt === RPCEvent.SPEAKING_STOP) {
+    if (
+      payload.evt === RPCEvent.SPEAKING_START ||
+      payload.evt === RPCEvent.SPEAKING_STOP
+    ) {
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
@@ -79,30 +87,34 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
     }
-
   }
 
   private send(payload: DiscordPayload) {
-    this.socket?.send(JSON.stringify({
-      ...payload,
-      nonce: uuid.v4(),
-    }));
+    this.socket?.send(
+      JSON.stringify({
+        ...payload,
+        nonce: uuid.v4(),
+      }),
+    );
   }
 
   /**
-   * These method will allow you to sub/unsub to channel events 
+   * These method will allow you to sub/unsub to channel events
    * that are defined in SUBSCRIBABLE_EVENTS
    * @param cmd {RPCCommand} SUBSCRIBE or SUBSCRIBE
    * @param channelId The channel to subscribe to events in
    */
-  channelEvents(cmd: RPCCommand.SUBSCRIBE | RPCCommand.UNSUBSCRIBE, channelId: String) {
+  channelEvents(
+    cmd: RPCCommand.SUBSCRIBE | RPCCommand.UNSUBSCRIBE,
+    channelId: String,
+  ) {
     SUBSCRIBABLE_EVENTS.map((eventName) =>
       this.send({
         cmd,
         args: { channel_id: channelId },
         evt: eventName,
         nonce: uuid.v4(),
-      })
+      }),
     );
   }
 }
