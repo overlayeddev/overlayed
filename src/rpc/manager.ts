@@ -1,12 +1,26 @@
-import { getSelectedChannel, RPCCommand } from "./command";
-import { fetch, Body } from '@tauri-apps/api/http';
-import { RPCEvent, voiceChannelSelect } from "./event";
+import { RPCCommand } from "./command";
+import { fetch, Body } from "@tauri-apps/api/http";
+import { RPCEvent } from "./event";
 import * as uuid from "uuid";
 import WebSocket from "tauri-plugin-websocket-api";
-import { AppState, useAppStore as appStore } from "../store";
+import { AppActions, AppState, useAppStore as appStore } from "../store";
 
 interface TokenResponse {
   access_token: string;
+}
+
+// create a thin wrapper around local storage to save and load an access token
+class TokenStore {
+  private store = window.localStorage;
+  private key = "discord_access_token";
+
+  get accessToken() {
+    return this.store.getItem(this.key);
+  }
+
+  setAccessToken(token: string) {
+    this.store.setItem(this.key, token);
+  }
 }
 
 /**
@@ -24,7 +38,7 @@ const STREAM_KIT_APP_ID = "207646673902501888";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
 
 interface DiscordPayload {
-  cmd: `${RPCCommand}`;
+  cmd?: `${RPCCommand}`;
   args?: any;
   evt?: `${RPCEvent}`;
   nonce?: string;
@@ -36,12 +50,15 @@ interface DiscordPayload {
 class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
-  public store: AppState | null = null;
+  public store: AppState & AppActions | null = null;
+  public tokenStore: TokenStore | null = null;
+
   /**
    * Setup the tauri IPC socket
    */
   async init() {
     this.store = appStore.getState();
+    this.tokenStore = new TokenStore();
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
     this.socket = await WebSocket.connect(connectionUrl, {
@@ -53,8 +70,8 @@ class SocketManager {
 
     this.socket.addListener(this.onMessage.bind(this));
 
-    this.send(voiceChannelSelect());
-    this.send(getSelectedChannel());
+    // this.send(voiceChannelSelect());
+    // this.send(getSelectedChannel());
   }
 
   /**
@@ -64,18 +81,27 @@ class SocketManager {
   private async onMessage(event: any) {
     const payload: any = JSON.parse(event.data);
     console.log("debug", payload);
-
+ 
+    // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
-      this.send({
-        args: {
-          client_id: STREAM_KIT_APP_ID,
-          scopes: ["rpc"],
-        },
-        cmd: "AUTHORIZE",
-      });
-      console.log(appStore.getState());
+      const acessToken = this.tokenStore?.accessToken;
+      if (acessToken) {
+        this.send({
+          cmd: RPCCommand.AUTHENTICATE,
+          args: { access_token: acessToken },
+        });
+      } else {
+        this.send({
+          args: {
+            client_id: STREAM_KIT_APP_ID,
+            scopes: ["rpc"],
+          },
+          cmd: RPCCommand.AUTHORIZE,
+        });
+      }
     }
 
+    // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
       const res = await fetch<TokenResponse>(
@@ -85,24 +111,33 @@ class SocketManager {
           body: Body.json({ code }),
         },
       );
-
-      console.log("got token", res.data.access_token);
-
-      this.store?.setAccessToken(res.data.access_token);
+      this.tokenStore?.setAccessToken(res.data.access_token);
     }
 
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
-      // console.log(payload);
+      console.log("selected channel", payload.data.voice_states);
 
-      // sub to channels events - do we always want to do this????
+      // sub to channel events
       this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
+
+      // set all the user in the channel
+      this.store?.setUsers(payload.data.voice_states);
+    }
+
+    if (payload?.cmd === RPCCommand.AUTHENTICATE) {
+      // we are ready to do things
+      
+      this.send({
+        cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
+      });
     }
 
     if (
       payload.evt === RPCEvent.SPEAKING_START ||
       payload.evt === RPCEvent.SPEAKING_STOP
     ) {
-      // update the store
+      const isSpeaking = payload.evt !== RPCEvent.SPEAKING_START;
+      this.store?.setTalking(payload.data.user_id, !isSpeaking);
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
@@ -111,7 +146,8 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
       // update the store
-      this.store?.setCurrentChannel(payload.data.channel_id);
+      // console.log("selected channel", payload);
+      // this.store?.setCurrentChannel(payload.data.channel_id);
     }
   }
 

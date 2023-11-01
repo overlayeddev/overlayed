@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { ChannelJoinEvent, OverlayedUser, VoiceStateUser} from "./types";
-import { produce } from "immer";
+import { ChannelJoinEvent, OverlayedUser, VoiceStateUser } from "./types";
+import { persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 
 // TODO: move this?
 const createUserStateItem = (payload: VoiceStateUser) => {
@@ -27,48 +28,40 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 
 export interface AppState {
   // TODO: type
-  accessToken: string;
-  currentChannel: any,
+  currentChannel: any;
   users: Record<string, OverlayedUser>;
-  setTalking: FSetTalkingParams;
-  setUsers: FSetUsers;
-  removeUser: (id: string) => void;
-  setCurrentChannel: (channel: any) => void;
-  setAccessToken: (token: string) => void;
 }
 
-type FSetTalkingParams = (id: string, voiceState: boolean) => void;
-type FSetUsers = (users: ChannelJoinEvent) => void;
+export interface AppActions {
+  setTalking: (id: string, talking: boolean) => void;
+  setUsers: (users: any) => void;
+  removeUser: (id: string) => void;
+  setCurrentChannel: (channel: any) => void;
+}
 
-// @ts-ignore
-const immer = (config) => (set, get) => config((fn) => set(produce(fn)), get);
+export const useAppStore = create < AppState & AppActions > ()(
+  // @ts-ignore
+  immer((set) => ({
+    currentChannel: null,
+    users: {},
+    setTalking: (id, talking) =>
+      set((state) => {
+        state.users[id].talking = talking;
+      }),
+    removeUser: (id) =>
+      set((state: AppState) => {
+        delete state.users[id];
+      }),
+    setUsers: (users) =>
+      set((state) => {
+        for (const item of users) {
+          state.users[item.user.id] = createUserStateItem(item);
+        }
+      }),
+    setCurrentChannel: (channelData: any) =>
+      set((state) => {
+        state.currentChannel = channelData;
+      }),
+  })),
+);
 
-export const store = (set: any) => ({
-  users: {},
-  currentChannel: null,
-  setTalking: (id: string, talking: boolean) =>
-    set((state: AppState) => {
-      state.users[id].talking = talking;
-    }),
-  removeUser: (id: string) =>
-    set((state: AppState) => {
-      console.log("removing user", id)
-      delete state.users[id];
-    }),
-  setUsers: (users: any) =>
-    set((state: AppState) => {
-      for (const item of users.voice_states) {
-        state.users[item.user.id] = createUserStateItem(item);
-      }
-    }),
-  setCurrentChannel: (channelData: any) =>
-    set((state: AppState) => {
-      state.currentChannel = channelData;
-    }),
-  setAccessToken: (accessToken: string) =>
-    set((state: AppState) => {
-      state.accessToken = accessToken;
-    }),
-});
-
-export const useAppStore = create<AppState>(immer(store));

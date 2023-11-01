@@ -4,7 +4,7 @@ import socket from "./rpc/manager";
 import { useEffect } from "react";
 
 function App() {
-  const { accessToken } = useAppStore();
+  const { users } = useAppStore();
 
   useEffect(() => {
     socket.init();
@@ -12,7 +12,13 @@ function App() {
 
   return (
     <div className="container">
-      <pre>{JSON.stringify(accessToken)}</pre>
+      <pre>
+        {Object.entries(users).map(([_k, item]) => (
+          <div style={{ color: item.talking ? "green" : "white" }}>
+            {item.username}
+          </div>
+        ))}
+      </pre>
     </div>
   );
 }
