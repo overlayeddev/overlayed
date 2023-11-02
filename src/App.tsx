@@ -11,27 +11,19 @@ function App() {
 
   return (
     <div className="container">
-      <div data-tauri-drag-region className="titlebar">
-        Title
-      </div>
-      <pre>
+      <div data-tauri-drag-region className="bg-black text-white">overlayed</div>
         {Object.entries(users).map(([_k, item]) => (
-          <div style={{ display: "flex" }}>
+          <div className="flex items-center">
             <div
+              className="rounded-full bg-black w-8 h-8 border-2 border-slate-800"
               style={{
-                width: 48,
-                height: 48,
-                background: "black",
-                borderRadius: 40,
-                border: "3px solid #fff",
-                borderColor: item.talking ? "limegreen" : "white",
+                borderColor: item.talking ? "limegreen" : "inherit",
               }}
-            ></div>
+            />
 
-            <div>{item.username}</div>
+            <div className="text-white">{item.username}</div>
           </div>
         ))}
-      </pre>
     </div>
   );
 }

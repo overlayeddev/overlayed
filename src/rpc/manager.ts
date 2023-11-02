@@ -139,7 +139,6 @@ class SocketManager {
 
     if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // we are ready to do things
-
       this.send({
         cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
       });
@@ -159,8 +158,7 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
       // update the store
-      // console.log("selected channel", payload);
-      // this.store?.setCurrentChannel(payload.data.channel_id);
+      this.store?.setCurrentChannel(payload.data.channel_id);
     }
   }
 
