@@ -2,7 +2,7 @@ import { RPCCommand } from "./command";
 import { fetch, Body } from "@tauri-apps/api/http";
 import { RPCEvent } from "./event";
 import * as uuid from "uuid";
-import WebSocket from "tauri-plugin-websocket-api";
+import WebSocket, { Message } from "tauri-plugin-websocket-api";
 import { AppActions, AppState, useAppStore as appStore } from "../store";
 
 interface TokenResponse {
@@ -36,6 +36,7 @@ const SUBSCRIBABLE_EVENTS = [
 
 const STREAM_KIT_APP_ID = "207646673902501888";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
+const STREAMKIT_URL = "https://streamkit.discord.com";
 
 interface DiscordPayload {
   cmd?: `${RPCCommand}`;
@@ -64,14 +65,11 @@ class SocketManager {
     this.socket = await WebSocket.connect(connectionUrl, {
       headers: {
         // we need to set the origin header to the discord streamkit domain
-        origin: "https://streamkit.discord.com",
+        origin: STREAMKIT_URL,
       },
     });
 
     this.socket.addListener(this.onMessage.bind(this));
-
-    // this.send(voiceChannelSelect());
-    // this.send(getSelectedChannel());
   }
 
   /**
@@ -98,7 +96,11 @@ class SocketManager {
    * Message listener when we get message from discord
    * @param payload a JSON object of the parsed message
    */
-  private async onMessage(event: any) {
+  private async onMessage(event: Message) {
+    if (event.type !== "Text") {
+      return;
+    }
+
     const payload: any = JSON.parse(event.data);
 
     // either the token is good and valid and we can login otherwise prompt them approve
@@ -114,13 +116,10 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(
-        "https://streamkit.discord.com/overlay/token",
-        {
-          method: "POST",
-          body: Body.json({ code }),
-        },
-      );
+      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
+        method: "POST",
+        body: Body.json({ code }),
+      });
 
       // we need send the token to discord
       this.tokenStore?.setAccessToken(res.data.access_token);
@@ -129,9 +128,10 @@ class SocketManager {
       this.login(res.data.access_token);
     }
 
+    // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
       // sub to channel events
-      // this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
+      this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
 
       // set all the user in the channel
       this.store?.setUsers(payload.data.voice_states);
@@ -139,12 +139,10 @@ class SocketManager {
       this.store?.setCurrentChannel(payload.data.id);
     }
 
-    // we are ready to do things
+    // we are ready to do things cause we are fully authed
     if (payload?.cmd === RPCCommand.AUTHENTICATE) {
-      // ask for the current channel
-      this.send({
-        cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
-      });
+      // try to find the user
+      this.requestUserChannel();
 
       // subscribe to get notified when the user changes channels
       this.send({
@@ -164,7 +162,6 @@ class SocketManager {
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
-      console.log("last channel i was in", this.store?.currentChannel);
       this.store?.removeUser(payload.data.user.id);
     }
 
@@ -172,8 +169,15 @@ class SocketManager {
       this.store?.addUser(payload.data);
     }
 
+    // when we move channels we get a new list of users
+    if (payload.cmd === RPCCommand.GET_CHANNEL) {
+      this.requestUserChannel();
+    }
+
+    // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
-      console.log("channel select", payload);
+      // try to find the user
+      this.requestUserChannel();
 
       this.store?.setCurrentChannel(payload.data.channel_id);
       if (payload.data?.channel_id) {
@@ -183,18 +187,24 @@ class SocketManager {
             channel_id: payload.data.channel_id,
           },
         });
-        this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.channel_id);
       }
-
-      // we changed channels ask for the channel again
-      // this.send({
-      //   cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
-      // });
     }
 
-    console.log(payload);
+    if (![RPCCommand.SUBSCRIBE, RPCCommand.AUTHENTICATE].includes(payload.cmd)) {
+      console.log(payload);
+    }
   }
 
+  private requestUserChannel() {
+    this.send({
+      cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
+    });
+  }
+
+  /**
+   * Send a message to discord
+   * @param payload {DiscordPayload} the payload to send
+   */
   private send(payload: DiscordPayload) {
     this.socket?.send(
       JSON.stringify({

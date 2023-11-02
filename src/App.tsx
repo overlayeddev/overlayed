@@ -32,7 +32,7 @@ function App() {
         ))}
       </div>
       <pre className="text-white">
-        {JSON.stringify({ currentChannel, me }, null, 2)}
+        {JSON.stringify({ currentChannel, users }, null, 2)}
       </pre>
     </div>
   );

@@ -61,12 +61,13 @@ export const useAppStore = create < AppState & AppActions > ()(
     setUsers: (users) =>
       set((state) => {
         for (const item of users) {
+          console.log( "set users", item)
           state.users[item.user.id] = createUserStateItem(item);
         }
       }),
-    addUser: (user) =>
+    addUser: (event) =>
       set((state) => {
-        state.users[user.id] = createUserStateItem(user);
+        state.users[event.user.id] = createUserStateItem(event);
       }),
     setCurrentChannel: (channelId: string) =>
       set((state) => {
