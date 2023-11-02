@@ -50,11 +50,11 @@ interface DiscordPayload {
 class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
-  public store: AppState & AppActions | null = null;
+  public store: (AppState & AppActions) | null = null;
   public tokenStore: TokenStore | null = null;
 
   /**
-   * Setup the tauri IPC socket
+   * Setup the websocket connection and listen for messages
    */
   async init() {
     this.store = appStore.getState();
@@ -75,29 +75,39 @@ class SocketManager {
   }
 
   /**
+   * Authenticate with discord by having the user approve the app
+   */
+  private authenticate() {
+    this.send({
+      args: {
+        client_id: STREAM_KIT_APP_ID,
+        scopes: ["rpc"],
+      },
+      cmd: RPCCommand.AUTHORIZE,
+    });
+  }
+
+  private login(accessToken: string) {
+    this.send({
+      cmd: RPCCommand.AUTHENTICATE,
+      args: { access_token: accessToken },
+    });
+  }
+
+  /**
    * Message listener when we get message from discord
    * @param payload a JSON object of the parsed message
    */
   private async onMessage(event: any) {
     const payload: any = JSON.parse(event.data);
-    console.log("debug", payload);
- 
+
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
       const acessToken = this.tokenStore?.accessToken;
       if (acessToken) {
-        this.send({
-          cmd: RPCCommand.AUTHENTICATE,
-          args: { access_token: acessToken },
-        });
+        this.login(acessToken);
       } else {
-        this.send({
-          args: {
-            client_id: STREAM_KIT_APP_ID,
-            scopes: ["rpc"],
-          },
-          cmd: RPCCommand.AUTHORIZE,
-        });
+        this.authenticate();
       }
     }
 
@@ -111,12 +121,15 @@ class SocketManager {
           body: Body.json({ code }),
         },
       );
+
+      // we need send the token to discord
       this.tokenStore?.setAccessToken(res.data.access_token);
+
+      // login with the token
+      this.login(res.data.access_token);
     }
 
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
-      console.log("selected channel", payload.data.voice_states);
-
       // sub to channel events
       this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
 
@@ -126,7 +139,7 @@ class SocketManager {
 
     if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // we are ready to do things
-      
+
       this.send({
         cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
       });

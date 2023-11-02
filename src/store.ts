@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import { ChannelJoinEvent, OverlayedUser, VoiceStateUser } from "./types";
-import { persist } from "zustand/middleware";
+import { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 
 // TODO: move this?
