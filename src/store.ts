@@ -26,6 +26,7 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 };
 
 export interface AppState {
+  me: {};
   currentChannel: string | null;
   users: Record<string, OverlayedUser>;
 }
@@ -36,13 +37,19 @@ export interface AppActions {
   removeUser: (id: string) => void;
   addUser: (id: any) => void;
   setCurrentChannel: (channel: any) => void;
+  setMe: (user: any) => void;
 }
 
 export const useAppStore = create < AppState & AppActions > ()(
   // @ts-ignore
   immer((set) => ({
+    me: {},
     currentChannel: null,
     users: {},
+    setMe: (data) =>
+      set((state) => {
+        state.me = data;
+      }),
     setTalking: (id, talking) =>
       set((state) => {
         state.users[id].talking = talking;
@@ -67,4 +74,3 @@ export const useAppStore = create < AppState & AppActions > ()(
       }),
   })),
 );
-

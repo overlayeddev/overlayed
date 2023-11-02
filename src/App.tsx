@@ -3,7 +3,7 @@ import socket from "./rpc/manager";
 import { useEffect } from "react";
 
 function App() {
-  const { users } = useAppStore();
+  const { me, currentChannel, users } = useAppStore();
 
   useEffect(() => {
     socket.init();
@@ -11,7 +11,10 @@ function App() {
 
   return (
     <div className="container">
-      <div data-tauri-drag-region className="cursor-default select-none p-2 bg-black text-white">
+      <div
+        data-tauri-drag-region
+        className="cursor-default select-none p-2 bg-black text-white"
+      >
         overlayed
       </div>
       <div className="py-2">
@@ -28,6 +31,9 @@ function App() {
           </div>
         ))}
       </div>
+      <pre className="text-white">
+        {JSON.stringify({ currentChannel, me }, null, 2)}
+      </pre>
     </div>
   );
 }

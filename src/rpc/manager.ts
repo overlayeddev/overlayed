@@ -132,18 +132,28 @@ class SocketManager {
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
       console.log("got selected channel", payload.data.id);
       // sub to channel events
-      this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
+      // this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
 
       // set all the user in the channel
       this.store?.setUsers(payload.data.voice_states);
 
+      this.store?.setCurrentChannel(payload.data.id);
     }
 
     // we are ready to do things
     if (payload?.cmd === RPCCommand.AUTHENTICATE) {
+      // ask for the current channel
       this.send({
         cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
       });
+
+      // subscribe to get notified when the user changes channels
+      this.send({
+        cmd: RPCCommand.SUBSCRIBE,
+        evt: RPCEvent.VOICE_CHANNEL_SELECT,
+      });
+
+      this.store?.setMe(payload.data.user);
     }
 
     if (
@@ -164,6 +174,8 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
       this.store?.setCurrentChannel(payload.data.channel_id);
+
+      this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.channel_id);
     }
 
     console.log(payload);
