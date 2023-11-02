@@ -130,15 +130,17 @@ class SocketManager {
     }
 
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
+      console.log("got selected channel", payload.data.id);
       // sub to channel events
       this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
 
       // set all the user in the channel
       this.store?.setUsers(payload.data.voice_states);
+
     }
 
+    // we are ready to do things
     if (payload?.cmd === RPCCommand.AUTHENTICATE) {
-      // we are ready to do things
       this.send({
         cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
       });
@@ -153,13 +155,18 @@ class SocketManager {
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
-      // remove user from store
+      this.store?.removeUser(payload.data.user.id);
+    }
+
+    if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
+      this.store?.addUser(payload.data);
     }
 
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
-      // update the store
       this.store?.setCurrentChannel(payload.data.channel_id);
     }
+
+    console.log(payload);
   }
 
   private send(payload: DiscordPayload) {

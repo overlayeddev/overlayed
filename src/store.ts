@@ -26,8 +26,7 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 };
 
 export interface AppState {
-  // TODO: type
-  currentChannel: any;
+  currentChannel: string | null;
   users: Record<string, OverlayedUser>;
 }
 
@@ -35,6 +34,7 @@ export interface AppActions {
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: any) => void;
   removeUser: (id: string) => void;
+  addUser: (id: any) => void;
   setCurrentChannel: (channel: any) => void;
 }
 
@@ -56,6 +56,10 @@ export const useAppStore = create < AppState & AppActions > ()(
         for (const item of users) {
           state.users[item.user.id] = createUserStateItem(item);
         }
+      }),
+    addUser: (user) =>
+      set((state) => {
+        state.users[user.id] = createUserStateItem(user);
       }),
     setCurrentChannel: (channelData: any) =>
       set((state) => {
