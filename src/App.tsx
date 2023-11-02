@@ -19,7 +19,7 @@ function App() {
       </div>
       <div className="py-2">
         {Object.entries(users).map(([_k, item]) => (
-          <div className="flex items-center">
+          <div key={item.id} className="flex items-center">
             <div
               className="rounded-full bg-black w-8 h-8 border-2 border-slate-800 mr-2"
               style={{

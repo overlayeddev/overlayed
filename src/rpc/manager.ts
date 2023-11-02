@@ -130,7 +130,6 @@ class SocketManager {
     }
 
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
-      console.log("got selected channel", payload.data.id);
       // sub to channel events
       // this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
 
@@ -165,6 +164,7 @@ class SocketManager {
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
+      console.log("last channel i was in", this.store?.currentChannel);
       this.store?.removeUser(payload.data.user.id);
     }
 
@@ -173,9 +173,23 @@ class SocketManager {
     }
 
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
-      this.store?.setCurrentChannel(payload.data.channel_id);
+      console.log("channel select", payload);
 
-      this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.channel_id);
+      this.store?.setCurrentChannel(payload.data.channel_id);
+      if (payload.data?.channel_id) {
+        this.send({
+          cmd: RPCCommand.GET_CHANNEL,
+          args: {
+            channel_id: payload.data.channel_id,
+          },
+        });
+        this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.channel_id);
+      }
+
+      // we changed channels ask for the channel again
+      // this.send({
+      //   cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
+      // });
     }
 
     console.log(payload);

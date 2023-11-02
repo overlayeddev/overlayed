@@ -68,9 +68,9 @@ export const useAppStore = create < AppState & AppActions > ()(
       set((state) => {
         state.users[user.id] = createUserStateItem(user);
       }),
-    setCurrentChannel: (channelData: any) =>
+    setCurrentChannel: (channelId: string) =>
       set((state) => {
-        state.currentChannel = channelData;
+        state.currentChannel = channelId;
       }),
   })),
 );
