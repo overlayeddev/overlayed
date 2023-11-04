@@ -226,6 +226,8 @@ class SocketManager {
 
         // after unsub we clear the channel
         this.store.setCurrentChannel(null);
+
+        await routerRefresh();
       }
 
       // try to find the user
