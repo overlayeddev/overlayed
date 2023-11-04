@@ -143,6 +143,11 @@ class SocketManager {
     }
 
     // we are ready to do things cause we are fully authed
+    if (payload?.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
+      // TODO: handle error somehow, maybe show a message to the user and have them re-auth
+    }
+
+    // we are ready to do things cause we are fully authed
     if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // try to find the user
       this.requestUserChannel();

@@ -2,6 +2,7 @@ import { RPCCommand } from "./command";
 
 export enum RPCEvent {
   READY = "READY",
+  ERROR = "ERROR",
   SPEAKING_START = "SPEAKING_START",
   SPEAKING_STOP = "SPEAKING_STOP",
   VOICE_STATE_CREATE = "VOICE_STATE_CREATE",
