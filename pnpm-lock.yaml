@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@tanstack/react-router':
+    specifier: 0.0.1-beta.204
+    version: 0.0.1-beta.204(react-dom@18.2.0)(react@18.2.0)
   '@tauri-apps/api':
     specifier: ^1.5.0
     version: 1.5.1
@@ -23,6 +26,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-router-dom:
+    specifier: ^6.18.0
+    version: 6.18.0(react-dom@18.2.0)(react@18.2.0)
   tauri-plugin-websocket-api:
     specifier: github:tauri-apps/tauri-plugin-websocket#v1
     version: github.com/tauri-apps/tauri-plugin-websocket/c425bd2ceb7287d91a8fc3c6ab5ad4cf27d98b81
@@ -260,6 +266,13 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
+  /@babel/runtime@7.23.2:
+    resolution: {integrity: sha512-mM8eg4yl5D6i3lu2QKPuPH4FArvJ8KhTofbE7jwMUv9KX5mBvwPAqnV3MlyBNqdp9RyRKP6Yck8TrfYrPvX3bg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.0
+    dev: false
+
   /@babel/template@7.22.15:
     resolution: {integrity: sha512-QPErUVm4uyJa60rkI73qneDacvdvzxshT3kksGqlGWYdOTIUOwJ7RDUL8sGqslY1uXWSL6xMFKEXDS3ox2uF0w==}
     engines: {node: '>=6.9.0'}
@@ -494,6 +507,14 @@ packages:
     dev: true
     optional: true
 
+  /@gisatcz/cross-package-react-context@0.2.0(react@18.2.0):
+    resolution: {integrity: sha512-E7aR/o1ArpXETO8bQi+Hltj3duHeZiLjR+x1VZrCDs3jplSLGoy+oqCcqNNE1BamTBa0YQTs8Go1Q1dtt3LEUg==}
+    peerDependencies:
+      react: ^16.13.1 || ^17.0.2 || ^18.1.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /@jridgewell/gen-mapping@0.3.3:
     resolution: {integrity: sha512-HLhSWOLRi875zjjMG/r+Nv0oCW8umGb0BgEhyX3dDX3egwZtB8PqLnjz3yedt8R5StBrzcg4aBpnh8UA9D1BoQ==}
     engines: {node: '>=6.0.0'}
@@ -544,6 +565,68 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
     dev: true
+
+  /@remix-run/router@1.11.0:
+    resolution: {integrity: sha512-BHdhcWgeiudl91HvVa2wxqZjSHbheSgIiDvxrF1VjFzBzpTtuDPkOdOi3Iqvc08kXtFkLjhbS+ML9aM8mJS+wQ==}
+    engines: {node: '>=14.0.0'}
+    dev: false
+
+  /@tanstack/history@0.0.1-beta.204:
+    resolution: {integrity: sha512-5FC439gOn1p1jEPJTlVcvHmcLuTPh2KEfvpNTRQaiHE/PYq5Mz4367Yuw3F5QOv0wqYZwk/gNmQv3gcUm/qxfQ==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /@tanstack/react-router@0.0.1-beta.204(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-/23ZByhWp0hh6BPmultM37AGk7Bl1okAxN9Vt0HzsX1KzsHsu1dwzS9pARF/hmJ3m+D/iNA5q1VjTWnnQXzKMA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@babel/runtime': 7.23.2
+      '@gisatcz/cross-package-react-context': 0.2.0(react@18.2.0)
+      '@tanstack/react-store': 0.0.1(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/router-core': 0.0.1-beta.204(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tiny-invariant: 1.3.1
+      tiny-warning: 1.0.3
+    dev: false
+
+  /@tanstack/react-store@0.0.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-UMAHrm1FjehpfnSCi5Uel7fdoYM8fk2ovyHmoTBv4SPS66hLLEEVPQhALrIkJ0OSi1h+p96HapCFNqlavZADIA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@tanstack/store': 0.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/router-core@0.0.1-beta.204(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-8DXSSyY9RdAKmlcEXBb9eU2Ff/9v6hoQhzS93n5atnJc33MPOjLDBHYJQDznkbslWEm7Z9La/l9XkMl4ho6Grg==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@babel/runtime': 7.23.2
+      '@gisatcz/cross-package-react-context': 0.2.0(react@18.2.0)
+      '@tanstack/history': 0.0.1-beta.204
+      '@tanstack/store': 0.0.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      tiny-invariant: 1.3.1
+      tiny-warning: 1.0.3
+    dev: false
+
+  /@tanstack/store@0.0.1:
+    resolution: {integrity: sha512-Hq5mwC9oPD1HVRIsgxASYtJQAv5x7k42SMXBq2b/fMYrtMf7WMkOArOMs/ExoNED214Ql94Ft4zVWr0u2D6a6w==}
+    engines: {node: '>=12'}
+    dev: false
 
   /@tauri-apps/api@1.5.1:
     resolution: {integrity: sha512-6unsZDOdlXTmauU3NhWhn+Cx0rODV+rvNvTdvolE5Kls5ybA6cqndQENDt1+FS0tF7ozCP66jwWoH6a5h90BrA==}
@@ -1305,6 +1388,29 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
+  /react-router-dom@6.18.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-Ubrue4+Ercc/BoDkFQfc6og5zRQ4A8YxSO3Knsne+eRbZ+IepAsK249XBH/XaFuOYOYr3L3r13CXTLvYt5JDjw==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.11.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-router: 6.18.0(react@18.2.0)
+    dev: false
+
+  /react-router@6.18.0(react@18.2.0):
+    resolution: {integrity: sha512-vk2y7Dsy8wI02eRRaRmOs9g2o+aE72YCx5q9VasT1N9v+lrdB79tIqrjMfByHiY5+6aYkH2rUa5X839nwWGPDg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.11.0
+      react: 18.2.0
+    dev: false
+
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
@@ -1324,6 +1430,10 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: true
+
+  /regenerator-runtime@0.14.0:
+    resolution: {integrity: sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==}
+    dev: false
 
   /resolve@1.22.8:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
@@ -1438,6 +1548,14 @@ packages:
     dependencies:
       any-promise: 1.3.0
     dev: true
+
+  /tiny-invariant@1.3.1:
+    resolution: {integrity: sha512-AD5ih2NlSssTCwsMznbvwMZpJ1cbhkGd2uueNxzv2jDlEeZdU04JQfRnggJQ8DrcVBGjAsCKwFBbDlVNtEMlzw==}
+    dev: false
+
+  /tiny-warning@1.0.3:
+    resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
+    dev: false
 
   /to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}

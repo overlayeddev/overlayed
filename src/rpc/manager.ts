@@ -4,6 +4,7 @@ import { RPCEvent } from "./event";
 import * as uuid from "uuid";
 import WebSocket, { Message } from "tauri-plugin-websocket-api";
 import { AppActions, AppState, useAppStore as appStore } from "../store";
+import type { NavigateFunction } from "react-router-dom";
 
 interface TokenResponse {
   access_token: string;
@@ -52,12 +53,14 @@ class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
   public tokenStore: TokenStore | null = null;
+  public navigate: NavigateFunction| null = null;
 
   /**
    * Setup the websocket connection and listen for messages
    */
-  async init() {
+  async init(navigate: NavigateFunction) {
     this.tokenStore = new TokenStore();
+    this.navigate = navigate;
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
     this.socket = await WebSocket.connect(connectionUrl, {
@@ -159,6 +162,9 @@ class SocketManager {
       });
 
       this.store?.setMe(payload.data.user);
+
+      // move the view to /channel
+      this.navigate?.("/channel");
     }
 
     if (
@@ -215,9 +221,15 @@ class SocketManager {
       }
     }
 
-    console.log(payload);
+    // console.log(payload);
   }
 
+  
+  /**
+   * Request to get the current channel the user is in
+   * The client will respond with the GET_SELECTED_VOICE_CHANNEL event
+   *
+   */
   private requestUserChannel() {
     this.send({
       cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,

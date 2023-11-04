@@ -7,7 +7,7 @@ export const User = ({ item }: { item: OverlayedUser }) => {
     ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.jpg`
     : "./img/default.png";
 
-  const talkingClass = item.talking ? "border-green-500" : "border-slate-600";
+  const talkingClass = item.talking ? "border-green-500" : "border-slate-900";
 
   return (
     <div className="flex py-1 items-center">

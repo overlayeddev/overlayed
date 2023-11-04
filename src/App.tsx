@@ -1,14 +1,17 @@
-import { useAppStore } from "./store";
 import socket from "./rpc/manager";
 import { useEffect } from "react";
 import { appWindow } from "@tauri-apps/api/window";
-import { User } from "./user";
+import { Routes, Route } from "react-router-dom";
+import { Main } from "./views/main";
+import { Channel } from "./views/channel";
+
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const { users } = useAppStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    socket.init();
+    socket.init(navigate);
     appWindow.setAlwaysOnTop(true);
   }, []);
 
@@ -20,11 +23,10 @@ function App() {
       >
         overlayed
       </div>
-      <div className="py-2">
-        {Object.entries(users).map(([_k, item]) => (
-          <User key={item.id} item={item} />
-        ))}
-      </div>
+      <Routes>
+        <Route path="/" Component={Main} />
+        <Route path="/channel" Component={Channel} />
+      </Routes>
       {/* <pre className="text-white">{JSON.stringify({ currentChannel }, null, 2)}</pre> */}
     </div>
   );
