@@ -205,6 +205,8 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
       this.store.addUser(payload.data);
+
+      await routerRefresh()
     }
 
     // when we move channels we get a new list of users
