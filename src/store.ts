@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 
-// TODO: move this?
 const createUserStateItem = (payload: VoiceStateUser) => {
   const data = {
     username: payload.nick,
