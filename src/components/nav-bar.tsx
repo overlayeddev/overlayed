@@ -1,7 +1,23 @@
+import { useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export const NavBar = () => {
   const location = useLocation();
+
+  const getNavLink = useCallback(() => {
+    if (["/channel", "/"].includes(location.pathname)) {
+      return <Link to="/settings">Settings</Link>; 
+    }
+
+    if (location.pathname === "/error") {
+      return <Link to="/">Home</Link>; 
+    }
+
+    if (location.pathname === "/settings") {
+      return <Link to="/channel">Channel</Link>; 
+    }
+
+  }, [location.pathname])
 
   return (
     <div
@@ -10,11 +26,7 @@ export const NavBar = () => {
     >
       overlayed
       <div className="float-right">
-        {["/home", "/channel"].includes(location.pathname) ? (
-          <Link to="/settings">Settings</Link>
-        ) : (
-          <Link to="/">Home</Link>
-        )}
+        {getNavLink()}
       </div>
     </div>
   );

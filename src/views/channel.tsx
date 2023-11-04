@@ -10,7 +10,6 @@ export const Channel = () => {
           <User key={item.id} item={item} />
         ))}
       </div>
-      Channel view 
     </>
   );
 };

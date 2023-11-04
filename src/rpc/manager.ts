@@ -22,6 +22,10 @@ class TokenStore {
   setAccessToken(token: string) {
     this.store.setItem(this.key, token);
   }
+
+  removeAccessToken() {
+    this.store.removeItem(this.key);
+  }
 }
 
 /**
@@ -53,7 +57,7 @@ class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
   public tokenStore: TokenStore | null = null;
-  public navigate: NavigateFunction| null = null;
+  public navigate: NavigateFunction | null = null;
 
   /**
    * Setup the websocket connection and listen for messages
@@ -136,22 +140,28 @@ class SocketManager {
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
     if (payload.cmd === RPCCommand.GET_SELECTED_VOICE_CHANNEL) {
-      // sub to channel events
-      this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
+      if (payload.data?.id) {
+        // sub to channel events
+        this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
+        // set all the user in the channel
+        this.store.setUsers(payload.data.voice_states);
 
-      // set all the user in the channel
-      this.store?.setUsers(payload.data.voice_states);
-
-      this.store?.setCurrentChannel(payload.data.id);
+        this.store.setCurrentChannel(payload.data.id);
+      }
     }
 
     // we are ready to do things cause we are fully authed
-    if (payload?.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
-      // TODO: handle error somehow, maybe show a message to the user and have them re-auth
-    }
+    if (
+      payload.cmd === RPCCommand.AUTHENTICATE &&
+      payload.evt === RPCEvent.ERROR
+    ) {
+      // TODO: haandle moar errors
+      if (payload.data.code === 4009) {
+        this.tokenStore?.removeAccessToken();
+      }
 
-    // we are ready to do things cause we are fully authed
-    if (payload?.cmd === RPCCommand.AUTHENTICATE) {
+      this.navigate?.("/error");
+    } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // try to find the user
       this.requestUserChannel();
 
@@ -161,7 +171,7 @@ class SocketManager {
         evt: RPCEvent.VOICE_CHANNEL_SELECT,
       });
 
-      this.store?.setMe(payload.data.user);
+      this.store.setMe(payload.data.user);
 
       // move the view to /channel
       this.navigate?.("/channel");
@@ -172,20 +182,20 @@ class SocketManager {
       payload.evt === RPCEvent.SPEAKING_STOP
     ) {
       const isSpeaking = payload.evt !== RPCEvent.SPEAKING_START;
-      this.store?.setTalking(payload.data.user_id, !isSpeaking);
+      this.store.setTalking(payload.data.user_id, !isSpeaking);
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
       // if its my user clear the channel
-      if (payload.data.user.id === this.store?.me?.id) {
+      if (payload.data.user.id === this.store.me?.id) {
         this.store.clearUsers();
       }
 
-      this.store?.removeUser(payload.data.user.id);
+      this.store.removeUser(payload.data.user.id);
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
-      this.store?.addUser(payload.data);
+      this.store.addUser(payload.data);
     }
 
     // when we move channels we get a new list of users
@@ -221,10 +231,9 @@ class SocketManager {
       }
     }
 
-    // console.log(payload);
+    console.log(payload);
   }
 
-  
   /**
    * Request to get the current channel the user is in
    * The client will respond with the GET_SELECTED_VOICE_CHANNEL event
