@@ -26,7 +26,7 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 };
 
 export interface AppState {
-  me: {};
+  me: OverlayedUser | null;
   currentChannel: string | null;
   users: Record<string, OverlayedUser>;
 }
@@ -34,16 +34,17 @@ export interface AppState {
 export interface AppActions {
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: any) => void;
+  clearUsers: () => void;
   removeUser: (id: string) => void;
-  addUser: (id: any) => void;
-  setCurrentChannel: (channel: any) => void;
-  setMe: (user: any) => void;
+  addUser: (user: any) => void;
+  setCurrentChannel: (channel: string | null) => void;
+  setMe: (user: OverlayedUser) => void;
 }
 
 export const useAppStore = create < AppState & AppActions > ()(
   // @ts-ignore
   immer((set) => ({
-    me: {},
+    me: null,
     currentChannel: null,
     users: {},
     setMe: (data) =>
@@ -61,15 +62,18 @@ export const useAppStore = create < AppState & AppActions > ()(
     setUsers: (users) =>
       set((state) => {
         for (const item of users) {
-          console.log( "set users", item)
           state.users[item.user.id] = createUserStateItem(item);
         }
+      }),
+    clearUsers: () =>
+      set((state) => {
+        state.users = {};
       }),
     addUser: (event) =>
       set((state) => {
         state.users[event.user.id] = createUserStateItem(event);
       }),
-    setCurrentChannel: (channelId: string) =>
+    setCurrentChannel: (channelId: string | null) =>
       set((state) => {
         state.currentChannel = channelId;
       }),

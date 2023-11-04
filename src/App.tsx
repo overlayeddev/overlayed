@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { appWindow } from "@tauri-apps/api/window";
 
 function App() {
-  const { users } = useAppStore();
+  const { me, users, currentChannel, clearUsers} = useAppStore();
 
   useEffect(() => {
     socket.init();
@@ -33,9 +33,8 @@ function App() {
           </div>
         ))}
       </div>
-      <pre className="text-white">
-        {/* {JSON.stringify({ currentChannel, users }, null, 2)} */}
-      </pre>
+      <button className="bg-red-500" onClick={() => clearUsers()}>Reset</button>
+      <pre className="text-white">{JSON.stringify({ currentChannel }, null, 2)}</pre>
     </div>
   );
 }

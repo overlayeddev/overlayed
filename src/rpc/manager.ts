@@ -51,14 +51,12 @@ interface DiscordPayload {
 class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
-  public store: (AppState & AppActions) | null = null;
   public tokenStore: TokenStore | null = null;
 
   /**
    * Setup the websocket connection and listen for messages
    */
   async init() {
-    this.store = appStore.getState();
     this.tokenStore = new TokenStore();
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
@@ -70,6 +68,11 @@ class SocketManager {
     });
 
     this.socket.addListener(this.onMessage.bind(this));
+  }
+
+  // we have to call the store to get the latest values
+  private get store(): AppState & AppActions {
+    return appStore.getState();
   }
 
   /**
@@ -162,6 +165,11 @@ class SocketManager {
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
+      // if its my user clear the channel
+      if (payload.data.user.id === this.store?.me?.id) {
+        this.store.clearUsers();
+      }
+
       this.store?.removeUser(payload.data.user.id);
     }
 
@@ -176,10 +184,22 @@ class SocketManager {
 
     // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
+      if (payload.data.channel_id === null) {
+        this.store.clearUsers();
+
+        if (this.store.currentChannel) {
+          console.log("unsub from channel", this.store.currentChannel);
+          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel);
+        }
+
+        // after unsub we clear the channel
+        this.store.setCurrentChannel(null);
+      }
+
       // try to find the user
       this.requestUserChannel();
 
-      this.store?.setCurrentChannel(payload.data.channel_id);
+      this.store.setCurrentChannel(payload.data.channel_id);
       if (payload.data?.channel_id) {
         this.send({
           cmd: RPCCommand.GET_CHANNEL,
@@ -190,9 +210,7 @@ class SocketManager {
       }
     }
 
-    if (![RPCCommand.SUBSCRIBE, RPCCommand.AUTHENTICATE].includes(payload.cmd)) {
-      console.log(payload);
-    }
+    console.log(payload);
   }
 
   private requestUserChannel() {
@@ -222,9 +240,9 @@ class SocketManager {
    */
   channelEvents(
     cmd: RPCCommand.SUBSCRIBE | RPCCommand.UNSUBSCRIBE,
-    channelId: String,
+    channelId: string,
   ) {
-    SUBSCRIBABLE_EVENTS.map((eventName) =>
+    SUBSCRIBABLE_EVENTS.forEach((eventName) =>
       this.send({
         cmd,
         args: { channel_id: channelId },
