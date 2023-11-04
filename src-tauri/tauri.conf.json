@@ -16,7 +16,9 @@
       "http": {
         "all": true,
         "request": true,
-        "scope": ["https://streamkit.discord.com/overlay/token"]
+        "scope": [
+          "https://streamkit.discord.com/overlay/token"
+        ]
       },
       "shell": {
         "all": false,
@@ -31,7 +33,8 @@
         "minimize": true,
         "unmaximize": true,
         "unminimize": true,
-        "startDragging": true
+        "startDragging": true,
+        "setAlwaysOnTop": true
       }
     },
     "bundle": {

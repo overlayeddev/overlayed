@@ -1,12 +1,14 @@
 import { useAppStore } from "./store";
 import socket from "./rpc/manager";
 import { useEffect } from "react";
+import { appWindow } from "@tauri-apps/api/window";
 
 function App() {
   const { users } = useAppStore();
 
   useEffect(() => {
     socket.init();
+    appWindow.setAlwaysOnTop(true);
   }, []);
 
   return (
