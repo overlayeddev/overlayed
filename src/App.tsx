@@ -14,6 +14,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("APP: calling socket init")
     socket.init(navigate);
     appWindow.setAlwaysOnTop(true);
   }, []);

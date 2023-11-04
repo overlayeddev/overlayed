@@ -1,4 +1,4 @@
-import { OverlayedUser } from "./types";
+import { OverlayedUser } from "../types";
 
 export const User = ({ item }: { item: OverlayedUser }) => {
   const { id, avatarHash } = item;

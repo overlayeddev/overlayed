@@ -63,6 +63,12 @@ class SocketManager {
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
+
+    if(this.socket) {
+      // make sure to disconnect the socket if init is called again
+      this.socket.disconnect();
+    }
+
     this.tokenStore = new TokenStore();
     this.navigate = navigate;
 
