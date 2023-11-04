@@ -5,6 +5,7 @@ import * as uuid from "uuid";
 import WebSocket, { Message } from "tauri-plugin-websocket-api";
 import { AppActions, AppState, useAppStore as appStore } from "../store";
 import type { NavigateFunction } from "react-router-dom";
+import { routerRefresh } from "../utils";
 
 interface TokenResponse {
   access_token: string;
@@ -198,6 +199,8 @@ class SocketManager {
       }
 
       this.store.removeUser(payload.data.user.id);
+
+      await routerRefresh()
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {

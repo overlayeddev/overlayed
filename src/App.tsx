@@ -1,23 +1,27 @@
 import socket from "./rpc/manager";
 import { useEffect } from "react";
 import { appWindow } from "@tauri-apps/api/window";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { Main } from "./views/main";
 import { Channel } from "./views/channel";
 
-import { useNavigate } from "react-router-dom";
 import { Settings } from "./views/settings";
 import { Error } from "./views/error";
 import { NavBar } from "./components/nav-bar";
+import { routerRefresh } from "./utils";
 
 function App() {
   const navigate = useNavigate();
-
+  const location = useLocation();
   useEffect(() => {
-    console.log("APP: calling socket init")
+    console.log("APP: calling socket init");
     socket.init(navigate);
     appWindow.setAlwaysOnTop(true);
   }, []);
+
+  useEffect(() => { 
+    routerRefresh()
+  }, [location]);
 
   return (
     <div className="container text-white">

@@ -21,6 +21,7 @@
         ]
       },
       "window": {
+        "setSize": true,
         "startDragging": true,
         "setAlwaysOnTop": true
       }
