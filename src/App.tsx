@@ -16,7 +16,7 @@ function App() {
     <div className="container">
       <div
         data-tauri-drag-region
-        className="cursor-default select-none p-2 bg-black text-white"
+        className="cursor-default rounded-t-md font-bold select-none p-2 bg-zinc-900 text-white"
       >
         overlayed
       </div>

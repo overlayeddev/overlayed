@@ -12,7 +12,7 @@ export const User = ({ item }: { item: OverlayedUser }) => {
   return (
     <div className="flex py-1 items-center">
       <div
-        className={`rounded-full bg-black w-8 h-8 border-2 border-slate-800 mr-2 ${talkingClass}`}
+        className={`rounded-full bg-black w-8 h-8 border-2 mr-2 ${talkingClass}`}
       >
         <img src={avatarUrl} alt="avatar" className="rounded-full" />
       </div>
