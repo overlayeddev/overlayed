@@ -1,5 +1,5 @@
 import socket from "./rpc/manager";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { appWindow } from "@tauri-apps/api/window";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { Main } from "./views/main";
@@ -9,42 +9,20 @@ import { Settings } from "./views/settings";
 import { Error } from "./views/error";
 import { NavBar } from "./components/nav-bar";
 import { invalidateWindowShadows } from "./utils";
-import { listen } from "@tauri-apps/api/event";
+import { useClickthrough } from "./use-clickthrough";
+import { useBorder } from "./use-border";
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [clickthrough, setClickthrough] = useState(false);
-  const [mouseInViewport, setMouseInViewport] = useState(false);
+  const { clickthrough } = useClickthrough();
+  const { mouseInViewport } = useBorder();
 
   useEffect(() => {
     console.log("APP: calling socket init");
     socket.init(navigate);
     appWindow.setAlwaysOnTop(true);
-
-    const unlisten = listen < boolean > ("toggle_clickthrough", (event) => {
-      // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
-      // event.payload is the payload object
-      console.log(event);
-      setClickthrough(event.payload);
-    });
-
-    const mouseOutFn = () => {
-      setMouseInViewport(false);
-    };
-    window.addEventListener("mouseout", mouseOutFn);
-
-    const mouseOverFn = () => {
-      setMouseInViewport(true);
-    };
-    window.addEventListener("mouseover", mouseOverFn);
-
-    return () => {
-      mouseOutFn();
-      mouseOverFn();
-      unlisten.then((f) => f());
-    };
   }, []);
 
   useEffect(() => {

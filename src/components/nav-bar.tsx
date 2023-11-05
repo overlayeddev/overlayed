@@ -33,7 +33,7 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
   return (
     <div
       data-tauri-drag-region
-      className="cursor-default rounded-t-lg font-bold select-none p-2 bg-zinc-900"
+      className="cursor-default rounded-t-lg font-bold select-none p-2 hover:bg-zinc-800 bg-zinc-900"
     >
       overlayed
       <div className="float-right flex items-center gap-2">
