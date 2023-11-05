@@ -12,6 +12,8 @@ use tauri::{
   generate_handler, CustomMenuItem, Manager, RunEvent, State, SystemTray, SystemTrayEvent,
   SystemTrayMenu, Window,
 };
+
+#[cfg(target_os = "macos")]
 use window_custom::WindowExt as _;
 mod window_custom;
 
