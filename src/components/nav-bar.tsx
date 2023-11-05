@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Settings, Home, Eye, EyeOff } from "lucide-react";
+import { Settings, Home, Eye } from "lucide-react";
 
 import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
