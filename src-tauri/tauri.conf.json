@@ -49,7 +49,7 @@
         "fullscreen": false,
         "resizable": true,
         "transparent": true,
-        "title": "overlayed-rust-test",
+        "title": "overlayed",
         "width": 420,
         "height": 600
       }
