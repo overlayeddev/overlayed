@@ -36,8 +36,11 @@ impl<R: Runtime> WindowExt for Window<R> {
         NSWindowTitleVisibility::NSWindowTitleVisible
       });
 
-      // disable shadows
+      #[cfg(target_arch = "aarch64")]
       id.setHasShadow_(false);
+
+      #[cfg(target_arch = "x86_64")]
+      id.setHasShadow_(0);
 
       id.setTitlebarAppearsTransparent_(if title_transparent {
         cocoa::base::YES
