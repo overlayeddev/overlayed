@@ -69,5 +69,5 @@ jobs:
         run: pnpm tauri build --ci -v --target x86_64-unknown-linux-gnu --bundles
       - uses: actions/upload-artifact@v2
         with:
-          name: "overlayed-unstable-windows"
+          name: "overlayed-unstable-linux"
           path: "src-tauri/target"
