@@ -36,7 +36,8 @@
       "identifier": "com.hacksore.not.maleware.overlayed",
       "icon": [
         "icons/icon.icns",
-        "icons/icon.ico"
+        "icons/icon.ico",
+        "icons/icon.png"
       ]
     },
     "security": {
