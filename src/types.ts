@@ -1,4 +1,4 @@
-// User object
+/** This is the custom object we use for our state */
 export interface OverlayedUser {
   /**
    * @property {string} id - user's id
@@ -84,6 +84,7 @@ export interface VoiceStateData {
   voice_state: VoiceState,
   user: VoiceStateUser,
 }
+
 export interface ChannelJoinEvent {
   id: string,
   name: string,
@@ -96,19 +97,19 @@ export interface ChannelJoinEvent {
   messages: any,
   voice_states: VoiceStateData[]
 }
+
 interface Pan {
   left: number;
   right: number;
 }
 
 interface VoiceState {
-  mute: boolean; // TBD
-  deaf: boolean; // TBD
+  mute: boolean; 
+  deaf: boolean;
   self_mute: boolean;
   self_deaf: boolean;
-  suppress: boolean; // maybe its a channel where you dont have perms to talk in aka suppress
+  suppress: boolean;
 }
-
 
 export interface VoiceStateUser {
   nick: string;
@@ -119,13 +120,3 @@ export interface VoiceStateUser {
   user: any;
 }
 
-// export interface User {
-//   id: string;
-//   username: string;
-//   discriminator: string;
-//   avatar: string;
-//   avatar_decoration?: string | null;
-//   bot: boolean;
-//   flags: number;
-//   premium_type?: number | null;
-// }

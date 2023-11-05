@@ -5,7 +5,7 @@ import * as uuid from "uuid";
 import WebSocket, { Message } from "tauri-plugin-websocket-api";
 import { AppActions, AppState, useAppStore as appStore } from "../store";
 import type { NavigateFunction } from "react-router-dom";
-import { routerRefresh } from "../utils";
+import { invalidateWindowShadows } from "../utils";
 
 interface TokenResponse {
   access_token: string;
@@ -45,9 +45,11 @@ const WEBSOCKET_URL = "ws://127.0.0.1:6463";
 const STREAMKIT_URL = "https://streamkit.discord.com";
 
 interface DiscordPayload {
-  cmd?: `${RPCCommand}`;
+  cmd: `${RPCCommand}`;
+  // TODO: how do i type this properly?
   args?: any;
-  evt?: `${RPCEvent}`;
+  data?: any,
+  evt?: `${RPCEvent}` | null;
   nonce?: string;
 }
 
@@ -64,8 +66,7 @@ class SocketManager {
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
-
-    if(this.socket) {
+    if (this.socket) {
       // make sure to disconnect the socket if init is called again
       this.socket.disconnect();
     }
@@ -118,7 +119,7 @@ class SocketManager {
       return;
     }
 
-    const payload: any = JSON.parse(event.data);
+    const payload: DiscordPayload = JSON.parse(event.data);
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
@@ -127,6 +128,53 @@ class SocketManager {
         this.login(acessToken);
       } else {
         this.authenticate();
+      }
+    }
+
+    if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
+      // if its my user clear the channel
+      if (payload.data.user.id === this.store.me?.id) {
+        this.store.clearUsers();
+      }
+
+      this.store.removeUser(payload.data.user.id);
+
+      await invalidateWindowShadows();
+    }
+
+    if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
+      this.store.addUser(payload.data);
+
+      await invalidateWindowShadows();
+    }
+
+    // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
+    if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
+      if (payload.data.channel_id === null) {
+        this.store.clearUsers();
+
+        if (this.store.currentChannel) {
+          console.log("unsub from channel", this.store.currentChannel);
+          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel);
+        }
+
+        // after unsub we clear the channel
+        this.store.setCurrentChannel(null);
+
+        await invalidateWindowShadows();
+      }
+
+      // try to find the user
+      this.requestUserChannel();
+
+      this.store.setCurrentChannel(payload.data.channel_id);
+      if (payload.data?.channel_id) {
+        this.send({
+          cmd: RPCCommand.GET_CHANNEL,
+          args: {
+            channel_id: payload.data.channel_id,
+          },
+        });
       }
     }
 
@@ -167,6 +215,8 @@ class SocketManager {
         this.tokenStore?.removeAccessToken();
       }
 
+      // TODO: handle saving the last error message(s) so we can display then on the error view
+
       this.navigate?.("/error");
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // try to find the user
@@ -192,56 +242,9 @@ class SocketManager {
       this.store.setTalking(payload.data.user_id, !isSpeaking);
     }
 
-    if (payload.evt === RPCEvent.VOICE_STATE_DELETE) {
-      // if its my user clear the channel
-      if (payload.data.user.id === this.store.me?.id) {
-        this.store.clearUsers();
-      }
-
-      this.store.removeUser(payload.data.user.id);
-
-      await routerRefresh()
-    }
-
-    if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
-      this.store.addUser(payload.data);
-
-      await routerRefresh()
-    }
-
     // when we move channels we get a new list of users
     if (payload.cmd === RPCCommand.GET_CHANNEL) {
       this.requestUserChannel();
-    }
-
-    // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
-    if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
-      if (payload.data.channel_id === null) {
-        this.store.clearUsers();
-
-        if (this.store.currentChannel) {
-          console.log("unsub from channel", this.store.currentChannel);
-          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel);
-        }
-
-        // after unsub we clear the channel
-        this.store.setCurrentChannel(null);
-
-        await routerRefresh();
-      }
-
-      // try to find the user
-      this.requestUserChannel();
-
-      this.store.setCurrentChannel(payload.data.channel_id);
-      if (payload.data?.channel_id) {
-        this.send({
-          cmd: RPCCommand.GET_CHANNEL,
-          args: {
-            channel_id: payload.data.channel_id,
-          },
-        });
-      }
     }
 
     console.log(payload);

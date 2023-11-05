@@ -8,7 +8,7 @@ import { Channel } from "./views/channel";
 import { Settings } from "./views/settings";
 import { Error } from "./views/error";
 import { NavBar } from "./components/nav-bar";
-import { routerRefresh } from "./utils";
+import { invalidateWindowShadows } from "./utils";
 
 function App() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function App() {
   }, []);
 
   useEffect(() => { 
-    routerRefresh()
+    invalidateWindowShadows()
   }, [location]);
 
   return (

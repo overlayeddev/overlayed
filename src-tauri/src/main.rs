@@ -4,10 +4,6 @@
 fn main() {
   tauri::Builder::default()
     .plugin(tauri_plugin_websocket::init())
-    .setup(|app| {
-      // TODO: how to fix the shadowing / artfact issue?
-      Ok(())
-    })
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
