@@ -1,14 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
 export const Settings = () => {
+  const navigate = useNavigate();
   return (
-    <div 
+    <div
       style={{ height: "calc(100vh - 48px)" }}
-      className="bg-zinc-800 p-4 pt-4 pb-4">
+      className="bg-zinc-800 p-4 pt-4 pb-4"
+    >
       <h1 className="text-xl font-bold">Settings</h1>
       <div>
         <button
           onClick={() => {
             localStorage.removeItem("discord_access_token");
-            window.location.reload();
+            navigate("/");
           }}
           className="bg-blue-800 p-2 rounded-md"
         >

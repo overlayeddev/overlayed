@@ -7,7 +7,7 @@ export const User = ({ item }: { item: OverlayedUser }) => {
 
   const avatarUrl = avatarHash
     ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.jpg`
-    : "./img/default.png";
+    : "/img/default.png";
 
   const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted ? "text-zinc-400" : "";
@@ -17,7 +17,17 @@ export const User = ({ item }: { item: OverlayedUser }) => {
       <div
         className={`pointer-events-none rounded-full w-8 h-8 border-2 mr-2 ${talkingClass}`}
       >
-        <img src={avatarUrl} alt="avatar" className="rounded-full" />
+        <img
+          onError={(e) => {
+            // @ts-ignore
+            e.target.onerror = null;
+            // @ts-ignore
+            e.target.src = "/img/default.png";
+          }}
+          src={avatarUrl}
+          alt="avatar"
+          className="rounded-full"
+        />
       </div>
 
       <div
