@@ -24,7 +24,7 @@ function App() {
   }, [location]);
 
   return (
-    <div className="text-white">
+    <div data-tauri-drag-region className="text-white select-none">
       <NavBar />
       <div className="container">
         <Routes>

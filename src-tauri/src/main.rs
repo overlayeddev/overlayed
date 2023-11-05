@@ -2,37 +2,64 @@
   all(not(debug_assertions), target_os = "windows"),
   windows_subsystem = "windows"
 )]
+#![allow(unused_must_use)]
 
 #[cfg(target_os = "macos")]
 #[macro_use]
 extern crate objc;
 
-mod window_custom;
-
 use tauri::{
-  CustomMenuItem, Manager, RunEvent, SystemTray, SystemTrayEvent,
-  SystemTrayMenu,
+  generate_handler, CustomMenuItem, Manager, RunEvent, State, SystemTray, SystemTrayEvent,
+  SystemTrayMenu, Window,
 };
 use window_custom::WindowExt as _;
+mod window_custom;
+
+use std::sync::atomic::AtomicBool;
+
+struct Clickthrough(AtomicBool);
+
+#[tauri::command]
+fn toggle_clickthrough(window: Window, enabled: bool, clickthrough: State<'_, Clickthrough>) {
+  println!("Setting clickthrough to {}", enabled);
+
+  clickthrough
+    .0
+    .store(enabled, std::sync::atomic::Ordering::Relaxed);
+
+  #[cfg(target_os = "macos")]
+  window.with_webview(move |webview| {
+    #[cfg(target_os = "macos")]
+    unsafe {
+      let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: enabled];
+    }
+  });
+}
 
 fn main() {
   // System tray configuration
   let tray = SystemTray::new().with_menu(
     SystemTrayMenu::new()
-      .add_item(CustomMenuItem::new("show_overlayed", "Show Overlayed"))
-      .add_item(CustomMenuItem::new("quit", "Quit"))
+      .add_item(CustomMenuItem::new(
+        "toggle_clickthrough",
+        "Toogle Clickthrough",
+      ))
+      .add_item(CustomMenuItem::new("show_app", "Show Overlayed"))
+      // add seperator
+      .add_native_item(tauri::SystemTrayMenuItem::Separator)
+      .add_item(CustomMenuItem::new("quit", "Quit")),
   );
 
   let app = tauri::Builder::default()
     .plugin(tauri_plugin_websocket::init())
+    .manage(Clickthrough(AtomicBool::new(false)))
     .setup(|app| {
       let window = app.get_window("main").unwrap();
+
       #[cfg(target_os = "macos")]
       window.set_transparent_titlebar(true, true);
-      // Move the window to the center of the screen
-      window.center().expect("Cannot move window!");
 
-      // Open dev tools
+      // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       window.open_devtools();
       Ok(())
@@ -42,8 +69,31 @@ fn main() {
     // Handle system tray events
     .on_system_tray_event(|app, event| match event {
       SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
+        "toggle_clickthrough" => {
+          let window = app.get_window("main").unwrap();
+          let clickthrough = !app
+            .state::<Clickthrough>()
+            .0
+            .load(std::sync::atomic::Ordering::Relaxed);
+
+          println!("Setting clickthrough to {}", clickthrough);
+          app
+            .state::<Clickthrough>()
+            .0
+            .store(clickthrough, std::sync::atomic::Ordering::Relaxed);
+
+          #[cfg(target_os = "macos")]
+          window.with_webview(move |webview| {
+            #[cfg(target_os = "macos")]
+            unsafe {
+              let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: clickthrough];
+            }
+          });
+          // we might want to knokw on the client
+          window.emit("toggle_clickthrough", clickthrough).unwrap();
+        }
         "quit" => std::process::exit(0),
-        "show_overlayed" => {
+        "show_app" => {
           let window = app.get_window("main").unwrap();
           window.show().unwrap();
           window.set_focus().unwrap();
@@ -52,12 +102,12 @@ fn main() {
       },
       _ => {}
     })
+    .invoke_handler(generate_handler![toggle_clickthrough])
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!");
 
   app.run(|_app_handle, e| match e {
-    RunEvent::Ready => {
-    }
+    RunEvent::Ready => {}
     _ => {}
   })
 }

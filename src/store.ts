@@ -25,12 +25,14 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 };
 
 export interface AppState {
+  clickThrough: boolean;
   me: OverlayedUser | null;
   currentChannel: string | null;
   users: Record<string, OverlayedUser>;
 }
 
 export interface AppActions {
+  setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: any) => void;
   clearUsers: () => void;
@@ -44,6 +46,7 @@ export const useAppStore = create < AppState & AppActions > ()(
   // @ts-ignore
   immer((set) => ({
     me: null,
+    clickThrough: false,
     currentChannel: null,
     users: {},
     setMe: (data) =>
@@ -75,6 +78,10 @@ export const useAppStore = create < AppState & AppActions > ()(
     setCurrentChannel: (channelId: string | null) =>
       set((state) => {
         state.currentChannel = channelId;
+      }),
+    setClickThrough: (enabled: boolean) =>
+      set((state) => {
+        state.clickThrough = enabled;
       }),
   })),
 );
