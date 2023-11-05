@@ -1,27 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Settings, Home, Eye } from "lucide-react";
 
-import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api";
 
-export const NavBar = () => {
+export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
   const location = useLocation();
-  const [clickthrough, setClickthrough] = useState(false);
-
-  useEffect(() => {
-    const unlisten = listen < boolean > ("toggle_clickthrough", (event) => {
-      // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
-      // event.payload is the payload object
-      console.log(event);
-      setClickthrough(event.payload);
-    });
-
-    return () => {
-      unlisten.then((f) => f());
-    };
-  }, []);
-
   const getNavLink = useCallback(() => {
     if (["/channel", "/"].includes(location.pathname)) {
       return (
@@ -57,7 +41,6 @@ export const NavBar = () => {
           <button>
             <Eye
               onClick={() => {
-                setClickthrough(!clickthrough);
                 invoke("toggle_clickthrough", { enabled: !clickthrough });
               }}
             />
