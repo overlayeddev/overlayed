@@ -9,13 +9,13 @@ export const User = ({ item }: { item: OverlayedUser }) => {
     ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.jpg`
     : "./img/default.png";
 
-  const talkingClass = talking ? "border-green-500" : "border-slate-900";
+  const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted ? "text-zinc-400" : "";
 
   return (
     <div data-tauri-drag-region className="flex py-1 p-2 items-center">
       <div
-        className={`pointer-events-none rounded-full bg-black w-8 h-8 border-2 mr-2 ${talkingClass}`}
+        className={`pointer-events-none rounded-full w-8 h-8 border-2 mr-2 ${talkingClass}`}
       >
         <img src={avatarUrl} alt="avatar" className="rounded-full" />
       </div>

@@ -149,7 +149,6 @@ class SocketManager {
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
-      console.log("update user", payload.data);
       this.store.updateUser(payload.data);
 
       await invalidateWindowShadows();

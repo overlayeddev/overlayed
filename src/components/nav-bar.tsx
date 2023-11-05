@@ -28,12 +28,15 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
     }
   }, [location.pathname]);
 
-  if (clickthrough && location.pathname === "/channel") return null;
+  const opacity =
+    clickthrough && location.pathname === "/channel"
+      ? "opacity-0"
+      : "opacity-100";
 
   return (
     <div
       data-tauri-drag-region
-      className="cursor-default rounded-t-lg font-bold select-none p-2 hover:bg-zinc-800 bg-zinc-900"
+      className={`${opacity} cursor-default rounded-t-lg font-bold select-none p-2 hover:bg-zinc-800 bg-zinc-900`}
     >
       overlayed
       <div className="float-right flex items-center gap-2">
