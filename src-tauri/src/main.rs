@@ -21,19 +21,16 @@ struct Clickthrough(AtomicBool);
 
 #[tauri::command]
 fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
-
-  let clickthrough_value = !clickthrough
-    .0
-    .load(std::sync::atomic::Ordering::Relaxed);
-
-  println!("Setting clickthrough to {}", clickthrough_value);
+  let clickthrough_value = !clickthrough.0.load(std::sync::atomic::Ordering::Relaxed);
 
   clickthrough
     .0
     .store(clickthrough_value, std::sync::atomic::Ordering::Relaxed);
-  
+
   // let the client know
-  window.emit("toggle_clickthrough", clickthrough_value).unwrap();
+  window
+    .emit("toggle_clickthrough", clickthrough_value)
+    .unwrap();
 
   #[cfg(target_os = "macos")]
   window.with_webview(move |webview| {
