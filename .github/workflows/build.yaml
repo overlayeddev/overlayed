@@ -2,7 +2,7 @@ name: "CI"
 on: push
 
 jobs:
-  build-release:
+  build-mac:
     runs-on: "macos-latest"
     steps:
       - uses: actions/checkout@v4
@@ -24,3 +24,25 @@ jobs:
         with:
           name: "overlayed-unstable-mac"
           path: "src-tauri/target/release/bundle/dmg/*.dmg"
+  build-windows:
+    runs-on: "windows-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: install frontend dependencies
+        run: pnpm install
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: "overlayed-unstable-windows"
+          path: "src-tauri/target/release/bundle/**/*.exe"
