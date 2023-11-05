@@ -19,19 +19,21 @@ function App() {
     appWindow.setAlwaysOnTop(true);
   }, []);
 
-  useEffect(() => { 
-    invalidateWindowShadows()
+  useEffect(() => {
+    invalidateWindowShadows();
   }, [location]);
 
   return (
-    <div className="container text-white">
+    <div className="text-white">
       <NavBar />
-      <Routes>
-        <Route path="/" Component={Main} />
-        <Route path="/channel" Component={Channel} />
-        <Route path="/settings" Component={Settings} />
-        <Route path="/error" Component={Error} />
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path="/" Component={Main} />
+          <Route path="/channel" Component={Channel} />
+          <Route path="/settings" Component={Settings} />
+          <Route path="/error" Component={Error} />
+        </Routes>
+      </div>
     </div>
   );
 }

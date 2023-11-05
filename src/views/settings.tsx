@@ -1,9 +1,7 @@
 export const Settings = () => {
   return (
-    <>
-      <div className="pt-2 text-3xl">
-        settings
-      </div>
-    </>
+    <div className="h-screen pt-2 bg-zinc-800 p-2">
+      <h1 className="text-xl pl-2 pt-2 font-bold">Settings</h1>
+    </div>
   );
 };
