@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: "overlayed-unstable-windows"
-          path: "**/*.exe"
+          path: "src/tauri/x86_64-pc-windows-msvc/**/overlayed.exe"
   build-linux:
     runs-on: "ubuntu-latest"
     steps:
@@ -70,4 +70,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: "overlayed-unstable-windows"
-          path: "**/*.{deb,appimage}"
+          path: "src-tauri/target"
