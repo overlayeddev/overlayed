@@ -21,7 +21,7 @@ jobs:
         run: pnpm install
       - name: build tauri app
         run: pnpm tauri build --ci -v --target universal-apple-darwin
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: "overlayed-unstable-mac"
           path: "**/*.dmg"
@@ -42,10 +42,10 @@ jobs:
         run: pnpm install
       - name: build tauri app
         run: pnpm tauri build --ci -v --target x86_64-pc-windows-msvc
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: "overlayed-unstable-windows"
-          path: "src/tauri/x86_64-pc-windows-msvc/**/overlayed.exe"
+          path: "src-tauri/x86_64-pc-windows-msvc/**/overlayed.exe"
   build-linux:
     runs-on: "ubuntu-latest"
     steps:
@@ -67,7 +67,7 @@ jobs:
         run: pnpm install
       - name: build tauri app
         run: pnpm tauri build --ci -v --target x86_64-unknown-linux-gnu --bundles
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: "overlayed-unstable-linux"
           path: "src-tauri/target"
