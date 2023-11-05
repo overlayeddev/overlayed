@@ -247,7 +247,7 @@ class SocketManager {
       this.requestUserChannel();
     }
 
-    console.log(payload);
+    // console.log(payload);
   }
 
   /**

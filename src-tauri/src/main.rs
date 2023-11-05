@@ -20,18 +20,26 @@ use std::sync::atomic::AtomicBool;
 struct Clickthrough(AtomicBool);
 
 #[tauri::command]
-fn toggle_clickthrough(window: Window, enabled: bool, clickthrough: State<'_, Clickthrough>) {
-  println!("Setting clickthrough to {}", enabled);
+fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
+
+  let clickthrough_value = !clickthrough
+    .0
+    .load(std::sync::atomic::Ordering::Relaxed);
+
+  println!("Setting clickthrough to {}", clickthrough_value);
 
   clickthrough
     .0
-    .store(enabled, std::sync::atomic::Ordering::Relaxed);
+    .store(clickthrough_value, std::sync::atomic::Ordering::Relaxed);
+  
+  // let the client know
+  window.emit("toggle_clickthrough", clickthrough_value).unwrap();
 
   #[cfg(target_os = "macos")]
   window.with_webview(move |webview| {
     #[cfg(target_os = "macos")]
     unsafe {
-      let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: enabled];
+      let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: clickthrough_value];
     }
   });
 }

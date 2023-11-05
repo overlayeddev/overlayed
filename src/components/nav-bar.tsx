@@ -36,17 +36,15 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
       className="cursor-default rounded-t-lg font-bold select-none p-2 bg-zinc-900"
     >
       overlayed
-      <div className="float-right flex gap-2">
-        <div>
-          <button>
-            <Eye
-              onClick={() => {
-                invoke("toggle_clickthrough", { enabled: !clickthrough });
-              }}
-            />
-          </button>
-        </div>
-        <div>{getNavLink()}</div>
+      <div className="float-right flex items-center gap-2">
+        <button className="hover:text-blue-500">
+          <Eye
+            onClick={() => {
+              invoke("toggle_clickthrough");
+            }}
+          />
+        </button>
+        <div className="hover:text-blue-500">{getNavLink()}</div>
       </div>
     </div>
   );

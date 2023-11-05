@@ -1,9 +1,10 @@
 export const Settings = () => {
-
   return (
-    <div className="h-screen pt-2 bg-zinc-800 p-2">
-      <h1 className="text-xl pl-2 pt-2 font-bold">Settings</h1>
-      <div className="pt-2 pl-2">
+    <div 
+      style={{ height: "calc(100vh - 48px)" }}
+      className="bg-zinc-800 p-4 pt-4 pb-4">
+      <h1 className="text-xl font-bold">Settings</h1>
+      <div>
         <button
           onClick={() => {
             localStorage.removeItem("discord_access_token");
