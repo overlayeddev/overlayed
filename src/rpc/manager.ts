@@ -37,7 +37,7 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.SPEAKING_STOP,
   RPCEvent.VOICE_STATE_CREATE,
   RPCEvent.VOICE_STATE_DELETE,
-  RPCEvent.VOICE_STATE_DELETE,
+  RPCEvent.VOICE_STATE_UPDATE,
 ];
 
 const STREAM_KIT_APP_ID = "207646673902501888";
@@ -144,6 +144,13 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
       this.store.addUser(payload.data);
+
+      await invalidateWindowShadows();
+    }
+
+    if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
+      console.log("update user", payload.data);
+      this.store.updateUser(payload.data);
 
       await invalidateWindowShadows();
     }

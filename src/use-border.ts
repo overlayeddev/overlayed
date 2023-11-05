@@ -9,20 +9,17 @@ export const useBorder = () => {
     console.log("running useBorder effect");
 
     const mouseMoveFn = (event: MouseEvent) => {
-      console.log("mouseOutFn");
       setMousePos({ x: event.clientX, y: event.clientY });
     };
     document.addEventListener("mousemove", mouseMoveFn);
 
     const mouseOutFn = () => {
-      console.log("mouseOutFn");
       setMouseInViewport(false);
     };
 
     document.addEventListener("mouseout", mouseOutFn);
 
     const mouseOverFn = () => {
-      console.log("mouseOverFn");
       setMouseInViewport(true);
     };
     document.addEventListener("mouseover", mouseOverFn);

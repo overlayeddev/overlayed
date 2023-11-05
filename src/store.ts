@@ -35,6 +35,7 @@ export interface AppActions {
   setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: any) => void;
+  updateUser: (user: any) => void;
   clearUsers: () => void;
   removeUser: (id: string) => void;
   addUser: (user: any) => void;
@@ -60,6 +61,10 @@ export const useAppStore = create < AppState & AppActions > ()(
     removeUser: (id) =>
       set((state: AppState) => {
         delete state.users[id];
+      }),
+    updateUser: (item) =>
+      set((state: AppState) => {
+        state.users[item.user.id] = createUserStateItem(item);
       }),
     setUsers: (users) =>
       set((state) => {
