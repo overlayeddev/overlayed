@@ -28,7 +28,7 @@ export const NavBar = () => {
   return (
     <div
       data-tauri-drag-region
-      className="cursor-default rounded-t-md font-bold select-none p-2 bg-zinc-900 text-white"
+      className="transition ease-in text-transparent hover:text-white cursor-default rounded-t-lg font-bold select-none p-2 hover:bg-zinc-900"
     >
       overlayed
       <div className="float-right">{getNavLink()}</div>

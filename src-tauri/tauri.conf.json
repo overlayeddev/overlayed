@@ -11,6 +11,10 @@
     "version": "0.0.0"
   },
   "tauri": {
+    "systemTray": {
+      "iconPath": "icons/32x32.png",
+      "iconAsTemplate": true
+    },
     "allowlist": {
       "all": false,
       "http": {
@@ -44,7 +48,6 @@
         "fullscreen": false,
         "resizable": true,
         "transparent": true,
-        "decorations": false,
         "title": "overlayed-rust-test",
         "width": 420,
         "height": 600

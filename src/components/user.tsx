@@ -17,7 +17,7 @@ export const User = ({ item }: { item: OverlayedUser }) => {
         <img src={avatarUrl} alt="avatar" className="rounded-full" />
       </div>
 
-      <div className="text-white rounded-md bg-zinc-900 p-1">{item.username}</div>
+      <div className="text-white rounded-md bg-zinc-800 p-1 pl-2 pr-2">{item.username}</div>
     </div>
   );
 };
