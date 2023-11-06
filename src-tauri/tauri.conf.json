@@ -33,7 +33,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.hacksore.not.maleware.overlayed",
+      "identifier": "com.hacksore.overlayed",
       "icon": [
         "icons/icon.icns",
         "icons/icon.ico",
