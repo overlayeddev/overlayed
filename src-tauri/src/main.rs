@@ -21,6 +21,15 @@ use std::sync::atomic::AtomicBool;
 
 struct Clickthrough(AtomicBool);
 
+/// for the emit of the clickthrough event
+const TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
+
+/// for the tray events
+const TRAY_TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
+const TRAY_SHOW_APP: &str = "show_app";
+const TRAY_RELOAD: &str = "reload";
+const TRAY_QUIT: &str = "quit";
+
 #[tauri::command]
 fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
   let clickthrough_value = !clickthrough.0.load(std::sync::atomic::Ordering::Relaxed);
@@ -31,7 +40,7 @@ fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
 
   // let the client know
   window
-    .emit("toggle_clickthrough", clickthrough_value)
+    .emit(TOGGLE_CLICKTHROUGH, clickthrough_value)
     .unwrap();
 
   #[cfg(target_os = "macos")]
@@ -48,16 +57,17 @@ fn main() {
   let tray = SystemTray::new().with_menu(
     SystemTrayMenu::new()
       .add_item(CustomMenuItem::new(
-        "toggle_clickthrough",
+        TRAY_TOGGLE_CLICKTHROUGH,
         "Toogle Clickthrough",
       ))
-      .add_item(CustomMenuItem::new("show_app", "Show Overlayed"))
-      // add seperator
+      .add_item(CustomMenuItem::new(TRAY_SHOW_APP, "Show Overlayed"))
+      .add_item(CustomMenuItem::new(TRAY_RELOAD, "Reload App"))
       .add_native_item(tauri::SystemTrayMenuItem::Separator)
-      .add_item(CustomMenuItem::new("quit", "Quit")),
+      .add_item(CustomMenuItem::new(TRAY_QUIT, "Quit")),
   );
 
   let app = tauri::Builder::default()
+    .plugin(tauri_plugin_window_state::Builder::default().build())
     .plugin(tauri_plugin_websocket::init())
     .manage(Clickthrough(AtomicBool::new(false)))
     .setup(|app| {
@@ -69,6 +79,7 @@ fn main() {
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       window.open_devtools();
+
       Ok(())
     })
     // Add the system tray
@@ -76,7 +87,7 @@ fn main() {
     // Handle system tray events
     .on_system_tray_event(|app, event| match event {
       SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-        "toggle_clickthrough" => {
+        TRAY_TOGGLE_CLICKTHROUGH => {
           let window = app.get_window("main").unwrap();
           let clickthrough = !app
             .state::<Clickthrough>()
@@ -97,14 +108,18 @@ fn main() {
             }
           });
           // we might want to knokw on the client
-          window.emit("toggle_clickthrough", clickthrough).unwrap();
+          window.emit(TOGGLE_CLICKTHROUGH, clickthrough).unwrap();
         }
-        "quit" => std::process::exit(0),
-        "show_app" => {
+        TRAY_SHOW_APP => {
           let window = app.get_window("main").unwrap();
           window.show().unwrap();
           window.set_focus().unwrap();
         }
+        TRAY_RELOAD => {
+          let window = app.get_window("main").unwrap();
+          window.eval("window.location.reload();").unwrap();
+        }
+        TRAY_QUIT => std::process::exit(0),
         _ => {}
       },
       _ => {}
