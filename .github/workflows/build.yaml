@@ -24,7 +24,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: "overlayed-unstable-mac"
-          path: "**/*.dmg"
+          path: "src-tauri/target/**/*.dmg"
   build-windows:
     runs-on: "windows-latest"
     steps:
@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: "overlayed-unstable-windows"
-          path: "src-tauri/x86_64-pc-windows-msvc/**/overlayed.exe"
+          path: "src-tauri/target/**/overlayed.exe"
   build-linux:
     runs-on: "ubuntu-latest"
     steps:
@@ -70,4 +70,4 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: "overlayed-unstable-linux"
-          path: "src-tauri/target"
+          path: "src-tauri/target/**/release/overlayed"
