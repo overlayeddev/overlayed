@@ -6,8 +6,6 @@ export const useBorder = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    console.log("running useBorder effect");
-
     const mouseMoveFn = (event: MouseEvent) => {
       setMousePos({ x: event.clientX, y: event.clientY });
     };

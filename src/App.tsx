@@ -1,20 +1,18 @@
 import socket from "./rpc/manager";
 import { useEffect } from "react";
 import { appWindow } from "@tauri-apps/api/window";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Main } from "./views/main";
 import { Channel } from "./views/channel";
 
 import { Settings } from "./views/settings";
 import { Error } from "./views/error";
 import { NavBar } from "./components/nav-bar";
-import { invalidateWindowShadows } from "./utils";
 import { useClickthrough } from "./use-clickthrough";
 import { useBorder } from "./use-border";
 
 function App() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { clickthrough } = useClickthrough();
   const { mouseInViewport } = useBorder();
@@ -22,12 +20,10 @@ function App() {
   useEffect(() => {
     console.log("APP: calling socket init");
     socket.init(navigate);
+
+    // TODO: maybe we set this in rust / config
     appWindow.setAlwaysOnTop(true);
   }, []);
-
-  useEffect(() => {
-    invalidateWindowShadows();
-  }, [location]);
 
   const border =
     !clickthrough && mouseInViewport

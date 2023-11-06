@@ -5,7 +5,6 @@ import * as uuid from "uuid";
 import WebSocket, { Message } from "tauri-plugin-websocket-api";
 import { AppActions, AppState, useAppStore as appStore } from "../store";
 import type { NavigateFunction } from "react-router-dom";
-import { invalidateWindowShadows } from "../utils";
 
 interface TokenResponse {
   access_token: string;
@@ -48,7 +47,7 @@ interface DiscordPayload {
   cmd: `${RPCCommand}`;
   // TODO: how do i type this properly?
   args?: any;
-  data?: any,
+  data?: any;
   evt?: `${RPCEvent}` | null;
   nonce?: string;
 }
@@ -97,7 +96,7 @@ class SocketManager {
     this.send({
       args: {
         client_id: STREAM_KIT_APP_ID,
-        scopes: ["rpc"],
+        scopes: ["rpc", "identify"],
       },
       cmd: RPCCommand.AUTHORIZE,
     });
@@ -138,20 +137,14 @@ class SocketManager {
       }
 
       this.store.removeUser(payload.data.user.id);
-
-      await invalidateWindowShadows();
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
       this.store.addUser(payload.data);
-
-      await invalidateWindowShadows();
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
       this.store.updateUser(payload.data);
-
-      await invalidateWindowShadows();
     }
 
     // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
@@ -166,8 +159,6 @@ class SocketManager {
 
         // after unsub we clear the channel
         this.store.setCurrentChannel(null);
-
-        await invalidateWindowShadows();
       }
 
       // try to find the user
@@ -187,7 +178,7 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
+      const res = await fetch < TokenResponse > (`${STREAMKIT_URL}/overlay/token`, {
         method: "POST",
         body: Body.json({ code }),
       });
@@ -253,7 +244,7 @@ class SocketManager {
       this.requestUserChannel();
     }
 
-    // console.log(payload);
+    console.log(payload);
   }
 
   /**
