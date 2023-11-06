@@ -21,6 +21,8 @@ use std::sync::atomic::AtomicBool;
 
 struct Clickthrough(AtomicBool);
 
+const MAIN_WINDOW_NAME : &str = "main";
+
 /// for the emit of the clickthrough event
 const TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
 
@@ -28,6 +30,7 @@ const TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
 const TRAY_TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
 const TRAY_SHOW_APP: &str = "show_app";
 const TRAY_RELOAD: &str = "reload";
+const TRAY_OPEN_DEVTOOLS: &str = "open_devtools";
 const TRAY_QUIT: &str = "quit";
 
 #[tauri::command]
@@ -62,6 +65,7 @@ fn main() {
       ))
       .add_item(CustomMenuItem::new(TRAY_SHOW_APP, "Show Overlayed"))
       .add_item(CustomMenuItem::new(TRAY_RELOAD, "Reload App"))
+      .add_item(CustomMenuItem::new(TRAY_OPEN_DEVTOOLS, "Open Devtools"))
       .add_native_item(tauri::SystemTrayMenuItem::Separator)
       .add_item(CustomMenuItem::new(TRAY_QUIT, "Quit")),
   );
@@ -71,7 +75,7 @@ fn main() {
     .plugin(tauri_plugin_websocket::init())
     .manage(Clickthrough(AtomicBool::new(false)))
     .setup(|app| {
-      let window = app.get_window("main").unwrap();
+      let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
       #[cfg(target_os = "macos")]
       window.set_transparent_titlebar(true, true);
@@ -88,7 +92,7 @@ fn main() {
     .on_system_tray_event(|app, event| match event {
       SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
         TRAY_TOGGLE_CLICKTHROUGH => {
-          let window = app.get_window("main").unwrap();
+          let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           let clickthrough = !app
             .state::<Clickthrough>()
             .0
@@ -111,13 +115,17 @@ fn main() {
           window.emit(TOGGLE_CLICKTHROUGH, clickthrough).unwrap();
         }
         TRAY_SHOW_APP => {
-          let window = app.get_window("main").unwrap();
+          let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           window.show().unwrap();
           window.set_focus().unwrap();
         }
         TRAY_RELOAD => {
-          let window = app.get_window("main").unwrap();
+          let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           window.eval("window.location.reload();").unwrap();
+        }
+        TRAY_OPEN_DEVTOOLS=> {
+          let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
+          window.open_devtools();
         }
         TRAY_QUIT => std::process::exit(0),
         _ => {}
