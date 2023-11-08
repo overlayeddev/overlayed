@@ -1,26 +1,29 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import socket from "../rpc/manager";
+import { useSocket } from "../rpc/manager";
 
-const MAX_LOADING_TIME = 10_000;
 export const Main = () => {
+  const socket = useSocket();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("MAIN: calling socket init")
-    // NOTE: the app will always try to init the socket
-    socket.init(navigate);
-
-    // max time they can spend on tihs page befoore getting yeeted to error
-    const timeoutId = setTimeout(() => navigate("/error"), MAX_LOADING_TIME);
-    return () => clearTimeout(timeoutId);
-  }, []);
-
   return (
-    <>
-      <div className="text-white pt-8 text-3xl flex items-center justify-center">
-        loading...
+    <div className="h-screen p-2 bg-zinc-800">
+      <div className="pt-1 mb-3 font-bold text-2xl text-center">
+        <p>Authorize Discord</p>
       </div>
-    </>
+
+      <img src="/img/login.png" alt="login" className="w-full" />
+
+      <div className="pt-8 text-2xl flex items-center flex-col justify-center">
+        <p>Request Prompt again</p>
+        <button
+          onClick={() => {
+            socket?.init(navigate);
+          }}
+          className="bg-blue-800 p-2 rounded-md"
+        >
+          Authorize Discord
+        </button>
+      </div>
+    </div>
   );
 };

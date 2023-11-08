@@ -4,7 +4,8 @@ import { RPCEvent } from "./event";
 import * as uuid from "uuid";
 import WebSocket, { Message } from "tauri-plugin-websocket-api";
 import { AppActions, AppState, useAppStore as appStore } from "../store";
-import type { NavigateFunction } from "react-router-dom";
+import { useNavigate, type NavigateFunction } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 interface TokenResponse {
   access_token: string;
@@ -74,14 +75,19 @@ class SocketManager {
     this.navigate = navigate;
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
-    this.socket = await WebSocket.connect(connectionUrl, {
-      headers: {
-        // we need to set the origin header to the discord streamkit domain
-        origin: STREAMKIT_URL,
-      },
-    });
+    try {
+      this.socket = await WebSocket.connect(connectionUrl, {
+        headers: {
+          // we need to set the origin header to the discord streamkit domain
+          origin: STREAMKIT_URL,
+        },
+      });
 
-    this.socket.addListener(this.onMessage.bind(this));
+      this.socket.addListener(this.onMessage.bind(this));
+    } catch (e) {
+      console.log(e);
+      this.navigate?.("/error");
+    }
   }
 
   // we have to call the store to get the latest values
@@ -114,6 +120,18 @@ class SocketManager {
    * @param payload a JSON object of the parsed message
    */
   private async onMessage(event: Message) {
+    // TODO: this has to be a bug in the upstream lib, we should get a proper code
+    // and not have to check the raw dawg string to see if something is wrong
+    if (
+      typeof event === "string" &&
+      (event as string).includes("Connection reset without closing handshake")
+    ) {
+      this.navigate?.("/error");
+    }
+
+    // TODO: does this ever happen?
+    if (event.type === "Close") this.navigate?.("/error");
+
     if (event.type !== "Text") {
       return;
     }
@@ -178,7 +196,7 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch < TokenResponse > (`${STREAMKIT_URL}/overlay/token`, {
+      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
         method: "POST",
         body: Body.json({ code }),
       });
@@ -243,8 +261,6 @@ class SocketManager {
     if (payload.cmd === RPCCommand.GET_CHANNEL) {
       this.requestUserChannel();
     }
-
-    console.log(payload);
   }
 
   /**
@@ -292,4 +308,18 @@ class SocketManager {
   }
 }
 
-export default new SocketManager();
+// hook to get the socket SocketManager
+export const useSocket = () => {
+  const navigate = useNavigate();
+  //TODO: should this be a ref instead?
+  const [socket, setSocket] = useState<SocketManager | null>(null);
+
+  useEffect(() => {
+    console.log("Initializing websocket...");
+    const socketManager = new SocketManager();
+    socketManager.init(navigate);
+    setSocket(socketManager);
+  }, []);
+
+  return socket;
+};

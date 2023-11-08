@@ -21,7 +21,7 @@ use std::sync::atomic::AtomicBool;
 
 struct Clickthrough(AtomicBool);
 
-const MAIN_WINDOW_NAME : &str = "main";
+const MAIN_WINDOW_NAME: &str = "main";
 
 /// for the emit of the clickthrough event
 const TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
@@ -55,6 +55,11 @@ fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
   });
 }
 
+#[tauri::command]
+fn get_clickthrough(clickthrough: State<'_, Clickthrough>) -> bool {
+  clickthrough.0.load(std::sync::atomic::Ordering::Relaxed)
+}
+
 fn main() {
   // System tray configuration
   let tray = SystemTray::new().with_menu(
@@ -77,6 +82,8 @@ fn main() {
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
+      window.set_always_on_top(true);
+
       #[cfg(target_os = "macos")]
       window.set_transparent_titlebar(true, true);
 
@@ -98,7 +105,6 @@ fn main() {
             .0
             .load(std::sync::atomic::Ordering::Relaxed);
 
-          println!("Setting clickthrough to {}", clickthrough);
           app
             .state::<Clickthrough>()
             .0
@@ -123,7 +129,7 @@ fn main() {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           window.eval("window.location.reload();").unwrap();
         }
-        TRAY_OPEN_DEVTOOLS=> {
+        TRAY_OPEN_DEVTOOLS => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           window.open_devtools();
         }
@@ -132,7 +138,7 @@ fn main() {
       },
       _ => {}
     })
-    .invoke_handler(generate_handler![toggle_clickthrough])
+    .invoke_handler(generate_handler![toggle_clickthrough, get_clickthrough])
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!");
 
