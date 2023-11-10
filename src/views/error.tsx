@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Button } from "../components/ui/button";
 
 export const Error = () => {
   return (
@@ -9,9 +10,9 @@ export const Error = () => {
       <img src="/img/sad.png" alt="sad" className="w-full" />
       <div className="pt-8 text-2xl flex items-center justify-center">
         <Link to="/">
-          <button className="bg-blue-800 p-2 rounded-md">
+          <Button>
             Authorize Discord
-          </button>
+          </Button>
         </Link>
       </div>
     </div>

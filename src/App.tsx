@@ -1,5 +1,5 @@
 import { useSocket } from "./rpc/manager";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Main } from "./views/main";
 import { Channel } from "./views/channel";
 
@@ -14,9 +14,10 @@ function App() {
 
   const { clickthrough } = useClickthrough();
   const { mouseInViewport } = useBorder();
+  const location = useLocation();
 
   const border =
-    !clickthrough && mouseInViewport
+    !clickthrough && mouseInViewport && location.pathname === "/channel"
       ? "hover:border-blue-500"
       : "border-transparent";
 

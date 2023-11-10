@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../rpc/manager";
+import { Button } from "../components/ui/button";
 
 export const Main = () => {
   const socket = useSocket();
@@ -15,14 +16,14 @@ export const Main = () => {
 
       <div className="pt-8 text-2xl flex items-center flex-col justify-center">
         <p>Request Prompt again</p>
-        <button
+        <Button
           onClick={() => {
             socket?.init(navigate);
           }}
           className="bg-blue-800 p-2 rounded-md"
         >
           Authorize Discord
-        </button>
+        </Button>
       </div>
     </div>
   );

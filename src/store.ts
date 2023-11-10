@@ -40,7 +40,7 @@ export interface AppActions {
   removeUser: (id: string) => void;
   addUser: (user: any) => void;
   setCurrentChannel: (channel: string | null) => void;
-  setMe: (user: OverlayedUser) => void;
+  setMe: (user: OverlayedUser | null) => void;
 }
 
 export const useAppStore = create < AppState & AppActions > ()(

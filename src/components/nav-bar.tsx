@@ -1,35 +1,13 @@
-import { useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Settings, RefreshCcw, Home, Eye } from "lucide-react";
+import { Settings, RefreshCcw, EyeOff } from "lucide-react";
 
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig from "../config";
+import { Button } from "./ui/button";
 
 export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const getNavLink = useCallback(() => {
-    if (["/channel", "/"].includes(location.pathname)) {
-      return (
-        <Link to="/settings">
-          <Settings size={20} />
-        </Link>
-      );
-    }
-
-    if (location.pathname === "/error") {
-      return null;
-    }
-
-    if (location.pathname === "/settings") {
-      return (
-        <Link to="/channel">
-          <Home size={20} />
-        </Link>
-      );
-    }
-  }, [location.pathname]);
-
   const opacity =
     clickthrough && location.pathname === "/channel"
       ? "opacity-0"
@@ -42,21 +20,24 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
     >
       overlayed
       <div className="float-right flex items-center gap-3">
-        <button className="hover:text-blue-500">
-          <RefreshCcw
-            onClick={() => window.location.reload()}
-          />
-        </button>
-        <button className="hover:text-blue-500">
-          <Eye
+        <Button intent="secondary" size="small">
+          <RefreshCcw size={20} onClick={() => window.location.reload()} />
+        </Button>
+        <Button intent="secondary" size="small">
+          <EyeOff
+            size={20}
             onClick={() => {
               invoke("toggle_clickthrough");
               overlayedConfig.set("clickthrough", !clickthrough);
               navigate("/channel");
             }}
           />
-        </button>
-        <div className="hover:text-blue-500">{getNavLink()}</div>
+        </Button>
+        <Button intent="secondary" size="small">
+          <Link to="/settings">
+            <Settings size={20} />
+          </Link>
+        </Button>
       </div>
     </div>
   );

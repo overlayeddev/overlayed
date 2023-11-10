@@ -10,7 +10,7 @@ extern crate objc;
 
 use tauri::{
   generate_handler, CustomMenuItem, Manager, RunEvent, State, SystemTray, SystemTrayEvent,
-  SystemTrayMenu, Window,
+  SystemTrayMenu, Window, ActivationPolicy,
 };
 
 #[cfg(target_os = "macos")]
@@ -86,6 +86,7 @@ fn main() {
 
       #[cfg(target_os = "macos")]
       window.set_transparent_titlebar(true, true);
+      app.set_activation_policy(ActivationPolicy::Accessory);
 
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]

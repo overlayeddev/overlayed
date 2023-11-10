@@ -17,8 +17,13 @@
     },
     "allowlist": {
       "all": false,
+      "shell": {
+        "open": ".*"
+      },
       "fs": {
-        "scope": ["$APPDATA/*"],
+        "scope": [
+          "$APPDATA/*"
+        ],
         "readFile": true,
         "writeFile": true,
         "exists": true
@@ -26,7 +31,9 @@
       "http": {
         "all": true,
         "request": true,
-        "scope": ["https://streamkit.discord.com/overlay/token"]
+        "scope": [
+          "https://streamkit.discord.com/overlay/token"
+        ]
       },
       "path": {
         "all": true
@@ -41,7 +48,11 @@
       "active": true,
       "targets": "all",
       "identifier": "com.hacksore.overlayed",
-      "icon": ["icons/icon.icns", "icons/icon.ico", "icons/icon.png"]
+      "icon": [
+        "icons/icon.icns",
+        "icons/icon.ico",
+        "icons/icon.png"
+      ]
     },
     "security": {
       "csp": null
