@@ -88,13 +88,19 @@ fn main() {
   );
 
   let app = tauri::Builder::default()
+    // TODO: this should work on windows
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .plugin(tauri_plugin_websocket::init())
     .manage(Clickthrough(AtomicBool::new(false)))
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
+      // the window should always be on top
       window.set_always_on_top(true);
+
+      // setting this seems to fix windows somehow
+      // NOTE: this might be a bug? 
+      window.set_decorations(false);
 
       // add mac things
       #[cfg(target_os = "macos")]
