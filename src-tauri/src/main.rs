@@ -9,9 +9,12 @@
 extern crate objc;
 
 use tauri::{
-  generate_handler, ActivationPolicy, App, CustomMenuItem, Manager, RunEvent, State, SystemTray,
-  SystemTrayEvent, SystemTrayMenu, Window,
+  generate_handler, CustomMenuItem, Manager, RunEvent, State, SystemTray, SystemTrayEvent,
+  SystemTrayMenu, Window,
 };
+
+#[cfg(target_os = "macos")]
+use tauri::ActivationPolicy;
 
 #[cfg(target_os = "macos")]
 use window_custom::WindowExt as _;
@@ -50,7 +53,10 @@ fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
   window.with_webview(move |webview| {
     #[cfg(target_os = "macos")]
     unsafe {
-      let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: clickthrough_value];
+      let _: () = msg_send![
+        webview.ns_window(),
+        setIgnoresMouseEvents: clickthrough_value
+      ];
     }
   });
 }
@@ -91,6 +97,7 @@ fn main() {
       window.set_always_on_top(true);
 
       // add mac things
+      #[cfg(target_os = "macos")]
       apply_macos_specifics(app, &window);
 
       // Open dev tools only when in dev mode

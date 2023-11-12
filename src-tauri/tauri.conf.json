@@ -63,6 +63,7 @@
         "fullscreen": false,
         "resizable": true,
         "transparent": true,
+        "decorations": false,
         "title": "overlayed",
         "width": 420,
         "height": 600
