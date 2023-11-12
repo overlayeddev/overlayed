@@ -14,7 +14,7 @@ use tauri::{
 };
 
 #[cfg(target_os = "macos")]
-use tauri::ActivationPolicy;
+use tauri::{ActivationPolicy, App};
 
 #[cfg(target_os = "macos")]
 use window_custom::WindowExt as _;
@@ -99,7 +99,7 @@ fn main() {
       window.set_always_on_top(true);
 
       // setting this seems to fix windows somehow
-      // NOTE: this might be a bug? 
+      // NOTE: this might be a bug?
       window.set_decorations(false);
 
       // add mac things
