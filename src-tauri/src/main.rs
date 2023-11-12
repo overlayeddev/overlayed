@@ -9,8 +9,8 @@
 extern crate objc;
 
 use tauri::{
-  generate_handler, CustomMenuItem, Manager, RunEvent, State, SystemTray, SystemTrayEvent,
-  SystemTrayMenu, Window, ActivationPolicy,
+  generate_handler, ActivationPolicy, App, CustomMenuItem, Manager, RunEvent, State, SystemTray,
+  SystemTrayEvent, SystemTrayMenu, Window,
 };
 
 #[cfg(target_os = "macos")]
@@ -60,6 +60,12 @@ fn get_clickthrough(clickthrough: State<'_, Clickthrough>) -> bool {
   clickthrough.0.load(std::sync::atomic::Ordering::Relaxed)
 }
 
+#[cfg(target_os = "macos")]
+fn apply_macos_specifics(app: &mut App, window: &Window) {
+  window.set_transparent_titlebar(true, true);
+  app.set_activation_policy(ActivationPolicy::Accessory);
+}
+
 fn main() {
   // System tray configuration
   let tray = SystemTray::new().with_menu(
@@ -84,9 +90,8 @@ fn main() {
 
       window.set_always_on_top(true);
 
-      #[cfg(target_os = "macos")]
-      window.set_transparent_titlebar(true, true);
-      app.set_activation_policy(ActivationPolicy::Accessory);
+      // add mac things
+      apply_macos_specifics(app, &window);
 
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]

@@ -61,15 +61,13 @@ class SocketManager {
   public currentChannelId = null;
   public tokenStore: TokenStore | null = null;
   public navigate: NavigateFunction | null = null;
+  public isConnected = false;
 
   /**
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
-    if (this.socket) {
-      // make sure to disconnect the socket if init is called again
-      this.socket.disconnect();
-    }
+    this.disconnect();
 
     this.tokenStore = new TokenStore();
     this.navigate = navigate;
@@ -83,11 +81,19 @@ class SocketManager {
         },
       });
 
+      this.isConnected = true;
+
       this.socket.addListener(this.onMessage.bind(this));
     } catch (e) {
       console.log(e);
+      this.isConnected = false;
       this.navigate?.("/error");
     }
+  }
+
+  public disconnect() {
+    this.socket?.disconnect();
+    this.isConnected = false;
   }
 
   // we have to call the store to get the latest values
@@ -138,6 +144,7 @@ class SocketManager {
 
     const payload: DiscordPayload = JSON.parse(event.data);
 
+    console.log(payload);
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
       const acessToken = this.tokenStore?.accessToken;
@@ -225,7 +232,9 @@ class SocketManager {
       payload.cmd === RPCCommand.AUTHENTICATE &&
       payload.evt === RPCEvent.ERROR
     ) {
-      // TODO: haandle moar errors
+      if (payload.data.code === 5000) {
+      }
+
       if (payload.data.code === 4009) {
         this.tokenStore?.removeAccessToken();
       }

@@ -27,14 +27,12 @@ function App() {
       className={`text-white h-screen select-none ${border} border-transparent border-2 rounded-lg bg-zinc-900}`}
     >
       <NavBar clickthrough={clickthrough} />
-      <div className="container">
-        <Routes>
-          <Route path="/" Component={Main} />
-          <Route path="/channel" Component={Channel} />
-          <Route path="/settings" Component={Settings} />
-          <Route path="/error" Component={Error} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" Component={Main} />
+        <Route path="/channel" Component={Channel} />
+        <Route path="/settings" Component={Settings} />
+        <Route path="/error" Component={Error} />
+      </Routes>
     </div>
   );
 }
