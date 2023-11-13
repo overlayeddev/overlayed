@@ -36,29 +36,17 @@ const TRAY_RELOAD: &str = "reload";
 const TRAY_OPEN_DEVTOOLS: &str = "open_devtools";
 const TRAY_QUIT: &str = "quit";
 
+#[cfg(target_os = "macos")]
+fn apply_macos_specifics(app: &mut App, window: &Window) {
+  window.set_transparent_titlebar(true, true);
+  app.set_activation_policy(ActivationPolicy::Accessory);
+}
+
 #[tauri::command]
 fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
   let clickthrough_value = !clickthrough.0.load(std::sync::atomic::Ordering::Relaxed);
 
-  clickthrough
-    .0
-    .store(clickthrough_value, std::sync::atomic::Ordering::Relaxed);
-
-  // let the client know
-  window
-    .emit(TOGGLE_CLICKTHROUGH, clickthrough_value)
-    .unwrap();
-
-  #[cfg(target_os = "macos")]
-  window.with_webview(move |webview| {
-    #[cfg(target_os = "macos")]
-    unsafe {
-      let _: () = msg_send![
-        webview.ns_window(),
-        setIgnoresMouseEvents: clickthrough_value
-      ];
-    }
-  });
+  set_clickthrough(clickthrough_value, &window, clickthrough);
 }
 
 #[tauri::command]
@@ -66,10 +54,23 @@ fn get_clickthrough(clickthrough: State<'_, Clickthrough>) -> bool {
   clickthrough.0.load(std::sync::atomic::Ordering::Relaxed)
 }
 
-#[cfg(target_os = "macos")]
-fn apply_macos_specifics(app: &mut App, window: &Window) {
-  window.set_transparent_titlebar(true, true);
-  app.set_activation_policy(ActivationPolicy::Accessory);
+fn set_clickthrough(value: bool, window: &Window, clickthrough: State<'_, Clickthrough>) {
+  clickthrough
+    .0
+    .store(value, std::sync::atomic::Ordering::Relaxed);
+
+  // let the client know
+  window.emit(TOGGLE_CLICKTHROUGH, value).unwrap();
+
+  #[cfg(target_os = "macos")]
+  window.with_webview(move |webview| {
+    #[cfg(target_os = "macos")]
+    unsafe {
+      let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: value];
+    }
+  });
+
+  window.set_ignore_cursor_events(value);
 }
 
 fn main() {
@@ -119,25 +120,8 @@ fn main() {
       SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
         TRAY_TOGGLE_CLICKTHROUGH => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
-          let clickthrough = !app
-            .state::<Clickthrough>()
-            .0
-            .load(std::sync::atomic::Ordering::Relaxed);
 
-          app
-            .state::<Clickthrough>()
-            .0
-            .store(clickthrough, std::sync::atomic::Ordering::Relaxed);
-
-          #[cfg(target_os = "macos")]
-          window.with_webview(move |webview| {
-            #[cfg(target_os = "macos")]
-            unsafe {
-              let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: clickthrough];
-            }
-          });
-          // we might want to knokw on the client
-          window.emit(TOGGLE_CLICKTHROUGH, clickthrough).unwrap();
+          toggle_clickthrough(window, app.state::<Clickthrough>())
         }
         TRAY_SHOW_APP => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();

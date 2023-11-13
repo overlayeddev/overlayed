@@ -1,9 +1,11 @@
 # overlayed
+
 A discord overlay written with React and built on Tauri.
 
 ### Current Features
+
 - Displays talking state
-- Displays user deafend / muted
+- Displays user deafened / muted
 - Transparent window
 - Always on top
 - Click through mode
