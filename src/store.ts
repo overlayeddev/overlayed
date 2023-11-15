@@ -35,10 +35,10 @@ export interface AppActions {
   setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: VoiceStateUser[]) => void;
-  updateUser: (user: any) => void;
+  updateUser: (user: VoiceStateUser) => void;
   clearUsers: () => void;
   removeUser: (id: string) => void;
-  addUser: (user: any) => void;
+  addUser: (user: VoiceStateUser) => void;
   setCurrentChannel: (channel: string | null) => void;
   setMe: (user: OverlayedUser | null) => void;
 }
@@ -55,6 +55,26 @@ const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
   const userMapSorted: Record<string, OverlayedUser> = {};
   for (const [_, item] of sortedUserArray) {
     userMapSorted[item.user.id] = createUserStateItem(item);
+  }
+
+  return userMapSorted;
+};
+
+const sortOverlayedUsers = (
+  myId: string | undefined,
+  users: Record<string, OverlayedUser>,
+) => {
+  const sortedUserArray = Object.entries(users).sort((a, b) => {
+    if (a[1].id === myId) return -1;
+    if (b[1].id === myId) return 1;
+
+    // THIS Is for lexicographical sorting
+    return a[1].username.localeCompare(b[1].username);
+  });
+
+  const userMapSorted: Record<string, OverlayedUser> = {};
+  for (const [_, item] of sortedUserArray) {
+    userMapSorted[item.id] = item;
   }
 
   return userMapSorted;
@@ -92,9 +112,11 @@ export const useAppStore = create<AppState & AppActions>()(
       set((state) => {
         state.users = {};
       }),
-    addUser: (event) =>
+    addUser: (item) =>
       set((state) => {
-        state.users[event.user.id] = createUserStateItem(event);
+        const tempUsers = { ...state.users };
+        tempUsers[item.user.id] = createUserStateItem(item);
+        state.users = sortOverlayedUsers(state.me?.id, tempUsers); 
       }),
     setCurrentChannel: (channelId: string | null) =>
       set((state) => {

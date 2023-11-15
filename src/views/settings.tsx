@@ -38,12 +38,14 @@ export const Settings = () => {
       // check if the window would be out of the bounds and move it
       const { x, y } = windowPos;
 
+      // if out of the x bounds set it to the start of the screen
       if (x + SETTINGS_WIDTH > screenWidth) {
         appWindow.setPosition(
           new LogicalPosition(screenWidth - SETTINGS_WIDTH, y),
         );
       }
 
+      // if out of the x bounds set it to the start of the screen
       if (y + SETTINGS_HEIGHT > screenHeight) {
         appWindow.setPosition(
           new LogicalPosition(x, screenHeight - SETTINGS_HEIGHT),
@@ -78,16 +80,6 @@ export const Settings = () => {
 
         <div>
           <div className="flex flex-col gap-2 mb-2">
-            <Button
-              className="w-full"
-              disabled
-              onClick={async () => {
-                if (!paths.logDir) return;
-                await shell.open(paths.logDir);
-              }}
-            >
-              Open Log Dir
-            </Button>
             <Button
               className="w-full"
               onClick={async () => {

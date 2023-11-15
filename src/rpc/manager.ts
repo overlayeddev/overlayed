@@ -222,6 +222,7 @@ class SocketManager {
         this.channelEvents(RPCCommand.SUBSCRIBE, payload.data.id);
         // set all the user in the channel
         this.store.setUsers(payload.data.voice_states);
+        console.log(payload.data.voice_states)
 
         this.store.setCurrentChannel(payload.data.id);
       }
