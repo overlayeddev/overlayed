@@ -13,7 +13,7 @@ edition = "2021"
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
-tauri = { version = "1.5", features = [ "shell-open", "path-all", "fs-read-file", "fs-exists", "fs-write-file", "system-tray", "window-set-size", "window-set-always-on-top", "window-start-dragging", "macos-private-api", "devtools", "http-all"] }
+tauri = { version = "1.5", features = [ "window-set-position", "shell-open", "path-all", "fs-read-file", "fs-exists", "fs-write-file", "system-tray", "window-set-size", "window-set-always-on-top", "window-start-dragging", "macos-private-api", "devtools", "http-all"] }
 serde = { version = "1.0", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }  # Required for asynchronous operations
 tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }

@@ -34,7 +34,7 @@ export interface AppState {
 export interface AppActions {
   setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
-  setUsers: (users: any) => void;
+  setUsers: (users: VoiceStateUser[]) => void;
   updateUser: (user: any) => void;
   clearUsers: () => void;
   removeUser: (id: string) => void;
@@ -43,10 +43,8 @@ export interface AppActions {
   setMe: (user: OverlayedUser | null) => void;
 }
 
-const sortUserList = (myId: string | undefined, users: Record<string, OverlayedUser>) => {
-  // TODO: fix typeing issues
+const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
   const sortedUserArray = Object.entries(users).sort((a, b) => {
-    // TODO: add me first
     if (a[1].user.id === myId) return -1;
     if (b[1].user.id === myId) return 1;
 
@@ -54,7 +52,7 @@ const sortUserList = (myId: string | undefined, users: Record<string, OverlayedU
     return a[1].nick.localeCompare(b[1].nick);
   });
 
-  const userMapSorted = {};
+  const userMapSorted: Record<string, OverlayedUser> = {};
   for (const [_, item] of sortedUserArray) {
     userMapSorted[item.user.id] = createUserStateItem(item);
   }

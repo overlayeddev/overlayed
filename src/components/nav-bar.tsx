@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Settings, RefreshCcw, EyeOff } from "lucide-react";
+import { Settings, Pin } from "lucide-react";
 
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig from "../config";
@@ -19,18 +19,20 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
       className={`${opacity} cursor-default rounded-t-lg font-bold select-none pr-3 pl-3 p-2 bg-zinc-900`}
     >
       <div className="inline">
-        <div className="hidden md:inline">overlayed</div>
-        <div className="md:hidden">
-          <img src="/img/32x32.png" alt="logo" data-tauri-drag-region className="w-8 h-8" />
+        <div data-tauri-drag-region className="hidden md:inline">overlayed</div>
+        <div data-tauri-drag-region className="md:hidden">
+          <img
+            src="/img/32x32.png"
+            alt="logo"
+            data-tauri-drag-region
+            className="w-8 h-8"
+          />
         </div>
       </div>
-      
+
       <div className="float-right hidden md:flex items-center gap-3">
         <Button intent="secondary" size="small">
-          <RefreshCcw size={20} onClick={() => window.location.reload()} />
-        </Button>
-        <Button intent="secondary" size="small">
-          <EyeOff
+          <Pin
             size={20}
             onClick={() => {
               invoke("toggle_clickthrough");

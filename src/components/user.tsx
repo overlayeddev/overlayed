@@ -11,11 +11,14 @@ export const User = ({ item }: { item: OverlayedUser }) => {
 
   const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted ? "text-zinc-400" : "";
+  const mutedAndDeafened = selfMuted && selfDeafened;
+
+  const avatarClass = selfMuted || selfDeafened ? "text-red-500" : "";
 
   return (
     <div data-tauri-drag-region className="flex py-1 p-2 items-center">
       <div
-        className={`pointer-events-none rounded-full border-2 mr-2 ${talkingClass}`}
+        className={`pointer-events-none relative rounded-full border-2 mr-2 ${avatarClass} ${talkingClass}`}
       >
         <img
           onError={(e) => {
@@ -28,6 +31,11 @@ export const User = ({ item }: { item: OverlayedUser }) => {
           alt="avatar"
           className="rounded-full w-8 h-8"
         />
+
+        <div className="absolute flex md:hidden left-[10px] bottom-[-4px] bg-black rounded-full text-red-500">
+          {mutedAndDeafened && <HeadphonesOff />}
+          {selfMuted && !selfDeafened && <MicOff />}
+        </div>
       </div>
 
       <div

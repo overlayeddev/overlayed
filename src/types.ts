@@ -104,11 +104,24 @@ interface Pan {
 }
 
 interface VoiceState {
-  mute: boolean; 
+  mute: boolean;
   deaf: boolean;
   self_mute: boolean;
   self_deaf: boolean;
   suppress: boolean;
+}
+
+// TODO: name these better
+interface VoiceUser {
+  avatar: string;
+  avatar_decoration_data: any;
+  bot: boolean;
+  discriminator: string;
+  flags: number;
+  global_name: string;
+  id: string;
+  premium_type: number;
+  username: string
 }
 
 export interface VoiceStateUser {
@@ -117,6 +130,6 @@ export interface VoiceStateUser {
   volume: number;
   pan: Pan;
   voice_state: VoiceState;
-  user: any;
+  user: VoiceUser;
 }
 
