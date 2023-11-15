@@ -136,7 +136,12 @@ fn main() {
         }
         TRAY_SETTINGS => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
-          window.eval("window.location.href = 'http://localhost:1420/#/settings'").unwrap();
+
+          set_clickthrough(false, &window, app.state::<Clickthrough>());
+
+          window
+            .eval("window.location.href = 'http://localhost:1420/#/settings'")
+            .unwrap();
         }
         TRAY_OPEN_DEVTOOLS => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
