@@ -55,6 +55,11 @@ fn get_clickthrough(clickthrough: State<'_, Clickthrough>) -> bool {
   clickthrough.0.load(std::sync::atomic::Ordering::Relaxed)
 }
 
+#[tauri::command]
+fn open_devtools(window: Window) {
+  window.open_devtools();
+}
+
 fn set_clickthrough(value: bool, window: &Window, clickthrough: State<'_, Clickthrough>) {
   clickthrough
     .0
@@ -157,7 +162,7 @@ fn main() {
       },
       _ => {}
     })
-    .invoke_handler(generate_handler![toggle_clickthrough, get_clickthrough])
+    .invoke_handler(generate_handler![toggle_clickthrough, get_clickthrough, open_devtools])
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!");
 

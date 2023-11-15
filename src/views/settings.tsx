@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { usePaths } from "../use-paths";
 import { Button } from "../components/ui/button";
 import { useAppStore } from "../store";
-import { shell } from "@tauri-apps/api";
+import { invoke, shell } from "@tauri-apps/api";
 import {
   LogicalSize,
   LogicalPosition,
@@ -21,7 +21,6 @@ export const Settings = () => {
   const lastSizeRef = useRef<LogicalSize | null>(null);
   const lastWindowPosRef = useRef<LogicalPosition | null>(null);
 
-  // TODO: handle resizing at some point
   useEffect(() => {
     const alignAndSaveWindow = async () => {
       // save the list size
@@ -56,6 +55,8 @@ export const Settings = () => {
 
       //  watch for resize events
       const factor = await appWindow.scaleFactor();
+      // we never clean this up LMAO
+      // FIXME: please fix
       await appWindow.onResized((size) => {
         lastSizeRef.current = size.payload.toLogical(factor);
       });
@@ -76,8 +77,7 @@ export const Settings = () => {
         <h1 className="text-xl font-bold">Settings</h1>
 
         <div>
-          <h2 className="text-lg font-bold mt-4">Directories</h2>
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-2 mb-2">
             <Button
               className="w-full"
               disabled
@@ -97,10 +97,17 @@ export const Settings = () => {
             >
               Open App Dir
             </Button>
+            <Button
+              className="w-full"
+              onClick={async () => {
+                await invoke("open_devtools");
+              }}
+            >
+              Open Devtools
+            </Button>
           </div>
         </div>
         <div>
-          <h2 className="text-lg font-bold mt-4">Discord</h2>
           <div className="">
             <textarea
               className="bg-zinc-600 w-full min-h-[300px]"
@@ -124,6 +131,7 @@ export const Settings = () => {
 
         <hr className="my-8 border-gray-700" />
       </div>
+
       <div className="">
         <Button
           className="w-full"
