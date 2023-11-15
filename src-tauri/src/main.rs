@@ -33,6 +33,7 @@ const TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
 const TRAY_TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
 const TRAY_SHOW_APP: &str = "show_app";
 const TRAY_RELOAD: &str = "reload";
+const TRAY_SETTINGS: &str = "show_settings";
 const TRAY_OPEN_DEVTOOLS: &str = "open_devtools";
 const TRAY_QUIT: &str = "quit";
 
@@ -84,6 +85,7 @@ fn main() {
       .add_item(CustomMenuItem::new(TRAY_SHOW_APP, "Show Overlayed"))
       .add_item(CustomMenuItem::new(TRAY_RELOAD, "Reload App"))
       .add_item(CustomMenuItem::new(TRAY_OPEN_DEVTOOLS, "Open Devtools"))
+      .add_item(CustomMenuItem::new(TRAY_SETTINGS, "Settings"))
       .add_native_item(tauri::SystemTrayMenuItem::Separator)
       .add_item(CustomMenuItem::new(TRAY_QUIT, "Quit")),
   );
@@ -131,6 +133,10 @@ fn main() {
         TRAY_RELOAD => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           window.eval("window.location.reload();").unwrap();
+        }
+        TRAY_SETTINGS => {
+          let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
+          window.eval("window.location.href = 'http://localhost:1420/#/settings'").unwrap();
         }
         TRAY_OPEN_DEVTOOLS => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
