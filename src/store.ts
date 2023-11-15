@@ -43,6 +43,7 @@ export interface AppActions {
   setMe: (user: OverlayedUser | null) => void;
 }
 
+// sort discord users by name and myself on top
 const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
   const sortedUserArray = Object.entries(users).sort((a, b) => {
     if (a[1].user.id === myId) return -1;
@@ -60,6 +61,7 @@ const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
   return userMapSorted;
 };
 
+// sort internal app state users by name and me on top
 const sortOverlayedUsers = (
   myId: string | undefined,
   users: Record<string, OverlayedUser>,
