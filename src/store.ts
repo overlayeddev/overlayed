@@ -43,7 +43,27 @@ export interface AppActions {
   setMe: (user: OverlayedUser | null) => void;
 }
 
-export const useAppStore = create < AppState & AppActions > ()(
+const sortUserList = (myId: string | undefined, users: Record<string, OverlayedUser>) => {
+  // TODO: fix typeing issues
+  const sortedUserArray = Object.entries(users).sort((a, b) => {
+    // TODO: add me first
+    if (a[1].user.id === myId) return -1;
+    if (b[1].user.id === myId) return 1;
+
+    // THIS Is for lexicographical sorting
+    return a[1].nick.localeCompare(b[1].nick);
+  });
+
+  const userMapSorted = {};
+  for (const [_, item] of sortedUserArray) {
+    userMapSorted[item.user.id] = createUserStateItem(item);
+  }
+
+  return userMapSorted;
+};
+
+export const useAppStore = create<AppState & AppActions>()(
+  // TODO: fix later
   // @ts-ignore
   immer((set) => ({
     me: null,
@@ -68,9 +88,7 @@ export const useAppStore = create < AppState & AppActions > ()(
       }),
     setUsers: (users) =>
       set((state) => {
-        for (const item of users) {
-          state.users[item.user.id] = createUserStateItem(item);
-        }
+        state.users = sortUserList(state.me?.id, users);
       }),
     clearUsers: () =>
       set((state) => {
