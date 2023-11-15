@@ -63,6 +63,11 @@ fn set_clickthrough(value: bool, window: &Window, clickthrough: State<'_, Clickt
   // let the client know
   window.emit(TOGGLE_CLICKTHROUGH, value).unwrap();
 
+  // invert the label for the tray
+  let tray_handle = window.app_handle().tray_handle();
+  let enable_or_disable = if value { "Disable" } else { "Enable" };
+  tray_handle.get_item(TRAY_TOGGLE_CLICKTHROUGH).set_title(format!("{} Clickthrough", enable_or_disable));
+
   #[cfg(target_os = "macos")]
   window.with_webview(move |webview| {
     #[cfg(target_os = "macos")]
@@ -80,7 +85,7 @@ fn main() {
     SystemTrayMenu::new()
       .add_item(CustomMenuItem::new(
         TRAY_TOGGLE_CLICKTHROUGH,
-        "Toogle Clickthrough",
+        "Enable Clickthrough",
       ))
       .add_item(CustomMenuItem::new(TRAY_SHOW_APP, "Show Overlayed"))
       .add_item(CustomMenuItem::new(TRAY_RELOAD, "Reload App"))
