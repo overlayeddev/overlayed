@@ -4,17 +4,23 @@ import { Button } from "../components/ui/button";
 import { useAppStore } from "../store";
 import { shell } from "@tauri-apps/api";
 import { LogicalSize, appWindow } from "@tauri-apps/api/window";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const Settings = () => {
   const navigate = useNavigate();
   const paths = usePaths();
   const { me, setMe } = useAppStore();
+  const lastSizeRef = useRef<LogicalSize | null>(null);
 
   useEffect(() => {
     appWindow.outerSize().then((size) => {
-      appWindow.setSize(new LogicalSize(size.width, 700));
+      lastSizeRef.current = size;
+      appWindow.setSize(new LogicalSize(400, 700));
     });
+
+    return () => {
+      appWindow.setSize(lastSizeRef.current!);
+    };
   }, []);
 
   return (

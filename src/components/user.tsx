@@ -15,7 +15,7 @@ export const User = ({ item }: { item: OverlayedUser }) => {
   return (
     <div data-tauri-drag-region className="flex py-1 p-2 items-center">
       <div
-        className={`pointer-events-none rounded-full w-8 h-8 border-2 mr-2 ${talkingClass}`}
+        className={`pointer-events-none rounded-full border-2 mr-2 ${talkingClass}`}
       >
         <img
           onError={(e) => {
@@ -26,13 +26,13 @@ export const User = ({ item }: { item: OverlayedUser }) => {
           }}
           src={avatarUrl}
           alt="avatar"
-          className="rounded-full"
+          className="rounded-full w-8 h-8"
         />
       </div>
 
       <div
         data-tauri-drag-region
-        className={`pointer-events-none flex items-center rounded-md bg-zinc-800 ${mutedClass} p-1 pl-2 pr-2`}
+        className={`hidden pointer-events-none md:flex items-center rounded-md bg-zinc-800 ${mutedClass} p-1 pl-2 pr-2`}
       >
         <p>{item.username}</p>
         <div className="flex">
