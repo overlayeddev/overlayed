@@ -6,6 +6,7 @@ const createUserStateItem = (payload: VoiceStateUser) => {
   const data = {
     username: payload.nick,
     avatarHash: payload.user.avatar,
+    avatarDecorationData: payload.user.avatar_decoration_data,
     muted: payload.mute,
     deafened: payload.voice_state.deaf, // Probably only bots can deafen themselves
     selfDeafened: payload.voice_state.self_deaf,

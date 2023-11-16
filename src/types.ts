@@ -15,6 +15,8 @@ export interface OverlayedUser {
    */
   avatarHash: string;
 
+  avatarDecorationData: any;
+
   /**
    * @property {boolean} talking - flag to indicate if the user is talking
    */
