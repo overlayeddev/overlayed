@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 rustc-ice-*.txt
+
+.env
