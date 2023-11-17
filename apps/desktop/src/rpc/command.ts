@@ -19,13 +19,3 @@ export enum RPCCommand {
   SET_VOICE_SETTINGS = "SET_VOICE_SETTINGS",
 }
 
-/**
- *  This will ask discord for the current channel they are in
- *  and we have to get that resposne and use it to sub to other events
- * @returns Returns a payload for GET_SELECTED_VOICE_CHANNEL 
- */
-export function getSelectedChannel() {
-  return {
-    cmd: RPCCommand.GET_SELECTED_VOICE_CHANNEL,
-  };
-}
