@@ -3,8 +3,8 @@ on:
   # Allow manual
   workflow_dispatch:
   # use publish even so when goes from draft -> released
-  release:
-    types: [published]
+  # release:
+  #   types: [published]
 
 jobs:
   publish-tauri:
