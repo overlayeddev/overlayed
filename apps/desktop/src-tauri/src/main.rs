@@ -111,6 +111,9 @@ fn main() {
       // the window should always be on top
       window.set_always_on_top(true);
 
+      // skip on windows
+      window.set_skip_taskbar(true);
+
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
       window.set_decorations(false);
