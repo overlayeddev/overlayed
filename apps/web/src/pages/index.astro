@@ -1,0 +1,79 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/card.astro";
+import Logo from "../components/logo.astro";
+import Footer from "../components/footer.astro";
+---
+
+<Layout title="overlayed">
+  <main
+    class="min-h-screen w-full flex justify-center items-center flex-col gap-8"
+  >
+    <Logo />
+
+    <h1 class="!mb-0">
+      Welcome to <span class="text-gradient">Overlayed</span>
+    </h1>
+    <p class="text-center">
+      A modern, <a
+        class="text-primary hover:text-purple-300"
+        target="_blank"
+        href="https://github.com/Hacksore/overlayed">open-source</a
+      >, and free voice chat overlay for Discord.
+    </p>
+    <div class="grid md:grid-cols-2 w-full items-center gap-2">
+      <Card name="User List" desc="See who is in the current voice channel">
+        <img src="/img/users.png" alt="User List" class="w-full" />
+      </Card>
+      <Card name="Transparent" desc="Crystal clear transparent window" />
+      <Card
+        name="Always on Top"
+        desc="Always stays on top so you can continue working"
+      >
+        <img src="/img/on-top.png" alt="Always on top" class="w-full" />
+      </Card>
+      <Card
+        name="Lightweight"
+        desc="Built with tauri an efficient rust framework"
+      >
+        <img src="/img/resouces.png" alt="Lightweight" class="w-full" />
+      </Card>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+
+  .link-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    gap: 2rem;
+    padding: 0;
+  }
+</style>
