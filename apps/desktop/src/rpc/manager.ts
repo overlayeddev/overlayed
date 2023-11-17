@@ -6,6 +6,7 @@ import WebSocket, { Message } from "tauri-plugin-websocket-api";
 import { AppActions, AppState, useAppStore as appStore } from "../store";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { RPCErrors } from "./errors";
 
 interface TokenResponse {
   access_token: string;
@@ -203,7 +204,7 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
+      const res = await fetch < TokenResponse > (`${STREAMKIT_URL}/overlay/token`, {
         method: "POST",
         body: Body.json({ code }),
       });
@@ -233,10 +234,11 @@ class SocketManager {
       payload.cmd === RPCCommand.AUTHENTICATE &&
       payload.evt === RPCEvent.ERROR
     ) {
-      if (payload.data.code === 5000) {
+      // TODO: handle
+      if (payload.data.code === RPCErrors.OAUTH2_ERROR) {
       }
 
-      if (payload.data.code === 4009) {
+      if (payload.data.code === RPCErrors.INVALID_TOKEN) {
         this.tokenStore?.removeAccessToken();
       }
 
@@ -322,7 +324,7 @@ class SocketManager {
 export const useSocket = () => {
   const navigate = useNavigate();
   //TODO: should this be a ref instead?
-  const [socket, setSocket] = useState<SocketManager | null>(null);
+  const [socket, setSocket] = useState < SocketManager | null > (null);
 
   useEffect(() => {
     console.log("Initializing websocket...");
