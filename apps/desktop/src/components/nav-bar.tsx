@@ -32,7 +32,7 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
             {currentChannel?.name}
           </div>
         </div>
-        <div>
+        <div className="hidden md:flex">
           <Button intent="secondary" size="small">
             <Pin
               size={20}
