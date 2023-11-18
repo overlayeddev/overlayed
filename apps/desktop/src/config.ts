@@ -26,7 +26,6 @@ export class Config {
       const config = await readTextFile(this.configPath);
       this.config = JSON.parse(config);
     } catch (e) {
-      console.log(e);
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();
     }

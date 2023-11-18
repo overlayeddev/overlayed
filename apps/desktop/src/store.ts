@@ -28,7 +28,10 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 export interface AppState {
   clickThrough: boolean;
   me: OverlayedUser | null;
-  currentChannel: string | null;
+  currentChannel: {
+    id: string;
+    name: string;
+  } | null;
   users: Record<string, OverlayedUser>;
 }
 
@@ -40,7 +43,8 @@ export interface AppActions {
   clearUsers: () => void;
   removeUser: (id: string) => void;
   addUser: (user: VoiceStateUser) => void;
-  setCurrentChannel: (channel: string | null) => void;
+  // TODO: type this
+  setCurrentChannel: (channel: any) => void;
   setMe: (user: OverlayedUser | null) => void;
 }
 
@@ -119,11 +123,11 @@ export const useAppStore = create<AppState & AppActions>()(
       set((state) => {
         const tempUsers = { ...state.users };
         tempUsers[item.user.id] = createUserStateItem(item);
-        state.users = sortOverlayedUsers(state.me?.id, tempUsers); 
+        state.users = sortOverlayedUsers(state.me?.id, tempUsers);
       }),
-    setCurrentChannel: (channelId: string | null) =>
+    setCurrentChannel: (channel) =>
       set((state) => {
-        state.currentChannel = channelId;
+        state.currentChannel = channel;
       }),
     setClickThrough: (enabled: boolean) =>
       set((state) => {

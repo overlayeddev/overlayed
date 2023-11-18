@@ -179,8 +179,7 @@ class SocketManager {
         this.store.clearUsers();
 
         if (this.store.currentChannel) {
-          console.log("unsub from channel", this.store.currentChannel);
-          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel);
+          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel.id);
         }
 
         // after unsub we clear the channel
@@ -225,7 +224,8 @@ class SocketManager {
         this.store.setUsers(payload.data.voice_states);
 
         // set the current channel
-        this.store.setCurrentChannel(payload.data.id);
+        console.log(payload.data)
+        this.store.setCurrentChannel(payload.data);
       }
     }
 

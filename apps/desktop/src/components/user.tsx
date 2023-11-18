@@ -16,7 +16,7 @@ export const User = ({ item }: { item: OverlayedUser }) => {
   const avatarClass = selfMuted || selfDeafened ? "text-red-500" : "";
 
   return (
-    <div data-tauri-drag-region className="flex py-1 p-2 items-center">
+    <div className="flex py-1 p-2 items-center">
       <div
         className={`pointer-events-none relative rounded-full border-2 mr-2 ${avatarClass} ${talkingClass}`}
       >
@@ -39,7 +39,6 @@ export const User = ({ item }: { item: OverlayedUser }) => {
       </div>
 
       <div
-        data-tauri-drag-region
         className={`hidden pointer-events-none md:flex items-center rounded-md bg-zinc-800 ${mutedClass} p-1 pl-2 pr-2`}
       >
         <p>{item.username}</p>
