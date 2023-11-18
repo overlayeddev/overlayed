@@ -33,6 +33,7 @@ export interface AppState {
     name: string;
   } | null;
   users: Record<string, OverlayedUser>;
+  discordErrors: string[];
 }
 
 export interface AppActions {
@@ -46,6 +47,8 @@ export interface AppActions {
   // TODO: type this
   setCurrentChannel: (channel: any) => void;
   setMe: (user: OverlayedUser | null) => void;
+  pushError: (message: string) => void;
+  resetErrors: () => void;
 }
 
 // sort discord users by name and myself on top
@@ -92,6 +95,7 @@ export const useAppStore = create<AppState & AppActions>()(
   // @ts-ignore
   immer((set) => ({
     me: null,
+    discordErrors: [],
     clickThrough: false,
     currentChannel: null,
     users: {},
@@ -132,6 +136,14 @@ export const useAppStore = create<AppState & AppActions>()(
     setClickThrough: (enabled: boolean) =>
       set((state) => {
         state.clickThrough = enabled;
+      }),
+    pushError: (error) =>
+      set((state) => {
+        state.discordErrors.push(error);
+      }),
+    resetErrors: () =>
+      set((state) => {
+        state.discordErrors = [];
       }),
   })),
 );

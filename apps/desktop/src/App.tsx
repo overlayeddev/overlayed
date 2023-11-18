@@ -8,10 +8,13 @@ import { Error } from "./views/error";
 import { NavBar } from "./components/nav-bar";
 import { useClickthrough } from "./use-clickthrough";
 import { useDisableContextMenu } from "./use-disable-context-menu";
+import { useSetWindowSize } from "./use-set-size";
 
 function App() {
   useSocket();
   useDisableContextMenu();
+  useSetWindowSize({ width: 400, height: 600 });
+
   const { clickthrough } = useClickthrough();
 
   return (

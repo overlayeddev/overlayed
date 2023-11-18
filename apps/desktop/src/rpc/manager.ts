@@ -179,7 +179,10 @@ class SocketManager {
         this.store.clearUsers();
 
         if (this.store.currentChannel) {
-          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel.id);
+          this.channelEvents(
+            RPCCommand.UNSUBSCRIBE,
+            this.store.currentChannel.id,
+          );
         }
 
         // after unsub we clear the channel
@@ -228,21 +231,20 @@ class SocketManager {
       }
     }
 
+    console.log(payload);
     // we are ready to do things cause we are fully authed
     if (
       payload.cmd === RPCCommand.AUTHENTICATE &&
       payload.evt === RPCEvent.ERROR
     ) {
-      // TODO: handle
-      if (payload.data.code === RPCErrors.OAUTH2_ERROR) {
-      }
-
+      // if they have an invalid we remove it and make them auth again
       if (payload.data.code === RPCErrors.INVALID_TOKEN) {
+        this.store.pushError(payload.data.message);
         this.tokenStore?.removeAccessToken();
       }
 
-      // TODO: handle saving the last error message(s) so we can display then on the error view
-
+      this.store.pushError(payload.data.message);
+      // move to the error page
       this.navigate?.("/error");
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // try to find the user

@@ -28,9 +28,13 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
             data-tauri-drag-region
             className="w-8 h-8 mr-2"
           />
-          <div data-tauri-drag-region className="hidden md:inline">
-            {currentChannel?.name}
-          </div>
+          {location.pathname === "/channel" ? (
+            <div data-tauri-drag-region className="hidden md:inline">
+              {currentChannel?.name}
+            </div>
+          ) : (
+            <div data-tauri-drag-region>Overlayed</div>
+          )}
         </div>
         <div className="hidden md:flex">
           <Button intent="secondary" size="small">
