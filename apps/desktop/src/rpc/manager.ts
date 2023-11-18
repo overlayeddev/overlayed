@@ -224,7 +224,6 @@ class SocketManager {
         this.store.setUsers(payload.data.voice_states);
 
         // set the current channel
-        console.log(payload.data)
         this.store.setCurrentChannel(payload.data);
       }
     }

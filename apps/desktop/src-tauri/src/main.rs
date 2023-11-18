@@ -71,7 +71,9 @@ fn set_clickthrough(value: bool, window: &Window, clickthrough: State<'_, Clickt
   // invert the label for the tray
   let tray_handle = window.app_handle().tray_handle();
   let enable_or_disable = if value { "Disable" } else { "Enable" };
-  tray_handle.get_item(TRAY_TOGGLE_CLICKTHROUGH).set_title(format!("{} Clickthrough", enable_or_disable));
+  tray_handle
+    .get_item(TRAY_TOGGLE_CLICKTHROUGH)
+    .set_title(format!("{} Clickthrough", enable_or_disable));
 
   #[cfg(target_os = "macos")]
   window.with_webview(move |webview| {
@@ -165,7 +167,11 @@ fn main() {
       },
       _ => {}
     })
-    .invoke_handler(generate_handler![toggle_clickthrough, get_clickthrough, open_devtools])
+    .invoke_handler(generate_handler![
+      toggle_clickthrough,
+      get_clickthrough,
+      open_devtools
+    ])
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!");
 

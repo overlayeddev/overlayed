@@ -12,12 +12,10 @@ import { useDisableContextMenu } from "./use-disable-context-menu";
 function App() {
   useSocket();
   useDisableContextMenu();
-
   const { clickthrough } = useClickthrough();
+
   return (
-    <div
-      className={`text-white h-screen select-none rounded-lg bg-zinc-900}`}
-    >
+    <div className={`text-white h-screen select-none rounded-lg bg-zinc-900}`}>
       <NavBar clickthrough={clickthrough} />
       <Routes>
         <Route path="/" Component={Main} />
