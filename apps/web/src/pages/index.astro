@@ -7,7 +7,7 @@ import Footer from "../components/footer.astro";
 
 <Layout title="overlayed">
   <main
-    class="min-h-screen w-full flex justify-center items-center flex-col gap-8"
+    class="min-h-screen w-full flex justify-center items-center flex-col gap-10"
   >
     <Logo />
 
@@ -21,11 +21,16 @@ import Footer from "../components/footer.astro";
         href="https://github.com/Hacksore/overlayed">open-source</a
       >, and free voice chat overlay for Discord.
     </p>
+    <div>
+      <a target="_blank" href="https://github.com/Hacksore/overlayed/releases" class="hover:bg-purple-500 bg-purple-600 p-4 rounded-lg">Download Now</a>
+    </div>
     <div class="grid md:grid-cols-2 w-full items-center gap-2">
       <Card name="User List" desc="See who is in the current voice channel">
         <img src="/img/users.png" alt="User List" class="w-full" />
       </Card>
-      <Card name="Transparent" desc="Crystal clear transparent window" />
+      <Card name="Transparent" desc="Crystal clear transparent window">
+        <img src="/img/transparent.png" alt="Transparent" class="w-full" />
+      </Card>
       <Card
         name="Always on Top"
         desc="Always stays on top so you can continue working"
@@ -33,7 +38,7 @@ import Footer from "../components/footer.astro";
         <img src="/img/on-top.png" alt="Always on top" class="w-full" />
       </Card>
       <Card
-        name="Lightweight"
+        name="Blazingly Fast™"
         desc="Built with tauri an efficient rust framework"
       >
         <img src="/img/resouces.png" alt="Lightweight" class="w-full" />
