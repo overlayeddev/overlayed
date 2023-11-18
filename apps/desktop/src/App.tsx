@@ -8,17 +8,11 @@ import { Error } from "./views/error";
 import { NavBar } from "./components/nav-bar";
 import { useClickthrough } from "./use-clickthrough";
 import { useBorder } from "./use-border";
-import { useEffect } from "react";
+import { useDisableContextMenu } from "./use-disable-context-menu";
 
 function App() {
   useSocket();
-
-  useEffect(() => {
-    // disable context menu
-    document.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-    });
-  }, [])
+  useDisableContextMenu();
 
   const { clickthrough } = useClickthrough();
   const { mouseInViewport } = useBorder();
