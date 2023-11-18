@@ -231,7 +231,7 @@ class SocketManager {
       }
     }
 
-    console.log(payload);
+    // console.log(payload);
     // we are ready to do things cause we are fully authed
     if (
       payload.cmd === RPCCommand.AUTHENTICATE &&

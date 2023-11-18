@@ -4,10 +4,8 @@ import { MicOff } from "./mic-off";
 
 export const User = ({
   item,
-  windowSize,
 }: {
   item: OverlayedUser;
-  windowSize: number;
 }) => {
   const { id, selfMuted, selfDeafened, talking, avatarHash } = item;
 
