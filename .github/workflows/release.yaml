@@ -49,8 +49,7 @@ jobs:
       - name: print arti
         working-directory: apps/desktop
         run: |
-          ls -hal src-tauri/target
-          ls -hal src-tauri/target/release
+          ls -hal src-tauri/target/aarch64-apple-darwin
 
       - name: Install certificate (OSX)
         if: matrix.os == 'macos-latest'
@@ -60,7 +59,7 @@ jobs:
           p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
       - name: Codesign executable (OSX)
         if: matrix.os == 'macos-latest'
-        run: /usr/bin/codesign --force -s "${{ secrets.APPLE_SIGNING_IDENTITY }}" --options=runtime --deep target/release/bundle/macos/overlayed.app -v
+        run: /usr/bin/codesign --force -s "${{ secrets.APPLE_SIGNING_IDENTITY }}" --options=runtime --deep target/aarch64-apple-darwin/release/bundle/macos/overlayed.app -v
         working-directory: "apps/desktop/src-tauri"
       - name: Bundle
         uses: thedoctor0/zip-release@0.7.5
