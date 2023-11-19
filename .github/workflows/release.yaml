@@ -73,4 +73,4 @@ jobs:
         working-directory: "apps/desktop/src-tauri"
         run: |
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_ID }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_PASSWORD }}"
-          xcrun notarytool submit "apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
+          xcrun notarytool submit "${{ env.EXE_DIR }}/bundle/macos/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
