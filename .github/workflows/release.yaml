@@ -63,11 +63,11 @@ jobs:
         run: "/usr/bin/codesign --force -s ${{ secrets.APPLE_SIGNING_IDENTITY }} --options=runtime --deep target/release/bundle/macos/overlayed.app -v"
         working-directory: "apps/desktop/src-tauri"
       - name: Bundle
-        uses: thedoctor0/zip-release@0.7.1
+        uses: thedoctor0/zip-release@0.7.5 
         with:
           type: "zip"
           filename: overlayed-${{ matrix.target }}.zip
-          directory: ${{ env.EXE_DIR }}
+          directory: "target/release/bundle/macos"
           path: ${{ matrix.exe_name }}
       - name: Notarize app bundle (OSX)
         if: matrix.os == 'macos-latest'
