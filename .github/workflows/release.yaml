@@ -60,10 +60,10 @@ jobs:
           p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
       - name: Codesign executable (OSX)
         if: matrix.os == 'macos-latest'
-        run: "/usr/bin/codesign --force -s ${{ secrets.APPLE_SIGNING_IDENTITY }} --options=runtime --deep target/release/bundle/macos/overlayed.app -v"
+        run: /usr/bin/codesign --force -s "${{ secrets.APPLE_SIGNING_IDENTITY }}" --options=runtime --deep target/release/bundle/macos/overlayed.app -v
         working-directory: "apps/desktop/src-tauri"
       - name: Bundle
-        uses: thedoctor0/zip-release@0.7.5 
+        uses: thedoctor0/zip-release@0.7.5
         with:
           type: "zip"
           filename: overlayed-${{ matrix.target }}.zip
