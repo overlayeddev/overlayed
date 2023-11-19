@@ -49,10 +49,7 @@ jobs:
       - name: print arti
         working-directory: apps/desktop
         run: |
-          ls -hal src-tauri/target/aarch64-apple-darwin
-          ls -hal src-tauri/target/aarch64-apple-darwin/release/bundle/macos
-          echo "debug: apps/desktop/src-tauri/${{ env.EXE_DIR }}"
-          ls "apps/desktop/src-tauri/${{ env.EXE_DIR }}"
+          ls -hal src-tauri/target/aarch64-apple-darwi
 
       - name: Install certificate (macOS)
         if: matrix.os == 'macos-latest'
