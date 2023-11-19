@@ -1,6 +1,10 @@
 name: "Install"
 description: "Sets up Node.js and runs install"
-
+inputs:
+  target:
+    description: 'the rust toolchain'
+    required: true
+    default: 'aarch64-apple-darwin'
 runs:
   using: composite
   steps:
