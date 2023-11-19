@@ -4,25 +4,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-tauri:
+  build-tauri:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.platform }}
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            exe_name: overlayed 
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            exe_name: overlayed 
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            exe_name: overlayed.exe
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-apple-darwin
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: "apps/desktop/src-tauri/target"
+      - name: Setup and install
+        uses: ./github/tooling/setup
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
@@ -31,32 +30,27 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      # TODO: Sign windows bins
-      # - name: import windows certificate
-      #   if: matrix.platform == 'windows-latest'
-      #   env:
-      #     WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
-      #     WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
-      #   run: |
-      #     New-Item -ItemType directory -Path certificate
-      #     Set-Content -Path certificate/tempCert.txt -Value $env:WINDOWS_CERTIFICATE
-      #     certutil -decode certificate/tempCert.txt certificate/certificate.pfx
-      #     Remove-Item -path certificate -include tempCert.txt
-      #     Import-PfxCertificate -FilePath certificate/certificate.pfx -CertStoreLocation Cert:\CurrentUser\My -Password (ConvertTo-SecureString -String $env:WINDOWS_CERTIFICATE_PASSWORD -Force -AsPlainText)
       - name: install frontend dependencies
         run: pnpm install
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
-          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: "Overlayed v__VERSION__"
-          releaseBody: "See the assets to download this version and install."
-          releaseDraft: true
-          prerelease: false
+      - name: build tauri app
+        working-directory: apps/desktop
+        run: |
+          cargo tauri build
+          ls src-tauri/target/release
+      # TODO: code sign osx
+      # - name: Install certificate (OSX)
+      #   if: matrix.os == 'macos-latest'
+      #   uses: apple-actions/import-codesign-certs@v1
+      #   with:
+      #     p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
+      #     p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+      # - name: Codesign executable (OSX)
+      #   if: matrix.os == 'macos-latest'
+      #   run: /usr/bin/codesign --force -s ${{ secrets.MAC_CODESIGN }} --options=runtime --entitlements app/osx_entitlements.xml --deep ${{ env.EXE_DIR }}/${{ matrix.exe_name }} -v
+      # TODO: notorize osx
+      # - name: Notarize app bundle (OSX)
+      #   if: matrix.os == 'macos-latest'
+      #   run: |
+      #     cd ${{ env.EXE_DIR }}
+      #     xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_DEVELOPER_EMAIL }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_DEVELOPER_PASSWORD }}"
+      #     xcrun notarytool submit "ambient-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
