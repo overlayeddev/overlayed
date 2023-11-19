@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup and install
-        uses: .github/tooling/setup
+        uses: ./.github/tooling/setup
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
@@ -34,6 +34,9 @@ jobs:
           version: 8
       - name: install frontend dependencies
         run: pnpm install
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "apps/desktop/src-tauri/target"
       - name: build tauri app
         working-directory: apps/desktop
         run: |
