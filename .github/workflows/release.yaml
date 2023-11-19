@@ -40,7 +40,7 @@ jobs:
       - name: build tauri app
         working-directory: apps/desktop
         run: |
-          cargo tauri build
+          pnpm tauri build
           ls src-tauri/target/release
       # TODO: code sign osx
       # - name: Install certificate (OSX)
