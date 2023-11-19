@@ -3,6 +3,7 @@ on:
   # Allow manual
   workflow_dispatch:
   push:
+    tags: [v*]
 
 jobs:
   build-tauri:
@@ -68,7 +69,11 @@ jobs:
         run: |
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_ID }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_PASSWORD }}"
           xcrun notarytool submit "${{ env.EXE_DIR }}/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
-      - name: Release
-        uses: softprops/action-gh-release@v1
+      - uses: actions/upload-artifact@v3
         with:
-          files: apps/desktop/src-tauri/target/aarch64-apple-darwin/release/overlayed-aarch64-apple-darwin.zip 
+          name: overlayed-${{ matrix.target }}.zip
+          path: apps/desktop/src-tauri/${{ env.EXE_DIR }}/overlayed-aarch64-apple-darwin.zip
+      # - name: Release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: apps/desktop/src-tauri/target/aarch64-apple-darwin/release/overlayed-aarch64-apple-darwin.zip 
