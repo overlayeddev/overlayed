@@ -2,6 +2,7 @@ name: "Release"
 on:
   # Allow manual
   workflow_dispatch:
+  push:
 
 jobs:
   build-tauri:
