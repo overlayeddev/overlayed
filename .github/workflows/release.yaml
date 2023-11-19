@@ -10,16 +10,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            exe_name: overlayed 
+          # - os: ubuntu-latest
+          #   target: x86_64-unknown-linux-gnu
+          #   exe_name: overlayed
           - os: macos-latest
             target: aarch64-apple-darwin
-            exe_name: overlayed 
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            exe_name: overlayed.exe
+            exe_name: overlayed
+          # - os: windows-latest
+          #   target: x86_64-pc-windows-msvc
+          #   exe_name: overlayed.exe
     runs-on: ${{ matrix.os }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      EXE_DIR: target/${{ matrix.target }}/release
     steps:
       - uses: actions/checkout@v4
       - name: Setup and install
@@ -47,20 +50,24 @@ jobs:
           ls -hal src-tauri/target
           ls -hal src-tauri/target/release
 
-      # TODO: code sign osx
-      # - name: Install certificate (OSX)
-      #   if: matrix.os == 'macos-latest'
-      #   uses: apple-actions/import-codesign-certs@v1
-      #   with:
-      #     p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
-      #     p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-      # - name: Codesign executable (OSX)
-      #   if: matrix.os == 'macos-latest'
-      #   run: /usr/bin/codesign --force -s ${{ secrets.MAC_CODESIGN }} --options=runtime --entitlements app/osx_entitlements.xml --deep ${{ env.EXE_DIR }}/${{ matrix.exe_name }} -v
-      # TODO: notorize osx
-      # - name: Notarize app bundle (OSX)
-      #   if: matrix.os == 'macos-latest'
-      #   run: |
-      #     cd ${{ env.EXE_DIR }}
-      #     xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_DEVELOPER_EMAIL }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_DEVELOPER_PASSWORD }}"
-      #     xcrun notarytool submit "ambient-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
+      - name: Install certificate (OSX)
+        if: matrix.os == 'macos-latest'
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+      - name: Codesign executable (OSX)
+        if: matrix.os == 'macos-latest'
+        run: /usr/bin/codesign --force -s ${{ secrets.APPLE_SIGNING_IDENTITY }} --options=runtime --deep "target/release/bundle/macos/overlayed.app" -v
+      - name: Bundle
+        uses: thedoctor0/zip-release@0.7.1
+        with:
+          type: "zip"
+          filename: overlayed-${{ matrix.target }}.zip
+          directory: ${{ env.EXE_DIR }}
+          path: ${{ matrix.exe_name }}
+      - name: Notarize app bundle (OSX)
+        if: matrix.os == 'macos-latest'
+        working-directory: ${{ env.EXE_DIR }}
+        run: |
+          xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_ID }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_PASSWORD }}"
+          xcrun notarytool submit "overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
