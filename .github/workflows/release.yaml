@@ -51,14 +51,16 @@ jobs:
         run: |
           ls -hal src-tauri/target/aarch64-apple-darwin
           ls -hal src-tauri/target/aarch64-apple-darwin/release/bundle/macos
+          echo "debug: apps/desktop/src-tauri/${{ env.EXE_DIR }}"
+          ls "apps/desktop/src-tauri/${{ env.EXE_DIR }}"
 
-      - name: Install certificate (OSX)
+      - name: Install certificate (macOS)
         if: matrix.os == 'macos-latest'
         uses: apple-actions/import-codesign-certs@v2
         with:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
           p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-      - name: Codesign executable (OSX)
+      - name: Codesign executable (macOS)
         if: matrix.os == 'macos-latest'
         run: /usr/bin/codesign --force -s "${{ secrets.APPLE_SIGNING_IDENTITY }}" --options=runtime --deep target/aarch64-apple-darwin/release/bundle/macos/overlayed.app -v
         working-directory: "apps/desktop/src-tauri"
@@ -68,9 +70,10 @@ jobs:
           type: "zip"
           filename: overlayed-${{ matrix.target }}.zip
           directory: "apps/desktop/src-tauri/${{ env.EXE_DIR }}"
-      - name: Notarize app bundle (OSX)
+          path: bundle/macos
+      - name: Notarize app bundle (macOS)
         if: matrix.os == 'macos-latest'
         working-directory: "apps/desktop/src-tauri"
         run: |
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_ID }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_PASSWORD }}"
-          xcrun notarytool submit "apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/maco/soverlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
+          xcrun notarytool submit "apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
