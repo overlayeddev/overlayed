@@ -66,11 +66,11 @@ jobs:
         with:
           type: "zip"
           filename: overlayed-${{ matrix.target }}.zip
-          directory: "target/release/bundle/macos"
+          directory: "apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/macos"
           path: ${{ matrix.exe_name }}
       - name: Notarize app bundle (OSX)
         if: matrix.os == 'macos-latest'
         working-directory: "apps/desktop/src-tauri"
         run: |
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_ID }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_PASSWORD }}"
-          xcrun notarytool submit "overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
+          xcrun notarytool submit "apps/desktop/src-tauri/target/aarch64-apple-darwin/release/bundle/maco/soverlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
