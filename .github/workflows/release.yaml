@@ -10,15 +10,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - os: ubuntu-latest
-          #   target: x86_64-unknown-linux-gnu
-          #   exe_name: overlayed
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            exe_name: overlayed
           - os: macos-latest
             target: aarch64-apple-darwin
             exe_name: overlayed
-          # - os: windows-latest
-          #   target: x86_64-pc-windows-msvc
-          #   exe_name: overlayed.exe
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            exe_name: overlayed.exe
     runs-on: ${{ matrix.os }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,8 +60,7 @@ jobs:
         with:
           type: "zip"
           filename: overlayed-${{ matrix.target }}.zip
-          directory: "apps/desktop/src-tauri/${{ env.EXE_DIR }}"
-          path: bundle/macos
+          directory: "apps/desktop/src-tauri/${{ env.EXE_DIR }}/bundle"
       - name: Notarize app bundle (macOS)
         if: matrix.os == 'macos-latest'
         working-directory: "apps/desktop/src-tauri"
