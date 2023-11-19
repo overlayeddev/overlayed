@@ -41,7 +41,12 @@ jobs:
         working-directory: apps/desktop
         run: |
           pnpm tauri build --target ${{ matrix.target }}
+      - name: print arti
+        working-directory: apps/desktop
+        run: |
+          ls -hal src-tauri/target
           ls -hal src-tauri/target/release
+
       # TODO: code sign osx
       # - name: Install certificate (OSX)
       #   if: matrix.os == 'macos-latest'
