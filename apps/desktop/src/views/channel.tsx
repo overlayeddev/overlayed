@@ -7,7 +7,7 @@ export const Channel = () => {
   return (
     <div>
       <div className="py-2">
-        {Object.entries(users).map(([_k, item]) => (
+        {Object.entries(users).map(([_, item]) => (
           <User key={item.id} item={item} />
         ))}
       </div>
