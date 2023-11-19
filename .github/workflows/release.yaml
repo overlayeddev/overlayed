@@ -70,6 +70,5 @@ jobs:
           xcrun notarytool submit "${{ env.EXE_DIR }}/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: apps/desktop/src-tauri/target/aarch64-apple-darwin/release/overlayed-aarch64-apple-darwin.zip 
