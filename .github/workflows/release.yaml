@@ -49,7 +49,7 @@ jobs:
       - name: print arti
         working-directory: apps/desktop
         run: |
-          ls -hal src-tauri/target/aarch64-apple-darwi
+          echo "debug"
 
       - name: Install certificate (macOS)
         if: matrix.os == 'macos-latest'
