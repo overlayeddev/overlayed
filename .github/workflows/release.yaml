@@ -10,19 +10,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            exe_name: overlayed
+          # - os: ubuntu-latest
+          #   target: x86_64-unknown-linux-gnu
+          #   exe_name: overlayed
           - os: macos-latest
             target: aarch64-apple-darwin
             exe_name: overlayed
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            exe_name: overlayed.exe
+          # - os: windows-latest
+          #   target: x86_64-pc-windows-msvc
+          #   exe_name: overlayed.exe
     runs-on: ${{ matrix.os }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       EXE_DIR: target/${{ matrix.target }}/release
+      TAURI_DIR: "apps/desktop/src-tauri"
     steps:
       - uses: actions/checkout@v4
       - name: Setup and install
@@ -41,7 +42,7 @@ jobs:
         run: pnpm install
       - uses: Swatinem/rust-cache@v2
         with:
-          workspaces: "apps/desktop/src-tauri/target"
+          workspaces: "${{ env.TAURI_DIR }}/target"
       - name: build tauri app
         working-directory: apps/desktop
         run: pnpm tauri build --target ${{ matrix.target }}
@@ -54,24 +55,23 @@ jobs:
       - name: Codesign executable (macOS)
         if: matrix.os == 'macos-latest'
         run: /usr/bin/codesign --force -s "${{ secrets.APPLE_SIGNING_IDENTITY }}" --options=runtime --deep target/aarch64-apple-darwin/release/bundle/macos/overlayed.app -v
-        working-directory: "apps/desktop/src-tauri"
+        working-directory: "${{ env.TAURI_DIR }}"
       - name: Bundle
         uses: thedoctor0/zip-release@0.7.5
         with:
           type: "zip"
           filename: overlayed-${{ matrix.target }}.zip
-          directory: "apps/desktop/src-tauri/${{ env.EXE_DIR }}/bundle"
+          directory: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle"
       - name: Notarize app bundle (macOS)
         if: matrix.os == 'macos-latest'
-        working-directory: "apps/desktop/src-tauri"
         run: |
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_ID }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_PASSWORD }}"
-          xcrun notarytool submit "${{ env.EXE_DIR }}/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
+          xcrun notarytool submit "${{env.TAURI_DIR}}/${{ env.EXE_DIR }}/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
       - uses: actions/upload-artifact@v3
         with:
           name: overlayed-${{ matrix.target }}.zip
-          path: apps/desktop/src-tauri/${{ env.EXE_DIR }}/overlayed-aarch64-apple-darwin.zip
+          path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/overlayed-${{ matrix.target}}.zip"
       # - name: Release
       #   uses: softprops/action-gh-release@v1
       #   with:
-      #     files: apps/desktop/src-tauri/target/aarch64-apple-darwin/release/overlayed-aarch64-apple-darwin.zip 
+      #     files: apps/desktop/src-tauri/target/aarch64-apple-darwin/release/overlayed-aarch64-apple-darwin.zip
