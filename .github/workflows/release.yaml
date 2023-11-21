@@ -77,7 +77,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: overlayed-${{ matrix.target }}.zip
-          path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/overlayed-${{ matrix.target}}.zip"
+          path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}/overlayed-${{ matrix.target }}.zip"
       # - name: Release
       #   uses: softprops/action-gh-release@v1
       #   with:
