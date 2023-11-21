@@ -68,7 +68,7 @@ jobs:
           password: "${{ secrets.ES_PASSWORD }}"
           credential_id: "${{ secrets.ES_CREDENTIAL_ID }}"
           totp_secret: "${{secrets.ES_TOTP_SECRET}}"
-          file_path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}/overlayed-${{ matrix.target }}.${{ matrix.exe_name }}"
+          file_path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}/overlayed-${{ matrix.target }}/${{ matrix.exe_name }}"
           dir_path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}"
           override: true
           malware_block: false
