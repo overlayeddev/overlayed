@@ -1,4 +1,6 @@
 import { execSync } from "node:child_process";
+import path from "node:path";
+
 import { glob } from "glob";
 
 const {
@@ -41,30 +43,26 @@ const BINS: Record<AllowedPlatforms, BinType> = {
 } as const;
 
 // sign the windows bin with the docker image
-const signWindowsBinary = async (path: string) => {
-  console.log("Signing windows binary, input path:", path);
-  const { target, bundle } = BINS.win32;
+const signWindowsBinary = async (inputPath: string) => {
+  console.log("Signing windows binary, input path:", inputPath);
+  const { bundle } = BINS.win32;
 
-  const binaryPath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}`;
-  const exePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/*.exe`;
-  const [foundBinary] = await glob(exePath);
+  const binaryPath = path.resolve(`${BASE_PATH}/target/release/bundle/${bundle}`);
+  const [foundBinary] = await glob(`${binaryPath}/*.exe`);
   if (!foundBinary) {
-    throw new Error(`No binary found at ${exePath}`);
+    throw new Error(`No binary found at ${binaryPath}`);
   }
 
-  // exe name ofr last part of the path
-  const exeName = foundBinary.split("/").pop();
+  // exe name of last part of the path
+  const exeName = foundBinary.split(path.sep).pop();
 
-  console.log("Bin base path:", binaryPath);
-  console.log("Found exe bin:", foundBinary);
-  console.log("Exe filename:", exeName);
   const commandArray = [
     "docker",
     "run",
     "-it",
     "--rm",
     "-v",
-    `./${binaryPath}:/code`,
+    `"${binaryPath}:/code"`,
     "ghcr.io/sslcom/codesigner:latest",
     "sign",
     `-username=${ES_USERNAME}`,
@@ -72,7 +70,7 @@ const signWindowsBinary = async (path: string) => {
     `-credential_id=${ES_CREDENTIAL_ID}`,
     `-totp_secret=${ES_TOTP_SECRET}`,
     `-input_file_path=/code/${exeName}`,
-    '-override=true',
+    "-override=true",
     "-malware_block=false",
   ];
   execSync(commandArray.join(" "), { stdio: "inherit" });

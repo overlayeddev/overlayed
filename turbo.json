@@ -7,6 +7,7 @@
       "outputs": [".next/**", "!.next/cache/**"]
     },
     "lint": {},
+    "build:tauri": {},
     "start": {
       "cache": false,
       "persistent": true
