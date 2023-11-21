@@ -41,23 +41,38 @@ const BINS: Record<AllowedPlatforms, BinType> = {
 } as const;
 
 // sign the windows bin with the docker image
-const signWindowsBinary = (path: string) => {
-  console.log("Signing windows binary", path);
-  const currentDir = process.cwd();
+const signWindowsBinary = async (path: string) => {
+  console.log("Signing windows binary, input path:", path);
+  const { target, bundle } = BINS.win32;
+
+  const binaryPath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}`;
+  const exePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/*.exe`;
+  const [foundBinary] = await glob(exePath);
+  if (!foundBinary) {
+    throw new Error(`No binary found at ${exePath}`);
+  }
+
+  // exe name ofr last part of the path
+  const exeName = foundBinary.split("/").pop();
+
+  console.log("Bin base path:", binaryPath);
+  console.log("Found exe bin:", foundBinary);
+  console.log("Exe filename:", exeName);
   const commandArray = [
     "docker",
     "run",
     "-it",
     "--rm",
     "-v",
-    `${currentDir}/apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release:/code`,
+    `./${binaryPath}:/code`,
     "ghcr.io/sslcom/codesigner:latest",
     "sign",
     `-username=${ES_USERNAME}`,
     `-password=${ES_PASSWORD}`,
     `-credential_id=${ES_CREDENTIAL_ID}`,
     `-totp_secret=${ES_TOTP_SECRET}`,
-    `-input_file_path=/code/overlayed.exe`,
+    `-input_file_path=/code/${exeName}`,
+    '-override=true',
     "-malware_block=false",
   ];
   execSync(commandArray.join(" "), { stdio: "inherit" });
@@ -90,6 +105,8 @@ const main = async () => {
   const platform = process.platform as AllowedPlatforms;
   const { target, bin, bundle } = BINS[platform];
 
+  const binBasePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}`;
+
   // TODO: fix mac signing
   // if (process.platform === "darwin") {
   //   const path = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/${bin}`;
@@ -101,15 +118,8 @@ const main = async () => {
   //   notarizeMacBinary(path);
   // }
 
-  if (process.platform === "win32") {
-    const exePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/${bin}`;
-    console.log("Signing windows binary", exePath);
-    const [foundBinary] = await glob(exePath);
-    if (!foundBinary) {
-      throw new Error(`No binary found at ${exePath}`);
-    }
-
-    signWindowsBinary(foundBinary);
+  if (process.platform !== "win32") {
+    await signWindowsBinary(binBasePath);
   }
 
   console.log("Signing completed");
