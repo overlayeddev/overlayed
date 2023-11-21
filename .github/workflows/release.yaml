@@ -65,10 +65,6 @@ jobs:
           type: "zip"
           filename: overlayed-${{ matrix.target }}.zip
           directory: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}"
-      - name: debug
-        run: |
-          pwd
-          ls -hal ${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}
       - name: Notarize app bundle (macOS)
         if: matrix.os == 'macos-latest'
         run: |
