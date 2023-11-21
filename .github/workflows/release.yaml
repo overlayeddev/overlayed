@@ -68,8 +68,8 @@ jobs:
           password: ${{secrets.ES_PASSWORD}}
           credential_id: ${{secrets.ES_CREDENTIAL_ID}}
           totp_secret: ${{secrets.ES_TOTP_SECRET}}
-          file_path: ${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}
-          dir_path: overlayed-${{ matrix.target }} 
+          file_path: overlayed-${{ matrix.target }}.{{ matrix.exe }}
+          dir_path: ${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}
           override: true
           malware_block: false
       - name: Bundle
