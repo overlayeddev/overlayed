@@ -73,7 +73,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_ID }}" --team-id="${{ secrets.APPLE_TEAM_ID }}" --password "${{ secrets.APPLE_PASSWORD }}"
-          xcrun notarytool submit "overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
+          xcrun notarytool submit "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}/overlayed-${{ matrix.target }}.zip" --keychain-profile "notarytool-profile" --wait
       - uses: actions/upload-artifact@v3
         with:
           name: overlayed-${{ matrix.target }}.zip
