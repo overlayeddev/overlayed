@@ -18,10 +18,10 @@ jobs:
             target: aarch64-apple-darwin
             exe_name: overlayed
             bundle: macos
-          # - os: windows-latest
-          #   target: x86_64-pc-windows-msvc
-          #   exe_name: overlayed.exe
-          #   bundle: appimage
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            exe_name: overlayed.exe
+            bundle: appimage
     runs-on: ${{ matrix.os }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
