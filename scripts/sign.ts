@@ -86,6 +86,7 @@ const notarizeMacBinary = (path: string) => {
 };
 
 const main = async () => {
+  console.log("Begin signing binaries");
   const platform = process.platform as AllowedPlatforms;
   const { target, bin, bundle } = BINS[platform];
 
@@ -111,7 +112,7 @@ const main = async () => {
     signWindowsBinary(foundBinary);
   }
 
-  console.log("Signing complete");
+  console.log("Signing completed");
 };
 
 main();
