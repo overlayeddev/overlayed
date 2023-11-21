@@ -13,7 +13,7 @@ jobs:
           # - os: ubuntu-latest
           #   target: x86_64-unknown-linux-gnu
           #   exe_name: overlayed
-          #   bundle: appimage 
+          #   bundle: appimage
           - os: macos-latest
             target: aarch64-apple-darwin
             exe_name: overlayed
@@ -21,7 +21,7 @@ jobs:
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             exe_name: overlayed.exe
-            bundle: nsis 
+            bundle: nsis
     runs-on: ${{ matrix.os }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -64,12 +64,12 @@ jobs:
         uses: sslcom/esigner-codesign@develop
         with:
           command: sign
-          username: ${{secrets.ES_USERNAME}}
-          password: ${{secrets.ES_PASSWORD}}
-          credential_id: ${{secrets.ES_CREDENTIAL_ID}}
-          totp_secret: ${{secrets.ES_TOTP_SECRET}}
-          file_path: ${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}/overlayed-${{ matrix.target }}.{{ matrix.exe_name }} 
-          dir_path: ${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}
+          username: "${{ secrets.ES_USERNAME }}"
+          password: "${{ secrets.ES_PASSWORD }}"
+          credential_id: "${{ secrets.ES_CREDENTIAL_ID }}"
+          totp_secret: "${{secrets.ES_TOTP_SECRET}}"
+          file_path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}/overlayed-${{ matrix.target }}.${{ matrix.exe_name }}"
+          dir_path: "${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}"
           override: true
           malware_block: false
       - name: Bundle
