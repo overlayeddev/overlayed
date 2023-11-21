@@ -21,7 +21,7 @@ jobs:
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             exe_name: overlayed.exe
-            bundle: msi 
+            bundle: nsis 
     runs-on: ${{ matrix.os }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -59,6 +59,19 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: /usr/bin/codesign --force -s "${{ secrets.APPLE_SIGNING_IDENTITY }}" --options=runtime --deep target/aarch64-apple-darwin/release/bundle/macos/overlayed.app -v
         working-directory: "${{ env.TAURI_DIR }}"
+      - name: Code Sign Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: sslcom/esigner-codesign@develop
+        with:
+          command: sign
+          username: ${{secrets.ES_USERNAME}}
+          password: ${{secrets.ES_PASSWORD}}
+          credential_id: ${{secrets.ES_CREDENTIAL_ID}}
+          totp_secret: ${{secrets.ES_TOTP_SECRET}}
+          file_path: ${{ env.TAURI_DIR }}/${{ env.EXE_DIR }}/bundle/${{ matrix.bundle }}
+          dir_path: overlayed-${{ matrix.target }} 
+          override: true
+          malware_block: false
       - name: Bundle
         uses: thedoctor0/zip-release@0.7.5
         with:
