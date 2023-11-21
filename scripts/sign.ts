@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import { execSync } from "node:child_process";
 import { glob } from "glob";
 
@@ -27,7 +26,7 @@ const BINS: Record<AllowedPlatforms, BinType> = {
   darwin: {
     bin: "overlayed.app",
     bundle: "macos",
-    target: "x86_64-apple-darwin",
+    target: "aarch64-apple-darwin",
   },
   win32: {
     bin: "overlayed_*.exe",
@@ -87,17 +86,19 @@ const notarizeMacBinary = (path: string) => {
 };
 
 const main = async () => {
-  console.log(process.cwd());
-
   const platform = process.platform as AllowedPlatforms;
   const { target, bin, bundle } = BINS[platform];
-  if (process.platform === "darwin") {
-    const path = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/${bin}`;
-    console.log("Signing mac binary", path);
 
-    signMacBinary(path);
-    notarizeMacBinary(path);
-  }
+  // TODO: fix mac signing
+  // if (process.platform === "darwin") {
+  //   const path = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/${bin}`;
+  //   console.log("Signing mac binary", path);
+  //
+  //   signMacBinary(path);
+  //   // zip the app into a .zip
+  //   // kgg
+  //   notarizeMacBinary(path);
+  // }
 
   if (process.platform === "win32") {
     const exePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/${bin}`;
