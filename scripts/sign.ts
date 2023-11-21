@@ -111,14 +111,11 @@ const main = async () => {
   // if (process.platform === "darwin") {
   //   const path = `${BASE_PATH}/target/${target}/release/bundle/${bundle}/${bin}`;
   //   console.log("Signing mac binary", path);
-  //
   //   signMacBinary(path);
-  //   // zip the app into a .zip
-  //   // kgg
   //   notarizeMacBinary(path);
   // }
 
-  if (process.platform !== "win32") {
+  if (process.platform === "win32") {
     await signWindowsBinary(binBasePath);
   }
 
