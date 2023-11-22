@@ -1,6 +1,8 @@
 name: "publish"
 
-on: pull_request
+on:
+  # Allow manual
+  workflow_dispatch:
 
 jobs:
   create-release:
