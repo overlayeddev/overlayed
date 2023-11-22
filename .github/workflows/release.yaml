@@ -6,183 +6,140 @@ on:
   push:
 
 jobs:
-  create-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    outputs:
-      release_id: ${{ steps.create-release.outputs.result }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Get app version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
-      - name: Create release or skip
-        id: create-release
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { data: listReleases } = await github.rest.repos.listReleases({
-              owner: "Hacksore",
-              repo: "overlayed"
-            });
-
-            const [release] = listReleases;
-            if (release.draft) {
-              console.log("Skipping release creation as there is already a draft");
-              console.log("Reusing:", release.id);
-              return release.id
-            };
-
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `v${process.env.PACKAGE_VERSION}`,
-              name: `Overlayed v${process.env.PACKAGE_VERSION}`,
-              body: 'release notes here',
-              draft: true,
-              prerelease: false
-            })
-            console.log("Created release with id:", data.id)
-            return data.id
-
-  build-tauri:
-    needs: create-release
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
-    env:
-      APP_DIR: "apps/desktop"
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          target: "x86_64-pc-windows-msvc,aarch64-apple-darwin,x86_64-apple-darwin,x86_64-unknown-linux-gnu"
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: install frontend dependencies
-        run: pnpm install
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          APPLE_ID: "${{ secrets.APPLE_ID }}"
-          APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
-          APPLE_TEAM_ID: "${{ secrets.APPLE_TEAM_ID }}"
-          APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
-          APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
-          APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          projectPath: "${{ env.APP_DIR }}"
-          releaseId: ${{ needs.create-release.outputs.release_id }}
-
+  # create-release:
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     release_id: ${{ steps.create-release.outputs.result }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - name: Get app version
+  #       run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
+  #     - name: Create release or skip
+  #       id: create-release
+  #       uses: actions/github-script@v7
+  #       with:
+  #         script: |
+  #           const { data: listReleases } = await github.rest.repos.listReleases({
+  #             owner: "Hacksore",
+  #             repo: "overlayed"
+  #           });
+  #
+  #           const [release] = listReleases;
+  #           if (release.draft) {
+  #             console.log("Skipping release creation as there is already a draft");
+  #             console.log("Reusing:", release.id);
+  #             return release.id
+  #           };
+  #
+  #           const { data } = await github.rest.repos.createRelease({
+  #             owner: context.repo.owner,
+  #             repo: context.repo.repo,
+  #             tag_name: `v${process.env.PACKAGE_VERSION}`,
+  #             name: `Overlayed v${process.env.PACKAGE_VERSION}`,
+  #             body: 'release notes here',
+  #             draft: true,
+  #             prerelease: false
+  #           })
+  #           console.log("Created release with id:", data.id)
+  #           return data.id
+  #
+  # build-tauri:
+  #   needs: create-release
+  #   permissions:
+  #     contents: write
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       platform: [macos-latest, ubuntu-latest, windows-latest]
+  #   env:
+  #     APP_DIR: "apps/desktop"
+  #   runs-on: ${{ matrix.platform }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - name: install Rust stable
+  #       uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         target: "x86_64-pc-windows-msvc,aarch64-apple-darwin,x86_64-apple-darwin,x86_64-unknown-linux-gnu"
+  #     - name: install dependencies (ubuntu only)
+  #       if: matrix.platform == 'ubuntu-latest'
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+  #     - uses: pnpm/action-setup@v2
+  #       with:
+  #         version: 8
+  #     - name: install frontend dependencies
+  #       run: pnpm install
+  #     - uses: tauri-apps/tauri-action@v0
+  #       env:
+  #         APPLE_ID: "${{ secrets.APPLE_ID }}"
+  #         APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
+  #         APPLE_TEAM_ID: "${{ secrets.APPLE_TEAM_ID }}"
+  #         APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
+  #         APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
+  #         APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         projectPath: "${{ env.APP_DIR }}"
+  #         releaseId: ${{ needs.create-release.outputs.release_id }}
+  #
   sign-windows:
     runs-on: ubuntu-latest
-    needs: [create-release, build-tauri]
-    permissions:
-      contents: write
+    # needs: [create-release, build-tauri]
+    # permissions:
+    #   contents: write
     steps:
-      - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: install frontend dependencies
-        run: pnpm install --filter ./
-      - name: Download bins
-        run: npx tsx scripts/download-draft-bins.ts ${{ needs.create-release.outputs.release_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Presign
-        run: |
-          ls -hal binaries
-          sha1sum binaries/*
-      - name: Sign Windows Binaries
-        run: |
-          docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
-            -username=${ES_USERNAME} \
-            -password=${ES_PASSWORD} \
-            -credential_id=${ES_CREDENTIAL_ID} \
-            -totp_secret=${ES_TOTP_SECRET} \
-            -input_dir_path="/code/binaries" \
-            -output_dir_path="/code/binaries/signed"
-        env:
-          ES_USERNAME: "${{ secrets.ES_USERNAME }}"
-          ES_PASSWORD: "${{ secrets.ES_PASSWORD }}"
-          ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
-          ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
-      - name: Postsign
-        run: |
-          ls -hal binaries/signed
-          sha1sum binaries/signed/*
+    #   - uses: actions/checkout@v4
+    #   - name: setup node
+    #     uses: actions/setup-node@v4
+    #     with:
+    #       node-version: 20
+    #   - uses: pnpm/action-setup@v2
+    #     with:
+    #       version: 8
+    #   - name: install frontend dependencies
+    #     run: pnpm install --filter ./
+    #   - name: Download bins
+    #     # TODO: convert this to github script?
+    #     run: npx tsx scripts/download-draft-bins.ts ${{ needs.create-release.outputs.release_id }}
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   - name: Presign
+    #     run: |
+    #       ls -hal binaries
+    #       sha1sum binaries/*
+    #   - name: Sign Windows Binaries
+    #     run: |
+    #       docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
+    #         -username=${ES_USERNAME} \
+    #         -password=${ES_PASSWORD} \
+    #         -credential_id=${ES_CREDENTIAL_ID} \
+    #         -totp_secret=${ES_TOTP_SECRET} \
+    #         -input_dir_path="/code/binaries" \
+    #         -output_dir_path="/code/binaries/signed"
+    #     env:
+    #       ES_USERNAME: "${{ secrets.ES_USERNAME }}"
+    #       ES_PASSWORD: "${{ secrets.ES_PASSWORD }}"
+    #       ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
+    #       ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
+    #   - name: Postsign
+    #     run: |
+    #       ls -hal binaries/signed
+    #       sha1sum binaries/signed/*
       - name: Create release or skip
         id: create-release
         uses: actions/github-script@v7
         with:
           script: |
-            // TODO: fix this with ESM later
-            // import fs from "node:fs";
-            const fs = require("fs");
-            const releaseId = "${{ needs.create-release.outputs.release_id }}";
-
-            // read all files from the binariees dir
-            console.log("cwd", process.cwd());
-            const files = fs.readdirSync("./signed/binaries");
-
-            const { data } = await github.rest.repos.listReleases({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-
-            const [latestRelease] = data;
-
-            for (const asset of latestRelease?.assets ?? []) {
-              // skip if the asset doesnt end with msi or exe
-              if (![".msi", ".exe"].some((ext) => asset.name.endsWith(ext))) {
-                continue;
-              }
-
-              console.log("deleting asset", asset.name, asset.id);
-              await github.rest.repos.deleteReleaseAsset({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: releaseId,
-                asset_id: asset.id,
-              });
-            }
-
-            for (const file of files) {
-              const filePath = `./binaries/signed/${file}`;
-              const fileData = fs.readFileSync(filePath);
-
-              const { data: uploadResponse } = await github.rest.repos.uploadReleaseAsset({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: releaseId,
-                // @ts-ignore
-                data: fileData,
-                name: file,
-              });
-
-              console.log(uploadResponse);
-            }
+            const { script } = await import('${{ github.workspace }}/scripts/actions/sign.js')
+            await script({ github, context });
