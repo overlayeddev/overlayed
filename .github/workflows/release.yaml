@@ -86,13 +86,13 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - name: install frontend dependencies
-        run: pnpm install --filter ./
-      - name: Download bins
-        # TODO: convert this to github script?
-        run: npx tsx scripts/download-draft-bins.ts ${{ needs.create-release.outputs.release_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download draft binaries
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { script } = await import('${{ github.workspace }}/scripts/actions/download-draft-bins.js')
+            const id = "${{ needs.create-release.outputs.release_id }}";
+            await script({ github, context }, id);
       - name: Presign
         run: |
           ls -hal binaries
@@ -115,8 +115,7 @@ jobs:
         run: |
           ls -hal binaries/signed
           sha1sum binaries/signed/*
-      - name: Create release or skip
-        id: create-release
+      - name: Sign && upload windows binaries
         uses: actions/github-script@v7
         with:
           script: |

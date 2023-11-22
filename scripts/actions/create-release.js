@@ -1,10 +1,8 @@
-// TODO: can we type this?
-
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }) => {
   const { data: listReleases } = await github.rest.repos.listReleases({
-    owner: "Hacksore",
-    repo: "overlayed",
+    owner: context.repo.owner,
+    repo: context.repo.repo,
   });
 
   const [release] = listReleases;

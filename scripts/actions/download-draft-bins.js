@@ -1,17 +1,6 @@
-// local testing:
-// op run --env-file .env -- npx tsx scripts/download-draft-bins.ts 131013514
-import fs from "node:fs";
+import fs from "fs";
 
-import { Readable } from "stream";
-import { finished } from "stream/promises";
-
-const { GITHUB_TOKEN } = process.env;
-
-if(!GITHUB_TOKEN) {
-  throw new Error("GITHUB_TOKEN not set")
-}
-
-async function downloadFile(url: string, filepath = "./download") {
+async function downloadFile(url, filepath = "./download") {
   const response = await fetch(url, {
     headers: {
       Accept: "application/octet-stream",
@@ -25,27 +14,19 @@ async function downloadFile(url: string, filepath = "./download") {
 }
 
 const BINARIES_DIR = "binaries";
-const main = async () => {
-  // get first param to script
-  const id = process.argv[2];
 
-  if (!id) {
-    throw new Error("🚫 No release id provided");
-  }
+/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+/** @param id {String} */
+export const script = async ({ context, github }, id) => {
 
   console.log(`📦 downloading release artifacts for ${id}`);
 
   try {
-    const draftData = await fetch(
-      `https://api.github.com/repos/Hacksore/overlayed/releases/${id}`,
-      {
-        headers: {
-          Accept: "application/vnd.github+json",
-          Authorization: `token ${GITHUB_TOKEN}`,
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      },
-    ).then((res) => res.json());
+    const { data: draftData } = await github.rest.repos.getRelease({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      release_id: id,
+    });
 
     console.log(draftData);
 
@@ -58,7 +39,6 @@ const main = async () => {
     }
 
     for (const asset of assets) {
-      const url = asset.browser_download_url;
       const filename = asset.name;
       // skip non windows bins
       if (![".msi", ".exe"].some((ext) => filename.endsWith(ext))) {
@@ -76,5 +56,3 @@ const main = async () => {
     console.log(err);
   }
 };
-
-main();
