@@ -95,9 +95,9 @@ jobs:
         with:
           version: 8
       - name: install frontend dependencies
-        run: pnpm install
+        run: pnpm install --filter ./
       - name: Download bins
-        run: npx tsx scripts/download-draft-bins.ts
+        run: npx tsx scripts/download-draft-bins.ts 131013514 # TODO: replace with relase id
       - name: Presign 
         run: ls -hal binaries
       - name: Sign Windows Binaries
