@@ -1,5 +1,8 @@
 import fs from "fs";
 
+import { Readable } from "stream";
+import { finished } from "stream/promises";
+
 const { GITHUB_TOKEN } = process.env;
 
 async function downloadFile(url, filepath = "./download") {
