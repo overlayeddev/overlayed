@@ -52,7 +52,6 @@ export const signWindowsBinary = async () => {
   const exeName = foundBinary.split(path.sep).pop();
 
   console.log("found exe:", exeName);
-  return;
 
   const commandArray = [
     "docker",
