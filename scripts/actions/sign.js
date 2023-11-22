@@ -2,12 +2,16 @@ import fs from "fs";
 const releaseId = "${{ needs.create-release.outputs.release_id }}";
 
 const SIGNED_BINARIES_DIR = "./signed/binaries";
-export const script = async() => {
-  if(!fs.existsSync(SIGNED_BINARIES_DIR)) {
+
+/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+export const script = async ({ context, github }) => {
+  console.log("🔍 Start sign of windows binaries...");
+
+  if (!fs.existsSync(SIGNED_BINARIES_DIR)) {
     console.log("No signed binaries found");
     return;
   }
-   
+
   const files = fs.readdirSync(SIGNED_BINARIES_DIR);
 
   const { data } = await github.rest.repos.listReleases({
@@ -36,15 +40,17 @@ export const script = async() => {
     const filePath = `${SIGNED_BINARIES_DIR}/${file}`;
     const fileData = fs.readFileSync(filePath);
 
-    const { data: uploadResponse } = await github.rest.repos.uploadReleaseAsset({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      release_id: releaseId,
-      // @ts-ignore
-      data: fileData,
-      name: file,
-    });
+    const { data: uploadResponse } = await github.rest.repos.uploadReleaseAsset(
+      {
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        release_id: releaseId,
+        // @ts-ignore
+        data: fileData,
+        name: file,
+      },
+    );
 
     console.log(uploadResponse);
   }
-}
+};

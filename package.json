@@ -11,6 +11,7 @@
   "type": "module",
   "devDependencies": {
     "@actions/github": "^6.0.0",
+    "@types/github-script": "github:actions/github-script",
     "eslint": "^8.48.0",
     "glob": "^10.3.10",
     "prettier": "^3.0.3",
