@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 20
       - name: get version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/tauri.conf.json').package.version")" >> $GITHUB_ENV
+        run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
       - name: create release
         id: create-release
         uses: actions/github-script@v6
