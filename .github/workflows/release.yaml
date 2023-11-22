@@ -98,6 +98,8 @@ jobs:
         run: pnpm install
       - name: Download bins
         run: npx tsx scripts/download-draft-bins.ts
+      - name: Presign 
+        run: ls -hal binaries
       - name: Sign Windows Binaries
         run: |
           docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
@@ -105,6 +107,7 @@ jobs:
             -password=${ES_PASSWORD} \
             -credential_id=${ES_CREDENTIAL_ID} \
             -totp_secret=${ES_TOTP_SECRET} \
-            -input_dir_path=="/code/binaries" \
-            -override=true \
-            -malware_block=false
+            -input_dir_path=="/code/binaries"
+
+      - name: Postsign 
+        run: ls -hal binaries
