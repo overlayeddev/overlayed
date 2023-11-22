@@ -31,7 +31,7 @@ jobs:
 
             const [release] = listReleases;
 
-            if (data.draft) return;
+            if (listReleases.draft) return;
 
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
