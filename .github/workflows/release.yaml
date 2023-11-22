@@ -83,9 +83,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: Download draft binaries
         uses: actions/github-script@v7
         with:
@@ -93,6 +90,9 @@ jobs:
             const { script } = await import('${{ github.workspace }}/scripts/actions/download-draft-bins.js')
             const id = "${{ needs.create-release.outputs.release_id }}";
             await script({ github, context }, id);
+        env:
+          # TODO: is this even needed or does it auto inject?
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Presign
         run: |
           ls -hal binaries

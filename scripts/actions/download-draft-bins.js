@@ -1,5 +1,7 @@
 import fs from "fs";
 
+const { GITHUB_TOKEN } = process.env;
+
 async function downloadFile(url, filepath = "./download") {
   const response = await fetch(url, {
     headers: {
