@@ -24,12 +24,12 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { data } = await github.rest.repos.listReleases({
+            const { data: listReleases } = await github.rest.repos.listReleases({
               owner: "Hacksore",
               repo: "overlayed"
             });
 
-            const [release] = data;
+            const [release] = listReleases;
 
             if (data.draft) return;
 
