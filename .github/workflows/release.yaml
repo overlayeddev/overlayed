@@ -29,11 +29,11 @@ jobs:
               repo: "overlayed"
             });
 
-
             const [release] = listReleases;
-            console.log(release);
-
-            if (listReleases.draft) return;
+            if (release.draft) {
+              console.log("Skipping release creation as there is already a draft");
+              return
+            };
 
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
