@@ -1,4 +1,4 @@
-name: "Sign & Release (Automated)"
+name: "Create Release"
 
 on:
   # Allow manual
