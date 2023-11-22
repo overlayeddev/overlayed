@@ -132,8 +132,8 @@ jobs:
           ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
       - name: Postsign
         run: |
-          ls -hal binaries
-          sha1sum binaries/*
+          ls -hal binaries/signed
+          sha1sum binaries/signed/*
       - name: Create release or skip
         id: create-release
         uses: actions/github-script@v7
