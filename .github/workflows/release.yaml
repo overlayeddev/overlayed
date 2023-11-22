@@ -29,7 +29,9 @@ jobs:
               repo: "overlayed"
             });
 
+
             const [release] = listReleases;
+            console.log(release);
 
             if (listReleases.draft) return;
 
