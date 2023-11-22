@@ -19,11 +19,21 @@ jobs:
           node-version: 20
       - name: get version
         run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
-      - name: create release
+      - name: Create release or skip
         id: create-release
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
+            # check if the versions exists already and do nothing
+            const { data } = await github.rest.repos.listReleases({
+              owner: "Hacksore",
+              repo: "overlayed"
+            });
+
+            const [release] = data;
+
+            if (data.draft) return;
+
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -121,6 +131,6 @@ jobs:
       # TODO: can we make it overwrite the draft bins somehow?
       - uses: actions/upload-artifact@v3
         with:
-          name: signed-windows-bins 
+          name: signed-windows-bins
           path: |
             binaries/signed
