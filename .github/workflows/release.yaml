@@ -1,4 +1,4 @@
-name: "publish"
+name: "Sign & Release (Automated)"
 
 on:
   # Allow manual
