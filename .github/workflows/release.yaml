@@ -109,7 +109,7 @@ jobs:
             -password=${ES_PASSWORD} \
             -credential_id=${ES_CREDENTIAL_ID} \
             -totp_secret=${ES_TOTP_SECRET} \
-            -input_dir_path=="/code/binaries"
+            -input_dir_path="/code/binaries"
 
       - name: Postsign
         run: ls -hal binaries
