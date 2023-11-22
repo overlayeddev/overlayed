@@ -32,7 +32,8 @@ jobs:
             const [release] = listReleases;
             if (release.draft) {
               console.log("Skipping release creation as there is already a draft");
-              return
+              console.log("Reusing:", release.id);
+              return release.id
             };
 
             const { data } = await github.rest.repos.createRelease({
