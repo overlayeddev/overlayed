@@ -86,6 +86,13 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: install frontend dependencies
+        run: pnpm install
       - name: Download bins
         run: npx tsx scripts/download-draft-bins.ts
       - name: Sign Windows Binaries
