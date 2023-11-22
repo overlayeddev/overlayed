@@ -26,6 +26,8 @@ const main = async () => {
   // get first param to script
   const id = process.argv[2];
 
+  console.log(`📦 downloading release artifacts for ${id}`);
+
   try {
     const draftData = await fetch(
       `https://api.github.com/repos/Hacksore/overlayed/releases/${id}`,
@@ -37,8 +39,17 @@ const main = async () => {
         },
       },
     ).then((res) => res.json());
+
+    console.log(draftData);
+
     // download all the assets to the current directory
     const assets = draftData.assets;
+
+    // make binaries dir if it doesn't exist
+    if (!fs.existsSync(BINARIES_DIR)) {
+      fs.mkdirSync(BINARIES_DIR);
+    }
+
     for (const asset of assets) {
       const url = asset.browser_download_url;
       const filename = asset.name;
@@ -47,13 +58,8 @@ const main = async () => {
         continue;
       }
 
-      console.log(`Downloading ${filename} from ${url}`);
-      // make binaries dir if it doesn't exist
-      if (!fs.existsSync(BINARIES_DIR)) {
-        fs.mkdirSync(BINARIES_DIR);
-      }
-
-      // download the file to disk
+      console.log(`Downloading ${filename}`);
+      // download the file to the binaries folder
       downloadFile(
         `https://api.github.com/repos/Hacksore/overlayed/releases/assets/${asset.id}`,
         `./${BINARIES_DIR}/${filename}`,
