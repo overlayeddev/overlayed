@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
-    env:
-      APP_DIR: "apps/desktop"
     steps:
       - uses: actions/checkout@v4
       - name: setup node
@@ -45,7 +43,8 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-latest, windows-latest]
-
+    env:
+      APP_DIR: "apps/desktop"
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
