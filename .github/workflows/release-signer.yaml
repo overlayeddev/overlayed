@@ -1,0 +1,82 @@
+name: "Release"
+on:
+  # Allow manual
+  workflow_dispatch:
+  push:
+
+jobs:
+  build-tauri:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            platform: linux
+            bundle: appimage
+            binary: overlayed
+          - os: macos-latest
+            target: "aarch64-apple-darwin,x86_64-apple-darwin"
+            bundle: macos
+            platform: macos
+            binary: "overlayed.app"
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bundle: nsis
+            platform: windows 
+            binary: "overlayed.exe"
+    runs-on: ${{ matrix.os }}
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      EXE_DIR: target/${{ matrix.target }}/release
+      TAURI_DIR: "apps/desktop/src-tauri"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup and install
+        uses: ./.github/tooling/setup
+        with:
+          target: ${{ matrix.target }}
+      - name: install dependencies (ubuntu only)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: install frontend dependencies
+        run: pnpm install
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "${{ env.TAURI_DIR }}/target"
+      - name: Build Tauri (windows/linux)
+        working-directory: apps/desktop
+        if: matrix.os != 'macos-latest'
+        run: pnpm tauri build --target ${{ matrix.target }}
+      - name: Build Tauri (macOS)
+        working-directory: apps/desktop
+        if: matrix.os == 'macos-latest'
+        run: pnpm tauri build --target "universal-apple-darwin"
+      - name: Install certificate (macOS)
+        if: matrix.os == 'macos-latest'
+        uses: apple-actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      - name: CodeSign binaires
+        run: npx tsx scripts/sign
+        env:
+          APPLE_ID: "${{ secrets.APPLE_ID }}"
+          APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
+          APPLE_TEAM_ID: "${{ secrets.APPLE_TEAM_ID }}"
+          APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
+          APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
+          APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
+          ES_USERNAME: "${{ secrets.ES_USERNAME }}"
+          ES_PASSWORD: "${{ secrets.ES_PASSWORD }}"
+          ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
+          ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: ${{ matrix.platform }}
+      #     path: ${k matrix.binary }}

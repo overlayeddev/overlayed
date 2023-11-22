@@ -1,72 +1,66 @@
-name: "Release"
-on:
-  # Allow manual
-  workflow_dispatch:
-  push:
+name: "publish"
+
+on: pull_request
 
 jobs:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create-release.outputs.result }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: get version
+        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+      - name: create release
+        id: create-release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `app-v${process.env.PACKAGE_VERSION}`,
+              name: `Desktop App v${process.env.PACKAGE_VERSION}`,
+              body: 'Take a look at the assets to download and install this app.',
+              draft: true,
+              prerelease: false
+            })
+            return data.id
+
   build-tauri:
+    needs: create-release
+    permissions:
+      contents: write
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            bundle: appimage
-          - os: macos-latest
-            target: "aarch64-apple-darwin,x86_64-apple-darwin"
-            bundle: macos
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            bundle: nsis
-    runs-on: ${{ matrix.os }}
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      EXE_DIR: target/${{ matrix.target }}/release
-      TAURI_DIR: "apps/desktop/src-tauri"
+        platform: [macos-latest, ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup and install
-        uses: ./.github/tooling/setup
+      - name: setup node
+        uses: actions/setup-node@v4
         with:
-          target: ${{ matrix.target }}
+          node-version: 20
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
       - name: install dependencies (ubuntu only)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
       - name: install frontend dependencies
         run: pnpm install
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: "${{ env.TAURI_DIR }}/target"
-      - name: Build Tauri (windows/linux)
-        working-directory: apps/desktop
-        if: matrix.os != 'macos-latest'
-        run: pnpm tauri build --target ${{ matrix.target }}
-      - name: Build Tauri (macOS)
-        working-directory: apps/desktop
-        if: matrix.os == 'macos-latest'
-        run: pnpm tauri build --target "universal-apple-darwin"
-      - name: Install certificate (macOS)
-        if: matrix.os == 'macos-latest'
-        uses: apple-actions/import-codesign-certs@v2
-        with:
-          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
-          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-      - name: CodeSign binaires
-        run: npx tsx scripts/sign
+      - uses: tauri-apps/tauri-action@v0
         env:
-          APPLE_ID: "${{ secrets.APPLE_ID }}"
-          APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
-          APPLE_TEAM_ID: "${{ secrets.APPLE_TEAM_ID }}"
-          APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
-          APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
-          APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
-          ES_USERNAME: "${{ secrets.ES_USERNAME }}"
-          ES_PASSWORD: "${{ secrets.ES_PASSWORD }}"
-          ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
-          ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          releaseId: ${{ needs.create-release.outputs.release_id }}

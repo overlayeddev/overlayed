@@ -7,9 +7,9 @@ const { APPLE_ID, APPLE_TEAM_ID, APPLE_PASSWORD, APPLE_SIGNING_IDENTITY } =
 const { bundle } = BINS.darwin;
 const appBasePath = `${BASE_PATH}/target/universal-apple-darwin/release/bundle/${bundle}`;
 const zipPath = `${appBasePath}/overlayed.zip`;
+const appPath = `${appBasePath}/overlayed.app`;
 
 export const signMacBinary = () => {
-  const appPath = `${appBasePath}/overlayed.app`;
   console.log("Signing mac binary", appPath);
 
   execSync(
@@ -22,7 +22,7 @@ export const zipMacBinary = () => {
   console.log("Zipping mac binary", zipPath);
 
   execSync(`zip -r ${zipPath} ${appBasePath}`, { stdio: "inherit" });
-}
+};
 
 export const notarizeMacBinary = () => {
   console.log("Notarizing mac binary", zipPath);

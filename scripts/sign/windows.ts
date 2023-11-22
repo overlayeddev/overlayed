@@ -43,5 +43,6 @@ export const signWindowsBinary = async () => {
     "-override=true",
     "-malware_block=false",
   ];
+
   execSync(commandArray.join(" "), { stdio: "inherit" });
 };
