@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
-
+    env:
+      APP_DIR: "apps/desktop"
     steps:
       - uses: actions/checkout@v4
       - name: setup node
@@ -52,6 +53,8 @@ jobs:
           node-version: 20
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          target: "x86_64-pc-windows-msvc,aarch64-apple-darwin,x86_64-apple-darwin,x86_64-unknown-linux-gnu"
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-latest'
         run: |
@@ -63,4 +66,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          projectPath: "${{ env.APP_DIR }}" 
           releaseId: ${{ needs.create-release.outputs.release_id }}
