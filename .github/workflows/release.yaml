@@ -98,7 +98,9 @@ jobs:
         run: pnpm install --filter ./
       - name: Download bins
         run: npx tsx scripts/download-draft-bins.ts 131013514 # TODO: replace with relase id
-      - name: Presign 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Presign
         run: ls -hal binaries
       - name: Sign Windows Binaries
         run: |
@@ -109,5 +111,5 @@ jobs:
             -totp_secret=${ES_TOTP_SECRET} \
             -input_dir_path=="/code/binaries"
 
-      - name: Postsign 
+      - name: Postsign
         run: ls -hal binaries
