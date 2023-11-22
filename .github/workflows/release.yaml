@@ -139,8 +139,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            # TODO: fix this with ESM later
-            # import fs from "node:fs";
+            // TODO: fix this with ESM later
+            // import fs from "node:fs";
             const fs = require("fs");
             const releaseId = "${{ needs.create-release.outputs.release_id }}";
 
