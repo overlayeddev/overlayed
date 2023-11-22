@@ -147,7 +147,7 @@ jobs:
             // read all files from the binariees dir
             const files = fs.readdirSync("./binaries");
 
-            const { data } = await octokit.rest.repos.listReleases({
+            const { data } = await github.rest.repos.listReleases({
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
@@ -161,7 +161,7 @@ jobs:
               }
 
               console.log("deleting asset", asset.name, asset.id);
-              await octokit.rest.repos.deleteReleaseAsset({
+              await github.rest.repos.deleteReleaseAsset({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 release_id: releaseId,
@@ -173,7 +173,7 @@ jobs:
               const filePath = `./binaries/${file}`;
               const fileData = fs.readFileSync(filePath);
 
-              const { data: uploadResponse } = await octokit.rest.repos.uploadReleaseAsset({
+              const { data: uploadResponse } = await github.rest.repos.uploadReleaseAsset({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 release_id: releaseId,
