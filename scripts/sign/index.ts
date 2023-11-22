@@ -1,3 +1,4 @@
+import { notarizeMacBinary, signMacBinary, zipMacBinary } from "./mac";
 import { signWindowsBinary } from "./windows";
 
 const main = async () => {
@@ -6,14 +7,14 @@ const main = async () => {
 
   console.log("🚀 Begin signing binaries");
 
-  // this is dumb 
   if (process.platform === "win32") {
     await signWindowsBinary();
   }
 
-  // TODO: sign macos
   if (process.platform === "darwin") {
-    console.log("🚧 MacOS signing not implemented yet");
+    signMacBinary();
+    zipMacBinary();
+    notarizeMacBinary();
   }
 
   console.log("✅ Signing completed");

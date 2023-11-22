@@ -1,39 +1,12 @@
 import { execSync } from "node:child_process";
 import path from "node:path";
-import fs from "fs";
 
 import { glob } from "glob";
+import { BASE_PATH, BINS } from "./constants";
 
 const { ES_TOTP_SECRET, ES_USERNAME, ES_PASSWORD, ES_CREDENTIAL_ID } =
   process.env;
 
-// the base path of the tauri build
-const BASE_PATH = "apps/desktop/src-tauri";
-
-type BinType = {
-  bin: string;
-  bundle: string;
-  target: string;
-};
-
-type AllowedPlatforms = "darwin" | "win32" | "linux";
-const BINS: Record<AllowedPlatforms, BinType> = {
-  darwin: {
-    bin: "overlayed.app",
-    bundle: "macos",
-    target: "aarch64-apple-darwin",
-  },
-  win32: {
-    bin: "overlayed_*.exe",
-    bundle: "nsis",
-    target: "x86_64-pc-windows-msvc",
-  },
-  linux: {
-    bin: "overlayed",
-    bundle: "deb",
-    target: "x86_64-unknown-linux-gnu",
-  },
-} as const;
 
 // sign the windows bin with the docker image
 export const signWindowsBinary = async () => {
