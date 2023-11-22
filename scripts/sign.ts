@@ -1,5 +1,6 @@
 import { execSync } from "node:child_process";
 import path from "node:path";
+import fs from "fs";
 
 import { glob } from "glob";
 
@@ -43,27 +44,29 @@ const BINS: Record<AllowedPlatforms, BinType> = {
 } as const;
 
 // sign the windows bin with the docker image
-const signWindowsBinary = async (inputPath: string) => {
-  console.log("Signing windows binary, input path:", inputPath);
+const signWindowsBinary = async () => {
   const { bundle } = BINS.win32;
+  const binBasePath = `${BASE_PATH}/target/release/bundle/${bundle}`;
 
   // CI path:   apps\desktop\src-tauri\target\x86_64-pc-windows-msvc\release\bundle\nsis\overlayed_0.0.0_x64-setup.exe
   // CI input:  apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis
-  const binaryPath = path.resolve(
-    `${BASE_PATH}/target/release/bundle/${bundle}`,
-  );
 
-  const globPath = `${binaryPath}/*.exe`;
-  console.log("base path:", binaryPath);
+  const globPath = `${binBasePath}/*.exe`;
+  console.log("base path:", binBasePath);
   console.log("glob path:", globPath);
-  const [foundBinary] = await glob(`${binaryPath}/*.exe`);
+
+  const [foundBinary] = await glob(globPath);
 
   if (!foundBinary) {
-    throw new Error(`No binary found at ${binaryPath}`);
+    throw new Error(`No binary found at ${binBasePath}`);
   }
 
+  console.log("found bin:", foundBinary);
   // exe name of last part of the path
   const exeName = foundBinary.split(path.sep).pop();
+
+  console.log("found exe:", exeName);
+  return;
 
   const commandArray = [
     "docker",
@@ -71,7 +74,7 @@ const signWindowsBinary = async (inputPath: string) => {
     "-it",
     "--rm",
     "-v",
-    `"${binaryPath}:/code"`,
+    `"${binBasePath}:/code"`,
     "ghcr.io/sslcom/codesigner:latest",
     "sign",
     `-username=${ES_USERNAME}`,
@@ -109,10 +112,10 @@ const notarizeMacBinary = (path: string) => {
 
 const main = async () => {
   console.log("Begin signing binaries");
-  const platform = process.platform as AllowedPlatforms;
-  const { target, bin, bundle } = BINS[platform];
+  // const platform = process.platform as AllowedPlatforms;
+  // const { target, bin, bundle } = BINS[platform];
 
-  const binBasePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}`;
+  // const binBasePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}`;
 
   // TODO: fix mac signing
   // if (process.platform === "darwin") {
@@ -123,7 +126,7 @@ const main = async () => {
   // }
 
   if (process.platform === "win32") {
-    await signWindowsBinary(binBasePath);
+    await signWindowsBinary();
   }
 
   console.log("Signing completed");
