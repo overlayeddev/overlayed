@@ -1,7 +1,7 @@
 name: "CI"
-# on: [push]
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   test-tauri:

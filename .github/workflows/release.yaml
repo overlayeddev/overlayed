@@ -113,7 +113,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Presign
-        run: ls -hal binaries
+        run: |
+          ls -hal binaries
+          sha1sum binaries/*
       - name: Sign Windows Binaries
         run: |
           docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
@@ -129,22 +131,16 @@ jobs:
           ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
           ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
       - name: Postsign
-        run: ls -hal binaries
-      # TODO: can we make it overwrite the draft bins somehow?
-      - uses: actions/upload-artifact@v3
-        with:
-          name: signed-windows-bins
-          path: |
-            binaries/signed
+        run: |
+          ls -hal binaries
+          sha1sum binaries/*
       - name: Create release or skip
         id: create-release
         uses: actions/github-script@v7
         with:
           script: |
             import fs from "node:fs";
-
             const releaseId = "${{ needs.create-release.outputs.release_id }}";
-            const octokit = getOctokit(GITHUB_TOKEN);
 
             // read all files from the binariees dir
             const files = fs.readdirSync("./binaries");
@@ -186,4 +182,3 @@ jobs:
 
               console.log(uploadResponse);
             }
-
