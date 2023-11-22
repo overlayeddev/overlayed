@@ -39,13 +39,7 @@ const BINS: Record<AllowedPlatforms, BinType> = {
 export const signWindowsBinary = async () => {
   const { bundle, target } = BINS.win32;
   const binBasePath = `${BASE_PATH}/target/${target}/release/bundle/${bundle}`;
-
-  // CI path:   apps\desktop\src-tauri\target\x86_64-pc-windows-msvc\release\bundle\nsis\overlayed_0.0.0_x64-setup.exe
-  // CI input:  apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis
-
   const globPath = `${binBasePath}/*.exe`;
-  console.log("base path:", binBasePath);
-  console.log("glob path:", globPath);
 
   const [foundBinary] = await glob(globPath);
 

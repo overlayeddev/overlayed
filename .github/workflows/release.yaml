@@ -10,17 +10,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - os: ubuntu-latest
-          #   target: x86_64-unknown-linux-gnu
-          #   exe_name: overlayed
-          #   bundle: appimage
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            bundle: appimage
           - os: macos-latest
-            target: universal-apple-darwin
-            exe_name: overlayed
+            target: aarch64-apple-darwin
+            bundle: macos
+          - os: macos-latest
+            target: x86_64-apple-darwin
             bundle: macos
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            exe_name: overlayed.exe
             bundle: nsis
     runs-on: ${{ matrix.os }}
     env:
