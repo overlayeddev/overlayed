@@ -3,7 +3,7 @@ name: "Create Release"
 on:
   # Allow manual
   workflow_dispatch:
-  push:
+  # push:
 
 jobs:
   create-release:
