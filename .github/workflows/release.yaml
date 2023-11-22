@@ -3,78 +3,104 @@ name: "Create Release"
 on:
   # Allow manual
   workflow_dispatch:
+  push:
 
 jobs:
-  create-release:
-    permissions:
-      contents: write
+  # create-release:
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     release_id: ${{ steps.create-release.outputs.result }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - name: get version
+  #       run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/package.json').version")" >> $GITHUB_ENV
+  #     - name: create release
+  #       id: create-release
+  #       uses: actions/github-script@v6
+  #       with:
+  #         script: |
+  #           const { data } = await github.rest.repos.createRelease({
+  #             owner: context.repo.owner,
+  #             repo: context.repo.repo,
+  #             tag_name: `v${process.env.PACKAGE_VERSION}`,
+  #             name: `Overlayed v${process.env.PACKAGE_VERSION}`,
+  #             body: 'release notes here',
+  #             draft: true,
+  #             prerelease: false
+  #           })
+  #           return data.id
+  #
+  # build-tauri:
+  #   needs: create-release
+  #   permissions:
+  #     contents: write
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       platform: [macos-latest, ubuntu-latest, windows-latest]
+  #   env:
+  #     APP_DIR: "apps/desktop"
+  #   runs-on: ${{ matrix.platform }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #     - name: install Rust stable
+  #       uses: dtolnay/rust-toolchain@stable
+  #       with:
+  #         target: "x86_64-pc-windows-msvc,aarch64-apple-darwin,x86_64-apple-darwin,x86_64-unknown-linux-gnu"
+  #     - name: install dependencies (ubuntu only)
+  #       if: matrix.platform == 'ubuntu-latest'
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+  #     - uses: pnpm/action-setup@v2
+  #       with:
+  #         version: 8
+  #     - name: install frontend dependencies
+  #       run: pnpm install
+  #     - uses: tauri-apps/tauri-action@v0
+  #       env:
+  #         APPLE_ID: "${{ secrets.APPLE_ID }}"
+  #         APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
+  #         APPLE_TEAM_ID: "${{ secrets.APPLE_TEAM_ID }}"
+  #         APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
+  #         APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
+  #         APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         projectPath: "${{ env.APP_DIR }}"
+  #         releaseId: ${{ needs.create-release.outputs.release_id }}
+  #
+  sign-windows:
     runs-on: ubuntu-latest
-    outputs:
-      release_id: ${{ steps.create-release.outputs.result }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: get version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/package.json').version")" >> $GITHUB_ENV
-      - name: create release
-        id: create-release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `app-v${process.env.PACKAGE_VERSION}`,
-              name: `Desktop App v${process.env.PACKAGE_VERSION}`,
-              body: 'Take a look at the assets to download and install this app.',
-              draft: true,
-              prerelease: false
-            })
-            return data.id
-
-  build-tauri:
-    needs: create-release
+    needs: build-tauri
     permissions:
       contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
-    env:
-      APP_DIR: "apps/desktop"
-    runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
+      - uses: robinraju/release-downloader@v1.8
         with:
-          node-version: 20
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          target: "x86_64-pc-windows-msvc,aarch64-apple-darwin,x86_64-apple-darwin,x86_64-unknown-linux-gnu"
-      - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
+          # releaseId: ${{ needs.create-release.outputs.release_id }}
+          releaseId: "131013514"
+          fileName: ""
+          tarBall: false
+          zipBall: false 
+          out-file-path: "binaries"
+      - name: Sign binaries
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - name: install frontend dependencies
-        run: pnpm install
-      - uses: tauri-apps/tauri-action@v0
-        env:
-          APPLE_ID: "${{ secrets.APPLE_ID }}"
-          APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
-          APPLE_TEAM_ID: "${{ secrets.APPLE_TEAM_ID }}"
-          APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
-          APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
-          APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          projectPath: "${{ env.APP_DIR }}" 
-          releaseId: ${{ needs.create-release.outputs.release_id }}
+          docker run -it --rm -v "./binaries:/code/bin" ghcr.io/sslcom/codesigner:latest batch_sign \
+            -username=${ES_USERNAME} \
+            -password=${ES_PASSWORD} \
+            -credential_id=${ES_CREDENTIAL_ID} \
+            -totp_secret=${ES_TOTP_SECRET} \
+            -input_dir_path=="/code/bins" \
+            -override=true \
+            -malware_block=false
