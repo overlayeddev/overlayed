@@ -7,12 +7,12 @@ if (!GITHUB_TOKEN) {
 }
 
 const releaseId = 131045109;
-const octokit = getOctokit(GITHUB_TOKEN);
+const github = getOctokit(GITHUB_TOKEN);
 
 // read all files from the binariees dir
 const files = fs.readdirSync("./binaries");
 
-const { data } = await octokit.rest.repos.listReleases({
+const { data } = await github.rest.repos.listReleases({
   owner: "Hacksore",
   repo: "overlayed",
 });
@@ -26,7 +26,7 @@ for (const asset of latestRelease?.assets ?? []) {
   }
 
   console.log("deleting asset", asset.name, asset.id);
-  await octokit.rest.repos.deleteReleaseAsset({
+  await github.rest.repos.deleteReleaseAsset({
     owner: "Hacksore",
     repo: "overlayed",
     release_id: releaseId,
@@ -38,7 +38,7 @@ for (const file of files) {
   const filePath = `./binaries/${file}`;
   const fileData = fs.readFileSync(filePath);
 
-  const { data: uploadResponse } = await octokit.rest.repos.uploadReleaseAsset({
+  const { data: uploadResponse } = await github.rest.repos.uploadReleaseAsset({
     owner: "Hacksore",
     repo: "overlayed",
     release_id: releaseId,
