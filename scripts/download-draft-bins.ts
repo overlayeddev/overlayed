@@ -29,6 +29,10 @@ const main = async () => {
   // get first param to script
   const id = process.argv[2];
 
+  if (!id) {
+    throw new Error("🚫 No release id provided");
+  }
+
   console.log(`📦 downloading release artifacts for ${id}`);
 
   try {
