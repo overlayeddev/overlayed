@@ -117,3 +117,9 @@ jobs:
           ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
       - name: Postsign
         run: ls -hal binaries
+      # TODO: can we make it overwrite the draft bins somehow?
+      - uses: actions/upload-artifact@v3
+        with:
+          name: signed-windows-bins 
+          path: |
+            binaries/ 
