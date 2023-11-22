@@ -6,7 +6,10 @@ import { Readable } from "stream";
 import { finished } from "stream/promises";
 
 const { GITHUB_TOKEN } = process.env;
-console.log("download-draft-bins.ts");
+
+if(!GITHUB_TOKEN) {
+  throw new Error("GITHUB_TOKEN not set")
+}
 
 async function downloadFile(url: string, filepath = "./download") {
   const response = await fetch(url, {

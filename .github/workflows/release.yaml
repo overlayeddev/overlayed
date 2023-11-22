@@ -110,6 +110,10 @@ jobs:
             -credential_id=${ES_CREDENTIAL_ID} \
             -totp_secret=${ES_TOTP_SECRET} \
             -input_dir_path="/code/binaries"
-
+        env:
+          ES_USERNAME: "${{ secrets.ES_USERNAME }}"
+          ES_PASSWORD: "${{ secrets.ES_PASSWORD }}"
+          ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
+          ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
       - name: Postsign
         run: ls -hal binaries
