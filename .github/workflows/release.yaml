@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: get version
+      - name: Get app version
         run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
       - name: Create release or skip
         id: create-release
@@ -61,7 +61,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-      - name: setup node
+      - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -136,3 +136,54 @@ jobs:
           name: signed-windows-bins
           path: |
             binaries/signed
+      - name: Create release or skip
+        id: create-release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            import fs from "node:fs";
+
+            const releaseId = "${{ needs.create-release.outputs.release_id }}";
+            const octokit = getOctokit(GITHUB_TOKEN);
+
+            // read all files from the binariees dir
+            const files = fs.readdirSync("./binaries");
+
+            const { data } = await octokit.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            const [latestRelease] = data;
+
+            for (const asset of latestRelease?.assets ?? []) {
+              // skip if the asset doesnt end with msi or exe
+              if (![".msi", ".exe"].some((ext) => asset.name.endsWith(ext))) {
+                continue;
+              }
+
+              console.log("deleting asset", asset.name, asset.id);
+              await octokit.rest.repos.deleteReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: releaseId,
+                asset_id: asset.id,
+              });
+            }
+
+            for (const file of files) {
+              const filePath = `./binaries/${file}`;
+              const fileData = fs.readFileSync(filePath);
+
+              const { data: uploadResponse } = await octokit.rest.repos.uploadReleaseAsset({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: releaseId,
+                // @ts-ignore
+                data: fileData,
+                name: file,
+              });
+
+              console.log(uploadResponse);
+            }
+
