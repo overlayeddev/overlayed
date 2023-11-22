@@ -86,21 +86,15 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: robinraju/release-downloader@v1.8
-        with:
-          # releaseId: ${{ needs.create-release.outputs.release_id }}
-          releaseId: "131013514"
-          fileName: ""
-          tarBall: false
-          zipBall: false 
-          out-file-path: "binaries"
+      - name: Download bins
+        run: npx tsx scripts/download-draft-bins.ts
       - name: Sign Windows Binaries
         run: |
-          docker run -it --rm -v "./binaries:/code/bins" ghcr.io/sslcom/codesigner:latest batch_sign \
+          docker run -it --rm -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
             -username=${ES_USERNAME} \
             -password=${ES_PASSWORD} \
             -credential_id=${ES_CREDENTIAL_ID} \
             -totp_secret=${ES_TOTP_SECRET} \
-            -input_dir_path=="/code/bins" \
+            -input_dir_path=="/code/binaries" \
             -override=true \
             -malware_block=false
