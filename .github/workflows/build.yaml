@@ -1,0 +1,11 @@
+name: "build"
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  debug:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: debut
+        run: echo 1
