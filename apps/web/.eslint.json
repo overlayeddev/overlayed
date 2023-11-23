@@ -1,6 +1,7 @@
 {
   "extends": [
     "plugin:react/recommended",
+    "plugin:astro/recommended",
     "plugin:react/jsx-runtime",
     "custom"
   ],
@@ -8,9 +9,19 @@
     "import",
     "react"
   ],
-  "settings": {
-    "react": {
-      "version": "detect"
+  "overrides": [
+    {
+      "files": [
+        "*.astro"
+      ],
+      "parser": "astro-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "extraFileExtensions": [
+          ".astro"
+        ]
+      },
+      "rules": {}
     }
-  }
+  ]
 }

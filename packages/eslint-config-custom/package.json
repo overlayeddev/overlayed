@@ -4,7 +4,10 @@
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
-    "@vercel/style-guide": "^5.0.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "eslint-config-next": "^13.4.9",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-react": "^7.32.2",
     "eslint-config-turbo": "^1.10.12",
     "typescript": "^5.2.2"
   }

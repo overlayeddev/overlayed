@@ -15,6 +15,7 @@
     "glob": "^10.3.10",
     "prettier": "^3.0.3",
     "tsconfig": "workspace:*",
+    "eslint-config-custom": "workspace:*",
     "tsx": "^4.1.4",
     "turbo": "latest"
   },

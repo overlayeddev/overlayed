@@ -1,11 +1,11 @@
 {
-  "name": "overlayed.dev",
+  "name": "web",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
     "start": "astro dev",
     "build": "astro build",
-    "lint": "eslint --ext .astro,.js,.jsx,.mjs,.ts,.tsx .",
+    "lint": "eslint --ext .astro,.js,.ts,.tsx 'src/**/*'",
     "format": "prettier --write .",
     "preview": "astro preview",
     "astro": "astro"
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "eslint-config-custom": "*",
+    "eslint-plugin-astro": "^0.29.1",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.1",
     "prettier-plugin-tailwindcss": "^0.5.6"
