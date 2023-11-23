@@ -29,7 +29,7 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
           )}
         </div>
         <div className="hidden md:flex">
-          <button>
+          <button className="px-4">
             <Pin
               size={20}
               onClick={() => {
