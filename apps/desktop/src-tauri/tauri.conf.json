@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "overlayed",
+    "productName": "Overlayed",
     "version": "0.0.1"
   },
   "tauri": {
