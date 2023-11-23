@@ -99,7 +99,7 @@ fn main() {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           let storage = app.state::<Storage>();
 
-          toggle_clickthrough(window, &storage)
+          toggle_clickthrough(window, storage)
         }
         TRAY_SHOW_APP => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
@@ -114,7 +114,7 @@ fn main() {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           let storage = app.state::<Storage>();
 
-          set_clickthrough(false, &window, &storage);
+          set_clickthrough(false, &window, storage);
 
           window
             .eval("window.location.href = 'http://localhost:1420/#/settings'")

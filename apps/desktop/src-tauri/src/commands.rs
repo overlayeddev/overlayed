@@ -1,4 +1,4 @@
-use tauri::{State, Window, Manager};
+use tauri::{Manager, State, Window};
 
 use crate::{constants::*, Storage};
 
@@ -12,6 +12,8 @@ pub fn sync_theme(storage: State<Storage>, value: String) {
   };
 
   println!("Theme: {:?}", theme);
+
+  // update the
 }
 
 #[tauri::command]
@@ -26,7 +28,7 @@ pub fn open_devtools(window: Window) {
 }
 
 #[tauri::command]
-pub fn toggle_clickthrough(window: Window, storage: &State<Storage>) {
+pub fn toggle_clickthrough(window: Window, storage: State<Storage>) {
   let mut clickthrough = storage.clickthrough.lock().unwrap();
   // NOTE: This will mutate
   *clickthrough = !*clickthrough;
@@ -36,10 +38,11 @@ pub fn toggle_clickthrough(window: Window, storage: &State<Storage>) {
   // convert mutex guard to a regular reference
   let clickthrough = *clickthrough;
 
+  let storage = storage.clone();
   set_clickthrough(clickthrough, &window, storage);
 }
 
-pub fn set_clickthrough(value: bool, window: &Window, storage: &State<Storage>) {
+pub fn set_clickthrough(value: bool, window: &Window, storage: State<Storage>) {
   let theme = storage.theme.lock().unwrap();
 
   // let the client know
