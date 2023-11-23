@@ -3,7 +3,6 @@ import { Settings, Pin } from "lucide-react";
 
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig from "../config";
-import { Button } from "@radix-ui/themes";
 import { useAppStore } from "../store";
 
 export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
