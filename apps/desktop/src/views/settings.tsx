@@ -1,20 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { usePaths } from "../use-paths";
 import { Button } from "../components/ui/button";
+import { Slider } from "../components/ui/slider";
 import { useAppStore } from "../store";
-import { invoke, shell } from "@tauri-apps/api";
 import { LogicalSize, LogicalPosition, currentMonitor, appWindow } from "@tauri-apps/api/window";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SETTINGS_WIDTH = 400;
 const SETTINGS_HEIGHT = 700;
 
 export const Settings = () => {
   const navigate = useNavigate();
-  const paths = usePaths();
-  const { me, setMe } = useAppStore();
+  const { me } = useAppStore();
   const lastSizeRef = useRef<LogicalSize | null>(null);
   const lastWindowPosRef = useRef<LogicalPosition | null>(null);
+  const [scaleFactor, setScaleFactor] = useState(1);
 
   useEffect(() => {
     const alignAndSaveWindow = async () => {
@@ -67,51 +66,55 @@ export const Settings = () => {
   return (
     <div className="flex flex-col justify-between bg-zinc-800 h-full p-4 pt-4 pb-14">
       <div>
-        <h1 className="text-xl font-bold">Settings</h1>
+        <h1 className="text-xl mb-3 font-bold">Settings</h1>
 
-        <div>
-          <div className="flex flex-col gap-2 mb-2">
-            <Button
-              className="w-full"
-              onClick={async () => {
-                if (!paths.configDir) return;
-                await shell.open(paths.configDir);
-              }}
-            >
-              Open App Dir
-            </Button>
-            <Button
-              className="w-full"
-              onClick={async () => {
-                await invoke("open_devtools");
-              }}
-            >
-              Open Devtools
-            </Button>
-          </div>
-        </div>
-        <div>
-          <div className="">
-            <textarea
-              className="bg-zinc-600 w-full min-h-[300px]"
-              readOnly
-              value={JSON.stringify(me, null, 2)}
-            ></textarea>
-            <Button
-              disabled={!me?.id}
-              className="w-full"
-              intent="danger"
-              onClick={() => {
-                localStorage.removeItem("discord_access_token");
-                setMe(null);
-                navigate("/");
-              }}
-            >
-              logout
-            </Button>
-          </div>
-        </div>
+        <label className="flex items-center gap-2">
+          <span>Scale</span>
+        </label>
 
+        {/* <div> */}
+        {/*   <div className="flex flex-col gap-2 mb-2"> */}
+        {/*     <Button */}
+        {/*       className="w-full" */}
+        {/*       onClick={async () => { */}
+        {/*         if (!paths.configDir) return; */}
+        {/*         await shell.open(paths.configDir); */}
+        {/*       }} */}
+        {/*     > */}
+        {/*       Open App Dir */}
+        {/*     </Button> */}
+        {/*     <Button */}
+        {/*       className="w-full" */}
+        {/*       onClick={async () => { */}
+        {/*         await invoke("open_devtools"); */}
+        {/*       }} */}
+        {/*     > */}
+        {/*       Open Devtools */}
+        {/*     </Button> */}
+        {/*   </div> */}
+        {/* </div> */}
+        {/* <div> */}
+        {/*   <div className=""> */}
+        {/*     <textarea */}
+        {/*       className="bg-zinc-600 w-full min-h-[300px]" */}
+        {/*       readOnly */}
+        {/*       value={JSON.stringify(me, null, 2)} */}
+        {/*     ></textarea> */}
+        {/*     <Button */}
+        {/*       disabled={!me?.id} */}
+        {/*       className="w-full" */}
+        {/*       intent="danger" */}
+        {/*       onClick={() => { */}
+        {/*         localStorage.removeItem("discord_access_token"); */}
+        {/*         setMe(null); */}
+        {/*         navigate("/"); */}
+        {/*       }} */}
+        {/*     > */}
+        {/*       logout */}
+        {/*     </Button> */}
+        {/*   </div> */}
+        {/* </div> */}
+        {/**/}
         <hr className="my-8 border-gray-700" />
       </div>
 

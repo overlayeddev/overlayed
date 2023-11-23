@@ -1,6 +1,6 @@
 import { OverlayedUser } from "../types";
-import { HeadphonesOff } from "./headphones-off";
-import { MicOff } from "./mic-off";
+import { HeadphonesOff } from "./icons/headphones-off";
+import { MicOff } from "./icons/mic-off";
 
 export const User = ({ item }: { item: OverlayedUser }) => {
   const { id, selfMuted, selfDeafened, talking, avatarHash } = item;
