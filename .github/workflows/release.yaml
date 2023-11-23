@@ -85,7 +85,9 @@ jobs:
           APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
           APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
           APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
+          TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
           projectPath: "${{ env.APP_DIR }}"
           releaseId: ${{ needs.create-release.outputs.release_id }}

@@ -7,6 +7,8 @@
     "start": "tauri dev",
     "dev": "vite",
     "build": "tsc && vite build",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write .",
     "build:tauri": "tauri build",
     "preview": "vite preview",
     "tauri": "tauri"
@@ -28,6 +30,7 @@
     "zustand": "^4.4.5"
   },
   "devDependencies": {
+    "eslint-config-custom": "*",
     "@tauri-apps/cli": "^1.5.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

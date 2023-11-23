@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "custom"
+  ],
+  "plugins": [
+    "import",
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
