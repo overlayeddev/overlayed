@@ -26,6 +26,8 @@ tauri = { version = "1.5", features = [
   "window-start-dragging",
   "macos-private-api",
   "devtools",
+  "icon-ico",
+  "icon-png",
   "http-all",
 ] }
 serde = { version = "1.0", features = ["derive"] }

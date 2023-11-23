@@ -21,8 +21,23 @@ use window_custom::WindowExt as _;
 mod window_custom;
 
 use std::sync::atomic::AtomicBool;
+use std::sync::Mutex;
 
+#[derive(PartialEq)]
+#[derive(Debug)]
+enum ThemeType {
+  Light,
+  Dark,
+}
+
+// Flat top level mutable boll
 struct Clickthrough(AtomicBool);
+// struct Theme(ThemeType);
+
+// play with a struct with interior mutability
+struct Storage {
+  theme: Mutex<ThemeType>,
+}
 
 const MAIN_WINDOW_NAME: &str = "main";
 
@@ -48,6 +63,18 @@ fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
   let clickthrough_value = !clickthrough.0.load(std::sync::atomic::Ordering::Relaxed);
 
   set_clickthrough(clickthrough_value, &window, clickthrough);
+}
+
+#[tauri::command]
+fn sync_theme(storage: State<Storage>, value: String) {
+  let mut theme = storage.theme.lock().unwrap();
+  match value.as_str() {
+    "light" => *theme = ThemeType::Light,
+    "dark" => *theme = ThemeType::Dark,
+    _ => {}
+  };
+
+  println!("Theme: {:?}", theme);
 }
 
 #[tauri::command]
@@ -84,6 +111,16 @@ fn set_clickthrough(value: bool, window: &Window, clickthrough: State<'_, Clickt
   });
 
   window.set_ignore_cursor_events(value);
+
+  // TODO: get system theme so we can switch to the proper icon at runtime
+
+  let app = window.app_handle();
+  let icon = if value {
+    tauri::Icon::Raw(include_bytes!("../icons/tray-icon-pinned.png").to_vec())
+  } else {
+    tauri::Icon::Raw(include_bytes!("../icons/tray-icon.png").to_vec())
+  };
+  app.tray_handle().set_icon(icon).unwrap();
 }
 
 fn main() {
@@ -107,6 +144,9 @@ fn main() {
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .plugin(tauri_plugin_websocket::init())
     .manage(Clickthrough(AtomicBool::new(false)))
+    .manage(Storage {
+      theme: Mutex::new(ThemeType::Dark),
+    })
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
@@ -170,6 +210,7 @@ fn main() {
     .invoke_handler(generate_handler![
       toggle_clickthrough,
       get_clickthrough,
+      sync_theme,
       open_devtools
     ])
     .build(tauri::generate_context!())

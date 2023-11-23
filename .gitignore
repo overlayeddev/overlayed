@@ -38,3 +38,5 @@ yarn-error.log*
 .vercel
 
 binaries/
+
+apps/desktop/src-tauri/*.txt

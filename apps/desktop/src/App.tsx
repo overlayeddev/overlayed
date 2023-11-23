@@ -9,6 +9,8 @@ import { NavBar } from "./components/nav-bar";
 import { useClickthrough } from "./use-clickthrough";
 import { useDisableWebFeatures } from "./use-disable-context-menu";
 import { useSetWindowSize } from "./use-set-size";
+import { useEffect } from "react";
+import { invoke } from "@tauri-apps/api";
 
 function App() {
   useSocket();
@@ -17,6 +19,14 @@ function App() {
 
   const { clickthrough } = useClickthrough();
 
+  useEffect(() => {
+    const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+    darkThemeMq.addEventListener("change", e => {
+      const value = e.matches ? "dark" : "light";
+      console.log("Theme changed to", value);
+      invoke("sync_theme", { value });
+    });
+  }, []);
   return (
     <div className="text-white h-screen select-none rounded-lg">
       <NavBar clickthrough={clickthrough} />
