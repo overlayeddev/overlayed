@@ -55,7 +55,7 @@ jobs:
           args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }},updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload unstable ${{ matrix.platform }}
+      - name: Upload unstable ${{ matrix.setting.os }}
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.platform }}

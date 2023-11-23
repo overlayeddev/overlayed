@@ -12,7 +12,7 @@ async function downloadFile(url, filepath = "./download") {
       Authorization: `token ${GITHUB_TOKEN}`,
     },
   });
-  // @ts-ignore
+
   const body = Readable.fromWeb(response.body);
   const downloadWriteStream = fs.createWriteStream(filepath);
   await finished(body.pipe(downloadWriteStream));
