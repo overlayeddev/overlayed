@@ -37,6 +37,8 @@ jobs:
           version: 8
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          target: "${{ matrix.settings.toolchain }}"
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: "apps/desktop/src-tauri/target"
