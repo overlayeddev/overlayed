@@ -3,7 +3,7 @@ import { Settings, Pin } from "lucide-react";
 
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig from "../config";
-import { Button } from "./ui/button";
+import { Button } from "@radix-ui/themes";
 import { useAppStore } from "../store";
 
 export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
@@ -29,7 +29,7 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
           )}
         </div>
         <div className="hidden md:flex">
-          <Button intent="secondary" size="small">
+          <button>
             <Pin
               size={20}
               onClick={() => {
@@ -38,12 +38,12 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
                 navigate("/channel");
               }}
             />
-          </Button>
-          <Button intent="secondary" size="small">
+          </button>
+          <button>
             <Link to="/settings">
               <Settings size={20} />
             </Link>
-          </Button>
+          </button>
         </div>
       </div>
     </div>

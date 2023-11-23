@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/button";
+import { Button } from "@radix-ui/themes";
 import { useSetWindowSize } from "../use-set-size";
 import { useAppStore } from "../store";
 
-export const Error = () => {
+export const ErrorView = () => {
   useSetWindowSize({ width: 400, height: 600 });
   const { discordErrors } = useAppStore();
 

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^9.1.0",
+    "@radix-ui/themes": "^2.0.1",
     "@tanstack/react-router": "0.0.1-beta.204",
     "@tauri-apps/api": "^1.5.0",
     "@uidotdev/usehooks": "^2.4.1",
@@ -30,13 +31,13 @@
     "zustand": "^4.4.5"
   },
   "devDependencies": {
-    "eslint-config-custom": "*",
     "@tauri-apps/cli": "^1.5.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/uuid": "^9.0.6",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.16",
+    "eslint-config-custom": "*",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.0.2",

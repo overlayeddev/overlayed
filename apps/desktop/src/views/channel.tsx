@@ -1,7 +1,7 @@
 import { User } from "../components/user";
 import { useAppStore } from "../store";
 
-export const Channel = () => {
+export const ChannelView = () => {
   const { users } = useAppStore();
 
   return (

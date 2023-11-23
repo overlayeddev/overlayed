@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "../components/ui/button";
-import { Slider } from "../components/ui/slider";
+import { Button } from "@radix-ui/themes";
 import { useAppStore } from "../store";
 import { LogicalSize, LogicalPosition, currentMonitor, appWindow } from "@tauri-apps/api/window";
 import { useEffect, useRef, useState } from "react";
@@ -8,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 const SETTINGS_WIDTH = 400;
 const SETTINGS_HEIGHT = 700;
 
-export const Settings = () => {
+export const SettingsView = () => {
   const navigate = useNavigate();
   const { me } = useAppStore();
   const lastSizeRef = useRef<LogicalSize | null>(null);
