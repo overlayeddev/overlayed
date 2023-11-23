@@ -115,6 +115,7 @@ jobs:
           sha1sum binaries/*
       - name: Sign Windows Binaries
         run: |
+          echo "Starting code sign for windows bins..."
           docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
             -username=${ES_USERNAME} \
             -password=${ES_PASSWORD} \
