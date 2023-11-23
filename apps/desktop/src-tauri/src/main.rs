@@ -8,8 +8,13 @@
 #[macro_use]
 extern crate objc;
 
+mod constants;
+mod commands;
+
+use constants::*;
+
 use tauri::{
-  generate_handler, CustomMenuItem, Manager, RunEvent, State, SystemTray, SystemTrayEvent,
+  generate_handler, CustomMenuItem, Manager, RunEvent, SystemTray, SystemTrayEvent,
   SystemTrayMenu, Window,
 };
 
@@ -20,34 +25,16 @@ use tauri::{ActivationPolicy, App};
 use window_custom::WindowExt as _;
 mod window_custom;
 
-use std::sync::atomic::AtomicBool;
-use std::sync::{Mutex, MutexGuard};
+use std::sync::Mutex;
 
-#[derive(PartialEq)]
-#[derive(Debug)]
-enum ThemeType {
-  Light,
-  Dark,
-}
+use crate::commands::*;
 
 // play with a struct with interior mutability
+#[derive(Debug)]
 struct Storage {
   theme: Mutex<ThemeType>,
   clickthrough: Mutex<bool>,
 }
-
-const MAIN_WINDOW_NAME: &str = "main";
-
-/// for the emit of the clickthrough event
-const TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
-
-/// for the tray events
-const TRAY_TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
-const TRAY_SHOW_APP: &str = "show_app";
-const TRAY_RELOAD: &str = "reload";
-const TRAY_SETTINGS: &str = "show_settings";
-const TRAY_OPEN_DEVTOOLS: &str = "open_devtools";
-const TRAY_QUIT: &str = "quit";
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(app: &mut App, window: &Window) {
@@ -55,71 +42,6 @@ fn apply_macos_specifics(app: &mut App, window: &Window) {
   app.set_activation_policy(ActivationPolicy::Accessory);
 }
 
-#[tauri::command]
-fn toggle_clickthrough(window: Window, storage: State<Storage>) {
-  let clickthrough = storage.clickthrough.lock().unwrap();
-  let clickthrough_value = !*clickthrough;
-
-  set_clickthrough(clickthrough_value, &window, clickthrough);
-}
-
-#[tauri::command]
-fn sync_theme(storage: State<Storage>, value: String) {
-  let mut theme = storage.theme.lock().unwrap();
-  match value.as_str() {
-    "light" => *theme = ThemeType::Light,
-    "dark" => *theme = ThemeType::Dark,
-    _ => {}
-  };
-
-  println!("Theme: {:?}", theme);
-}
-
-#[tauri::command]
-fn get_clickthrough(storage: State<Storage>) -> bool {
-  let clickthrough = storage.clickthrough.lock().unwrap();
-  *clickthrough
-}
-
-#[tauri::command]
-fn open_devtools(window: Window) {
-  window.open_devtools();
-}
-
-fn set_clickthrough(value: bool, window: &Window, mut clickthrough: MutexGuard<'_, bool>) {
-
-  *clickthrough = value;
-
-  // let the client know
-  window.emit(TOGGLE_CLICKTHROUGH, value).unwrap();
-
-  // invert the label for the tray
-  let tray_handle = window.app_handle().tray_handle();
-  let enable_or_disable = if value { "Disable" } else { "Enable" };
-  tray_handle
-    .get_item(TRAY_TOGGLE_CLICKTHROUGH)
-    .set_title(format!("{} Clickthrough", enable_or_disable));
-
-  #[cfg(target_os = "macos")]
-  window.with_webview(move |webview| {
-    #[cfg(target_os = "macos")]
-    unsafe {
-      let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: value];
-    }
-  });
-
-  window.set_ignore_cursor_events(value);
-
-  // TODO: get system theme so we can switch to the proper icon at runtime
-
-  let app = window.app_handle();
-  let icon = if value {
-    tauri::Icon::Raw(include_bytes!("../icons/tray-icon-pinned.png").to_vec())
-  } else {
-    tauri::Icon::Raw(include_bytes!("../icons/tray-icon.png").to_vec())
-  };
-  app.tray_handle().set_icon(icon).unwrap();
-}
 
 fn main() {
   // System tray configuration
@@ -175,8 +97,9 @@ fn main() {
       SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
         TRAY_TOGGLE_CLICKTHROUGH => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
+          let storage = app.state::<Storage>();
 
-          toggle_clickthrough(window, app.state::<Storage>())
+          toggle_clickthrough(window, &storage)
         }
         TRAY_SHOW_APP => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
@@ -190,9 +113,8 @@ fn main() {
         TRAY_SETTINGS => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
           let storage = app.state::<Storage>();
-          let clickthrough = storage.clickthrough.lock().unwrap();
 
-          set_clickthrough(false, &window, clickthrough);
+          set_clickthrough(false, &window, &storage);
 
           window
             .eval("window.location.href = 'http://localhost:1420/#/settings'")
