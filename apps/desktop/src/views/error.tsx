@@ -8,7 +8,7 @@ export const ErrorView = () => {
   const { discordErrors } = useAppStore();
 
   return (
-    <div className="flex flex-col items-center h-screen p-2 bg-zinc-800">
+    <div className="flex flex-col items-center h-screen p-2 bg-zinc-900">
       <div className="pt-8 pb-8 font-bold text-2xl text-center">
         <p>Error Connecting to Discord</p>
       </div>
@@ -22,7 +22,7 @@ export const ErrorView = () => {
       </div>
       <div className="pt-8 text-2xl flex items-center justify-center">
         <Link to="/">
-          <Button>Login to Discord</Button>
+          <Button size="4">Login to Discord</Button>
         </Link>
       </div>
     </div>

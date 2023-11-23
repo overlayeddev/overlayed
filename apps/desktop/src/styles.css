@@ -2,3 +2,7 @@
 @tailwind utilities;
 @tailwind components;
 
+
+li {
+  list-style: circle;
+}
