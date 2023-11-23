@@ -50,6 +50,7 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install
       - uses: tauri-apps/tauri-action@v0
+        id: build_os
         with:
           projectPath: apps/desktop
           args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }},updater
@@ -59,4 +60,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.platform }}
-          path: "${{ join(fromJSON(steps.build_tauri.outputs.artifactPaths), '\n') }}"
+          path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
