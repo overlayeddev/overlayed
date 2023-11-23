@@ -18,12 +18,11 @@ async function downloadFile(url, filepath = "./download") {
   await finished(body.pipe(downloadWriteStream));
 }
 
-const BINARIES_DIR = "binaries";
+const BINARIES_DIR = "./binaries";
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 /** @param id {String} */
 export const script = async ({ context, github }, id) => {
-
   console.log(`📦 downloading release artifacts for ${id}`);
 
   try {

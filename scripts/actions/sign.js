@@ -1,11 +1,12 @@
 import fs from "fs";
 const releaseId = "${{ needs.create-release.outputs.release_id }}";
 
-const SIGNED_BINARIES_DIR = "binaries/signed";
+const SIGNED_BINARIES_DIR = "./binaries/signed";
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
-export const script = async ({ context, github }) => {
-  console.log("🔍 Start sign of windows binaries...");
+export const script = async ({ context, github }, releaseId) => {
+  console.log("🔍 Start sign of windows binaries for release id", releaseId);
+  console.log({ cwd: process.cwd() });
 
   if (!fs.existsSync(SIGNED_BINARIES_DIR)) {
     console.log("No signed binaries found");
@@ -40,17 +41,21 @@ export const script = async ({ context, github }) => {
     const filePath = `${SIGNED_BINARIES_DIR}/${file}`;
     const fileData = fs.readFileSync(filePath);
 
-    const { data: uploadResponse } = await github.rest.repos.uploadReleaseAsset(
-      {
-        owner: context.repo.owner,
-        repo: context.repo.repo,
-        release_id: releaseId,
-        // @ts-ignore
-        data: fileData,
-        name: file,
-      },
-    );
+    console.log("uploading asset", file, filePath);
 
-    console.log(uploadResponse);
+    try {
+      const { data: uploadResponse } =
+        await github.rest.repos.uploadReleaseAsset({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          release_id: releaseId,
+          data: fileData,
+          name: file,
+        });
+
+      console.log("uploaded asset", uploadResponse.name, uploadResponse.id);
+    } catch (error) {
+      console.log("error uploading asset", error.message);
+    }
   }
 };
