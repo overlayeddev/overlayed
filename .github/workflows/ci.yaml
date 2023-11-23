@@ -4,13 +4,28 @@ on:
   push:
 
 jobs:
-  test-tauri:
+  build-tauri:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-latest, windows-latest]
+        settings:
+          - host: macos-latest
+            target: universal-apple-darwin
+            toolchain: aarch64-apple-darwin,x86_64-apple-darwin
+            bundles: app,dmg
+            os: mac
+          - host: windows-latest
+            target: x86_64-pc-windows-msvc
+            toolchain: x86_64-pc-windows-msvc
+            bundles: msi,nsis
+            os: windows
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            toolchain: x86_64-unknown-linux-gnu
+            bundles: deb,appimage
+            os: linux
 
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
       - name: setup node
@@ -26,7 +41,7 @@ jobs:
         with:
           workspaces: "apps/desktop/src-tauri/target"
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-latest'
+        if: matrix.settings.host == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
@@ -35,5 +50,11 @@ jobs:
       - uses: tauri-apps/tauri-action@v0
         with:
           projectPath: apps/desktop
+          args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }},updater
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload unstable ${{ matrix.platform }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform }}
+          path: "${{ join(fromJSON(steps.build_tauri.outputs.artifactPaths), '\n') }}"
