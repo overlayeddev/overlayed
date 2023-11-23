@@ -21,7 +21,7 @@ use window_custom::WindowExt as _;
 mod window_custom;
 
 use std::sync::atomic::AtomicBool;
-use std::sync::Mutex;
+use std::sync::{Mutex, MutexGuard};
 
 #[derive(PartialEq)]
 #[derive(Debug)]
@@ -30,13 +30,10 @@ enum ThemeType {
   Dark,
 }
 
-// Flat top level mutable boll
-struct Clickthrough(AtomicBool);
-// struct Theme(ThemeType);
-
 // play with a struct with interior mutability
 struct Storage {
   theme: Mutex<ThemeType>,
+  clickthrough: Mutex<bool>,
 }
 
 const MAIN_WINDOW_NAME: &str = "main";
@@ -59,8 +56,9 @@ fn apply_macos_specifics(app: &mut App, window: &Window) {
 }
 
 #[tauri::command]
-fn toggle_clickthrough(window: Window, clickthrough: State<'_, Clickthrough>) {
-  let clickthrough_value = !clickthrough.0.load(std::sync::atomic::Ordering::Relaxed);
+fn toggle_clickthrough(window: Window, storage: State<Storage>) {
+  let clickthrough = storage.clickthrough.lock().unwrap();
+  let clickthrough_value = !*clickthrough;
 
   set_clickthrough(clickthrough_value, &window, clickthrough);
 }
@@ -78,8 +76,9 @@ fn sync_theme(storage: State<Storage>, value: String) {
 }
 
 #[tauri::command]
-fn get_clickthrough(clickthrough: State<'_, Clickthrough>) -> bool {
-  clickthrough.0.load(std::sync::atomic::Ordering::Relaxed)
+fn get_clickthrough(storage: State<Storage>) -> bool {
+  let clickthrough = storage.clickthrough.lock().unwrap();
+  *clickthrough
 }
 
 #[tauri::command]
@@ -87,10 +86,9 @@ fn open_devtools(window: Window) {
   window.open_devtools();
 }
 
-fn set_clickthrough(value: bool, window: &Window, clickthrough: State<'_, Clickthrough>) {
-  clickthrough
-    .0
-    .store(value, std::sync::atomic::Ordering::Relaxed);
+fn set_clickthrough(value: bool, window: &Window, mut clickthrough: MutexGuard<'_, bool>) {
+
+  *clickthrough = value;
 
   // let the client know
   window.emit(TOGGLE_CLICKTHROUGH, value).unwrap();
@@ -143,9 +141,9 @@ fn main() {
     // TODO: this should work on windows
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .plugin(tauri_plugin_websocket::init())
-    .manage(Clickthrough(AtomicBool::new(false)))
     .manage(Storage {
       theme: Mutex::new(ThemeType::Dark),
+      clickthrough: Mutex::new(false),
     })
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
@@ -178,7 +176,7 @@ fn main() {
         TRAY_TOGGLE_CLICKTHROUGH => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
-          toggle_clickthrough(window, app.state::<Clickthrough>())
+          toggle_clickthrough(window, app.state::<Storage>())
         }
         TRAY_SHOW_APP => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
@@ -191,8 +189,10 @@ fn main() {
         }
         TRAY_SETTINGS => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
+          let storage = app.state::<Storage>();
+          let clickthrough = storage.clickthrough.lock().unwrap();
 
-          set_clickthrough(false, &window, app.state::<Clickthrough>());
+          set_clickthrough(false, &window, clickthrough);
 
           window
             .eval("window.location.href = 'http://localhost:1420/#/settings'")
