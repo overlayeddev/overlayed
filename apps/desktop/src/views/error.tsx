@@ -13,11 +13,7 @@ export const Error = () => {
         <p>Error Connecting to Discord</p>
       </div>
       <div className="w-32 h-32">
-        <img
-          src="/img/sad-face.svg"
-          alt="sad"
-          className="text-white fill-white w-full"
-        />
+        <img src="/img/sad-face.svg" alt="sad" className="text-white fill-white w-full" />
       </div>
       <div className="pt-8 pb-8 text-2xl text-center">
         {discordErrors.map((item, i) => (

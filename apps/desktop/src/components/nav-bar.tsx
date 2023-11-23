@@ -10,10 +10,7 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentChannel } = useAppStore();
-  const opacity =
-    clickthrough && location.pathname === "/channel"
-      ? "opacity-0"
-      : "opacity-100";
+  const opacity = clickthrough && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
 
   return (
     <div
@@ -22,12 +19,7 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
     >
       <div data-tauri-drag-region className="flex justify-between">
         <div className="flex items-center">
-          <img
-            src="/img/32x32.png"
-            alt="logo"
-            data-tauri-drag-region
-            className="w-8 h-8 mr-2"
-          />
+          <img src="/img/32x32.png" alt="logo" data-tauri-drag-region className="w-8 h-8 mr-2" />
           {location.pathname === "/channel" ? (
             <div data-tauri-drag-region className="hidden md:inline">
               {currentChannel?.name}

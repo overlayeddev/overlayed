@@ -7,18 +7,16 @@ export const useClickthrough = () => {
   const [clickthrough, setClickthrough] = useState(false);
   useEffect(() => {
     // sub if it changes from outside of tauri
-    const unlisten = listen<boolean>("toggle_clickthrough", (event) => {
+    const unlisten = listen<boolean>("toggle_clickthrough", event => {
       setClickthrough(event.payload);
       overlayedConfig.set("clickthrough", event.payload);
     });
 
     // This is so we can sync the state
-    invoke<boolean>("get_clickthrough").then((clickthrough) =>
-      setClickthrough(clickthrough)
-    );
+    invoke<boolean>("get_clickthrough").then(clickthrough => setClickthrough(clickthrough));
 
     return () => {
-      unlisten.then((f) => f());
+      unlisten.then(f => f());
     };
   }, []);
 

@@ -1,4 +1,3 @@
-
 // test local script
 // op run --env-file .env -- npx tsx scripts/test.ts <script>
 import { getOctokit, context } from "@actions/github";

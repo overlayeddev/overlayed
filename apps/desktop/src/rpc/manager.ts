@@ -129,10 +129,7 @@ class SocketManager {
   private async onMessage(event: Message) {
     // TODO: this has to be a bug in the upstream lib, we should get a proper code
     // and not have to check the raw dawg string to see if something is wrong
-    if (
-      typeof event === "string" &&
-      (event as string).includes("Connection reset without closing handshake")
-    ) {
+    if (typeof event === "string" && (event as string).includes("Connection reset without closing handshake")) {
       this.navigate?.("/error");
     }
 
@@ -179,10 +176,7 @@ class SocketManager {
         this.store.clearUsers();
 
         if (this.store.currentChannel) {
-          this.channelEvents(
-            RPCCommand.UNSUBSCRIBE,
-            this.store.currentChannel.id,
-          );
+          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel.id);
         }
 
         // after unsub we clear the channel
@@ -206,7 +200,7 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch < TokenResponse > (`${STREAMKIT_URL}/overlay/token`, {
+      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
         method: "POST",
         body: Body.json({ code }),
       });
@@ -233,10 +227,7 @@ class SocketManager {
 
     // console.log(payload);
     // we are ready to do things cause we are fully authed
-    if (
-      payload.cmd === RPCCommand.AUTHENTICATE &&
-      payload.evt === RPCEvent.ERROR
-    ) {
+    if (payload.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
       // if they have an invalid we remove it and make them auth again
       if (payload.data.code === RPCErrors.INVALID_TOKEN) {
         this.store.pushError(payload.data.message);
@@ -262,10 +253,7 @@ class SocketManager {
       this.navigate?.("/channel");
     }
 
-    if (
-      payload.evt === RPCEvent.SPEAKING_START ||
-      payload.evt === RPCEvent.SPEAKING_STOP
-    ) {
+    if (payload.evt === RPCEvent.SPEAKING_START || payload.evt === RPCEvent.SPEAKING_STOP) {
       const isSpeaking = payload.evt !== RPCEvent.SPEAKING_START;
       this.store.setTalking(payload.data.user_id, !isSpeaking);
     }
@@ -296,7 +284,7 @@ class SocketManager {
       JSON.stringify({
         ...payload,
         nonce: uuid.v4(),
-      }),
+      })
     );
   }
 
@@ -306,17 +294,14 @@ class SocketManager {
    * @param cmd {RPCCommand} SUBSCRIBE or SUBSCRIBE
    * @param channelId The channel to subscribe to events in
    */
-  channelEvents(
-    cmd: RPCCommand.SUBSCRIBE | RPCCommand.UNSUBSCRIBE,
-    channelId: string,
-  ) {
-    SUBSCRIBABLE_EVENTS.forEach((eventName) =>
+  channelEvents(cmd: RPCCommand.SUBSCRIBE | RPCCommand.UNSUBSCRIBE, channelId: string) {
+    SUBSCRIBABLE_EVENTS.forEach(eventName =>
       this.send({
         cmd,
         args: { channel_id: channelId },
         evt: eventName,
         nonce: uuid.v4(),
-      }),
+      })
     );
   }
 }
@@ -325,7 +310,7 @@ class SocketManager {
 export const useSocket = () => {
   const navigate = useNavigate();
   //TODO: should this be a ref instead?
-  const [socket, setSocket] = useState < SocketManager | null > (null);
+  const [socket, setSocket] = useState<SocketManager | null>(null);
 
   useEffect(() => {
     console.log("Initializing websocket...");

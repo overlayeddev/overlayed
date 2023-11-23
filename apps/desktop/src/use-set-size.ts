@@ -1,17 +1,11 @@
 import { LogicalSize, appWindow } from "@tauri-apps/api/window";
 import { useEffect, useRef } from "react";
 
-export const useSetWindowSize = ({
-  width,
-  height,
-}: {
-  width: number;
-  height: number;
-}) => {
+export const useSetWindowSize = ({ width, height }: { width: number; height: number }) => {
   const lastSizeRef = useRef<LogicalSize | null>(null);
 
   useEffect(() => {
-    appWindow.outerSize().then((size) => {
+    appWindow.outerSize().then(size => {
       lastSizeRef.current = size;
 
       // set the new

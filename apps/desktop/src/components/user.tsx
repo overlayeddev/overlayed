@@ -2,16 +2,10 @@ import { OverlayedUser } from "../types";
 import { HeadphonesOff } from "./headphones-off";
 import { MicOff } from "./mic-off";
 
-export const User = ({
-  item,
-}: {
-  item: OverlayedUser;
-}) => {
+export const User = ({ item }: { item: OverlayedUser }) => {
   const { id, selfMuted, selfDeafened, talking, avatarHash } = item;
 
-  const avatarUrl = avatarHash
-    ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.jpg`
-    : "/img/default.png";
+  const avatarUrl = avatarHash ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.jpg` : "/img/default.png";
 
   const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted ? "text-zinc-400" : "";
@@ -20,11 +14,9 @@ export const User = ({
 
   return (
     <div className="flex flex-wrap py-1 p-2 items-center">
-      <div
-        className={`pointer-events-none relative rounded-full border-2 mr-2 ${avatarClass} ${talkingClass}`}
-      >
+      <div className={`pointer-events-none relative rounded-full border-2 mr-2 ${avatarClass} ${talkingClass}`}>
         <img
-          onError={(e) => {
+          onError={e => {
             // @ts-ignore
             e.target.onerror = null;
             // @ts-ignore
@@ -44,9 +36,7 @@ export const User = ({
       <div
         className={`max-w-[calc(100%_-_50px)] md:flex hidden pointer-events-none items-center rounded-md bg-zinc-800 ${mutedClass} p-1 pl-2 pr-2`}
       >
-        <span className={`truncate text-ellipsis`}>
-          {item.username}
-        </span>
+        <span className={`truncate text-ellipsis`}>{item.username}</span>
         <div className="flex">
           {selfMuted && <MicOff />}
           {selfDeafened && <HeadphonesOff />}

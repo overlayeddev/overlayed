@@ -79,25 +79,25 @@ export interface OverlayedUser {
 }
 
 export interface VoiceStateData {
-  nick: string,
-  mute: boolean,
-  volume: number,
-  pan: Pan,
-  voice_state: VoiceState,
-  user: VoiceStateUser,
+  nick: string;
+  mute: boolean;
+  volume: number;
+  pan: Pan;
+  voice_state: VoiceState;
+  user: VoiceStateUser;
 }
 
 export interface ChannelJoinEvent {
-  id: string,
-  name: string,
-  type: number,
-  topic: string,
-  bitrate: number,
-  user_limit: string,
-  guild_id: string,
-  position: number,
-  messages: any,
-  voice_states: VoiceStateData[]
+  id: string;
+  name: string;
+  type: number;
+  topic: string;
+  bitrate: number;
+  user_limit: string;
+  guild_id: string;
+  position: number;
+  messages: any;
+  voice_states: VoiceStateData[];
 }
 
 interface Pan {
@@ -123,7 +123,7 @@ interface VoiceUser {
   global_name: string;
   id: string;
   premium_type: number;
-  username: string
+  username: string;
 }
 
 export interface VoiceStateUser {
@@ -134,4 +134,3 @@ export interface VoiceStateUser {
   voice_state: VoiceState;
   user: VoiceUser;
 }
-

@@ -70,10 +70,7 @@ const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
 };
 
 // sort internal app state users by name and me on top
-const sortOverlayedUsers = (
-  myId: string | undefined,
-  users: Record<string, OverlayedUser>,
-) => {
+const sortOverlayedUsers = (myId: string | undefined, users: Record<string, OverlayedUser>) => {
   const sortedUserArray = Object.entries(users).sort((a, b) => {
     if (a[1].id === myId) return -1;
     if (b[1].id === myId) return 1;
@@ -93,57 +90,57 @@ const sortOverlayedUsers = (
 export const useAppStore = create<AppState & AppActions>()(
   // TODO: fix later
   // @ts-ignore
-  immer((set) => ({
+  immer(set => ({
     me: null,
     discordErrors: [],
     clickThrough: false,
     currentChannel: null,
     users: {},
-    setMe: (data) =>
-      set((state) => {
+    setMe: data =>
+      set(state => {
         state.me = data;
       }),
     setTalking: (id, talking) =>
-      set((state) => {
+      set(state => {
         state.users[id].talking = talking;
       }),
-    removeUser: (id) =>
+    removeUser: id =>
       set((state: AppState) => {
         delete state.users[id];
       }),
-    updateUser: (item) =>
+    updateUser: item =>
       set((state: AppState) => {
         state.users[item.user.id] = createUserStateItem(item);
       }),
-    setUsers: (users) =>
-      set((state) => {
+    setUsers: users =>
+      set(state => {
         state.users = sortUserList(state.me?.id, users);
       }),
     clearUsers: () =>
-      set((state) => {
+      set(state => {
         state.users = {};
       }),
-    addUser: (item) =>
-      set((state) => {
+    addUser: item =>
+      set(state => {
         const tempUsers = { ...state.users };
         tempUsers[item.user.id] = createUserStateItem(item);
         state.users = sortOverlayedUsers(state.me?.id, tempUsers);
       }),
-    setCurrentChannel: (channel) =>
-      set((state) => {
+    setCurrentChannel: channel =>
+      set(state => {
         state.currentChannel = channel;
       }),
     setClickThrough: (enabled: boolean) =>
-      set((state) => {
+      set(state => {
         state.clickThrough = enabled;
       }),
-    pushError: (error) =>
-      set((state) => {
+    pushError: error =>
+      set(state => {
         state.discordErrors.push(error);
       }),
     resetErrors: () =>
-      set((state) => {
+      set(state => {
         state.discordErrors = [];
       }),
-  })),
+  }))
 );

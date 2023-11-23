@@ -20,10 +20,7 @@ export const Main = () => {
         <p>Authorize Discord</p>
         <ul className="text-sm text-center">
           <li className="text-zinc-400">
-            <p>
-              This app is not affiliated with Discord. Discord is a trademark of
-              Discord Inc.
-            </p>
+            <p>This app is not affiliated with Discord. Discord is a trademark of Discord Inc.</p>
           </li>
         </ul>
         <ul className="flex flex-col gap-4 p-4 mt-6 text-2xl text-left">

@@ -3,12 +3,7 @@ import { usePaths } from "../use-paths";
 import { Button } from "../components/ui/button";
 import { useAppStore } from "../store";
 import { invoke, shell } from "@tauri-apps/api";
-import {
-  LogicalSize,
-  LogicalPosition,
-  currentMonitor,
-  appWindow,
-} from "@tauri-apps/api/window";
+import { LogicalSize, LogicalPosition, currentMonitor, appWindow } from "@tauri-apps/api/window";
 import { useEffect, useRef } from "react";
 
 const SETTINGS_WIDTH = 400;
@@ -40,16 +35,12 @@ export const Settings = () => {
 
       // if out of the x bounds set it to the start of the screen
       if (x + SETTINGS_WIDTH > screenWidth) {
-        appWindow.setPosition(
-          new LogicalPosition(screenWidth - SETTINGS_WIDTH, y),
-        );
+        appWindow.setPosition(new LogicalPosition(screenWidth - SETTINGS_WIDTH, y));
       }
 
       // if out of the x bounds set it to the start of the screen
       if (y + SETTINGS_HEIGHT > screenHeight) {
-        appWindow.setPosition(
-          new LogicalPosition(x, screenHeight - SETTINGS_HEIGHT),
-        );
+        appWindow.setPosition(new LogicalPosition(x, screenHeight - SETTINGS_HEIGHT));
       }
 
       // change the size to something good lookin
@@ -59,7 +50,7 @@ export const Settings = () => {
       const factor = await appWindow.scaleFactor();
       // we never clean this up LMAO
       // FIXME: please fix
-      await appWindow.onResized((size) => {
+      await appWindow.onResized(size => {
         lastSizeRef.current = size.payload.toLogical(factor);
       });
     };
