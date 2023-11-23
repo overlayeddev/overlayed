@@ -109,6 +109,10 @@ jobs:
             const { script } = await import('${{ github.workspace }}/scripts/actions/download-draft-bins.js')
             const id = "${{ needs.create-release.outputs.release_id }}";
             await script({ github, context }, id);
+        env:
+          # NOTE: we need this to download the bins
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Presign
         run: |
           ls -hal binaries
