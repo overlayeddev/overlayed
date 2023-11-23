@@ -119,5 +119,6 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { script } = await import('${{ github.workspace }}/scripts/actions/sign.js')
-            await script({ github, context });
+            const { script } = await import('${{ github.workspace }}/scripts/actions/sign.js');
+            const id = "${{ needs.create-release.outputs.release_id }}";
+            await script({ github, context }, id);
