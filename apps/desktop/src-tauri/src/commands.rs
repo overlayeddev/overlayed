@@ -39,10 +39,15 @@ pub fn toggle_clickthrough(window: Window, clickthrough: State<Clickthrough>) {
   let app = window.app_handle();
   let value = !get_clickthrough(app.state::<Clickthrough>());
 
-  set_clickthrough(value, &window, clickthrough);
+  _set_clickthrough(value, &window, clickthrough);
 }
 
-pub fn set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthrough>) {
+#[tauri::command]
+pub fn set_clickthrough(window: Window, clickthrough: State<Clickthrough>, value: bool) {
+  _set_clickthrough(value, &window, clickthrough);
+}
+
+fn _set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthrough>) {
   clickthrough
     .0
     .store(value, std::sync::atomic::Ordering::Relaxed);
@@ -75,6 +80,8 @@ pub fn set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickt
   );
 }
 
+// BUG: there is a bug if you have an inverted menubar it will be dark and we still load the wrong
+// icon
 fn update_tray_icon(tray: SystemTrayHandle, theme: ThemeType, clickthrough: bool) {
   let icon = if theme == ThemeType::Dark {
     if clickthrough {

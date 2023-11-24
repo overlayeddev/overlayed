@@ -45,7 +45,7 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
         let storage = app.state::<Clickthrough>();
 
-        set_clickthrough(false, &window, storage);
+        set_clickthrough(window.clone(), storage, false);
 
         window
           .eval("window.location.href = 'http://localhost:1420/#/settings'")

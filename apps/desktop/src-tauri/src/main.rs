@@ -91,6 +91,7 @@ fn main() {
     .invoke_handler(generate_handler![
       toggle_clickthrough,
       get_clickthrough,
+      set_clickthrough,
       sync_theme,
       open_devtools
     ])
