@@ -10,7 +10,7 @@ running, please look at [LOCAL.md](/LOCAL.md) for setup instructions.
 
 This project and everyone participating in it is governed by the
 [Code of Conduct](/CODE_OF_CONDUCT.md). By
-participating you are expected to uphold this code. 
+participating you are expected to uphold this code.
 
 ## I Want to Contribute
 
