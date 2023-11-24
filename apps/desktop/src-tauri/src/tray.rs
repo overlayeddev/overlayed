@@ -1,9 +1,10 @@
-use tauri::{
-  App, AppHandle, CustomMenuItem, FsScopeEvent, Manager, SystemTray, SystemTrayEvent,
-  SystemTrayMenu,
-};
+use tauri::{AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
 
-use crate::{constants::*, Storage, Clickthrough, commands::toggle_clickthrough};
+use crate::{
+  commands::{set_clickthrough, toggle_clickthrough},
+  constants::*,
+  Clickthrough,
+};
 
 pub fn create_tray_items() -> SystemTray {
   // System tray configuration
@@ -42,9 +43,9 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
       }
       TRAY_SETTINGS => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
-        let storage = app.state::<Storage>();
+        let storage = app.state::<Clickthrough>();
 
-        // set_clickthrough(false, &window, storage);
+        set_clickthrough(false, &window, storage);
 
         window
           .eval("window.location.href = 'http://localhost:1420/#/settings'")

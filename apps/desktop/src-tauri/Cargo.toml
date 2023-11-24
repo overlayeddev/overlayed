@@ -38,6 +38,7 @@ tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspac
 tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 serde_json = "1.0"
 reqwest = { version = "0.11", features = ["json"] }
+dark-light = "1.0.0"
 
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]

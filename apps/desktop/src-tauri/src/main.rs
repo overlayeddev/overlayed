@@ -15,7 +15,7 @@ mod window_custom;
 
 use crate::commands::*;
 use constants::*;
-use std::sync::{atomic::AtomicBool, Arc, Mutex};
+use std::sync::{atomic::AtomicBool, Mutex};
 use tauri::{generate_handler, Manager, RunEvent, Window};
 use tray::{create_tray_items, handle_tray_events};
 
@@ -68,6 +68,16 @@ fn main() {
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       window.open_devtools();
+
+      let mode = dark_light::detect();
+      let mode_string = match mode {
+        dark_light::Mode::Dark => "dark",
+        dark_light::Mode::Light => "light",
+        _ => "dark",
+      };
+
+      // sync the theme
+      sync_theme(window, app.state::<Storage>(), mode_string.to_string());
 
       Ok(())
     })

@@ -11,16 +11,17 @@ pub fn sync_theme(window: Window, storage: State<Storage>, value: String) {
     _ => {}
   };
 
-  println!("Theme: {:?}", theme);
-
-  // get the current clickthrough value
-  let clickthrough = window.app_handle().state::<Clickthrough>().0.load(std::sync::atomic::Ordering::Relaxed);
   // update the tray icon
-  // update_tray_icon(
-  //   window.app_handle().tray_handle(),
-  //   *window.app_handle().state::<Storage>().theme.lock().unwrap(),
-  //   clickthrough,
-  // );
+  let app = window.app_handle();
+  let clickthrough = get_clickthrough(app.state::<Clickthrough>());
+  let tray_handle = app.tray_handle();
+  let theme = *theme;
+
+  update_tray_icon(
+    tray_handle,
+    theme,
+    clickthrough,
+  );
 }
 
 #[tauri::command]
@@ -42,7 +43,6 @@ pub fn toggle_clickthrough(window: Window, clickthrough: State<Clickthrough>) {
 }
 
 pub fn set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthrough>) {
-  println!("Clickthrough: {}", value);
   clickthrough
     .0
     .store(value, std::sync::atomic::Ordering::Relaxed);

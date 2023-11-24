@@ -19,6 +19,7 @@ function App() {
 
   const { clickthrough } = useClickthrough();
 
+  // NOTE: this is janky and wish we could do all in rust
   useEffect(() => {
     const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
     darkThemeMq.addEventListener("change", e => {
@@ -27,6 +28,7 @@ function App() {
       invoke("sync_theme", { value });
     });
   }, []);
+
   return (
     <div className="text-white h-screen select-none rounded-lg">
       <NavBar clickthrough={clickthrough} />
