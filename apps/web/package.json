@@ -7,7 +7,7 @@
     "build": "astro build",
     "lint": "eslint --ext .astro,.js,.ts 'src/**/*'",
     "check:format": "prettier --check \"**/*.{astro,ts,js}\"",
-    "format": "prettier --write .",
+    "format": "prettier --write \"**/*.{astro,ts,js}\"",
     "preview": "astro preview",
     "astro": "astro"
   },
