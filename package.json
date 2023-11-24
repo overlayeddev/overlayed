@@ -4,9 +4,9 @@
     "start": "turbo start",
     "build": "turbo run build",
     "build:tauri": "turbo run build:tauri",
-    "check:format": "prettier --check \"**/*.{ts,tsx,md}\"",
+    "check:format": "turbo run check:format",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "turbo run format"
   },
   "type": "module",
   "devDependencies": {

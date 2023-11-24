@@ -159,7 +159,7 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
       prettier-plugin-astro:
-        specifier: ^0.12.1
+        specifier: ^0.12.2
         version: 0.12.2
       prettier-plugin-tailwindcss:
         specifier: ^0.5.6

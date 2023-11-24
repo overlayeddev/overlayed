@@ -1,20 +1,21 @@
 {
-  "name": "updater",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "deploy": "wrangler deploy",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "format": "prettier --write .",
-    "start": "wrangler dev"
-  },
-  "devDependencies": {
-    "eslint-config-custom": "*",
-    "@cloudflare/workers-types": "^4.20230419.0",
-    "typescript": "^5.0.4",
-    "wrangler": "^3.0.0"
-  },
-  "dependencies": {
-    "hono": "^3.10.2"
-  }
+	"name": "updater",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+		"check:format": "prettier --check \"**/*.{ts,js,md}\"",
+		"format": "prettier --write .",
+		"start": "wrangler dev"
+	},
+	"devDependencies": {
+		"eslint-config-custom": "*",
+		"@cloudflare/workers-types": "^4.20230419.0",
+		"typescript": "^5.0.4",
+		"wrangler": "^3.0.0"
+	},
+	"dependencies": {
+		"hono": "^3.10.2"
+	}
 }

@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint 'src/**/*' --ext .js,.jsx,.ts,.tsx",
+    "check:format": "prettier --check 'src/**/*.{ts,js,tsx,jsx}'",
     "format": "prettier --write .",
     "build:tauri": "tauri build",
     "preview": "vite preview",
