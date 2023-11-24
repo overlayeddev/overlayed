@@ -1,9 +1,9 @@
-use tauri::{Manager, State, Window};
+use tauri::{Manager, State, SystemTrayHandle, Window};
 
-use crate::{constants::*, Storage};
+use crate::{constants::*, Clickthrough, Storage};
 
 #[tauri::command]
-pub fn sync_theme(storage: State<Storage>, value: String) {
+pub fn sync_theme(window: Window, storage: State<Storage>, value: String) {
   let mut theme = storage.theme.lock().unwrap();
   match value.as_str() {
     "light" => *theme = ThemeType::Light,
@@ -13,13 +13,19 @@ pub fn sync_theme(storage: State<Storage>, value: String) {
 
   println!("Theme: {:?}", theme);
 
-  // update the
+  // get the current clickthrough value
+  let clickthrough = window.app_handle().state::<Clickthrough>().0.load(std::sync::atomic::Ordering::Relaxed);
+  // update the tray icon
+  // update_tray_icon(
+  //   window.app_handle().tray_handle(),
+  //   *window.app_handle().state::<Storage>().theme.lock().unwrap(),
+  //   clickthrough,
+  // );
 }
 
 #[tauri::command]
-pub fn get_clickthrough(storage: State<Storage>) -> bool {
-  let clickthrough = storage.clickthrough.lock().unwrap();
-  *clickthrough
+pub fn get_clickthrough(storage: State<Clickthrough>) -> bool {
+  storage.0.load(std::sync::atomic::Ordering::Relaxed)
 }
 
 #[tauri::command]
@@ -28,22 +34,18 @@ pub fn open_devtools(window: Window) {
 }
 
 #[tauri::command]
-pub fn toggle_clickthrough(window: Window, storage: State<Storage>) {
-  let mut clickthrough = storage.clickthrough.lock().unwrap();
-  // NOTE: This will mutate
-  *clickthrough = !*clickthrough;
+pub fn toggle_clickthrough(window: Window, clickthrough: State<Clickthrough>) {
+  let app = window.app_handle();
+  let value = !get_clickthrough(app.state::<Clickthrough>());
 
-  println!("Clickthrough: {:?}", clickthrough);
-
-  // convert mutex guard to a regular reference
-  let clickthrough = *clickthrough;
-
-  let storage = storage.clone();
-  set_clickthrough(clickthrough, &window, storage);
+  set_clickthrough(value, &window, clickthrough);
 }
 
-pub fn set_clickthrough(value: bool, window: &Window, storage: State<Storage>) {
-  let theme = storage.theme.lock().unwrap();
+pub fn set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthrough>) {
+  println!("Clickthrough: {}", value);
+  clickthrough
+    .0
+    .store(value, std::sync::atomic::Ordering::Relaxed);
 
   // let the client know
   window.emit(TRAY_TOGGLE_CLICKTHROUGH, value).unwrap();
@@ -65,11 +67,28 @@ pub fn set_clickthrough(value: bool, window: &Window, storage: State<Storage>) {
 
   window.set_ignore_cursor_events(value);
 
-  let app = window.app_handle();
-  let icon = if value {
-    tauri::Icon::Raw(include_bytes!("../icons/tray-icon-pinned.png").to_vec())
+  // update the tray icon
+  update_tray_icon(
+    window.app_handle().tray_handle(),
+    *window.app_handle().state::<Storage>().theme.lock().unwrap(),
+    value,
+  );
+}
+
+fn update_tray_icon(tray: SystemTrayHandle, theme: ThemeType, clickthrough: bool) {
+  let icon = if theme == ThemeType::Dark {
+    if clickthrough {
+      tauri::Icon::Raw(include_bytes!("../icons/tray-icon-pinned.png").to_vec())
+    } else {
+      tauri::Icon::Raw(include_bytes!("../icons/tray-icon.png").to_vec())
+    }
   } else {
-    tauri::Icon::Raw(include_bytes!("../icons/tray-icon.png").to_vec())
+    if clickthrough {
+      tauri::Icon::Raw(include_bytes!("../icons/tray-icon-pinned-dark.png").to_vec())
+    } else {
+      tauri::Icon::Raw(include_bytes!("../icons/tray-icon-dark.png").to_vec())
+    }
   };
-  app.tray_handle().set_icon(icon).unwrap();
+
+  tray.set_icon(icon).unwrap();
 }
