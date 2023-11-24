@@ -16,7 +16,7 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{generate_handler, Manager, RunEvent, Window};
+use tauri::{generate_handler, Manager, RunEvent};
 use tray::{create_tray_items, handle_tray_events};
 
 #[cfg(target_os = "macos")]
@@ -24,6 +24,9 @@ use tauri::{ActivationPolicy, App};
 
 #[cfg(target_os = "macos")]
 use window_custom::WindowExt as _;
+
+#[cfg(target_os = "macos")]
+use tauri::Window;
 
 pub struct Clickthrough(AtomicBool);
 

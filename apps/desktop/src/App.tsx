@@ -24,7 +24,6 @@ function App() {
     const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
     darkThemeMq.addEventListener("change", e => {
       const value = e.matches ? "dark" : "light";
-      console.log("Theme changed to", value);
       invoke("sync_theme", { value });
     });
   }, []);
