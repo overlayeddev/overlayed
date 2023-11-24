@@ -5,7 +5,7 @@
   "scripts": {
     "start": "astro dev",
     "build": "astro build",
-    "lint": "eslint --ext .astro,.js,.ts,.tsx 'src/**/*'",
+    "lint": "eslint --ext .astro,.js,.ts 'src/**/*'",
     "format": "prettier --write .",
     "preview": "astro preview",
     "astro": "astro"

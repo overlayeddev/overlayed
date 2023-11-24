@@ -4,6 +4,22 @@ on:
   push:
 
 jobs:
+  quality:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Check format
+        run: pnpm check:format
+      - name: Lint 
+        run: pnpm lint
+
   build-tauri:
     strategy:
       fail-fast: false
