@@ -349,6 +349,15 @@ importers:
         specifier: ^5.1.6
         version: 5.2.2
 
+  tooling/config-tailwind:
+    devDependencies:
+      '@tailwindcss/typography':
+        specifier: ^0.5.9
+        version: 0.5.10(tailwindcss@3.3.5)
+      tailwindcss:
+        specifier: ^3.2.4
+        version: 3.3.5
+
   tooling/config-typescript: {}
 
 packages:
@@ -3228,7 +3237,6 @@ packages:
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.3.5
-    dev: false
 
   /@tanstack/history@0.0.1-beta.204:
     resolution: {integrity: sha512-5FC439gOn1p1jEPJTlVcvHmcLuTPh2KEfvpNTRQaiHE/PYq5Mz4367Yuw3F5QOv0wqYZwk/gNmQv3gcUm/qxfQ==}
@@ -6627,11 +6635,9 @@ packages:
 
   /lodash.castarray@4.4.0:
     resolution: {integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==}
-    dev: false
 
   /lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
-    dev: false
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
@@ -7895,7 +7901,6 @@ packages:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
-    dev: false
 
   /postcss-selector-parser@6.0.13:
     resolution: {integrity: sha512-EaV1Gl4mUEV4ddhDnv/xtj7sxwrwxdetHdWUGnT4VJQf+4d05v6lHYZr8N573k5Z0BViss7BDhfWtKS3+sfAqQ==}
@@ -9106,7 +9111,7 @@ packages:
       postcss-load-config: 4.0.1(postcss@8.4.31)
       postcss-nested: 6.0.1(postcss@8.4.31)
       postcss-selector-parser: 6.0.13
-      resolve: 1.22.2
+      resolve: 1.22.8
       sucrase: 3.34.0
     transitivePeerDependencies:
       - ts-node

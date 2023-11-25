@@ -4,9 +4,9 @@
   "rsc": false,
   "tailwind": {
     "config": "apps/desktop/tailwind.config.js",
-    "css": "apps/desktop/src/styles/globals.css",
+    "css": "apps/desktop/src/style.css",
     "baseColor": "zinc",
-    "cssVariables": true
+    "cssVariables": false 
   },
   "aliases": {
     "components": "~/components",
