@@ -1,4 +1,8 @@
-<footer class="py-24 max-w-[800px] mx-auto text-indigo-50 text-center">
+---
+import Link from "./link.astro";
+---
+
+<footer class="py-24 max-w-[800px] mx-auto text-gray-400 text-center">
   <div
     class="relative flex justify-center items-center mb-24 w-full h-2 bg-gradient-to-r from-transparent via-zinc-800 to-transparent"
   >
@@ -27,9 +31,15 @@
       </svg>
     </a>
   </div>
-  <a href="https://discord.gg/overlayed" target="_blank">Discord</a>
-  <br />
-  <a href="https://github.com/Hacksore/overlayed" target="_blank">Github</a>
-  <br />
-  <a href="https://x.com/overlayeddev" target="_blank">Twitter</a>
+  <div>
+    <div class="flex gap-4 mb-4 text-lg">
+      <Link to="https://discord.gg/trashdev">Discord</Link>
+      <Link to="https://github.com/Hacksore/overlayed">Github</Link>
+      <Link to="https://x.com/OverlayedDev">Twitter</Link>
+    </div>
+    <div class="flex gap-4">
+      <Link to="/privacy">Privacy</Link>
+      <Link to="/tos">ToS</Link>
+    </div>
+  </div>
 </footer>

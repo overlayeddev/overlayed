@@ -1,0 +1,236 @@
+/** light theme and overarching styles **/
+
+/* heading and body styles */
+.prose h1 {
+  font-family: 'Kaisei Tokumin';
+  font-weight: 700;
+  margin: 2rem 0rem 2rem 0rem;
+  color: black;
+  font-size: 2.25rem;
+  margin-top: 0rem;
+  line-height: 2.5rem;
+}
+.prose h2 {
+  font-family: 'Kaisei Tokumin';
+  font-weight: 700;
+  margin: 2rem 0rem 2rem 0rem;
+  color: black;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.prose h3 {
+  font-family: 'Kaisei Tokumin';
+  font-weight: 700;
+  margin: 2rem 0rem 2rem 0rem;
+  color: black;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.prose h4 {
+  font-family: 'Kaisei Tokumin';
+  font-weight: 700;
+  margin: 2rem 0rem 2rem 0rem;
+  color: black;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.prose hr {
+  border-color: rgba(115, 115, 115, 0.3);
+  margin-top: 3em;
+  margin-bottom: 3em;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.prose p {
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
+}
+.prose blockquote {
+  font-weight: 500;
+  font-style: italic;
+  color: inherit;
+  border-left-width: 0.25rem;
+  border-color: rgba(115,115,115,0.3);
+  quotes: "\201C""\201D""\2018""\2019";
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  padding-left: 1em;
+}
+
+/* link styles */
+.prose * a {
+  border-bottom-width: 1px;
+  transition-property: color,border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  color: #224b37;
+  border-color: #224b37;
+}
+.prose * a:hover {
+  color:#030705;
+  border-color:#030705;
+}
+
+/* code styles */
+.prose pre {
+  margin: 0.5em 0em 0.5em 0em;
+  color: #e5e7eb;
+  overflow-x: auto;
+  line-height: 1.4;
+  font-size: 1.05em;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem 0.75rem 1rem;
+}
+.prose pre code::before {
+  content: none;
+}
+.prose pre code::after {
+  content: none;
+}
+.prose code {
+  font-size: 0.875em;
+}
+.prose code::before {
+  content: '`';
+}
+.prose code::after {
+  content: '`';
+}
+.prose a code {
+  color: #111827;
+}
+
+/* list styles */
+.prose ol > li {
+  position: relative;
+  padding-left: 1.75em;
+}
+.prose ol > li::before {
+  content: counter(list-item, var(--list-counter-style, decimal)) ".";
+  position: absolute;
+  font-weight: 400;
+  color: #6b7280;
+  left: 0;
+}
+.prose ul > li {
+  position: relative;
+  padding-left: 1.75em;
+}
+.prose ul > li::before {
+  content: "";
+  position: absolute;
+  background-color: #d1d5db;
+  border-radius: 50%;
+  width: 0.375em;
+  height: 0.375em;
+  top: calc(0.875em - 0.1875em);
+  left: 0.25em;
+}
+
+/* table styles */
+.prose table {
+  width: 100%;
+  table-layout: auto;
+  text-align: left;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  font-size: 0.875em;
+  line-height: 1.6rem;
+}
+.prose thead {
+  font-weight: 600;
+  border-bottom-width: 1px;
+  border-bottom-color: #d1d5db;
+}
+.prose thead th {
+  vertical-align: bottom;
+  padding: 0em 0.6em 0.6em 0.6em;
+}
+.prose tbody tr {
+  border-bottom-width: 1px;
+  border-bottom-color: #e5e7eb;
+}
+.prose tbody tr:last-child {
+  border-bottom-width: 0;
+}
+.prose tbody td {
+  vertical-align: top;
+  padding: 0.6em;
+}
+
+/** back tics for codies **/
+.prose :where(code):not(:where([class~='not-prose'] *))::after {
+  content: none !important;
+}
+
+.prose :where(code):not(:where([class~='not-prose'] *))::before {
+  content: none !important;
+}
+
+.prose code {
+  border-radius: 0.50rem;
+  border: 1px solid #D4D4D8;
+  padding: 4px 6px 4px 6px;
+  background: #e5e5e5;
+}
+
+html.dark .prose code {
+  background: #2E2E32;
+  border-color: #232323;
+  color: #fff;
+}
+
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+html.dark .prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/** dark theme **/
+html.dark .prose h1,
+html.dark .prose h2,
+html.dark .prose h3,
+html.dark .prose h4,
+html.dark .prose h5,
+html.dark .prose h6 {
+  color: white;
+}
+
+/* dark link styles */
+html.dark .prose * a {
+  border-bottom-width: 1px;
+  transition-property: color,border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  color:#a7b7af;
+  border-color:#a7b7af;
+}
+html.dark .prose * a:hover{
+  color:#f6f8f7;
+  border-color:#f6f8f7;
+}
+
+/* dark table styles */
+html.dark .prose thead {
+  border-bottom-color: #313334;
+}
+
+html.dark .prose tbody tr {
+  border-bottom-width: 1px;
+  border-bottom-color: #252627;
+}
+
+/* email list overrides */
+#email-list h3 {
+  margin: 0rem 0rem 1rem 0rem;
+}
+
+#email-list p {
+  margin: 0rem;
+}
