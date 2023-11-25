@@ -1,4 +1,6 @@
-use tauri::{AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu};
+use tauri::{
+  AppHandle, CustomMenuItem, LogicalSize, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,
+};
 
 use crate::{
   commands::{set_clickthrough, toggle_clickthrough},
@@ -35,6 +37,11 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
       TRAY_SHOW_APP => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
         window.show().unwrap();
+
+        // center and resize the window
+        window.center();
+        window.set_size(LogicalSize::new(400, 700)).unwrap();
+
         window.set_focus().unwrap();
       }
       TRAY_RELOAD => {
