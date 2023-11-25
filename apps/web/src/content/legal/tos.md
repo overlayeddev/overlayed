@@ -1,3 +1,7 @@
+---
+title: Terms of Service
+---
+
 # Terms of Service
 
 1. Acceptance of Terms

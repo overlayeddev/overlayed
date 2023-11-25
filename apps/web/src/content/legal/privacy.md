@@ -1,3 +1,7 @@
+---
+title: Privacy Policy
+---
+
 # Privacy Policy for Overlayed
 
 Overlayed ("we", "us", or "our") provides this Privacy Policy to inform you of our policies and procedures regarding the collection, use, and disclosure of personal information we may receive from users of our app ("Application"), accessible from [https://overlayed.dev](https://ovlerlayed.dev), and any other services offered by us in connection with our site (any and all of the foregoing the "Services").
