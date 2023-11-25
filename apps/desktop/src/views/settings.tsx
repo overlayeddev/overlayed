@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Slider } from "@radix-ui/themes";
+import { Button } from "@ui/components/button";
 import { useAppStore } from "../store";
 import { LogicalSize, LogicalPosition, currentMonitor, appWindow } from "@tauri-apps/api/window";
 import { useEffect, useRef, useState } from "react";
@@ -75,7 +75,7 @@ export const SettingsView = () => {
           </label>
           <div className="flex items-center">
             <div className="w-72">
-              <Slider value={[scaleFactor]} max={19} onValueChange={([value]) => setScaleFactor(value)} />
+              {/* <Slider value={[scaleFactor]} max={19} onValueChange={([value]) => setScaleFactor(value)} /> */}
             </div>
 
             <div className="ml-4">{scaleFactorValue}</div>
@@ -92,28 +92,31 @@ export const SettingsView = () => {
 
         <div className="">
           <p className="mb-3 font-bold">Logged in as {me?.username}</p>
-          <Button
-            color="red"
-            disabled={!me?.id}
-            className="w-full"
-            onClick={() => {
-              localStorage.removeItem("discord_access_token");
-              setMe(null);
-              navigate("/");
-            }}
-          >
-            logout
-          </Button>
+          {/* <Button */}
+          {/*   color="red" */}
+          {/*   disabled={!me?.id} */}
+          {/*   className="w-full" */}
+          {/*   onClick={() => { */}
+          {/*     localStorage.removeItem("discord_access_token"); */}
+          {/*     setMe(null); */}
+          {/*     navigate("/"); */}
+          {/*   }} */}
+          {/* > */}
+          {/*   logout */}
+          {/* </Button> */}
+        </div>
+        <div className="">
+          <Input />
         </div>
         <div className="fixed right-4 bottom-4">
-          <Button
-            onClick={() => {
-              if (!me?.id) return navigate("/");
-              navigate("/channel");
-            }}
-          >
-            Save
-          </Button>
+          {/* <Button */}
+          {/*   onClick={() => { */}
+          {/*     if (!me?.id) return navigate("/"); */}
+          {/*     navigate("/channel"); */}
+          {/*   }} */}
+          {/* > */}
+          {/*   Save */}
+          {/* </Button> */}
         </div>
       </div>
     </div>
