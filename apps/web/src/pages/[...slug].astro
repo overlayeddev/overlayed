@@ -23,7 +23,6 @@ type Props = CollectionEntry<"legal">;
 const post: Props = Astro.props;
 
 const { Content } = await post.render();
-
 ---
 
 <Layout title={`Overlayed - ${post.data.title}`}>
