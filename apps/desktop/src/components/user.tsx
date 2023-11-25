@@ -1,4 +1,4 @@
-import { OverlayedUser } from "../types";
+import type { OverlayedUser } from "../types";
 import { HeadphonesOff } from "./icons/headphones-off";
 import { MicOff } from "./icons/mic-off";
 

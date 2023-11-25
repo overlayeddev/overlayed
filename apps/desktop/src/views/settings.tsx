@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@ui/components/button";
+import { Button } from "ui/components/button";
 import { useAppStore } from "../store";
 import { LogicalSize, LogicalPosition, currentMonitor, appWindow } from "@tauri-apps/api/window";
 import { useEffect, useRef, useState } from "react";
@@ -106,7 +106,8 @@ export const SettingsView = () => {
           {/* </Button> */}
         </div>
         <div className="">
-          <Input />
+          {/* <Input /> */}
+        <Button variant="outline">test</Button>
         </div>
         <div className="fixed right-4 bottom-4">
           {/* <Button */}

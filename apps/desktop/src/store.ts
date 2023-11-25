@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { OverlayedUser, VoiceStateUser } from "./types";
+import type { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 
 const createUserStateItem = (payload: VoiceStateUser) => {
