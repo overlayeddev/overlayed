@@ -107,7 +107,7 @@ export const SettingsView = () => {
           {/* </Button> */}
         </div>
         <div className="">
-          {/* <Input /> */}
+          <Input  />
         <Button>test</Button>
         </div>
         <div className="fixed right-4 bottom-4">

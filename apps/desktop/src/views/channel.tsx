@@ -8,7 +8,7 @@ export const ChannelView = () => {
   return (
     <div>
       <div className="py-2">
-        <Button variant="destructive">help me</Button>
+        <Button>me</Button>
         {Object.entries(users).map(([_, item]) => (
           <User key={item.id} item={item} />
         ))}
