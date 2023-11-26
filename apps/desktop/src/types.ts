@@ -11,6 +11,11 @@ export interface OverlayedUser {
   username: string;
 
   /**
+   * @property {string} username - the nickname of the user discord wide
+   */
+  globalUsername: string;
+
+  /**
    * @property {string} avatarHash - hash of the users avatar
    */
   avatarHash: string;
