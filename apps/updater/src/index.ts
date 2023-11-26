@@ -2,7 +2,7 @@ import { Hono } from "hono/quick";
 
 type Bindings = {};
 
-const app = new Hono < { Bindings: Bindings } > ();
+const app = new Hono<{ Bindings: Bindings }>();
 
 app.get("/:target/:arch/:currentVersion", async (c) => {
 	const target = c.req.param("target");
