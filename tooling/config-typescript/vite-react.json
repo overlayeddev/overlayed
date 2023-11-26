@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Next.js",
+  "display": "vite react",
   "extends": "./base.json",
   "compilerOptions": {
     "target": "ES2017",
@@ -15,7 +15,7 @@
     "module": "esnext",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "react-jsx"
   },
   "include": ["src", "next-env.d.ts"],
   "exclude": ["node_modules"]
