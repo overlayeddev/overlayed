@@ -40,3 +40,5 @@ yarn-error.log*
 binaries/
 
 apps/desktop/src-tauri/*.txt
+
+tsconfig.tsbuildinfo
