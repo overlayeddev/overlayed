@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useSetWindowSize } from "../use-set-size";
+import { useSetWindowSize } from "../hooks/use-set-size";
 import { useAppStore } from "../store";
 
 export const ErrorView = () => {

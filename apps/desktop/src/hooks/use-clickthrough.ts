@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
-import overlayedConfig from "./config";
+import overlayedConfig from "../config";
 import { invoke } from "@tauri-apps/api";
 
 export const useClickthrough = () => {

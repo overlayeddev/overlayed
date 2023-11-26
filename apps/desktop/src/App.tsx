@@ -6,8 +6,8 @@ import { ChannelView } from "./views/channel";
 import { SettingsView } from "./views/settings";
 import { ErrorView } from "./views/error";
 import { NavBar } from "./components/nav-bar";
-import { useClickthrough } from "./use-clickthrough";
-import { useDisableWebFeatures } from "./use-disable-context-menu";
+import { useClickthrough } from "./hooks/use-clickthrough";
+import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 

@@ -22,6 +22,7 @@ import {
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
 import { Link } from "@/components/ui/link";
+import { usePlatformInfo } from "@/hooks/use-platform-info";
 
 export const SettingsView = () => {
   const navigate = useNavigate();
@@ -29,40 +30,9 @@ export const SettingsView = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [tokenExpires, setTokenExpires] = useState<string | null>(null);
-
-  const [platformInfo, setPlatformInfo] = useState({
-    appVersion: "",
-    tauriVersion: "",
-    os: "",
-    kernalVersion: "",
-    arch: "",
-    configDir: "",
-  });
+  const platformInfo = usePlatformInfo();
 
   useEffect(() => {
-    const allPromises = [getTauriVersion(), getVersion(), getPlatform(), getKernalVersion(), getArch(), appConfigDir()];
-
-    // get all the dataz
-    Promise.allSettled(allPromises).then(results => {
-      const [tauriVersion = "", appVersion = "", os = "", kernalVersion = "", arch = "", configDir = ""] = results.map(
-        result => {
-          if (result.status === "fulfilled") {
-            return result.value;
-          }
-          return "";
-        }
-      );
-
-      setPlatformInfo({
-        tauriVersion,
-        appVersion,
-        os,
-        kernalVersion,
-        arch,
-        configDir,
-      });
-    });
-
     const token = localStorage.getItem("discord_expires_at");
     if (token) {
       setTokenExpires(token);
