@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { exit } from "@tauri-apps/api/process";
 import { useAppStore } from "../store";
 import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
+import { platform as getPlatform, version as getKernalVersion, arch as getArch } from "@tauri-apps/api/os";
 import * as dateFns from "date-fns";
 import {
   Dialog,
@@ -21,17 +23,36 @@ export const SettingsView = () => {
   const navigate = useNavigate();
   const { me, setMe } = useAppStore();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  const [tauriVersion, setTauriVersion] = useState("");
-  const [version, setVersion] = useState("");
+  const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [tokenExpires, setTokenExpires] = useState<string | null>(null);
 
-  useEffect(() => {
-    getTauriVersion().then(v => {
-      setTauriVersion(v);
-    });
+  const [platformInfo, setPlatformInfo] = useState({
+    appVersion: "",
+    tauriVersion: "",
+    os: "",
+    kernalVersion: "",
+    arch: "",
+  });
 
-    getVersion().then(v => {
-      setVersion(v);
+  useEffect(() => {
+    const allPromises = [getTauriVersion(), getVersion(), getPlatform(), getKernalVersion(), getArch()];
+
+    // get all the dataz
+    Promise.allSettled(allPromises).then(results => {
+      const [tauriVersion = "", appVersion = "", os = "", kernalVersion = "", arch = ""] = results.map(result => {
+        if (result.status === "fulfilled") {
+          return result.value;
+        }
+        return "";
+      });
+
+      setPlatformInfo({
+        tauriVersion,
+        appVersion,
+        os,
+        kernalVersion,
+        arch,
+      });
     });
 
     const token = localStorage.getItem("discord_expires_at");
@@ -41,7 +62,7 @@ export const SettingsView = () => {
   }, []);
 
   return (
-    <div className="bg-zinc-900 h-full p-4 pt-4 pb-14">
+    <div className="bg-zinc-900 h-full p-4 pt-4 pb-14 overflow-auto">
       <div className="flex flex-col gap-4">
         <h1 className="text-xl font-bold">Settings</h1>
         <hr className="border-zinc-800" />
@@ -78,11 +99,9 @@ export const SettingsView = () => {
                   }}
                 >
                   <DialogHeader>
-                    <DialogTitle>
-                      <div className="text-xl mb-4 text-white">Logout</div>
-                    </DialogTitle>
-                    <DialogDescription>
-                      <div className="text-xl mb-4 text-white">Are you sure you want to log out of Overlayed?</div>
+                    <DialogTitle className="text-xl mb-4 text-white">Logout</DialogTitle>
+                    <DialogDescription className="text-xl mb-4 text-white">
+                      Are you sure you want to log out of Overlayed?
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
@@ -106,18 +125,19 @@ export const SettingsView = () => {
         <hr className="border-zinc-800" />
         <div className="flex flex-col gap-4">
           <div>
-            {tauriVersion && (
-              <p className="text-sm">
-                <strong>Tauri Version</strong> {tauriVersion}
-              </p>
-            )}
+            <p className="text-sm">
+              <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
+            </p>
           </div>
           <div>
-            {version && (
-              <p className="text-sm">
-                <strong>App Version</strong> {version}
-              </p>
-            )}
+            <p className="text-sm">
+              <strong>Tauri Version</strong> {platformInfo.tauriVersion}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm">
+              <strong>App Version</strong> {platformInfo.appVersion}
+            </p>
           </div>
           <Button
             variant="secondary"
@@ -133,6 +153,42 @@ export const SettingsView = () => {
           </p>
         </div>
 
+        <hr className="border-zinc-800" />
+        <div>
+          <Dialog
+            onOpenChange={e => {
+              setShowQuitDialog(e);
+            }}
+            open={showQuitDialog}
+          >
+            <DialogTrigger asChild>
+              <Button variant="destructive">Quit Overlayed</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <form
+                onSubmit={async event => {
+                  event.preventDefault();
+                  await exit();
+                }}
+              >
+                <DialogHeader>
+                  <DialogTitle className="text-xl mb-4 text-white">Logout</DialogTitle>
+                  <DialogDescription className="text-xl mb-4 text-white">
+                    Are you sure you want to quit the Overlayed app?
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="secondary">Cancel</Button>
+                  </DialogClose>
+                  <Button variant="destructive" type="submit">
+                    Quit
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
         <div className="fixed right-4 bottom-4">
           <Button
             variant="secondary"
