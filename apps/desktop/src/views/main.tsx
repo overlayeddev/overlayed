@@ -1,13 +1,11 @@
 import { useSocket } from "../rpc/manager";
 import { useAppStore } from "../store";
 import { useEffect } from "react";
-import { useSetWindowSize } from "../use-set-size";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 export const MainView = () => {
   useSocket();
-  useSetWindowSize({ width: 400, height: 600 });
   const { resetErrors } = useAppStore();
 
   useEffect(() => {
