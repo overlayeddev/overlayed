@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { exit } from "@tauri-apps/api/process";
 import { useAppStore } from "../store";
 import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
+import { appConfigDir } from "@tauri-apps/api/path";
 import { platform as getPlatform, version as getKernalVersion, arch as getArch } from "@tauri-apps/api/os";
 import * as dateFns from "date-fns";
+import { shell } from "@tauri-apps/api";
 import {
   Dialog,
   DialogTrigger,
@@ -32,19 +34,22 @@ export const SettingsView = () => {
     os: "",
     kernalVersion: "",
     arch: "",
+    configDir: "",
   });
 
   useEffect(() => {
-    const allPromises = [getTauriVersion(), getVersion(), getPlatform(), getKernalVersion(), getArch()];
+    const allPromises = [getTauriVersion(), getVersion(), getPlatform(), getKernalVersion(), getArch(), appConfigDir()];
 
     // get all the dataz
     Promise.allSettled(allPromises).then(results => {
-      const [tauriVersion = "", appVersion = "", os = "", kernalVersion = "", arch = ""] = results.map(result => {
-        if (result.status === "fulfilled") {
-          return result.value;
+      const [tauriVersion = "", appVersion = "", os = "", kernalVersion = "", arch = "", configDir = ""] = results.map(
+        result => {
+          if (result.status === "fulfilled") {
+            return result.value;
+          }
+          return "";
         }
-        return "";
-      });
+      );
 
       setPlatformInfo({
         tauriVersion,
@@ -52,6 +57,7 @@ export const SettingsView = () => {
         os,
         kernalVersion,
         arch,
+        configDir,
       });
     });
 
@@ -156,6 +162,15 @@ export const SettingsView = () => {
             }}
           >
             Open Devtools
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              console.log(platformInfo.configDir);
+              shell.open(platformInfo.configDir);
+            }}
+          >
+            Open Config Dir
           </Button>
           <p>
             If you find any issues or bugs please report them on the{" "}
