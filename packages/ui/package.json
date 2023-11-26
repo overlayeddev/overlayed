@@ -2,21 +2,8 @@
   "name": "ui",
   "version": "0.1.1",
   "private": true,
-  "exports": {
-    "./cn": "./src/cn.ts",
-    "./components/*": "./src/components/*"
-  },
-  "typesVersions": {
-    "*": {
-      "cn": [
-        "./src/cn.ts"
-      ],
-      "components/*": [
-        "./src/components/*"
-      ]
-    }
-  },
   "scripts": {
+    "ui:add": "pnpm dlx shadcn-ui@latest add"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.4",
