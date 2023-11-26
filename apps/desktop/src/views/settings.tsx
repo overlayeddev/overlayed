@@ -7,6 +7,8 @@ import { appConfigDir } from "@tauri-apps/api/path";
 import { platform as getPlatform, version as getKernalVersion, arch as getArch } from "@tauri-apps/api/os";
 import * as dateFns from "date-fns";
 import { shell } from "@tauri-apps/api";
+import { saveWindowState, StateFlags } from "tauri-plugin-window-state-api";
+
 import {
   Dialog,
   DialogTrigger,
@@ -193,6 +195,7 @@ export const SettingsView = () => {
               <form
                 onSubmit={async event => {
                   event.preventDefault();
+                  await saveWindowState(StateFlags.ALL);
                   await exit();
                 }}
               >

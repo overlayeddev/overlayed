@@ -1,6 +1,7 @@
 use tauri::{
   AppHandle, CustomMenuItem, LogicalSize, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu,
 };
+use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{
   commands::{set_clickthrough, toggle_clickthrough},
@@ -69,7 +70,10 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
         window.open_devtools();
       }
-      TRAY_QUIT => std::process::exit(0),
+      TRAY_QUIT => {
+        app.save_window_state(StateFlags::all()); // will save the state of all open windows to disk
+        std::process::exit(0)
+      }
       _ => {}
     },
     _ => {}

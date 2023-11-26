@@ -98,6 +98,9 @@ importers:
       tauri-plugin-websocket-api:
         specifier: github:tauri-apps/tauri-plugin-websocket#v1
         version: github.com/tauri-apps/tauri-plugin-websocket/b55e90e968b9020d1eb8de97c97655bfa002dfd8
+      tauri-plugin-window-state-api:
+        specifier: github:tauri-apps/tauri-plugin-window-state#v1
+        version: github.com/tauri-apps/tauri-plugin-window-state/45a0363d68d113e0f6c139b44f75188993133b12
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -9224,6 +9227,14 @@ packages:
   github.com/tauri-apps/tauri-plugin-websocket/b55e90e968b9020d1eb8de97c97655bfa002dfd8:
     resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/b55e90e968b9020d1eb8de97c97655bfa002dfd8}
     name: tauri-plugin-websocket-api
+    version: 0.0.0
+    dependencies:
+      '@tauri-apps/api': 1.5.1
+    dev: false
+
+  github.com/tauri-apps/tauri-plugin-window-state/45a0363d68d113e0f6c139b44f75188993133b12:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/45a0363d68d113e0f6c139b44f75188993133b12}
+    name: tauri-plugin-window-state-api
     version: 0.0.0
     dependencies:
       '@tauri-apps/api': 1.5.1
