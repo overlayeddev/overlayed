@@ -5,7 +5,7 @@ export const Link = ({
   ...props
 }: {
   to: string;
-  className: string;
+  className?: string;
   children: React.ReactNode;
 }) => {
   return (

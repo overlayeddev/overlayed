@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "../store";
 import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
+import * as dateFns from "date-fns";
 import {
   Dialog,
   DialogTrigger,
@@ -22,7 +23,7 @@ export const SettingsView = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [tauriVersion, setTauriVersion] = useState("");
   const [version, setVersion] = useState("");
-  const [tokenExpires, setTokenExpires] = useState("");
+  const [tokenExpires, setTokenExpires] = useState<string | null>(null);
 
   useEffect(() => {
     getTauriVersion().then(v => {
@@ -45,49 +46,62 @@ export const SettingsView = () => {
         <h1 className="text-xl font-bold">Settings</h1>
         <hr className="border-zinc-800" />
         <div className="">
-          <p className="mb-3 font-bold">Logged in as {me?.username}</p>
+          <p className="mb-3 font-bold">Logged in as {me?.global_name}</p>
 
-          <div className="pb-4">{tokenExpires && <p className="text-sm">Token Expires: {tokenExpires}</p>}</div>
-          <Dialog
-            onOpenChange={e => {
-              setShowLogoutDialog(e);
-            }}
-            open={showLogoutDialog}
-          >
-            <DialogTrigger asChild>
-              <Button variant="destructive" disabled={!me?.id}>
-                logout
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <form
-                onSubmit={event => {
-                  event.preventDefault();
-                  setShowLogoutDialog(false);
-                  setMe(null);
-                  localStorage.removeItem("discord_access_token");
-                  navigate("/");
-                }}
-              >
-                <DialogHeader>
-                  <DialogTitle>
-                    <div className="text-xl mb-4 text-white">Logout</div>
-                  </DialogTitle>
-                  <DialogDescription>
-                    <div className="text-xl mb-4 text-white">Are you sure you want to log out of Overlayed?</div>
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="secondary">Cancel</Button>
-                  </DialogClose>
-                  <Button variant="destructive" type="submit">
-                    Confirm Logout
-                  </Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
+          <div className="pb-4">
+            {tokenExpires && (
+              <p className="text-sm">
+                <strong>Token Expires</strong> {dateFns.formatDistanceToNow(new Date(tokenExpires))}
+              </p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <Dialog
+              onOpenChange={e => {
+                setShowLogoutDialog(e);
+              }}
+              open={showLogoutDialog}
+            >
+              <DialogTrigger asChild>
+                <Button variant="destructive" disabled={!me?.id}>
+                  Logout
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <form
+                  onSubmit={event => {
+                    event.preventDefault();
+                    setShowLogoutDialog(false);
+                    setMe(null);
+                    localStorage.removeItem("discord_access_token");
+                    navigate("/");
+                  }}
+                >
+                  <DialogHeader>
+                    <DialogTitle>
+                      <div className="text-xl mb-4 text-white">Logout</div>
+                    </DialogTitle>
+                    <DialogDescription>
+                      <div className="text-xl mb-4 text-white">Are you sure you want to log out of Overlayed?</div>
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button variant="secondary">Cancel</Button>
+                    </DialogClose>
+                    <Button variant="destructive" type="submit">
+                      Confirm Logout
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
+            <Button variant="secondary">
+              <Link className="no-underline text-white" to="https://discord.com/developers/docs/topics/rpc">
+                View RPC Docs
+              </Link>
+            </Button>
+          </div>
         </div>
         <hr className="border-zinc-800" />
         <div className="flex flex-col gap-4">
@@ -106,6 +120,7 @@ export const SettingsView = () => {
             )}
           </div>
           <Button
+            variant="secondary"
             onClick={async () => {
               await invoke("open_devtools");
             }}

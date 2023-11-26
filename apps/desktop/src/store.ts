@@ -3,8 +3,9 @@ import type { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 
 const createUserStateItem = (payload: VoiceStateUser) => {
-  const data = {
+  const data: OverlayedUser = {
     username: payload.nick,
+    globalUsername: payload.user.global_name,
     avatarHash: payload.user.avatar,
     avatarDecorationData: payload.user.avatar_decoration_data,
     muted: payload.mute,
@@ -27,7 +28,8 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 
 export interface AppState {
   clickThrough: boolean;
-  me: OverlayedUser | null;
+  // TODO: type this better
+  me: any | null;
   currentChannel: {
     id: string;
     name: string;
