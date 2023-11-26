@@ -135,7 +135,6 @@ export const SettingsView = () => {
           <Button
             variant="secondary"
             onClick={() => {
-              console.log(platformInfo.configDir);
               shell.open(platformInfo.configDir);
             }}
           >
