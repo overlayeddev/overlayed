@@ -1,0 +1,18 @@
+{
+  "package": {
+    "productName": "Overlayed (Canary)",
+    "version": "canary"
+  },
+  "tauri": {
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.hacksore.unstable.overlayed",
+      "icon": [
+        "icons/unstable.icns",
+        "icons/unstable.ico",
+        "icons/unstable.png"
+      ]
+    }
+  }
+}

@@ -93,11 +93,7 @@ jobs:
         id: build_os
         with:
           projectPath: apps/desktop
-          bundleIdentifier: "com.hacksore.unstable.overlayed"
-          appName: "Overlayed (Unstable)"
-          appVersion: "canary"
-          iconPath: src-tauri/icons/unstable.png
-          args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }}
+          args: --config "src-tauri/tauri.conf.canary.json" --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload unstable ${{ matrix.setting.os }}
