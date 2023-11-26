@@ -67,7 +67,13 @@ export const SettingsView = () => {
         <h1 className="text-xl font-bold">Settings</h1>
         <hr className="border-zinc-800" />
         <div className="">
-          <p className="mb-3 font-bold">Logged in as {me?.global_name}</p>
+          {me?.id ? (
+            <p className="mb-3 font-bold">
+              {me?.global_name} ({me?.id})
+            </p>
+          ) : (
+            <p>Please Login to use Overlayed</p>
+          )}
 
           <div className="pb-4">
             {tokenExpires && (
@@ -77,53 +83,57 @@ export const SettingsView = () => {
             )}
           </div>
           <div className="flex gap-2">
-            <Dialog
-              onOpenChange={e => {
-                setShowLogoutDialog(e);
-              }}
-              open={showLogoutDialog}
-            >
-              <DialogTrigger asChild>
-                <Button variant="destructive" disabled={!me?.id}>
-                  Logout
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <form
-                  onSubmit={event => {
-                    event.preventDefault();
-                    setShowLogoutDialog(false);
-                    setMe(null);
-                    localStorage.removeItem("discord_access_token");
-                    navigate("/");
-                  }}
-                >
-                  <DialogHeader>
-                    <DialogTitle className="text-xl mb-4 text-white">Logout</DialogTitle>
-                    <DialogDescription className="text-xl mb-4 text-white">
-                      Are you sure you want to log out of Overlayed?
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="secondary">Cancel</Button>
-                    </DialogClose>
-                    <Button variant="destructive" type="submit">
-                      Confirm Logout
-                    </Button>
-                  </DialogFooter>
-                </form>
-              </DialogContent>
-            </Dialog>
-            <Button variant="secondary">
-              <Link className="no-underline text-white" to="https://discord.com/developers/docs/topics/rpc">
-                View RPC Docs
-              </Link>
-            </Button>
+            {me?.id ? (
+              <Dialog
+                onOpenChange={e => {
+                  setShowLogoutDialog(e);
+                }}
+                open={showLogoutDialog}
+              >
+                <DialogTrigger asChild>
+                  <Button variant="destructive" disabled={!me?.id}>
+                    Logout
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <form
+                    onSubmit={event => {
+                      event.preventDefault();
+                      setShowLogoutDialog(false);
+                      setMe(null);
+                      localStorage.removeItem("discord_access_token");
+                      localStorage.removeItem("discord_expires_at");
+                      navigate("/");
+                    }}
+                  >
+                    <DialogHeader>
+                      <DialogTitle className="text-xl mb-4 text-white">Logout</DialogTitle>
+                      <DialogDescription className="text-xl mb-4 text-white">
+                        Are you sure you want to log out of Overlayed?
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <DialogClose asChild>
+                        <Button variant="secondary">Cancel</Button>
+                      </DialogClose>
+                      <Button variant="destructive" type="submit">
+                        Confirm Logout
+                      </Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            ) : (
+              <Button variant="default">
+                <Link to="/" internal className="no-underline text-white hover:text-white">
+                  Login to Discord
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
         <hr className="border-zinc-800" />
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <div>
             <p className="text-sm">
               <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
