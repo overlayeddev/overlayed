@@ -11,9 +11,6 @@ importers:
       '@actions/github':
         specifier: ^6.0.0
         version: 6.0.0
-      '@types/github-script':
-        specifier: github:actions/github-script
-        version: github.com/actions/github-script/60a0d83039c74a4aee543508d2ffcb1c3799cdea
       eslint:
         specifier: ^8.48.0
         version: 8.54.0
@@ -236,19 +233,6 @@ packages:
     resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
     engines: {node: '>=0.10.0'}
 
-  /@actions/core@1.10.1:
-    resolution: {integrity: sha512-3lBR9EDAY+iYIpTnTIXmWcNbX3T2kCkAEQGIQx4NVQ0575nk2k3GRZDTPQG+vVtS2izSLmINlxXf0uLtnrTP+g==}
-    dependencies:
-      '@actions/http-client': 2.2.0
-      uuid: 8.3.2
-    dev: true
-
-  /@actions/exec@1.1.1:
-    resolution: {integrity: sha512-+sCcHHbVdk93a0XT19ECtO/gIXoxvdsgQLzb2fE2/5sIZmWQuluYyjPQtrtTHdU1YzTZ7bAPN4sITq2xi1679w==}
-    dependencies:
-      '@actions/io': 1.1.3
-    dev: true
-
   /@actions/github@6.0.0:
     resolution: {integrity: sha512-alScpSVnYmjNEXboZjarjukQEzgCRmjMv6Xj47fsdnqGS73bjJNDpiiXmp8jr0UZLdUB6d9jW63IcmddUP+l0g==}
     dependencies:
@@ -258,22 +242,11 @@ packages:
       '@octokit/plugin-rest-endpoint-methods': 10.1.5(@octokit/core@5.0.2)
     dev: true
 
-  /@actions/glob@0.4.0:
-    resolution: {integrity: sha512-+eKIGFhsFa4EBwaf/GMyzCdWrXWymGXfFmZU3FHQvYS8mPcHtTtZONbkcqqUMzw9mJ/pImEBFET1JNifhqGsAQ==}
-    dependencies:
-      '@actions/core': 1.10.1
-      minimatch: 3.1.2
-    dev: true
-
   /@actions/http-client@2.2.0:
     resolution: {integrity: sha512-q+epW0trjVUUHboliPb4UF9g2msf+w61b32tAkFEwL/IwP0DQWgbCMM0Hbe3e3WXSKz5VcUXbzJQgy8Hkra/Lg==}
     dependencies:
       tunnel: 0.0.6
       undici: 5.28.0
-    dev: true
-
-  /@actions/io@1.1.3:
-    resolution: {integrity: sha512-wi9JjgKLYS7U/z8PPbco+PvTb/nRWjeoFlJ1Qer83k/3C5PHQi28hiVdeE2kHXmIL99mQFawx8qt/JPjZilJ8Q==}
     dev: true
 
   /@alloc/quick-lru@5.2.0:
@@ -1522,15 +1495,6 @@ packages:
       '@octokit/types': 12.3.0
     dev: true
 
-  /@octokit/plugin-request-log@4.0.0(@octokit/core@5.0.2):
-    resolution: {integrity: sha512-2uJI1COtYCq8Z4yNSnM231TgH50bRkheQ9+aH8TnZanB6QilOnx8RMD2qsnamSOXtDj0ilxvevf5fGsBhBBzKA==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@octokit/core': '>=5'
-    dependencies:
-      '@octokit/core': 5.0.2
-    dev: true
-
   /@octokit/plugin-rest-endpoint-methods@10.1.5(@octokit/core@5.0.2):
     resolution: {integrity: sha512-LMEdsMV8TTMjMTqVoqMzV95XTbv0ZsWxCxQtjAunQOCdwoDH4BVF/Ke5JMSZEVCWGI2kzxnUNbFnK/MxwV7NjA==}
     engines: {node: '>= 18'}
@@ -1539,18 +1503,6 @@ packages:
     dependencies:
       '@octokit/core': 5.0.2
       '@octokit/types': 12.3.0
-    dev: true
-
-  /@octokit/plugin-retry@6.0.1(@octokit/core@5.0.2):
-    resolution: {integrity: sha512-SKs+Tz9oj0g4p28qkZwl/topGcb0k0qPNX/i7vBKmDsjoeqnVfFUquqrE/O9oJY7+oLzdCtkiWSXLpLjvl6uog==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@octokit/core': '>=5'
-    dependencies:
-      '@octokit/core': 5.0.2
-      '@octokit/request-error': 5.0.1
-      '@octokit/types': 12.3.0
-      bottleneck: 2.19.5
     dev: true
 
   /@octokit/request-error@5.0.1:
@@ -3600,10 +3552,6 @@ packages:
 
   /blake3-wasm@2.1.5:
     resolution: {integrity: sha512-F1+K8EbfOZE49dtoPtmxUQrpXaBIl3ICvasLh+nJta0xkz+9kF/7uet9fLnwKqhDrmj6g+6K3Tw9yQPUg2ka5g==}
-    dev: true
-
-  /bottleneck@2.19.5:
-    resolution: {integrity: sha512-VHiNCbI1lKdl44tGrhNfU3lup0Tj/ZBMJB5/2ZbNXRCPuRCO7ed2mgcK4r17y+KB2EfuYuRaVlwNbAeaWGSpbw==}
     dev: true
 
   /boxen@7.1.1:
@@ -8725,11 +8673,6 @@ packages:
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
-  /uuid@8.3.2:
-    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
-    hasBin: true
-    dev: true
-
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
@@ -9066,24 +9009,6 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: false
-
-  github.com/actions/github-script/60a0d83039c74a4aee543508d2ffcb1c3799cdea:
-    resolution: {tarball: https://codeload.github.com/actions/github-script/tar.gz/60a0d83039c74a4aee543508d2ffcb1c3799cdea}
-    name: github-script
-    version: 7.0.1
-    engines: {node: '>=20.0.0 <21.0.0'}
-    requiresBuild: true
-    dependencies:
-      '@actions/core': 1.10.1
-      '@actions/exec': 1.1.1
-      '@actions/github': 6.0.0
-      '@actions/glob': 0.4.0
-      '@actions/io': 1.1.3
-      '@octokit/core': 5.0.2
-      '@octokit/plugin-request-log': 4.0.0(@octokit/core@5.0.2)
-      '@octokit/plugin-retry': 6.0.1(@octokit/core@5.0.2)
-      '@types/node': 20.10.0
-    dev: true
 
   github.com/tauri-apps/tauri-plugin-websocket/407ef6f3432e2190ae8c0a2939bba406d34dc7db:
     resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/407ef6f3432e2190ae8c0a2939bba406d34dc7db}
