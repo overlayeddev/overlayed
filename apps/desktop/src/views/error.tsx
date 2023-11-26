@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button } from "@radix-ui/themes";
+import { Button } from "@/components/ui/button";
 import { useSetWindowSize } from "../use-set-size";
 import { useAppStore } from "../store";
 
@@ -22,7 +22,7 @@ export const ErrorView = () => {
       </div>
       <div className="pt-8 text-2xl flex items-center justify-center">
         <Link to="/">
-          <Button size="4">Login to Discord</Button>
+          <Button>Login to Discord</Button>
         </Link>
       </div>
     </div>

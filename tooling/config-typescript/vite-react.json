@@ -16,13 +16,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "jsx": "react-jsx",
-    "paths": {
-      "@/*": ["./*"],
-      "@ui/*": ["../../packages/ui/*"],
-      "@ui/components/*": ["../../packages/ui/components/ui/*"],
-      "@ui/components/ui/*": ["../../packages/ui/components/ui/*"]
-    }
+    "jsx": "react-jsx"
   },
   "include": ["src", "next-env.d.ts"],
   "exclude": ["node_modules"]

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@ui/components/button";
+import { Button } from "@/components/ui/button";
 import { useAppStore } from "../store";
 import { LogicalSize, LogicalPosition, currentMonitor, appWindow } from "@tauri-apps/api/window";
 import { useEffect, useRef, useState } from "react";
@@ -92,31 +92,28 @@ export const SettingsView = () => {
 
         <div className="">
           <p className="mb-3 font-bold">Logged in as {me?.username}</p>
-          {/* <Button */}
-          {/*   color="red" */}
-          {/*   disabled={!me?.id} */}
-          {/*   className="w-full" */}
-          {/*   onClick={() => { */}
-          {/*     localStorage.removeItem("discord_access_token"); */}
-          {/*     setMe(null); */}
-          {/*     navigate("/"); */}
-          {/*   }} */}
-          {/* > */}
-          {/*   logout */}
-          {/* </Button> */}
-        </div>
-        <div className="">
-        <Button>test</Button>
+          <Button
+            color="red"
+            disabled={!me?.id}
+            onClick={() => {
+              localStorage.removeItem("discord_access_token");
+              setMe(null);
+              navigate("/");
+            }}
+          >
+            logout
+          </Button>
         </div>
         <div className="fixed right-4 bottom-4">
-          {/* <Button */}
-          {/*   onClick={() => { */}
-          {/*     if (!me?.id) return navigate("/"); */}
-          {/*     navigate("/channel"); */}
-          {/*   }} */}
-          {/* > */}
-          {/*   Save */}
-          {/* </Button> */}
+          <Button
+            variant="default"
+            onClick={() => {
+              if (!me?.id) return navigate("/");
+              navigate("/channel");
+            }}
+          >
+            Save
+          </Button>
         </div>
       </div>
     </div>
