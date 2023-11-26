@@ -6,7 +6,8 @@
     "build:tauri": "turbo run build:tauri",
     "check:format": "turbo run check:format",
     "lint": "turbo run lint",
-    "format": "turbo run format"
+    "format": "turbo run format",
+    "ui:add": "pnpm --filter ui ui:add"
   },
   "type": "module",
   "devDependencies": {

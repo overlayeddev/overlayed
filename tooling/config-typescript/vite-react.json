@@ -4,11 +4,7 @@
   "extends": "./base.json",
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2021"
-    ],
+    "lib": ["dom", "dom.iterable", "ES2021"],
     "allowJs": true,
     "checkJs": true,
     "skipLibCheck": true,
@@ -20,13 +16,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./*"],
+      "@ui/*": ["../../packages/ui/*"],
+      "@ui/components/*": ["../../packages/ui/components/ui/*"],
+      "@ui/components/ui/*": ["../../packages/ui/components/ui/*"]
+    }
   },
-  "include": [
-    "src",
-    "next-env.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "next-env.d.ts"],
+  "exclude": ["node_modules"]
 }

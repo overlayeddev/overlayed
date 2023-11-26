@@ -1,4 +1,4 @@
-import { Button } from "ui/components/button";
+import { Button } from "@ui/components/button";
 import { User } from "../components/user";
 import { useAppStore } from "../store";
 
