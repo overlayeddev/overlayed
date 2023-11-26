@@ -26,7 +26,7 @@ export const MainView = () => {
             <p className="leading-8">Discord should have opened a popup</p>
           </li>
           <li>
-            <p className="leading-8">Click "Authorize" within discord</p>
+            <p className="leading-8">Click &quot;Authorize&quot; within discord</p>
           </li>
           <li>
             <p className="leading-8">Join a voice channel</p>

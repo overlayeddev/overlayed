@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["custom", "plugin:astro/recommended"],
+  extends: [require.resolve("lint/node")],
   overrides: [
     {
       files: ["*.astro"],
