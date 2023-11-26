@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAppStore } from "../store";
-import { User } from "../components/user";
 import {
   Dialog,
   DialogTrigger,
@@ -50,12 +49,16 @@ export const SettingsView = () => {
                 }}
               >
                 <DialogHeader>
-                  <DialogTitle>Logout</DialogTitle>
-                  <DialogDescription>Are you sure you want to lout out of Overlayed?</DialogDescription>
+                  <DialogTitle>
+                    <div className="text-xl mb-4 text-white">Logout</div>
+                  </DialogTitle>
+                  <DialogDescription>
+                    <div className="text-xl mb-4 text-white">Are you sure you want to log out of Overlayed?</div>
+                  </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button>Cancel</Button>
+                    <Button variant="secondary">Cancel</Button>
                   </DialogClose>
                   <Button variant="destructive" type="submit">
                     Confirm Logout
@@ -68,13 +71,13 @@ export const SettingsView = () => {
         <Input value={me?.username} onChange={() => {}} />
         <div className="fixed right-4 bottom-4">
           <Button
-            variant="default"
+            variant="secondary"
             onClick={() => {
               if (!me?.id) return navigate("/");
               navigate("/channel");
             }}
           >
-            Save
+            Exit Settings
           </Button>
         </div>
       </div>
