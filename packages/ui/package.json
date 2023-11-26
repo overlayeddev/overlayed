@@ -41,18 +41,8 @@
     "@tanstack/react-table": "^8.9.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "lucide-react": "^0.260.0",
-    "next-themes": "^0.2.1",
     "react": "^18.2.0",
-    "react-day-picker": "^8.8.0",
-    "react-hook-form": "^7.45.1",
-    "react-markdown": "^8.0.7",
-    "react-syntax-highlighter": "^15.5.0",
-    "rehype-raw": "^7.0.0",
-    "remark-gfm": "^3.0.1",
-    "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.6",
-    "unist-util-visit": "^5.0.0"
+    "tailwind-merge": "^1.14.0"
   },
   "devDependencies": {
     "tsconfig": "workspace:*",
