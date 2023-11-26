@@ -15,11 +15,17 @@ export const ErrorView = () => {
       <div className="w-32 h-32">
         <img src="/img/sad-face.svg" alt="sad" className="text-white fill-white w-full" />
       </div>
-      <div className="pt-8 pb-8 text-2xl text-center">
-        {discordErrors.map((item, i) => (
-          <p key={`error-${i}`}>{item}</p>
-        ))}
-      </div>
+      {discordErrors.length > 0 ? (
+        <div className="pt-8 pb-8 text-2xl text-center">
+          {discordErrors.map((item, i) => (
+            <p key={`error-${i}`}>{item}</p>
+          ))}
+        </div>
+      ) : (
+        <div>
+          <p className="py-8">Please try restarting discord then try again</p>
+        </div>
+      )}
       <div className="pt-8 text-2xl flex items-center justify-center">
         <Link to="/">
           <Button>Login to Discord</Button>

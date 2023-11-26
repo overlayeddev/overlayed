@@ -5,7 +5,7 @@ import * as uuid from "uuid";
 import WebSocket from "tauri-plugin-websocket-api";
 import type { Message } from "tauri-plugin-websocket-api";
 import { useAppStore as appStore } from "../store";
-import type { AppActions } from "../store";
+import type { AppActions, AppState } from "../store";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { RPCErrors } from "./errors";
@@ -18,6 +18,7 @@ interface TokenResponse {
 class TokenStore {
   private store = window.localStorage;
   private key = "discord_access_token";
+  private expireKey = "discord_expires_at";
 
   get accessToken() {
     return this.store.getItem(this.key);
@@ -25,6 +26,10 @@ class TokenStore {
 
   setAccessToken(token: string) {
     this.store.setItem(this.key, token);
+  }
+
+  setAccessTokenExpiry(dateString: string) {
+    this.store.setItem(this.expireKey, dateString);
   }
 
   removeAccessToken() {
@@ -249,6 +254,7 @@ class SocketManager {
         evt: RPCEvent.VOICE_CHANNEL_SELECT,
       });
 
+      this.tokenStore?.setAccessTokenExpiry(payload.data.expires);
       this.store.setMe(payload.data.user);
 
       // move the view to /channel

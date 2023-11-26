@@ -102,7 +102,7 @@ export const useAppStore = create<AppState & AppActions>()(
       }),
     setTalking: (id, talking) =>
       set(state => {
-        state.users[id].talking = talking;
+        state.users[id]!.talking = talking;
       }),
     removeUser: id =>
       set((state: AppState) => {

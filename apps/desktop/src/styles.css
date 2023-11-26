@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     --gradient-angle: 360deg;
@@ -85,4 +86,8 @@
 
     --ring: 240 3.7% 15.9%;
   }
+}
+
+ul {
+  list-style: circle;
 }
