@@ -2,7 +2,7 @@ import { useSocket } from "../rpc/manager";
 import { useAppStore } from "../store";
 import { useEffect } from "react";
 import { useSetWindowSize } from "../use-set-size";
-import { Button } from "@radix-ui/themes";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 export const MainView = () => {
@@ -36,7 +36,7 @@ export const MainView = () => {
         </ul>
 
         <div className="pt-8 text-2xl flex items-center justify-center">
-          <Button size="4">
+          <Button>
             <Link to="/">Try Again</Link>
           </Button>
         </div>
