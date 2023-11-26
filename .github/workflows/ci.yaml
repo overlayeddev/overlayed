@@ -89,13 +89,13 @@ jobs:
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
         run: pnpm install
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@v0.4.5
         id: build_os
         with:
           projectPath: apps/desktop
           bundleIdentifier: "com.hacksore.unstable.overlayed"
-          # appName: "Overlayed (Unstable)"
-          # appVersion: "canary"
+          appName: "Overlayed (Unstable)"
+          appVersion: "canary"
           iconPath: src-tauri/icons/unstable.png
           args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }}
         env:

@@ -81,7 +81,7 @@ jobs:
           version: 8
       - name: install frontend dependencies
         run: pnpm install
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@v0.4.5
         env:
           APPLE_ID: "${{ secrets.APPLE_ID }}"
           APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
