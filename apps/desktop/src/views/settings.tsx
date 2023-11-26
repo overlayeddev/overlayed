@@ -182,7 +182,7 @@ export const SettingsView = () => {
                 }}
               >
                 <DialogHeader>
-                  <DialogTitle className="text-xl mb-4 text-white">Logout</DialogTitle>
+                  <DialogTitle className="text-xl mb-4 text-white">Quit Overlayed</DialogTitle>
                   <DialogDescription className="text-xl mb-4 text-white">
                     Are you sure you want to quit the Overlayed app?
                   </DialogDescription>
