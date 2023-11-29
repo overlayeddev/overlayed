@@ -66,8 +66,9 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 				latest.browser_download_url,
 			).then((res) => res.json());
 
-			return c.body(JSON.stringify(latestVersion), 200, { contentType: "application/json" });
-
+			return c.body(JSON.stringify(latestVersion), 200, {
+				contentType: "application/json",
+			});
 		} catch (err) {
 			console.log(err);
 			return c.body("", 204);
