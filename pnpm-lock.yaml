@@ -151,6 +151,9 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20230419.0
         version: 4.20231121.0
+      '@octokit/types':
+        specifier: ^12.3.0
+        version: 12.3.0
       lint:
         specifier: workspace:*
         version: link:../../tooling/config-eslint
