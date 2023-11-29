@@ -33,11 +33,13 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		).then((res) => res.json());
 
 		// get the assets that is called latest.json
-		const latest = releases.assets.find((asset) => asset.name === "latest.json");
+		const latest = releases.assets.find(
+			(asset) => asset.name === "latest.json",
+		);
 
 		if (!latest) {
 			return c.body(
-				JSON.stringify({ error: "Failed to find latest.json" }),
+				"",
 				204,
 
 				{
@@ -51,11 +53,9 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 			res.json(),
 		);
 
-
 		return c.body(JSON.stringify({ currentVersion, latestVersion }), 200, {
 			"Content-Type": "application/json",
 		});
-
 	} catch (err) {
 		console.log(err);
 		return c.body(
