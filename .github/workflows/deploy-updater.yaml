@@ -11,8 +11,13 @@ jobs:
     name: Deploy
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: apps/updater
+          packageManager: pnpm
