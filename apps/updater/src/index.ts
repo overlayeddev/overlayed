@@ -8,6 +8,18 @@ type Bindings = {
 	GITHUB_TOKEN: string;
 };
 
+interface LatestVersion {
+	version: string;
+	notes: string;
+	pub_date: string;
+	platforms: {
+		[platform: string]: {
+			signature: string;
+			url: string;
+		};
+	}[];
+}
+
 const app = new Hono<{ Bindings: Bindings }>();
 
 const GIT_USER = "Hacksore";
@@ -49,13 +61,17 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		}
 
 		// download the latest.json and return it's response
-		const latestVersion = await fetch(latest.browser_download_url).then((res) =>
-			res.json(),
-		);
+		try {
+			const latestVersion: LatestVersion = await fetch(
+				latest.browser_download_url,
+			).then((res) => res.json());
 
-		return c.body(JSON.stringify({ currentVersion, latestVersion }), 200, {
-			"Content-Type": "application/json",
-		});
+			return c.body(JSON.stringify(latestVersion), 200, { contentType: "application/json" });
+
+		} catch (err) {
+			console.log(err);
+			return c.body("", 204);
+		}
 	} catch (err) {
 		console.log(err);
 		return c.body(
