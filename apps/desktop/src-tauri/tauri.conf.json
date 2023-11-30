@@ -27,6 +27,7 @@
       },
       "all": false,
       "process": {
+        "relaunch": true,
         "exit": true
       },
       "shell": {

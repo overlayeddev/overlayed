@@ -1,6 +1,6 @@
 import { Download, Check, X } from "lucide-react";
 
-import { installUpdate } from "@tauri-apps/api/updater";
+import { checkUpdate, installUpdate } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
 import { useState } from "react";
 
@@ -8,7 +8,7 @@ export const UpdateBanner = () => {
   const [confirmUpdate, setConfirmUpdate] = useState(false);
 
   return (
-    <div className="py-2 bg-blue-500">
+    <div className="py-2 h-[48px] bg-blue-500">
       {!confirmUpdate ? (
         <button
           onClick={() => {
@@ -30,14 +30,24 @@ export const UpdateBanner = () => {
               onClick={() => {
                 setConfirmUpdate(false);
               }}
-              className="h-8 border border-red-50 rounded-md px-2 hover:bg-blue-600"
+              className="h-8 rounded-md px-2 hover:bg-blue-600"
             >
               <X size={20} />
             </button>
             <button
               onClick={async () => {
-                await installUpdate();
-                await relaunch();
+                const update = await checkUpdate();
+                if (update.shouldUpdate) {
+                  console.log("installing update");
+                  try {
+                    await installUpdate();
+                    await relaunch();
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }
+
+                setConfirmUpdate(false);
               }}
               className="rounded-md px-2 h-8 ml-1 hover:bg-blue-600"
             >
