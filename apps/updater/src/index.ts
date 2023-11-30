@@ -37,6 +37,10 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		const releases: ReleaseResponse = await fetch(
 			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
 			{
+				cf: {
+					cacheTtl: 60,
+					cacheEverything: true,
+				},
 				headers: {
 					Authorization: `token ${c.env.GITHUB_TOKEN}`,
 					"User-Agent": "overlayed-updater v1",
@@ -66,9 +70,13 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 				latest.browser_download_url,
 			).then((res) => res.json());
 
-			return c.body(JSON.stringify(latestVersion), 200, {
-				contentType: "application/json",
-			});
+			return c.body(
+				JSON.stringify({ ...latestVersion, lastUpdate: new Date() }),
+				200,
+				{
+					contentType: "application/json",
+				},
+			);
 		} catch (err) {
 			console.log(err);
 			return c.body("", 204);
