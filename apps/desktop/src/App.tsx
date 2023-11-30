@@ -10,6 +10,7 @@ import { useClickthrough } from "./hooks/use-clickthrough";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
+import { UpdateBanner } from "./components/update-banner";
 
 function App() {
   useSocket();

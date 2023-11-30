@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Settings, Pin } from "lucide-react";
+import { Settings, Pin, Download } from "lucide-react";
 
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig from "../config";
@@ -27,8 +27,17 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
             <div data-tauri-drag-region>Overlayed</div>
           )}
         </div>
-        <div className="hidden md:flex">
-          <button className="px-4">
+        <div className="hidden gap-4 md:flex"> 
+          <button>
+            <Download
+              className="text-green-500"
+              size={20}
+              onClick={() => {
+                navigate("/settings?update");
+              }}
+            />
+          </button>
+          <button>
             <Pin
               size={20}
               onClick={() => {
@@ -39,7 +48,7 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
             />
           </button>
           <button>
-            <Link to="/settings">
+            <Link to="/settings?ligma">
               <Settings size={20} />
             </Link>
           </button>
