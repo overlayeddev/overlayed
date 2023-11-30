@@ -26,7 +26,7 @@ import type { UpdateStatus } from "@tauri-apps/api/updater";
 export const SettingsView = ({
   update,
 }: {
-  update: { isAvailable: boolean; status: UpdateStatus; error: string };
+  update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
   const navigate = useNavigate();
   const { me, setMe } = useAppStore();
@@ -44,7 +44,7 @@ export const SettingsView = ({
 
   return (
     <div className="bg-zinc-900 h-full overflow-auto">
-      {update.isAvailable && update.status === "PENDING" && <UpdateBanner />}
+      {update.isAvailable && <UpdateBanner update={update} />}
       <div className="p-4 pt-4 pb-14 overflow-auto">
         <div className="flex flex-col gap-4">
           <h1 className="text-xl font-bold">Settings</h1>

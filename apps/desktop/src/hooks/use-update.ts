@@ -4,14 +4,12 @@ import { useEffect, useState } from "react";
 
 export const useUpdate = () => {
   const [isAvailable, setIsAvailable] = useState(false);
-  const [status, setStatus] = useState<UpdateStatus>("PENDING");
+  const [status, setStatus] = useState<UpdateStatus|null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const setupUpdater = async () => {
       const unlisten = await onUpdaterEvent(({ error, status }) => {
-        // This will log all updater events, including status updates and errors.
-        console.log("Updater event", error, status);
         setStatus(status);
 
         if (error) {

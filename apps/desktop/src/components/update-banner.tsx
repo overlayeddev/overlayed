@@ -1,11 +1,26 @@
 import { Download, Check, X } from "lucide-react";
 
-import { installUpdate } from "@tauri-apps/api/updater";
+import { installUpdate, type UpdateStatus } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
 import { useState } from "react";
 
-export const UpdateBanner = ({ status }: {}) => {
+export const UpdateBanner = ({
+  update,
+}: {
+  update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
+}) => {
   const [confirmUpdate, setConfirmUpdate] = useState(false);
+
+  console.log(update);
+  if (update.isAvailable && update.status !== null) {
+    return (
+      <div className="py-2 h-[48px] bg-green-600">
+        <div className="!text-white text-xl font-bold cursor-pointer flex gap-2 items-center justify-center">
+          <p>Updating...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="py-2 h-[48px] bg-blue-500">
