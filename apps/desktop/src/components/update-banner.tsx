@@ -1,40 +1,51 @@
-import { checkUpdate, installUpdate, onUpdaterEvent } from "@tauri-apps/api/updater";
+import { Download, Check, X } from "lucide-react";
+
+import { installUpdate } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
-import { Download } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export const UpdateBanner = () => {
-  const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
-  useEffect(() => {
-    const setupUpdater = async () => {
-      const unlisten = await onUpdaterEvent(({ error, status }) => {
-        // This will log all updater events, including status updates and errors.
-        console.log("Updater event", error, status);
-      });
-
-      try {
-        const { shouldUpdate } = await checkUpdate();
-
-        setIsUpdateAvailable(shouldUpdate);
-      } catch (error) {
-        console.error(error);
-      }
-
-      return unlisten;
-    };
-
-    setupUpdater();
-  }, []);
-
-  if (!isUpdateAvailable) return null;
+  const [confirmUpdate, setConfirmUpdate] = useState(false);
 
   return (
-    <Link to="/settings?update">
-      <div className="bg-blue-500 hover:bg-blue-400 !text-white py-2 font-bold cursor-pointer flex gap-2 items-center justify-center">
-        <Download />
-        <p>Click here to update.</p>
-      </div>
-    </Link>
+    <div className="py-2 bg-blue-500">
+      {!confirmUpdate ? (
+        <button
+          onClick={() => {
+            setConfirmUpdate(true);
+          }}
+          className="w-full"
+        >
+          <div className="!text-white font-bold cursor-pointer flex gap-2 items-center justify-center">
+            <Download />
+            <p>Update is available</p>
+          </div>
+        </button>
+      ) : (
+        <div className="px-4 justify-between flex items-center">
+          <p className="font-bold">Confirm update</p>
+
+          <div>
+            <button
+              onClick={() => {
+                setConfirmUpdate(false);
+              }}
+              className="h-8 border border-red-50 rounded-md px-2 hover:bg-blue-600"
+            >
+              <X size={20} />
+            </button>
+            <button
+              onClick={async () => {
+                await installUpdate();
+                await relaunch();
+              }}
+              className="rounded-md px-2 h-8 ml-1 hover:bg-blue-600"
+            >
+              <Check size={20} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };

@@ -22,7 +22,7 @@ import { Link } from "@/components/ui/link";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import { UpdateBanner } from "@/components/update-banner";
 
-export const SettingsView = () => {
+export const SettingsView = ({ isUpdateAvailable }: { isUpdateAvailable: boolean }) => {
   const navigate = useNavigate();
   const { me, setMe } = useAppStore();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -38,9 +38,9 @@ export const SettingsView = () => {
   }, []);
 
   return (
-    <div>
-      <UpdateBanner />
-      <div className="bg-zinc-900 h-full p-4 pt-4 pb-14 overflow-auto">
+    <div className="bg-zinc-900 h-full overflow-auto">
+      {isUpdateAvailable && <UpdateBanner />}
+      <div className="p-4 pt-4 pb-14 overflow-auto">
         <div className="flex flex-col gap-4">
           <h1 className="text-xl font-bold">Settings</h1>
           <hr className="border-zinc-800" />
@@ -103,7 +103,7 @@ export const SettingsView = () => {
                 </Dialog>
               ) : (
                 <Button variant="default">
-                  <Link to="/" internal className="no-underline text-white hover:text-white">
+                  <Link to="/" className="no-underline text-white hover:text-white">
                     Login to Discord
                   </Link>
                 </Button>

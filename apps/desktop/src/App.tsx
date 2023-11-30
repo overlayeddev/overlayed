@@ -10,11 +10,12 @@ import { useClickthrough } from "./hooks/use-clickthrough";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
-import { UpdateBanner } from "./components/update-banner";
+import { useUpdate } from "./hooks/use-update";
 
 function App() {
   useSocket();
   useDisableWebFeatures();
+  const { isUpdateAvailable } = useUpdate();
 
   const { clickthrough } = useClickthrough();
 
@@ -29,11 +30,11 @@ function App() {
 
   return (
     <div className="text-white h-screen select-none rounded-lg">
-      <NavBar clickthrough={clickthrough} />
+      <NavBar isUpdateAvailable={isUpdateAvailable} clickthrough={clickthrough} />
       <Routes>
         <Route path="/" Component={MainView} />
         <Route path="/channel" Component={ChannelView} />
-        <Route path="/settings" Component={SettingsView} />
+        <Route path="/settings" element={<SettingsView isUpdateAvailable={isUpdateAvailable} />} />
         <Route path="/error" Component={ErrorView} />
       </Routes>
     </div>

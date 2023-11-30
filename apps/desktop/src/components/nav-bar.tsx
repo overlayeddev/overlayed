@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api";
 import overlayedConfig from "../config";
 import { useAppStore } from "../store";
 
-export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
+export const NavBar = ({ clickthrough, isUpdateAvailable }: { clickthrough: boolean; isUpdateAvailable: boolean }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentChannel } = useAppStore();
@@ -27,16 +27,18 @@ export const NavBar = ({ clickthrough }: { clickthrough: boolean }) => {
             <div data-tauri-drag-region>Overlayed</div>
           )}
         </div>
-        <div className="hidden gap-4 md:flex"> 
-          <button>
-            <Download
-              className="text-green-500"
-              size={20}
-              onClick={() => {
-                navigate("/settings?update");
-              }}
-            />
-          </button>
+        <div className="hidden gap-4 md:flex">
+          {isUpdateAvailable && (
+            <button>
+              <Download
+                className="text-green-500"
+                size={20}
+                onClick={() => {
+                  navigate("/settings?update");
+                }}
+              />
+            </button>
+          )}
           <button>
             <Pin
               size={20}
