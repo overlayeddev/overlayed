@@ -21,13 +21,18 @@ import { invoke } from "@tauri-apps/api";
 import { Link } from "@/components/ui/link";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import { UpdateBanner } from "@/components/update-banner";
+import type { UpdateStatus } from "@tauri-apps/api/updater";
 
-export const SettingsView = ({ isUpdateAvailable }: { isUpdateAvailable: boolean }) => {
+export const SettingsView = ({
+  update,
+}: {
+  update: { isAvailable: boolean; status: UpdateStatus; error: string };
+}) => {
   const navigate = useNavigate();
   const { me, setMe } = useAppStore();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [tokenExpires, setTokenExpires] = useState < string | null > (null);
+  const [tokenExpires, setTokenExpires] = useState<string | null>(null);
   const platformInfo = usePlatformInfo();
 
   useEffect(() => {
@@ -39,7 +44,7 @@ export const SettingsView = ({ isUpdateAvailable }: { isUpdateAvailable: boolean
 
   return (
     <div className="bg-zinc-900 h-full overflow-auto">
-      {isUpdateAvailable && <UpdateBanner />}
+      {update.isAvailable && update.status === "PENDING" && <UpdateBanner />}
       <div className="p-4 pt-4 pb-14 overflow-auto">
         <div className="flex flex-col gap-4">
           <h1 className="text-xl font-bold">Settings</h1>

@@ -62,6 +62,7 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
           .unwrap();
 
         // if we are in built mode do this instead
+        #[cfg(not(debug_assertions))]
         window
           .eval("window.location.href = 'tauri://localhost#/settings'")
           .unwrap();

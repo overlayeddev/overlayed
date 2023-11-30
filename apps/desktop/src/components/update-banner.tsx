@@ -1,10 +1,10 @@
 import { Download, Check, X } from "lucide-react";
 
-import { checkUpdate, installUpdate } from "@tauri-apps/api/updater";
+import { installUpdate } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
 import { useState } from "react";
 
-export const UpdateBanner = () => {
+export const UpdateBanner = ({ status }: {}) => {
   const [confirmUpdate, setConfirmUpdate] = useState(false);
 
   return (
@@ -18,7 +18,7 @@ export const UpdateBanner = () => {
         >
           <div className="!text-white font-bold cursor-pointer flex gap-2 items-center justify-center">
             <Download />
-            <p>Update is available</p>
+            <p>Update Available! Click here to update</p>
           </div>
         </button>
       ) : (
@@ -36,15 +36,12 @@ export const UpdateBanner = () => {
             </button>
             <button
               onClick={async () => {
-                const update = await checkUpdate();
-                if (update.shouldUpdate) {
-                  console.log("installing update");
-                  try {
-                    await installUpdate();
-                    await relaunch();
-                  } catch (e) {
-                    console.error(e);
-                  }
+                console.log("installing update");
+                try {
+                  await installUpdate();
+                  await relaunch();
+                } catch (e) {
+                  console.error(e);
                 }
 
                 setConfirmUpdate(false);

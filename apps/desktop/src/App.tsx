@@ -15,7 +15,7 @@ import { useUpdate } from "./hooks/use-update";
 function App() {
   useSocket();
   useDisableWebFeatures();
-  const { isUpdateAvailable } = useUpdate();
+  const { isAvailable, error, status } = useUpdate();
 
   const { clickthrough } = useClickthrough();
 
@@ -30,11 +30,22 @@ function App() {
 
   return (
     <div className="text-white h-screen select-none rounded-lg">
-      <NavBar isUpdateAvailable={isUpdateAvailable} clickthrough={clickthrough} />
+      <NavBar isUpdateAvailable={isAvailable} clickthrough={clickthrough} />
       <Routes>
         <Route path="/" Component={MainView} />
         <Route path="/channel" Component={ChannelView} />
-        <Route path="/settings" element={<SettingsView isUpdateAvailable={isUpdateAvailable} />} />
+        <Route
+          path="/settings"
+          element={
+            <SettingsView
+              update={{
+                isAvailable,
+                error,
+                status,
+              }}
+            />
+          }
+        />
         <Route path="/error" Component={ErrorView} />
       </Routes>
     </div>

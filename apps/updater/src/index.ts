@@ -38,7 +38,7 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
 			{
 				cf: {
-					cacheTtl: 60,
+					cacheTtl: 300,
 					cacheEverything: true,
 				},
 				headers: {

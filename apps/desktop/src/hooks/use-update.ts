@@ -1,21 +1,29 @@
 import { checkUpdate, onUpdaterEvent } from "@tauri-apps/api/updater";
+import type { UpdateStatus } from "@tauri-apps/api/updater";
 import { useEffect, useState } from "react";
 
 export const useUpdate = () => {
-  const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(false);
+  const [status, setStatus] = useState<UpdateStatus>("PENDING");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const setupUpdater = async () => {
       const unlisten = await onUpdaterEvent(({ error, status }) => {
         // This will log all updater events, including status updates and errors.
         console.log("Updater event", error, status);
+        setStatus(status);
+
+        if (error) {
+          setError(error);
+        }
       });
 
       try {
         const { shouldUpdate, manifest } = await checkUpdate();
         console.log(manifest);
 
-        setIsUpdateAvailable(shouldUpdate);
+        setIsAvailable(shouldUpdate);
       } catch (error) {
         console.error(error);
       }
@@ -26,5 +34,5 @@ export const useUpdate = () => {
     setupUpdater();
   }, []);
 
-  return { isUpdateAvailable };
+  return { isAvailable, error, status };
 };

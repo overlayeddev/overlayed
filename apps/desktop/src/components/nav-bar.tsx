@@ -50,7 +50,7 @@ export const NavBar = ({ clickthrough, isUpdateAvailable }: { clickthrough: bool
             />
           </button>
           <button>
-            <Link to="/settings?ligma">
+            <Link to="/settings">
               <Settings size={20} />
             </Link>
           </button>
