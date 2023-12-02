@@ -151,6 +151,7 @@ jobs:
       - name: Create a nsis.zip and msi.zip
         run: |
           # create a signature of the binaries with tauri signer, this does not mutate the original bin
+          # TODO: waiting for tauri to support env vars via https://github.com/tauri-apps/tauri/pull/8327
           cargo tauri signer sign --password "" --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" binaries/signed/*.msi 
           cargo tauri signer sign --password "" --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" binaries/signed/*.exe
 
