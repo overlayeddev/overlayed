@@ -40,21 +40,21 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          - host: macos-latest
-            target: universal-apple-darwin
-            toolchain: aarch64-apple-darwin,x86_64-apple-darwin
-            bundles: app,dmg
-            os: darwin
+          # - host: macos-latest
+          #   target: universal-apple-darwin
+          #   toolchain: aarch64-apple-darwin,x86_64-apple-darwin
+          #   bundles: app,dmg
+          #   os: darwin
           - host: windows-latest
             target: x86_64-pc-windows-msvc
             toolchain: x86_64-pc-windows-msvc
             bundles: msi,nsis
             os: windows
-          - host: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            toolchain: x86_64-unknown-linux-gnu
-            bundles: deb,appimage
-            os: linux
+          # - host: ubuntu-latest
+          #   target: x86_64-unknown-linux-gnu
+          #   toolchain: x86_64-unknown-linux-gnu
+          #   bundles: deb,appimage
+          #   os: linux
     env:
       APP_DIR: "apps/desktop"
     runs-on: ${{ matrix.settings.host }}
@@ -64,7 +64,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: install Rust stable
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
           target: "${{ matrix.settings.toolchain }}"
@@ -108,6 +108,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install tauri cli 
+        run: cargo install tauri-cli
       - name: Download draft binaries
         uses: actions/github-script@v7
         with:
@@ -118,7 +122,6 @@ jobs:
         env:
           # NOTE: we need this to download the bins
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Presign
         run: |
           ls -hal binaries
@@ -142,10 +145,24 @@ jobs:
         run: |
           ls -hal binaries/signed
           sha1sum binaries/signed/*
-      - name: Sign & upload windows binaries
+      - name: Create a nsis.zip and msi.zip
+        run: |
+          # sign the binaries with tauri signer
+          cargo tauri signer sign --pasword "" binaries/signed/*.msi 
+          cargo tauri signer sign --pasword "" binaries/signed/*.exe
+
+          # zip the binaries usering the name "Overlayed" and the version from the package.json
+          cd binaries/signed
+          zip -r Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.msi.zip *.msi
+          zip -r Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.nsis.zip *.exe
+          # debug
+          ls -hal binaries/signed
+          # TODO: patch the release json to include the new sig files content
+
+      - name: Upload signed windows binaries
         uses: actions/github-script@v7
         with:
           script: |
-            const { script } = await import('${{ github.workspace }}/scripts/actions/sign.js');
+            const { script } = await import('${{ github.workspace }}/scripts/actions/upload-signed-bins.js');
             const id = "${{ needs.create-release.outputs.release_id }}";
             await script({ github, context }, id);

@@ -1,6 +1,4 @@
 import fs from "fs";
-const releaseId = "${{ needs.create-release.outputs.release_id }}";
-
 const SIGNED_BINARIES_DIR = "./binaries/signed";
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
