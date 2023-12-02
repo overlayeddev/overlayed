@@ -110,7 +110,7 @@ jobs:
           node-version: 20
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
-      - name: Install tauri cli 
+      - name: Install tauri cli
         run: cargo install tauri-cli
       - name: Download draft binaries
         uses: actions/github-script@v7
@@ -148,16 +148,20 @@ jobs:
       - name: Create a nsis.zip and msi.zip
         run: |
           # sign the binaries with tauri signer
-          cargo tauri signer sign --pasword "" binaries/signed/*.msi 
-          cargo tauri signer sign --pasword "" binaries/signed/*.exe
+          cargo tauri signer sign --password "" binaries/signed/*.msi 
+          cargo tauri signer sign --password "" binaries/signed/*.exe
 
           # zip the binaries usering the name "Overlayed" and the version from the package.json
           cd binaries/signed
-          zip -r Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.msi.zip *.msi
-          zip -r Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.nsis.zip *.exe
+          zip -r "Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.msi.zip" *.msi
+          zip -r "Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.nsis.zip" *.exe
+
           # debug
           ls -hal binaries/signed
           # TODO: patch the release json to include the new sig files content
+        env:
+          TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
+          TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
 
       - name: Upload signed windows binaries
         uses: actions/github-script@v7
