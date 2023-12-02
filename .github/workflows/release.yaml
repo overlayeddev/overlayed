@@ -3,7 +3,7 @@ name: "Create Release"
 on:
   # Allow manual
   workflow_dispatch:
-  # push:
+  push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -147,7 +147,7 @@ jobs:
           sha1sum binaries/signed/*
       - name: Create a nsis.zip and msi.zip
         run: |
-          # sign the binaries with tauri signer
+          # create a sig of the binaries with tauri signer, this does not mutate the original bin
           cargo tauri signer sign --password "" binaries/signed/*.msi 
           cargo tauri signer sign --password "" binaries/signed/*.exe
 
@@ -158,7 +158,8 @@ jobs:
 
           # debug
           ls -hal binaries/signed
-          # TODO: patch the release json to include the new sig files content
+          # TODO: patch the release json to include the new sig files content for
+          # "windows-x86_64"
         env:
           TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
           TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
