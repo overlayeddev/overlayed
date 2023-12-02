@@ -130,7 +130,7 @@ jobs:
       - name: Sign Windows Binaries
         run: |
           echo "Starting code sign for windows bins..."
-          docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
+          docker run -v "./binaries:/code/binaries" ghcr.io/hacksore/sslcom-codesign:latest batch_sign \
             -username=${ES_USERNAME} \
             -password=${ES_PASSWORD} \
             -credential_id=${ES_CREDENTIAL_ID} \
