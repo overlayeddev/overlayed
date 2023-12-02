@@ -110,6 +110,7 @@ jobs:
           node-version: 20
       - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
       - name: Install tauri cli
         run: cargo install tauri-cli
       - name: Download draft binaries
@@ -145,6 +146,8 @@ jobs:
         run: |
           ls -hal binaries/signed
           sha1sum binaries/signed/*
+          # change the perms to 777 as the signer seems to change owner to root
+          chmod -R 777 binaries/signed
       - name: Create a nsis.zip and msi.zip
         run: |
           # create a signature of the binaries with tauri signer, this does not mutate the original bin
