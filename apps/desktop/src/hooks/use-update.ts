@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export const useUpdate = () => {
   const [isAvailable, setIsAvailable] = useState(false);
-  const [status, setStatus] = useState<UpdateStatus|null>(null);
+  const [status, setStatus] = useState<UpdateStatus | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
