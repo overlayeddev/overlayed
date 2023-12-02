@@ -3,11 +3,11 @@
 import { getOctokit, context } from "@actions/github";
 
 // @ts-ignore
-import { script as signScript } from "./actions/sign.js";
+import { script as uploadSignedBins } from "./actions/upload-signed-bins.js";
 // @ts-ignore
-import { script as dlScript } from "./actions/download-draft-bins.js";
+import { script as downloadDraftBins } from "./actions/download-draft-bins.js";
 // @ts-ignore
-import { script as createScript } from "./actions/create-release.js";
+import { script as createRelease } from "./actions/create-release.js";
 
 const { GITHUB_TOKEN } = process.env;
 if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not found");
@@ -17,21 +17,29 @@ const [arg] = process.argv.slice(2);
 
 process.env.GITHUB_REPOSITORY = "Hacksore/overlayed";
 
-const draftId = "131045109";
-
-// create context
+// create context mock
 const github = getOctokit(GITHUB_TOKEN);
+
+// get the latest draftId from releases
+const releases = await github.rest.repos.listReleases({
+  owner: context.repo.owner,
+  repo: context.repo.repo,
+});
+
+const draft = releases.data.find((release) => release.draft);
+if (!draft) throw new Error("No draft found");
+const draftId = draft.id;
 
 switch (arg) {
   case "create":
-    await createScript({ github, context });
+    await createRelease({ github, context });
     break;
-  case "dl":
-    await dlScript({ github, context }, draftId);
+  case "download":
+    await downloadDraftBins({ github, context }, draftId);
     break;
-  case "sign":
-    await signScript({ github, context }, draftId);
+  case "upload":
+    await uploadSignedBins({ github, context }, draftId);
     break;
   default:
-    console.log("No script found");
+    console.log("No script found, accepted answers are: create, download, upload");
 }
