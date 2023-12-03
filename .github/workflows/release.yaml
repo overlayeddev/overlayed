@@ -103,15 +103,15 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - name: Install tauri cli
-        run: cargo install tauri-cli
+      # - name: setup node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+      # - name: Install Rust stable
+      #   uses: dtolnay/rust-toolchain@stable
+      # - uses: Swatinem/rust-cache@v2
+      # - name: Install tauri cli
+      #   run: cargo install tauri-cli
       - name: Download draft binaries
         uses: actions/github-script@v7
         with:
