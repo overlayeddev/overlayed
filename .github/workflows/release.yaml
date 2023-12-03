@@ -3,7 +3,6 @@ name: "Create Release"
 on:
   # Allow manual
   workflow_dispatch:
-  push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
