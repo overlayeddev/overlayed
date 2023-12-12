@@ -48,7 +48,17 @@ export const SettingsView = ({
       <div className="p-4 pt-4 pb-14 overflow-auto">
         <div className="flex flex-col gap-4">
           <h1 className="text-xl font-bold">Settings</h1>
+
+          <Button
+            variant="secondary"
+            onClick={() => {
+              navigate("/log");
+            }}
+          >
+            Audit log
+          </Button>
           <hr className="border-zinc-800" />
+
           <div className="">
             {me?.id ? (
               <p className="mb-3 font-bold">

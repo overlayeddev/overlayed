@@ -4,10 +4,10 @@ import { RPCEvent } from "./event";
 import * as uuid from "uuid";
 import WebSocket from "tauri-plugin-websocket-api";
 import type { Message } from "tauri-plugin-websocket-api";
-import { useAppStore as appStore } from "../store";
+import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
 
 interface TokenResponse {
@@ -75,6 +75,7 @@ class SocketManager {
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
+    console.log("call init socket");
     this.disconnect();
 
     this.tokenStore = new TokenStore();
@@ -167,10 +168,13 @@ class SocketManager {
       }
 
       this.store.removeUser(payload.data.user.id);
+      this.store.logUser({ ...createUserStateItem(payload.data), event: "leave" });
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
+      console.log("create user", payload.data);
       this.store.addUser(payload.data);
+      this.store.logUser({ ...createUserStateItem(payload.data), event: "join" });
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
@@ -317,15 +321,17 @@ class SocketManager {
 // hook to get the socket SocketManager
 export const useSocket = () => {
   const navigate = useNavigate();
-  //TODO: should this be a ref instead?
-  const [socket, setSocket] = useState<SocketManager | null>(null);
+  const socketRef = useRef<SocketManager | null>(null);
 
   useEffect(() => {
+    if (socketRef.current) return;
+
     console.log("Initializing websocket...");
     const socketManager = new SocketManager();
     socketManager.init(navigate);
-    setSocket(socketManager);
+
+    socketRef.current = socketManager;
   }, []);
 
-  return socket;
+  return socketRef.current;
 };

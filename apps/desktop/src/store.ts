@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 
-const createUserStateItem = (payload: VoiceStateUser) => {
+export const createUserStateItem = (payload: VoiceStateUser) => {
   const data: OverlayedUser = {
     username: payload.nick,
     globalUsername: payload.user.global_name,
@@ -27,6 +27,7 @@ const createUserStateItem = (payload: VoiceStateUser) => {
 };
 
 export interface AppState {
+  userLog: (OverlayedUser & { event: "join" | "leave" })[];
   clickThrough: boolean;
   // TODO: type this better
   me: any | null;
@@ -39,6 +40,8 @@ export interface AppState {
 }
 
 export interface AppActions {
+  resetUserLog: () => void;
+  logUser: (user: OverlayedUser & { event: "join" | "leave" }) => void;
   setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: VoiceStateUser[]) => void;
@@ -93,6 +96,7 @@ export const useAppStore = create<AppState & AppActions>()(
   // TODO: fix later
   // @ts-ignore
   immer(set => ({
+    userLog: [],
     me: null,
     discordErrors: [],
     clickThrough: false,
@@ -143,6 +147,14 @@ export const useAppStore = create<AppState & AppActions>()(
     resetErrors: () =>
       set(state => {
         state.discordErrors = [];
+      }),
+    logUser: user =>
+      set(state => {
+        state.userLog.push(user);
+      }),
+    resetUserLog: () =>
+      set(state => {
+        state.userLog = [];
       }),
   }))
 );

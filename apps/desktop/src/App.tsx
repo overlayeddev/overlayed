@@ -11,6 +11,7 @@ import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 import { useUpdate } from "./hooks/use-update";
+import { LogView } from "./views/log";
 
 function App() {
   useSocket();
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path="/" Component={MainView} />
         <Route path="/channel" Component={ChannelView} />
+        <Route path="/log" Component={LogView} />
         <Route
           path="/settings"
           element={
