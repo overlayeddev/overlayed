@@ -2,7 +2,7 @@
 import Link from "./link.astro";
 ---
 
-<footer class="py-24 max-w-[800px] mx-auto text-gray-400 text-center">
+<footer class="py-24 w-full mx-auto text-gray-400 text-center">
   <div
     class="relative flex justify-center items-center mb-24 w-full h-2 bg-gradient-to-r from-transparent via-zinc-800 to-transparent"
   >
@@ -32,13 +32,14 @@ import Link from "./link.astro";
     </a>
   </div>
   <div>
-    <div class="flex gap-4 mb-4 text-lg">
+    <div class="flex items-center justify-center gap-4 mb-4 text-lg">
       <Link to="https://discord.gg/trashdev">Discord</Link>
       <Link to="https://github.com/Hacksore/overlayed">Github</Link>
       <Link to="https://x.com/OverlayedDev">Twitter</Link>
     </div>
-    <div class="flex gap-4">
+    <div class="flex items-center justify-center gap-4">
       <Link to="/privacy">Privacy</Link>
+      <span>|</span>
       <Link to="/tos">ToS</Link>
     </div>
   </div>
