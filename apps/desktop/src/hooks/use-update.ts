@@ -18,7 +18,7 @@ export const useUpdate = () => {
       });
 
       try {
-        const { shouldUpdate, manifest } = await checkUpdate();
+        const { shouldUpdate } = await checkUpdate();
 
         setIsAvailable(shouldUpdate);
       } catch (error) {
