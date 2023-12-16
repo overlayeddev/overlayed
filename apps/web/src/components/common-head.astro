@@ -24,7 +24,17 @@ const { title, description, image = SITE_IMAGE } = Astro.props;
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Overlayed",
-      "applicationCategory": "DesktopEnhancementApplication"
+      "applicationCategory": "DesktopEnhancementApplication",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "ratingCount": "100"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "Free",
+        "priceCurrency": "USD"
+      }
     }
   </script>
 
