@@ -14,6 +14,7 @@
   "dependencies": {
     "@astrojs/mdx": "^1.1.5",
     "@astrojs/tailwind": "^5.0.2",
+    "@astrojs/vercel": "^6.1.0",
     "@tailwindcss/typography": "^0.5.10",
     "astro": "^3.4.3",
     "clsx": "^2.0.0",
@@ -21,8 +22,8 @@
     "tailwindcss": "^3.3.5"
   },
   "devDependencies": {
-    "lint": "workspace:*",
     "eslint-plugin-astro": "^0.29.1",
+    "lint": "workspace:*",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.2",
     "prettier-plugin-tailwindcss": "^0.5.6"
