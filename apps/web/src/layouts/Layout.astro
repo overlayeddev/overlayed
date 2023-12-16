@@ -1,6 +1,7 @@
 ---
 import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
 import CommonHead from "../components/common-head.astro";
+import Navbar from "../components/navbar.astro";
 
 interface Props {
   title: string;
@@ -14,13 +15,13 @@ const { title } = Astro.props;
   <CommonHead title={title ?? SITE_TITLE} description={SITE_DESCRIPTION} />
 
   <body>
+    <Navbar />
     <slot />
     <style is:global>
       html {
         font-family: system-ui, sans-serif;
         background: #13151a;
         background-size: 224px;
-        padding-top: 70px;
         color: #fff;
       }
       code {

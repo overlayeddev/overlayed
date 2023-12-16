@@ -5,10 +5,35 @@ import Logo from "../components/logo.astro";
 import Link from "../components/link.astro";
 import Footer from "../components/footer.astro";
 ---
+<style>
+  main {
+    margin: auto;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  .link-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    gap: 2rem;
+    padding: 0;
+  }
+</style>
 
 <Layout title="Overlayed">
   <main
-    class="min-h-screen w-full flex justify-center items-center flex-col gap-10"
+    class="pt-36 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-10"
   >
     <Logo />
 
@@ -55,30 +80,3 @@ import Footer from "../components/footer.astro";
     <Footer />
   </main>
 </Layout>
-
-<style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 800px;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-  }
-
-  h1 {
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-
-  .link-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-    gap: 2rem;
-    padding: 0;
-  }
-</style>
