@@ -19,6 +19,15 @@ const { title, description, image = SITE_IMAGE } = Astro.props;
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="generator" content={Astro.generator} />
 
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Overlayed",
+      "applicationCategory": "DesktopEnhancementApplication"
+    }
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
 
