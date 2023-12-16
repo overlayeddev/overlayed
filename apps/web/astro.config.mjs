@@ -8,6 +8,7 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   site: "https://overlayed.dev",
   integrations: [tailwind(), mdx()],
+  output: "server",
   adapter: vercel({
     webAnalytics: {
       enabled: true,
