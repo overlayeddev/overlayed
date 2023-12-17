@@ -52,6 +52,9 @@
         "setPosition": true,
         "startDragging": true,
         "setAlwaysOnTop": true
+      },
+      "globalShortcut": {
+        "all": true
       }
     },
     "bundle": {

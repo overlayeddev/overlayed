@@ -27,6 +27,7 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 };
 
 export interface AppState {
+  visible: boolean;
   userLog: (OverlayedUser & { event: "join" | "leave" })[];
   clickThrough: boolean;
   // TODO: type this better
@@ -42,6 +43,7 @@ export interface AppState {
 export interface AppActions {
   resetUserLog: () => void;
   logUser: (user: OverlayedUser & { event: "join" | "leave" }) => void;
+  setAppVisible: (value: boolean) => void;
   setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: VoiceStateUser[]) => void;
@@ -92,16 +94,22 @@ const sortOverlayedUsers = (myId: string | undefined, users: Record<string, Over
   return userMapSorted;
 };
 
+// TODO: split this into multiple stores
 export const useAppStore = create<AppState & AppActions>()(
   // TODO: fix later
   // @ts-ignore
   immer(set => ({
+    visible: true,
     userLog: [],
     me: null,
     discordErrors: [],
     clickThrough: false,
     currentChannel: null,
     users: {},
+    setAppVisible: value =>
+      set(state => {
+        state.visible = value;
+      }),
     setMe: data =>
       set(state => {
         state.me = data;

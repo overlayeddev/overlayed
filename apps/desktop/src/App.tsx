@@ -12,11 +12,15 @@ import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 import { useUpdate } from "./hooks/use-update";
 import { LogView } from "./views/log";
+import { useKeybinds } from "./hooks/use-keybinds";
+import { useAppStore } from "./store";
 
 function App() {
+  useKeybinds();
   useSocket();
   useDisableWebFeatures();
   const { isAvailable, error, status } = useUpdate();
+  const { visible } = useAppStore();
 
   const { clickthrough } = useClickthrough();
 
@@ -29,8 +33,9 @@ function App() {
     });
   }, []);
 
+  const visibleClass = visible ? "opacity-100" : "opacity-0";
   return (
-    <div className="text-white h-screen select-none rounded-lg">
+    <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
       <NavBar isUpdateAvailable={isAvailable} clickthrough={clickthrough} />
       <Routes>
         <Route path="/" Component={MainView} />
