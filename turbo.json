@@ -13,6 +13,7 @@
       ]
     },
     "lint": {},
+    "clean": {},
     "format": {},
     "check:format": {},
     "build:tauri": {},

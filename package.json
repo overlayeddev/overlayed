@@ -5,6 +5,7 @@
     "build": "turbo run build",
     "build:tauri": "turbo run build:tauri",
     "check:format": "turbo run check:format",
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
     "lint": "turbo run lint",
     "format": "turbo run format",
     "ui:add": "pnpm --filter ui ui:add"
