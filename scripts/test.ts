@@ -6,8 +6,6 @@ import { getOctokit, context } from "@actions/github";
 import { script as uploadSignedBins } from "./actions/upload-signed-bins.js";
 // @ts-ignore
 import { script as downloadDraftBins } from "./actions/download-draft-bins.js";
-// @ts-ignore
-import { script as createRelease } from "./actions/create-release.js";
 
 const { GITHUB_TOKEN } = process.env;
 if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not found");
@@ -31,12 +29,6 @@ if (!draft) throw new Error("No draft found");
 const draftId = draft.id;
 
 switch (arg) {
-  case "create":
-    await createRelease({ github, context });
-    break;
-  case "download":
-    await downloadDraftBins({ github, context }, draftId);
-    break;
   case "upload":
     await uploadSignedBins({ github, context }, draftId);
     break;
