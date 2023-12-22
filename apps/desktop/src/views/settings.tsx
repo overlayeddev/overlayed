@@ -84,9 +84,7 @@ export const SettingsView = ({
                   open={showLogoutDialog}
                 >
                   <DialogTrigger asChild>
-                    <Button disabled={!me?.id}>
-                      Logout
-                    </Button>
+                    <Button disabled={!me?.id}>Logout</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <form
@@ -109,9 +107,7 @@ export const SettingsView = ({
                         <DialogClose asChild>
                           <Button variant="secondary">Cancel</Button>
                         </DialogClose>
-                        <Button type="submit">
-                          Confirm Logout
-                        </Button>
+                        <Button type="submit">Confirm Logout</Button>
                       </DialogFooter>
                     </form>
                   </DialogContent>

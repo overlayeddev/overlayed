@@ -6,7 +6,7 @@
 		"deploy": "wrangler deploy",
 		"lint": "eslint . --ext .js,.ts",
 		"check:format": "prettier --check \"**/*.{ts,js,md}\"",
-    "clean": "rm -rf dist .turbo node_modules",
+		"clean": "rm -rf dist .turbo node_modules",
 		"format": "prettier --write .",
 		"start": "wrangler dev"
 	},
