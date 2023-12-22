@@ -1,11 +1,8 @@
-import { useSocket } from "../rpc/manager";
 import { useAppStore } from "../store";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export const MainView = () => {
-  useSocket();
   const { resetErrors } = useAppStore();
 
   useEffect(() => {
@@ -34,8 +31,13 @@ export const MainView = () => {
         </ul>
 
         <div className="pt-8 text-2xl flex items-center justify-center">
-          <Button>
-            <Link to="/">Try Again</Link>
+          <Button
+            onClick={() => {
+              // TODO: this is a hack, it should be handled better
+              window.location.reload();
+            }}
+          >
+            Try Again
           </Button>
         </div>
       </div>

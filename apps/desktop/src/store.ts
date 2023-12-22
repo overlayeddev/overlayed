@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import type { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
+import { enableMapSet } from "immer";
+
+enableMapSet();
 
 export const createUserStateItem = (payload: VoiceStateUser) => {
   const data: OverlayedUser = {
@@ -37,7 +40,7 @@ export interface AppState {
     name: string;
   } | null;
   users: Record<string, OverlayedUser>;
-  discordErrors: string[];
+  discordErrors: Set<string>;
 }
 
 export interface AppActions {
@@ -102,7 +105,7 @@ export const useAppStore = create<AppState & AppActions>()(
     visible: true,
     userLog: [],
     me: null,
-    discordErrors: [],
+    discordErrors: new Set(),
     clickThrough: false,
     currentChannel: null,
     users: {},
@@ -150,11 +153,11 @@ export const useAppStore = create<AppState & AppActions>()(
       }),
     pushError: error =>
       set(state => {
-        state.discordErrors.push(error);
+        state.discordErrors.add(error);
       }),
     resetErrors: () =>
       set(state => {
-        state.discordErrors = [];
+        state.discordErrors.clear();
       }),
     logUser: user =>
       set(state => {

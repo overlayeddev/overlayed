@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { exit } from "@tauri-apps/api/process";
 import { useAppStore } from "../store";
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
-import { Link } from "@/components/ui/link";
+// import { Link } from "@/components/ui/link";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import { UpdateBanner } from "@/components/update-banner";
 import type { UpdateStatus } from "@tauri-apps/api/updater";
@@ -84,7 +84,7 @@ export const SettingsView = ({
                   open={showLogoutDialog}
                 >
                   <DialogTrigger asChild>
-                    <Button variant="destructive" disabled={!me?.id}>
+                    <Button disabled={!me?.id}>
                       Logout
                     </Button>
                   </DialogTrigger>
@@ -109,7 +109,7 @@ export const SettingsView = ({
                         <DialogClose asChild>
                           <Button variant="secondary">Cancel</Button>
                         </DialogClose>
-                        <Button variant="destructive" type="submit">
+                        <Button type="submit">
                           Confirm Logout
                         </Button>
                       </DialogFooter>
@@ -173,7 +173,7 @@ export const SettingsView = ({
               open={showQuitDialog}
             >
               <DialogTrigger asChild>
-                <Button variant="destructive">Quit Overlayed</Button>
+                <Button>Quit Overlayed</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <form

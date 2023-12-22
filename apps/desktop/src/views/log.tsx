@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/store";
-import { PhoneOff, PhoneIncoming } from "lucide-react";
+import { Eraser, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const LogView = () => {
   const { userLog, resetUserLog } = useAppStore();
 
   return (
-    <div className="flex flex-col h-screen bg-zinc-900 p-2">
+    <div className="flex flex-col text-center h-screen bg-zinc-900 p-2">
       <div className="flex items-center pb-4">
         <p className="text-2xl mr-4">Audit Log</p>
-        <Button onClick={resetUserLog} size="sm" className="w-20 mt-2">
-          Clear
+        <Button onClick={resetUserLog} variant="ghost" size="sm" className="w-20 mt-2">
+          <Eraser size={18} />
         </Button>
       </div>
 

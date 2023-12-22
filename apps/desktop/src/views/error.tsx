@@ -15,9 +15,9 @@ export const ErrorView = () => {
       <div className="w-32 h-32">
         <img src="/img/sad-face.svg" alt="sad" className="text-white fill-white w-full" />
       </div>
-      {discordErrors.length > 0 ? (
+      {discordErrors.size > 0 ? (
         <div className="pt-8 pb-8 text-2xl text-center">
-          {discordErrors.map((item, i) => (
+          {Array.from(discordErrors.values()).map((item, i) => (
             <p key={`error-${i}`}>{item}</p>
           ))}
         </div>

@@ -75,7 +75,7 @@ class SocketManager {
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
-    console.log("call init socket");
+    console.log("Init web socket manager");
     this.disconnect();
 
     this.tokenStore = new TokenStore();
@@ -324,7 +324,10 @@ export const useSocket = () => {
   const socketRef = useRef<SocketManager | null>(null);
 
   useEffect(() => {
-    if (socketRef.current) return;
+    if (socketRef.current) {
+      console.log("Socket already initialized");
+      return;
+    }
 
     console.log("Initializing websocket...");
     const socketManager = new SocketManager();
