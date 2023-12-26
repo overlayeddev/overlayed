@@ -32,7 +32,7 @@ export const SettingsView = ({
   const { me, setMe } = useAppStore();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [tokenExpires, setTokenExpires] = useState<string | null>(null);
+  const [tokenExpires, setTokenExpires] = useState < string | null > (null);
   const platformInfo = usePlatformInfo();
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export const SettingsView = ({
                   <DialogTrigger asChild>
                     <Button disabled={!me?.id}>Logout</Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
+                  <DialogContent className="w-[80%]">
                     <form
                       onSubmit={event => {
                         event.preventDefault();
@@ -171,7 +171,7 @@ export const SettingsView = ({
               <DialogTrigger asChild>
                 <Button>Quit Overlayed</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="w-[80%]">
                 <form
                   onSubmit={async event => {
                     event.preventDefault();

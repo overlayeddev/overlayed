@@ -2,15 +2,23 @@ import { Download, Check, X } from "lucide-react";
 
 import { installUpdate, type UpdateStatus } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
-import { useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import { Button } from "./ui/button";
 
 export const UpdateBanner = ({
   update,
 }: {
   update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
-  const [confirmUpdate, setConfirmUpdate] = useState(false);
-
   console.log(update);
   if (update.isAvailable && update.status !== null) {
     return (
@@ -23,34 +31,21 @@ export const UpdateBanner = ({
   }
 
   return (
-    <div className="py-2 h-[48px] bg-blue-500">
-      {!confirmUpdate ? (
-        <button
-          onClick={() => {
-            setConfirmUpdate(true);
-          }}
-          className="w-full"
-        >
-          <div className="!text-white font-bold cursor-pointer flex gap-2 items-center justify-center">
-            <Download />
-            <p>Update Available! Click here to update</p>
-          </div>
-        </button>
-      ) : (
-        <div className="px-4 justify-between flex items-center">
-          <p className="font-bold">Confirm update</p>
-
-          <div>
-            <button
-              onClick={() => {
-                setConfirmUpdate(false);
-              }}
-              className="h-8 rounded-md px-2 hover:bg-blue-600"
-            >
-              <X size={20} />
+    <div className="flex items-center justify-center h-[48px] bg-blue-500">
+      {update.isAvailable && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className="w-full">
+              <div className="text-white font-bold cursor-pointer flex gap-2 items-center justify-center">
+                <Download />
+                <p>Update Available! Click here to update</p>
+              </div>
             </button>
-            <button
-              onClick={async () => {
+          </DialogTrigger>
+          <DialogContent className="w-[80%]">
+            <form
+              onSubmit={async _event => {
+                // TODO:
                 console.log("installing update");
                 try {
                   await installUpdate();
@@ -58,15 +53,23 @@ export const UpdateBanner = ({
                 } catch (e) {
                   console.error(e);
                 }
-
-                setConfirmUpdate(false);
               }}
-              className="rounded-md px-2 h-8 ml-1 hover:bg-blue-600"
             >
-              <Check size={20} />
-            </button>
-          </div>
-        </div>
+              <DialogHeader>
+                <DialogTitle className="text-xl mb-4 text-white">Update Overlayed</DialogTitle>
+                <DialogDescription className="text-xl mb-4 text-white">
+                  Are you sure you want to update Overlayed?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="secondary">Cancel</Button>
+                </DialogClose>
+                <Button type="submit">Update</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
