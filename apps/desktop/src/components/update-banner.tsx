@@ -19,7 +19,6 @@ export const UpdateBanner = ({
 }: {
   update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
-  console.log(update);
   if (update.isAvailable && update.status !== null) {
     return (
       <div className="py-2 h-[48px] bg-green-600">
