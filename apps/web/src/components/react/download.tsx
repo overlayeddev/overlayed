@@ -10,11 +10,13 @@ const Platforms = {
   "darwin-x86_64": "Mac x86",
 };
 
+const API_HOST = process.env.NODE_ENV === "production" ? "https://update.overlayed.dev" : ""; 
+
 export const Download = () => {
   const [metadata, setMetadata] = useState<LatestVersion | null>(null);
 
   useEffect(() => {
-    fetch("/latest")
+    fetch(`${API_HOST}/latest`)
       .then((res) => res.json())
       .then((res) => setMetadata(res));
   }, []);
