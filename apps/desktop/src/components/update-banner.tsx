@@ -1,4 +1,4 @@
-import { Download, Check, X } from "lucide-react";
+import { Download } from "lucide-react";
 
 import { installUpdate, type UpdateStatus } from "@tauri-apps/api/updater";
 import { relaunch } from "@tauri-apps/api/process";
