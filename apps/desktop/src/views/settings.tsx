@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
 // import { Link } from "@/components/ui/link";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import { UpdateBanner } from "@/components/update-banner";
+import { Updater } from "@/components/updater";
 import type { UpdateStatus } from "@tauri-apps/api/updater";
 
 export const SettingsView = ({
@@ -44,7 +44,7 @@ export const SettingsView = ({
 
   return (
     <div className="bg-zinc-900 h-full overflow-auto">
-      {update.isAvailable && <UpdateBanner update={update} />}
+      {update.isAvailable && <Updater update={update} />}
       <div className="p-4 pt-4 pb-14 overflow-auto">
         <div className="flex flex-col gap-4">
           <h1 className="text-xl font-bold">Settings</h1>

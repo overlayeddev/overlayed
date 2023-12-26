@@ -11,6 +11,8 @@ export const NavBar = ({ clickthrough, isUpdateAvailable }: { clickthrough: bool
   const { currentChannel } = useAppStore();
   const opacity = clickthrough && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
 
+  const showUpdateButton = location.pathname !== "/settings" && isUpdateAvailable;
+
   return (
     <div
       data-tauri-drag-region
@@ -28,7 +30,7 @@ export const NavBar = ({ clickthrough, isUpdateAvailable }: { clickthrough: bool
           )}
         </div>
         <div className="hidden gap-4 md:flex">
-          {isUpdateAvailable && (
+          {showUpdateButton && (
             <button>
               <Download
                 className="text-green-500"
