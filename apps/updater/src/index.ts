@@ -11,6 +11,8 @@ const app = new Hono < { Bindings: Bindings } > ();
 const GIT_USER = "Hacksore";
 const GIT_REPO = "overlayed";
 
+app.use("*", cors());
+
 app.get("/latest", async (c) => {
 	return c.body(
 		JSON.stringify(
@@ -26,7 +28,7 @@ app.get("/latest", async (c) => {
 			"Content-Type": "application/json",
 		},
 	);
-}, cors());
+});
 
 app.get("/:target/:arch/:currentVersion", async (c) => {
 	const target = c.req.param("target");
