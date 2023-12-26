@@ -1,5 +1,5 @@
 import { Hono } from "hono/quick";
-import { getLatestVersions } from "./utils";
+import { getLatestVersions, getPlatformDownloads } from "./utils";
 import { cors } from "hono/cors";
 
 type Bindings = {
@@ -8,17 +8,12 @@ type Bindings = {
 
 const app = new Hono < { Bindings: Bindings } > ();
 
-const GIT_USER = "Hacksore";
-const GIT_REPO = "overlayed";
-
 app.use("*", cors());
 
 app.get("/latest", async (c) => {
 	return c.body(
 		JSON.stringify(
-			await getLatestVersions({
-				user: GIT_USER,
-				repo: GIT_REPO,
+			await getPlatformDownloads({
 				authToken: c.env.GITHUB_TOKEN,
 			}),
 		),
@@ -38,8 +33,6 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 
 	try {
 		const latestVersion = await getLatestVersions({
-			user: GIT_USER,
-			repo: GIT_REPO,
 			authToken: c.env.GITHUB_TOKEN,
 		});
 
@@ -52,7 +45,6 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		return c.body(JSON.stringify(latestVersion), 200, {
 			"Content-Type": "application/json",
 		});
-
 	} catch (e) {
 		return c.body(JSON.stringify(e), 500, {
 			"Content-Type": "application/json",

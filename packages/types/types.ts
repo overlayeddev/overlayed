@@ -8,3 +8,9 @@ export interface LatestVersion {
 		};
 	}[];
 }
+
+export interface PlatformDownload {
+	name: string;
+	url: string;
+	platform: "windows" | "mac" | "linux";
+}

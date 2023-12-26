@@ -1,19 +1,60 @@
 import { ReleaseResponse } from "./types";
 import { LatestVersion } from "types/types";
 
-export async function getLatestVersions({
-	user,
-	repo,
+const GIT_USER = "Hacksore";
+const GIT_REPO = "overlayed";
+
+const filenameToPlatform = (filename: string) => {
+	if (filename.includes("msi")) {
+		return "windows";
+	}
+	if (filename.includes("dmg")) {
+		return "mac";
+	}
+	if (filename.includes("AppImage")) {
+		return "linux";
+	}
+}
+
+export async function getPlatformDownloads({
 	authToken,
 }: {
-	user: string;
-	repo: string;
 	authToken: string;
 }) {
 	// fetch all releases from github
 	try {
 		const releases: ReleaseResponse = await fetch(
-			`https://api.github.com/repos/${user}/${repo}/releases/latest`,
+			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
+			{
+				cf: {
+					cacheTtl: 300,
+					cacheEverything: true,
+				},
+				headers: {
+					Authorization: `token ${authToken}`,
+					"User-Agent": "overlayed-updater v1",
+				},
+			},
+		).then((res) => res.json());
+
+		return releases.assets
+			.map((asset) => ({
+				name: asset.name,
+				url: asset.browser_download_url,
+				platform: filenameToPlatform(asset.name),
+			}))
+			.filter((asset) => asset.name.match(/\.(dmg|msi|AppImage)$/));
+	} catch (err) {
+		console.log(err);
+		return null;
+	}
+}
+
+export async function getLatestVersions({ authToken }: { authToken: string }) {
+	// fetch all releases from github
+	try {
+		const releases: ReleaseResponse = await fetch(
+			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
 			{
 				cf: {
 					cacheTtl: 300,
