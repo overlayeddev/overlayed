@@ -12,7 +12,13 @@ const GIT_REPO = "overlayed";
 
 app.get("/latest", async (c) => {
 	return c.body(
-		JSON.stringify(await getLatestVersions({ user: GIT_USER, repo: GIT_REPO, authToken: c.env.GITHUB_TOKEN })),
+		JSON.stringify(
+			await getLatestVersions({
+				user: GIT_USER,
+				repo: GIT_REPO,
+				authToken: c.env.GITHUB_TOKEN,
+			}),
+		),
 		200,
 
 		{
