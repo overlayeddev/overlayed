@@ -4,6 +4,7 @@ import Card from "../components/card.astro";
 import Logo from "../components/logo.astro";
 import Link from "../components/link.astro";
 import Footer from "../components/footer.astro";
+import { Download } from "../components/react/download";
 ---
 
 <style>
@@ -45,13 +46,7 @@ import Footer from "../components/footer.astro";
     <p class="text-center">
       A modern, <Link to="https://github.com/Hacksore/overlayed">open-source</Link>, and free voice chat overlay for Discord that supports macOS, Linux, and Windows!
     </p>
-    <div>
-      <a
-        target="_blank"
-        href="https://github.com/Hacksore/overlayed/releases"
-        class="hover:bg-primary bg-primary p-4 rounded-lg">Download Now</a
-      >
-    </div>
+    <Download client:load />
     <div class="grid md:grid-cols-2 w-full items-center gap-2">
       <Card
         name="User List"

@@ -11,11 +11,12 @@
 		"start": "wrangler dev"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20230419.0",
-		"@octokit/types": "^12.3.0",
+		"types": "workspace:*",
+		"@cloudflare/workers-types": "^4.20231218.0",
+		"@octokit/types": "^12.4.0",
 		"lint": "workspace:*",
 		"typescript": "^5.0.4",
-		"wrangler": "^3.0.0"
+		"wrangler": "^3.22.1"
 	},
 	"dependencies": {
 		"hono": "^3.10.2"
