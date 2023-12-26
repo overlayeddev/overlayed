@@ -32,7 +32,7 @@ export const SettingsView = ({
   const { me, setMe } = useAppStore();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [tokenExpires, setTokenExpires] = useState < string | null > (null);
+  const [tokenExpires, setTokenExpires] = useState<string | null>(null);
   const platformInfo = usePlatformInfo();
 
   useEffect(() => {

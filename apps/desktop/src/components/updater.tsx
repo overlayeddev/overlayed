@@ -21,7 +21,6 @@ export const Updater = ({
 }: {
   update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
-
   const location = useLocation();
   const [dialogOpen, setDialogOpen] = useState(location.search.includes("update"));
 

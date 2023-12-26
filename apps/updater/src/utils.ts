@@ -14,7 +14,7 @@ const filenameToPlatform = (filename: string) => {
 	if (filename.includes("AppImage")) {
 		return "linux";
 	}
-}
+};
 
 export async function getPlatformDownloads({
 	authToken,

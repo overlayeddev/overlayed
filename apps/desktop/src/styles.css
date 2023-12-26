@@ -6,7 +6,7 @@
   :root {
     --gradient-angle: 360deg;
 
-    --background: 240 4% 16%; 
+    --background: 240 4% 16%;
     --foreground: 240 10% 3.9%;
 
     --muted: 240 4.8% 95.9%;
@@ -54,7 +54,7 @@
   }
 
   .dark {
-    --background: 240 4% 16%; 
+    --background: 240 4% 16%;
     --foreground: 240 0% 98%;
 
     --muted: 240 3.7% 15.9%;
