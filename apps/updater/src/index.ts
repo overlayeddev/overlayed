@@ -1,15 +1,17 @@
 import { Hono } from "hono/quick";
 import { getLatestVersions } from "./utils";
+import { cors } from "hono/cors";
 
 type Bindings = {
 	GITHUB_TOKEN: string;
 };
 
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono < { Bindings: Bindings } > ();
 
 const GIT_USER = "Hacksore";
 const GIT_REPO = "overlayed";
 
+app.use(cors());
 app.get("/latest", async (c) => {
 	return c.body(
 		JSON.stringify(
