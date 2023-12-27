@@ -1,5 +1,6 @@
 ---
 title: Terms of Service
+description: View the Terms of Service for Overlayed
 ---
 
 # Terms of Service

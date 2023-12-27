@@ -1,5 +1,6 @@
 ---
 title: Privacy Policy
+description: View the Privacy Policy for Overlayed
 ---
 
 # Privacy Policy for Overlayed
