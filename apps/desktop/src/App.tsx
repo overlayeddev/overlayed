@@ -46,11 +46,7 @@ function App() {
       />
       <Routes>
         <Route path="/" Component={MainView} />
-        <Route path="/channel" element={
-          <ChannelView
-            alignDirection={horizontal}
-          />
-        } />
+        <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
         <Route path="/log" Component={LogView} />
         <Route
           path="/settings"

@@ -10,7 +10,7 @@ const mapping = {
   left: 0,
   center: 1,
   right: 2,
-}
+};
 
 interface Alignment {
   direction: DirectionLR;
@@ -34,9 +34,19 @@ const horizontalAlignments: Alignment[] = [
     name: "Right",
     icon: ArrowRightToLine,
   },
-]
+];
 
-export const NavBar = ({ clickthrough, alignDirection, setAlignDirection, isUpdateAvailable }: { clickthrough: boolean; alignDirection: DirectionLR; setAlignDirection: React.Dispatch<React.SetStateAction<DirectionLR>>; isUpdateAvailable: boolean }) => {
+export const NavBar = ({
+  clickthrough,
+  alignDirection,
+  setAlignDirection,
+  isUpdateAvailable,
+}: {
+  clickthrough: boolean;
+  alignDirection: DirectionLR;
+  setAlignDirection: React.Dispatch<React.SetStateAction<DirectionLR>>;
+  isUpdateAvailable: boolean;
+}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentChannel } = useAppStore();
@@ -76,12 +86,15 @@ export const NavBar = ({ clickthrough, alignDirection, setAlignDirection, isUpda
             </button>
           )}
           <button title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
-            <IconComponent size={20} onClick={() => {
-              const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
-              setCurrentAlignment(newAlignment);
-              setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
-              overlayedConfig.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
-            }} />
+            <IconComponent
+              size={20}
+              onClick={() => {
+                const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
+                setCurrentAlignment(newAlignment);
+                setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
+                overlayedConfig.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
+              }}
+            />
           </button>
           <button title="Enable clickthrough">
             <Pin
