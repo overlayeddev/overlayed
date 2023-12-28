@@ -13,7 +13,10 @@ const { title, description } = Astro.props;
 
 <!doctype html>
 <html lang="en">
-  <CommonHead title={title ?? SITE_TITLE} description={description ?? SITE_DESCRIPTION} />
+  <CommonHead
+    title={title ?? SITE_TITLE}
+    description={description ?? SITE_DESCRIPTION}
+  />
 
   <body>
     <Navbar />
