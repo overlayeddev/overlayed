@@ -17,10 +17,13 @@ Follow https://docs.github.com/en/get-started/quickstart/fork-a-repo
 
 From the root of the monorepo run.
 
-```
+```sh
 pnpm install
 ```
 
 ### 3. Start the desktop app
 
-From the root of the monorepo run `pnpm start --filter=desktop`
+From the root of the monorepo run
+```sh
+pnpm start --filter=desktop
+```
