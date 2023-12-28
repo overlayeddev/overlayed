@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Settings, Pin, Download, ArrowLeftToLine, ArrowRightToLine, ChevronsRightLeft } from "lucide-react";
 
+import React from "react";
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
