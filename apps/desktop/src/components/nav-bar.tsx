@@ -1,22 +1,56 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Settings, Pin, Download } from "lucide-react";
+import { Settings, Pin, Download, ArrowLeftToLine, ArrowRightToLine, ChevronsRightLeft } from "lucide-react";
 
 import { invoke } from "@tauri-apps/api";
-import overlayedConfig from "../config";
+import overlayedConfig, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
+import { useState } from "react";
 
-export const NavBar = ({ clickthrough, isUpdateAvailable }: { clickthrough: boolean; isUpdateAvailable: boolean }) => {
+const mapping = {
+  left: 0,
+  center: 1,
+  right: 2,
+}
+
+interface Alignment {
+  direction: DirectionLR;
+  name: string;
+  icon: React.FC<any>;
+}
+
+const horizontalAlignments: Alignment[] = [
+  {
+    direction: "left",
+    name: "Left",
+    icon: ArrowLeftToLine,
+  },
+  {
+    direction: "center",
+    name: "Center",
+    icon: ChevronsRightLeft,
+  },
+  {
+    direction: "right",
+    name: "Right",
+    icon: ArrowRightToLine,
+  },
+]
+
+export const NavBar = ({ clickthrough, alignDirection, setAlignDirection, isUpdateAvailable }: { clickthrough: boolean; alignDirection: DirectionLR; setAlignDirection: React.Dispatch<React.SetStateAction<DirectionLR>>; isUpdateAvailable: boolean }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentChannel } = useAppStore();
-  const opacity = clickthrough && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
 
+  const [currentAlignment, setCurrentAlignment] = useState(mapping[alignDirection]);
+
+  const opacity = clickthrough && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
+  const IconComponent = horizontalAlignments[currentAlignment]?.icon || ArrowLeftToLine;
   const showUpdateButton = location.pathname !== "/settings" && isUpdateAvailable;
 
   return (
     <div
       data-tauri-drag-region
-      className={`${opacity} cursor-default rounded-t-lg font-bold select-none pr-3 pl-3 p-2 bg-white dark:bg-zinc-900`}
+      className={`${opacity} cursor-default rounded-t-lg font-bold select-none bg-white dark:bg-zinc-900 pr-3 pl-3 p-2`}
     >
       <div data-tauri-drag-region className="flex justify-between">
         <div className="flex items-center">
@@ -41,7 +75,15 @@ export const NavBar = ({ clickthrough, isUpdateAvailable }: { clickthrough: bool
               />
             </button>
           )}
-          <button>
+          <button title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
+            <IconComponent size={20} onClick={() => {
+              const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
+              setCurrentAlignment(newAlignment);
+              setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
+              overlayedConfig.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
+            }} />
+          </button>
+          <button title="Enable clickthrough">
             <Pin
               size={20}
               onClick={() => {
@@ -51,7 +93,7 @@ export const NavBar = ({ clickthrough, isUpdateAvailable }: { clickthrough: bool
               }}
             />
           </button>
-          <button>
+          <button title="Settings">
             <Link to="/settings">
               <Settings size={20} />
             </Link>

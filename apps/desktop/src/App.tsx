@@ -7,6 +7,7 @@ import { SettingsView } from "./views/settings";
 import { ErrorView } from "./views/error";
 import { NavBar } from "./components/nav-bar";
 import { useClickthrough } from "./hooks/use-clickthrough";
+import { useAlign } from "./hooks/use-align";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
@@ -23,6 +24,7 @@ function App() {
   const { visible } = useAppStore();
 
   const { clickthrough } = useClickthrough();
+  const { horizontal, setHorizontalDirection } = useAlign();
 
   // NOTE: this is janky and wish we could do all in rust
   useEffect(() => {
@@ -36,10 +38,19 @@ function App() {
   const visibleClass = visible ? "opacity-100" : "opacity-0";
   return (
     <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
-      <NavBar isUpdateAvailable={isAvailable} clickthrough={clickthrough} />
+      <NavBar
+        isUpdateAvailable={isAvailable}
+        clickthrough={clickthrough}
+        alignDirection={horizontal}
+        setAlignDirection={setHorizontalDirection}
+      />
       <Routes>
         <Route path="/" Component={MainView} />
-        <Route path="/channel" Component={ChannelView} />
+        <Route path="/channel" element={
+          <ChannelView
+            alignDirection={horizontal}
+          />
+        } />
         <Route path="/log" Component={LogView} />
         <Route
           path="/settings"
