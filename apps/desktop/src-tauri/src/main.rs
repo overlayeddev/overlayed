@@ -38,6 +38,7 @@ struct Storage {
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(app: &mut App, window: &Window) {
+  window.set_visisble_on_all_workspaces(true);
   window.set_transparent_titlebar(true, true);
   app.set_activation_policy(ActivationPolicy::Accessory);
 }
@@ -63,9 +64,6 @@ fn main() {
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
       window.set_decorations(false);
-
-      // allow on all workspaces
-      window.set_visisble_on_all_workspaces(true);
 
       // add mac things
       #[cfg(target_os = "macos")]
