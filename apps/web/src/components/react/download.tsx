@@ -19,26 +19,26 @@ export const Download = () => {
   >([]);
 
   useEffect(() => {
-    // fetch(`${API_HOST}/latest`)
-    //   .then((res) => res.json())
-    //   .then((res) => setPlatformDownloads(res));
-    setPlatformDownloads([
-      {
-        name: "Linux",
-        url: "https://linuxurl",
-        platform: "linux",
-      },
-      {
-        name: "Windows",
-        url: "https://linuxurl",
-        platform: "windows",
-      },
-      {
-        name: "macOS",
-        url: "https://linuxurl",
-        platform: "mac",
-      },
-    ]);
+    fetch(`${API_HOST}/latest`)
+      .then((res) => res.json())
+      .then((res) => setPlatformDownloads(res));
+    // setPlatformDownloads([
+    //   {
+    //     name: "Linux",
+    //     url: "https://linuxurl",
+    //     platform: "linux",
+    //   },
+    //   {
+    //     name: "Windows",
+    //     url: "https://linuxurl",
+    //     platform: "windows",
+    //   },
+    //   {
+    //     name: "macOS",
+    //     url: "https://linuxurl",
+    //     platform: "mac",
+    //   },
+    // ]);
   }, []);
 
   return (

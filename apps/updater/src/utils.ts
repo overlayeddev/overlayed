@@ -31,7 +31,7 @@ export async function getPlatformDownloads({
 					cacheEverything: true,
 				},
 				headers: {
-					// Authorization: `token ${authToken}`,
+					Authorization: `token ${authToken}`,
 					"User-Agent": "overlayed-updater v1",
 				},
 			},
@@ -61,7 +61,7 @@ export async function getLatestVersions({ authToken }: { authToken: string }) {
 					cacheEverything: true,
 				},
 				headers: {
-					// Authorization: `token ${authToken}`,
+					Authorization: `token ${authToken}`,
 					"User-Agent": "overlayed-updater v1",
 				},
 			},
