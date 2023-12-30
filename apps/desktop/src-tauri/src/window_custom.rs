@@ -1,16 +1,43 @@
 #[cfg(target_os = "macos")]
-use cocoa::appkit::{NSWindow, NSWindowButton, NSWindowStyleMask, NSWindowTitleVisibility};
+use cocoa::appkit::{
+  NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior, NSWindowStyleMask,
+  NSWindowTitleVisibility,
+};
 
 #[cfg(target_os = "macos")]
 use objc::runtime::YES;
+
+#[cfg(target_os = "macos")]
+use cocoa::base::id;
+
 use tauri::{Runtime, Window};
 
 pub trait WindowExt {
   #[cfg(target_os = "macos")]
   fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
+  #[cfg(target_os = "macos")]
+  fn set_visisble_on_all_workspaces(&self, enabled: bool);
 }
 
 impl<R: Runtime> WindowExt for Window<R> {
+  #[cfg(target_os = "macos")]
+  fn set_visisble_on_all_workspaces(&self, enabled: bool) {
+    {
+      let ns_win = self.ns_window().unwrap() as id;
+      unsafe {
+        if enabled {
+          ns_win.setLevel_(((NSMainMenuWindowLevel + 1) as u64).try_into().unwrap());
+          ns_win.setCollectionBehavior_(
+            NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces,
+          );
+        } else {
+          ns_win.setLevel_(((NSMainMenuWindowLevel - 1) as u64).try_into().unwrap());
+          ns_win
+            .setCollectionBehavior_(NSWindowCollectionBehavior::NSWindowCollectionBehaviorDefault);
+        }
+      }
+    }
+  }
   #[cfg(target_os = "macos")]
   fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
     unsafe {

@@ -64,6 +64,9 @@ fn main() {
       // NOTE: this might be a bug?
       window.set_decorations(false);
 
+      // allow on all workspaces
+      window.set_visisble_on_all_workspaces(true);
+
       // add mac things
       #[cfg(target_os = "macos")]
       apply_macos_specifics(app, &window);
