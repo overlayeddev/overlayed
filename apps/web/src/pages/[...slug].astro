@@ -3,7 +3,6 @@ import type { GetStaticPaths } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
-import Logo from "../components/logo.astro";
 
 export const getStaticPaths = (async () => {
   const legalFiles = await getCollection("legal");
@@ -29,12 +28,7 @@ const { Content } = await post.render();
   title={`Overlayed - ${post.data.title}`}
   description={post.data.description}
 >
-  <main class="prose dark:prose-invert mx-auto">
-    <div class="pt-2 pb-20">
-      <a href="/" class="inline-block mb-4">
-        <Logo />
-      </a>
-    </div>
+  <main class="prose dark:prose-invert mx-auto pt-28">
     <Content />
   </main>
   <Footer />
