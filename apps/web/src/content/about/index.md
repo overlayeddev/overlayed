@@ -1,6 +1,6 @@
 ---
-title: Privacy Policy
-description: View the Privacy Policy for Overlayed
+title: About 
+description: Read why Overlayed was created and why Discord is gatekeeping  
 ---
 # About Overlayed 
 
