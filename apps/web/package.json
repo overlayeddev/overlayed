@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "types": "workspace:*",
+    "utils": "workspace:*",
     "@astrojs/react": "^3.0.8",
     "@types/react": "^18.2.15",
     "eslint-plugin-astro": "^0.29.1",

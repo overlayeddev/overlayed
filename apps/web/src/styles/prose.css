@@ -1,16 +1,20 @@
 /** back tics for codies **/
-.prose :where(code):not(:where([class~='not-prose'] *))::after {
+.prose :where(code):not(:where([class~="not-prose"] *))::after {
   content: none !important;
 }
 
-.prose :where(code):not(:where([class~='not-prose'] *))::before {
+.prose :where(code):not(:where([class~="not-prose"] *))::before {
   content: none !important;
 }
 
 .prose code {
-  border-radius: 0.50rem;
+  border-radius: 0.5rem;
   border: 1px solid #333333;
   padding: 4px 6px 4px 6px;
   background: #3a3b3d;
   color: #fff;
+}
+
+p > img {
+  border-radius: 20px !important;
 }

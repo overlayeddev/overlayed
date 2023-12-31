@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -227,8 +227,24 @@ importers:
       types:
         specifier: workspace:*
         version: link:../../packages/types
+      utils:
+        specifier: workspace:*
+        version: link:../../packages/utils
 
   packages/types:
+    devDependencies:
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tooling/config-typescript
+
+  packages/utils:
+    dependencies:
+      clsx:
+        specifier: ^2.0.0
+        version: 2.0.0
+      tailwind-merge:
+        specifier: ^2.0.0
+        version: 2.0.0
     devDependencies:
       tsconfig:
         specifier: workspace:*

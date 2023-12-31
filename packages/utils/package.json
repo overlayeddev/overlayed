@@ -1,0 +1,12 @@
+{
+  "name": "utils",
+  "version": "0.0.0",
+  "description": "shared utils",
+  "dependencies": {
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.0.0"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*"
+  }
+}
