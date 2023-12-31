@@ -27,7 +27,7 @@ export const Download = () => {
   return (
     <div className="relative w-full h-[100%] pb-20 overflow-hidden">
       <div className="parent-download flex flex-col items-center w-max ml-auto mr-auto sm:w-full">
-        <h2 className="text-3xl pb-8">Download</h2>
+        <h2 className="text-2xl pb-8">Download</h2>
         <div className="flex gap-6 relative sm:flex-row flex-col">
           <div className="" />
           {platformDownloads.map((item) => (

@@ -13,7 +13,7 @@ export default function DownloadButton({
 }: DownloadButtonParams) {
   return (
     <div
-      className="flex flex-col items-center justify-center gap-2 p-4 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+      className="flex flex-col items-center justify-center gap-2 p-4 hover:bg-gray-700 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
       {...props}
     >
 
@@ -28,7 +28,7 @@ export default function DownloadButton({
           height={48}
           alt={`${platform.platform}'s image`}
         />
-        <span className={"platform-button-text z-30"}>
+        <span className="platform-button-text font-bold z-30">
           {Platforms[platform.platform]}
         </span>
       </a>
