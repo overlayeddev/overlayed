@@ -10,60 +10,60 @@ const { name, desc, src, alt } = Astro.props;
 ---
 
 <style>
-
-.card {
-  --c1: #13151a;
-  --c2: #13151a;
-  --c3: #5875f2;
-  --c4: #2d8f85;
-  --c5: #637c54;
-  --gradient: conic-gradient(
-    var(--c1),
-    var(--c2),
-    var(--c3),
-    var(--c4),
-    var(--c3),
-    var(--c2),
-    var(--c1)
-  );
-  border-radius: 0.5rem;
-  background-color: var(--c1);
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-.card-border, .card-shadow {
-  position: absolute;
-  inset: -6px;
-  z-index: -1;
-  border-radius: calc(0.25rem + 8px);
-  container-type: size;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.card-shadow {
-  filter: blur(4.5rem);
-  opacity: 0.75;
-}
-.gradient {
-  position: absolute;
-  width: 100cqmax;
-  height: 100cqmax;
-  background-image: var(--gradient);
-  border-radius: calc(0.25rem + 8px);
-  animation-name: rotate;
-  animation-duration: 9s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
+  .card {
+    --c1: #13151a;
+    --c2: #13151a;
+    --c3: #5875f2;
+    --c4: #2d8f85;
+    --c5: #637c54;
+    --gradient: conic-gradient(
+      var(--c1),
+      var(--c2),
+      var(--c3),
+      var(--c4),
+      var(--c3),
+      var(--c2),
+      var(--c1)
+    );
+    border-radius: 0.5rem;
+    background-color: var(--c1);
+    position: relative;
+    height: 100%;
+    width: 100%;
   }
-}
+  .card-border,
+  .card-shadow {
+    position: absolute;
+    inset: -6px;
+    z-index: -1;
+    border-radius: calc(0.25rem + 8px);
+    container-type: size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .card-shadow {
+    filter: blur(4.5rem);
+    opacity: 0.75;
+  }
+  .gradient {
+    position: absolute;
+    width: 100cqmax;
+    height: 100cqmax;
+    background-image: var(--gradient);
+    border-radius: calc(0.25rem + 8px);
+    animation-name: rotate;
+    animation-duration: 9s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 </style>
 
 <div
