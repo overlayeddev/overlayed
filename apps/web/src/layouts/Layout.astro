@@ -55,11 +55,21 @@ const { title, description } = Astro.props;
       }
 
       .bg-radial-1 {
-        background: radial-gradient(at 50% 50%, #bfbbbb7e, transparent, transparent);
+        background: radial-gradient(
+          at 50% 50%,
+          #bfbbbb7e,
+          transparent,
+          transparent
+        );
         transform: translate(-50%, -50%) scale(0.75);
       }
       .parent-download:hover .bg-radial-1 {
-        background: radial-gradient(at 50% 50%, #bfbbbb7e, transparent, transparent);
+        background: radial-gradient(
+          at 50% 50%,
+          #bfbbbb7e,
+          transparent,
+          transparent
+        );
         transform: translate(-50%, -50%) scale(1);
       }
       .parent-button:hover > .platform-button > .inverse-image {
@@ -74,7 +84,7 @@ const { title, description } = Astro.props;
         transform: translate(0px, 0px) !important;
       }
       .platform-button:hover > .platform-button-text {
-        filter: drop-shadow(0 0 0.5rem #fff)
+        filter: drop-shadow(0 0 0.5rem #fff);
       }
     </style>
   </body>
