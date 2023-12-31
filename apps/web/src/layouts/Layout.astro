@@ -53,6 +53,39 @@ const { title, description } = Astro.props;
         border-radius: 8px;
         border: 4px solid #1f1f1f;
       }
+
+      .bg-radial-1 {
+        background: radial-gradient(
+          at 50% 50%,
+          #bfbbbb7e,
+          transparent,
+          transparent
+        );
+        transform: translate(-50%, -50%) scale(0.75);
+      }
+      .parent-download:hover .bg-radial-1 {
+        background: radial-gradient(
+          at 50% 50%,
+          #bfbbbb7e,
+          transparent,
+          transparent
+        );
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .parent-button:hover > .platform-button > .inverse-image {
+        transform: translate(-64px, -48px);
+      }
+      .parent-button:hover > .standard-image {
+        transform: translate(-100%, -100%);
+        opacity: 0;
+      }
+      .standard-image:hover {
+        opacty: 1 !important;
+        transform: translate(0px, 0px) !important;
+      }
+      .platform-button:hover > .platform-button-text {
+        filter: drop-shadow(0 0 0.5rem #fff);
+      }
     </style>
   </body>
 </html>
