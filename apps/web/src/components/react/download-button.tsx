@@ -13,24 +13,16 @@ export default function DownloadButton({
 }: DownloadButtonParams) {
   return (
     <div
-      className={`parent-button relative w-[100%] h-[100%] mr-auto ml-auto flex gap-6`}
+      className="flex flex-col items-center justify-center gap-2 p-4 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
       {...props}
     >
-      <img
-        className={`standard-image sm:absolute sm:-bottom-[58px] sm:left-[50%] sm:-translate-x-1/2 will-change-auto transition-all duration-200`}
-        src={`/${platform.platform}.svg`}
-        width={48}
-        height={48}
-        alt={`${platform.platform}'s image`}
-      />
 
       <a
         target="_blank"
         href={platform.url}
-        className="platform-button hover:bg-white hover:text-primary bg-primary py-2 px-4 rounded-lg z-10 w-[116px] flex justify-center overflow-hidden relative transition-all duration-300 font-bold"
+        className="flex flex-col items-center justify-center gap-2 w-20"
       >
         <img
-          className="absolute inverse-image -bottom-[58px] left-[50%] transform -translate-x-1/2 will-change-auto transition-all duration-200 z-10"
           src={`/${platform.platform}_inverse.svg`}
           width={48}
           height={48}
