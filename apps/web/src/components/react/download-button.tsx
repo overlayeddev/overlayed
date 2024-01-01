@@ -24,7 +24,7 @@ export default function DownloadButton({
   const Image = PlatformIcons[platform.platform];
   return (
     <div
-      className="fill-white hover:fill-primary ease-in-out duration-300 transition-all flex flex-col items-center justify-center gap-2 p-4 hover:bg-gray-700 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+      className="fill-white hover:fill-primary ease-in-out duration-300 transition-all flex flex-col items-center justify-center gap-2 p-4 hover:bg-gray-700 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105"
       {...props}
     >
       <a
