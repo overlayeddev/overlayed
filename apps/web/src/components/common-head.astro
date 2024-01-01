@@ -9,6 +9,14 @@ export interface Props {
 
 // Image has website default
 const { title, description, image = SITE_IMAGE } = Astro.props;
+
+function removeTrailingSlash(str: string) {
+  return str.replace(/\/+$/, "");
+}
+
+const canonicalUrl = removeTrailingSlash(
+  new URL(Astro.url.pathname, Astro.site).toString(),
+);
 ---
 
 <head>
@@ -17,25 +25,7 @@ const { title, description, image = SITE_IMAGE } = Astro.props;
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="generator" content={Astro.generator} />
-
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Overlayed",
-      "applicationCategory": "DesktopEnhancementApplication",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "ratingCount": "100"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "Free",
-        "priceCurrency": "USD"
-      }
-    }
-  </script>
+  <link rel="canonical" href={canonicalUrl} />
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
