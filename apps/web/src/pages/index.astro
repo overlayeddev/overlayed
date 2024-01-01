@@ -5,11 +5,6 @@ import Link from "../components/link.astro";
 import Footer from "../components/footer.astro";
 import Hero from "../components/hero.astro";
 import { Download } from "../components/react/download";
-
-import transparent from "../img/transparent.png";
-import users from "../img/users.png";
-import onTop from "../img/on-top.png";
-import resources from "../img/resources.png";
 ---
 
 <style>
@@ -42,7 +37,7 @@ import resources from "../img/resources.png";
 </style>
 
 <Layout>
-  <main class="pt-48">
+  <main class="pt-60">
     <Hero />
     
     <div class="relative z-50 main-content pt-4 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-10">
@@ -64,29 +59,30 @@ import resources from "../img/resources.png";
       <Card
         name="User List"
         desc="See who is talking, muted, and deafened in the current voice channel"
-        src={users}
+        src="/img/users.png"
         alt="User List"
       />
       <Card
         name="Transparent & Clickthrough"
         desc="Transparent window that can ignore mouse clicks"
-        src={transparent}
+        src="/img/transparent.png"
         alt="Transparent"
       />
       <Card
         name="Always on Top"
         desc="Always stays on top so you can continue working or gaming"
-        src={onTop}
+        src="/img/on-top.png"
         alt="Always on top"
       />
       <Card
         name="Blazingly Fast™"
         desc="Built with tauri an efficient rust framework"
-        src={resources}
+        src="/img/resources.png"
         alt="Lightweight"
       />
     </div>
     <Footer />
+  </div>
   </div>
   </main>
 </Layout>
