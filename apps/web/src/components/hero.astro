@@ -6,9 +6,15 @@ import Logo from "../components/logo.astro";
     .bg-hero {
         background-image: radial-gradient(ellipse at center, #4e56791e, #13151a, transparent);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bg-hero {
+            background-image: none;
+        }
+    }
 </style>
 
-<div class="relative h-[100%] w-full -mt-24 flex flex-col gap-4 justify-center">
+<div class="relative h-[100%] w-full -mt-24 flex flex-col gap-4 justify-center mb-6">
     <Logo />
     <div class="h-[100vh] w-full grid place-content-center bg-hero absolute left-0 top-0 overflow-hidden">
         <div class="z-30 snow-container h-[400px] w-full drop-shadow-[0_0_10px_#5875f2] absolute left-0 top-0">
@@ -18,6 +24,12 @@ import Logo from "../components/logo.astro";
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+        if (prefersReducedMotion.matches) {
+            return null;
+        }
+
         function randomRange(min: number, max: number) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
