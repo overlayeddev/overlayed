@@ -1,5 +1,6 @@
 ---
 import Link from "./link.astro";
+import { DISCORD_INVITE_LINK } from "../config";
 ---
 
 <footer class="py-24 w-full mx-auto text-gray-400 text-center">
@@ -31,7 +32,7 @@ import Link from "./link.astro";
   </div>
   <div class="flex flex-col justify-center items-center">
     <div class="flex items-center justify-center gap-4 mb-4 text-lg">
-      <Link target="_blank" to="https://discord.gg/trashdev">Discord</Link>
+      <Link target="_blank" to={DISCORD_INVITE_LINK}>Discord</Link>
       <Link target="_blank" to="https://github.com/Hacksore/overlayed">
         Github
       </Link>
