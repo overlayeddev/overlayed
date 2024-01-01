@@ -47,7 +47,7 @@ pub fn create_settings_window(app: AppHandle) -> tauri::Result<Window> {
   let page = tauri::WindowUrl::App("#settings".into());
   let settings_window = WindowBuilder::new(&app, SETTINGS_WINDOW_NAME, page).build()?;
 
-  settings_window.set_title("Overdrop Settings");
+  settings_window.set_title("Overlayed Settings");
   settings_window.set_resizable(false);
   settings_window.set_size(PhysicalSize::new(1000, 1300));
 
