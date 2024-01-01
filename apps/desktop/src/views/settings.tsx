@@ -201,8 +201,7 @@ export const SettingsView = ({
             <Button
               variant="secondary"
               onClick={() => {
-                if (!me?.id) return navigate("/");
-                navigate("/channel");
+                invoke("close_settings");
               }}
             >
               Exit Settings

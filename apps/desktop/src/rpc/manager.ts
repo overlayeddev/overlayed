@@ -68,8 +68,13 @@ class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
   public tokenStore: TokenStore | null = null;
-  public navigate: NavigateFunction | null = null;
+  public _navigate: NavigateFunction | null = null;
   public isConnected = false;
+
+  private navigate(url: string) {
+    if (window.location.hash.includes("#settings")) return;
+    this._navigate?.(url);
+  }
 
   /**
    * Setup the websocket connection and listen for messages
@@ -79,7 +84,7 @@ class SocketManager {
     this.disconnect();
 
     this.tokenStore = new TokenStore();
-    this.navigate = navigate;
+    this._navigate = navigate;
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
     try {
@@ -138,7 +143,7 @@ class SocketManager {
     // TODO: this has to be a bug in the upstream lib, we should get a proper code
     // and not have to check the raw dawg string to see if something is wrong
     if (typeof event === "string" && (event as string).includes("Connection reset without closing handshake")) {
-      this.navigate?.("/error");
+      // this.navigate?.("/error");
     }
 
     // TODO: does this ever happen?

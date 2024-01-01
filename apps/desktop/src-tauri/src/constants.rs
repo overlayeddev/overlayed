@@ -1,4 +1,5 @@
 pub const MAIN_WINDOW_NAME: &str = "main";
+pub const SETTINGS_WINDOW_NAME: &str = "settings";
 
 /// for the tray events
 pub const TRAY_TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
