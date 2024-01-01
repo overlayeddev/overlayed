@@ -1,17 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/card.astro";
-import Logo from "../components/logo.astro";
 import Link from "../components/link.astro";
 import Footer from "../components/footer.astro";
+import Hero from "../components/hero.astro";
 import { Download } from "../components/react/download";
 ---
 
 <style>
   main {
-    margin: auto;
-    width: 800px;
-    max-width: calc(100% - 2rem);
     color: white;
     font-size: 20px;
     line-height: 1.6;
@@ -31,14 +28,19 @@ import { Download } from "../components/react/download";
     gap: 2rem;
     padding: 0;
   }
+
+  .main-content {
+    margin: auto;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+  }
 </style>
 
 <Layout>
-  <main
-    class="pt-36 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-10"
-  >
-    <Logo />
+  <main class="pt-24">
+    <Hero />
 
+    <div class="main-content pt-4 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-10">
     <h1 class="!mb-0">
       Welcome to <span class="text-[#5865f2]">Overlayed</span>
     </h1>
@@ -74,5 +76,6 @@ import { Download } from "../components/react/download";
       />
     </div>
     <Footer />
+  </div>
   </main>
 </Layout>
