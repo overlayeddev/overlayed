@@ -16,17 +16,14 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{generate_handler, Manager, RunEvent, WindowBuilder, AppHandle, PhysicalSize};
+use tauri::{generate_handler, App, Window, Manager, RunEvent, WindowBuilder, AppHandle, PhysicalSize};
 use tray::{create_tray_items, handle_tray_events};
 
-#[cfg(target_os = "macos")]
-use tauri::{ActivationPolicy, App};
+// #[cfg(target_os = "macos")]
+// use tauri::{ActivationPolicy};
 
 #[cfg(target_os = "macos")]
 use window_custom::WindowExt as _;
-
-#[cfg(target_os = "macos")]
-use tauri::Window;
 
 pub struct Clickthrough(AtomicBool);
 
@@ -37,7 +34,7 @@ struct Storage {
 }
 
 #[cfg(target_os = "macos")]
-fn apply_macos_specifics(app: &mut App, window: &Window) {
+fn apply_macos_specifics(_app: &mut App, window: &Window) {
   window.set_visisble_on_all_workspaces(true);
   window.set_transparent_titlebar(true, true);
 

@@ -1,4 +1,4 @@
-use tauri::{Manager, State, SystemTrayHandle, Window, WindowBuilder};
+use tauri::{Manager, State, SystemTrayHandle, Window};
 
 use crate::{constants::*, create_settings_window, Clickthrough, Storage};
 
