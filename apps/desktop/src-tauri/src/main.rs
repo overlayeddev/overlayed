@@ -42,7 +42,7 @@ fn apply_macos_specifics(app: &mut App, window: &Window) {
   window.set_transparent_titlebar(true, true);
 
   // TODO: disabling this makes it hard to tab to settings window?
-  app.set_activation_policy(ActivationPolicy::Accessory);
+  // app.set_activation_policy(ActivationPolicy::Accessory);
 }
 
 // TODO: move this somewhere else
@@ -77,7 +77,7 @@ fn main() {
 
       // skip on windows
       // TODO: disabling this makes it hard to tab to settings window?
-      window.set_skip_taskbar(true);
+      // window.set_skip_taskbar(true);
 
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
