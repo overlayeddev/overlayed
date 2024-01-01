@@ -1,0 +1,71 @@
+---
+import Logo from "../components/logo.astro";
+---
+
+<style>
+    .bg-hero {
+        background-image: radial-gradient(ellipse at bottom, #4e567932, #13151a, transparent);
+    }
+</style>
+
+<div class="-mt-24 h-[400px] w-full grid place-content-center bg-hero relative overflow-hidden">
+    <Logo />
+    <div class="z-30 snow-container h-[400px] w-full drop-shadow-[0_0_10px_#5875f2] absolute left-0 top-0">
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function randomRange(min: number, max: number) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        const colors = ['white', 'white', '#5875f2','white'];
+        const total = 200;
+        var snowContainer = document.querySelector('.snow-container');
+        for (let i = 1; i <= total; i++) {
+            const snowflake = document.createElement("div");
+
+            const randomX = Math.random() * 0.01 * window.innerWidth;
+            const randomOffset = randomRange(-100000, 100000) * 0.00001 * window.innerWidth;
+            const randomXEnd = randomX + randomOffset;
+            const randomXEndYoyo = randomX + (randomOffset / 2);
+            const randomYoyoTime = randomRange(30000, 80000) / 100000;
+            const randomYoyoY = randomYoyoTime * window.innerHeight;
+            const randomScale = Math.random();
+            const fallDuration = `${randomRange(16, 24)}s`;
+            const fallDelay = `${randomRange(1, 10) * -1}s`;
+            const opacity = Math.random();
+
+            snowflake.style.width = `12px`;
+            snowflake.style.height = `12px`;
+            snowflake.style.background = colors[randomRange(0, colors.length - 1)];
+            snowflake.style.borderRadius = '50%';
+            snowflake.style.position = 'absolute';
+            snowflake.style.top = '64px';
+            snowflake.style.left = '50%';
+            snowflake.style.willChange = 'transform';
+            snowflake.style.opacity = String(opacity);
+            snowflake.style.transform = `translate(-50%, -64px) scale(${randomScale})`;
+            snowflake.style.animation = `fall-${i} ${fallDuration} ${fallDelay} linear infinite`;
+
+            const keyframes = `
+            @keyframes fall-${i} {
+                ${randomYoyoTime * 100}% {
+                transform: translate(${randomXEnd}px, ${randomYoyoY}px) scale(${randomScale});
+                }
+                to {
+                transform: translate(${randomXEndYoyo}px, 600px) scale(${randomScale});
+                }
+            }
+            `;
+
+            const styleSheet = document.createElement("style");
+            styleSheet.type = "text/css";
+            styleSheet.innerText = keyframes;
+            document.head.appendChild(styleSheet);
+
+            snowContainer.appendChild(snowflake);
+        }
+    })
+</script>
