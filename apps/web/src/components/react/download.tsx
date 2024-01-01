@@ -14,6 +14,7 @@ const API_HOST =
   process.env.NODE_ENV === "production" ? "https://update.overlayed.dev" : "";
 
 export const Download = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [platformDownloads, setPlatformDownloads] = useState<
     PlatformDownload[]
   >([]);
@@ -21,19 +22,34 @@ export const Download = () => {
   useEffect(() => {
     fetch(`${API_HOST}/latest`)
       .then((res) => res.json())
-      .then((res) => setPlatformDownloads(res));
+      .then((res) => {
+        setPlatformDownloads(res);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
-    <div className="relative w-full h-[100%] pb-20 overflow-hidden">
-      <div className="parent-download flex flex-col items-center w-max ml-auto mr-auto sm:w-full">
+    <div className="relative w-full pb-20 overflow-hidden">
+      <div className="flex flex-col items-center">
         <h2 className="text-2xl pb-8">Download</h2>
-        <div className="flex gap-6 relative sm:flex-row flex-col">
-          <div className="" />
-          {platformDownloads.map((item) => (
-            <DownloadButton key={item.platform} platform={item} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex gap-2 sm:gap-6">
+            {Array(3)
+              .fill("")
+              .map((_, i) => (
+                <div
+                  key={`skeleton-loader-${i}`}
+                  className="w-28 h-28 bg-slate-800 rounded-lg animate-pulse"
+                ></div>
+              ))}
+          </div>
+        ) : (
+          <div className="flex gap-2 sm:gap-6">
+            {platformDownloads.map((item) => (
+              <DownloadButton key={item.platform} platform={item} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
