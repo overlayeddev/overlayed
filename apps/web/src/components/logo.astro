@@ -1,4 +1,4 @@
-<div>
+<div class="z-40 drop-shadow-[0_0_6px_#5875f2] drop-shadow-toggle">
   <svg
     id="logo"
     width="220"
@@ -20,6 +20,17 @@
 </div>
 
 <style>
+  @keyframes drop-shadow-logo {
+    0% {
+      filter: none;
+    }
+    100% {
+      filter: drop-shadow(0 0 6px #5875f2);
+    }
+  }
+  .drop-shadow-toggle {
+    animation: drop-shadow-logo 16s ease-in-out infinite;
+  }
   #logo {
     opacity: 0;
     transform: scale(0.5) translate(7%);
