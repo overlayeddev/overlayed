@@ -9,7 +9,7 @@ import proxyMiddleware from "./plugins/proxy-middleware.mjs";
 
 const integrations = [sitemap(), react(), tailwind(), mdx()];
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV !== "production") {
   integrations.push(
     proxyMiddleware("/latest", {
       target: "http://localhost:8787",
