@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Settings, Pin, Download, ArrowLeftToLine, ArrowRightToLine, ChevronsRightLeft } from "lucide-react";
 
 import React from "react";
