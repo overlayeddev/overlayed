@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Settings, Pin, Download, ArrowLeftToLine, ArrowRightToLine, ChevronsRightLeft } from "lucide-react";
 
 import React from "react";
@@ -51,12 +51,14 @@ export const NavBar = ({
   const location = useLocation();
   const navigate = useNavigate();
   const { currentChannel } = useAppStore();
-
   const [currentAlignment, setCurrentAlignment] = useState(mapping[alignDirection]);
 
   const opacity = clickthrough && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
   const IconComponent = horizontalAlignments[currentAlignment]?.icon || ArrowLeftToLine;
   const showUpdateButton = location.pathname !== "/settings" && isUpdateAvailable;
+
+  const routesToShowOn = ["/channel", "/error", "/"];
+  if (!routesToShowOn.includes(location.pathname)) return null;
 
   return (
     <div
@@ -74,45 +76,53 @@ export const NavBar = ({
             <div data-tauri-drag-region>Overlayed</div>
           )}
         </div>
-        <div className="hidden gap-4 md:flex">
-          {showUpdateButton && (
-            <button>
-              <Download
-                className="text-green-500"
+        {location.pathname !== "/settings" && (
+          <div className="hidden gap-4 md:flex">
+            {showUpdateButton && (
+              <button>
+                <Download
+                  className="text-green-500"
+                  size={20}
+                  onClick={() => {
+                    // navigate("/settings?update");
+                    invoke("open_settings", {
+                      update: true,
+                    });
+                  }}
+                />
+              </button>
+            )}
+            <button title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
+              <IconComponent
                 size={20}
                 onClick={() => {
-                  navigate("/settings?update");
+                  const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
+                  setCurrentAlignment(newAlignment);
+                  setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
+                  overlayedConfig.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
                 }}
               />
             </button>
-          )}
-          <button title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
-            <IconComponent
-              size={20}
+            <button title="Enable clickthrough">
+              <Pin
+                size={20}
+                onClick={() => {
+                  invoke("toggle_clickthrough");
+                  overlayedConfig.set("clickthrough", !clickthrough);
+                  navigate("/channel");
+                }}
+              />
+            </button>
+            <button
+              title="Settings"
               onClick={() => {
-                const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
-                setCurrentAlignment(newAlignment);
-                setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
-                overlayedConfig.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
+                invoke("open_settings", { update: false });
               }}
-            />
-          </button>
-          <button title="Enable clickthrough">
-            <Pin
-              size={20}
-              onClick={() => {
-                invoke("toggle_clickthrough");
-                overlayedConfig.set("clickthrough", !clickthrough);
-                navigate("/channel");
-              }}
-            />
-          </button>
-          <button title="Settings">
-            <Link to="/settings">
+            >
               <Settings size={20} />
-            </Link>
-          </button>
-        </div>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
