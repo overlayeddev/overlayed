@@ -1,5 +1,7 @@
 ---
 import Link from "./link.astro";
+
+const year = new Date().getFullYear();
 ---
 
 <footer class="py-24 w-full mx-auto text-gray-400 text-center">
@@ -31,14 +33,22 @@ import Link from "./link.astro";
   </div>
   <div class="flex flex-col justify-center items-center">
     <div class="flex items-center justify-center gap-4 mb-4 text-lg">
-      <Link to="https://discord.gg/trashdev">Discord</Link>
-      <Link to="https://github.com/Hacksore/overlayed">Github</Link>
-      <Link to="https://x.com/OverlayedDev">Twitter</Link>
+      <Link target="_blank" to="https://discord.gg/trashdev">Discord</Link>
+      <Link target="_blank" to="https://github.com/Hacksore/overlayed">
+        Github
+      </Link>
+      <Link target="_blank" to="https://x.com/OverlayedDev">Twitter</Link>
     </div>
     <div class="flex items-center justify-center gap-4">
       <Link to="/privacy">Privacy</Link>
       <Link to="/tos">Terms</Link>
       <Link to="/about">About</Link>
+    </div>
+    <div>
+      <p class="mt-8 p-4 text-sm">
+        Overlayed is an independent application and is not affiliated with or
+        endorsed by Discord
+      </p>
     </div>
   </div>
 </footer>

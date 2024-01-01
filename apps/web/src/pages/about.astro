@@ -14,7 +14,7 @@ const [about] = await Astro.glob<Frontmatter>("../content/about/index.md");
   title={`Overlayed - ${about.frontmatter.title}`}
   description={about.frontmatter.description}
 >
-  <main class="prose dark:prose-invert mx-auto">
+  <main class="px-4 prose dark:prose-invert mx-auto">
     <div class="pt-2 pb-20"></div>
     <about.Content />
   </main>
