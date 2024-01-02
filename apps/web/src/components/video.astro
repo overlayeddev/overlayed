@@ -1,0 +1,10 @@
+---
+export interface Props {
+  src: string;
+}
+
+const { src } = Astro.props;
+---
+
+<video src={src} controls />
+
