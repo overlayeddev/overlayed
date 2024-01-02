@@ -1,1 +1,4 @@
-User-Agent: *
+User-agent: *
+Allow: /
+
+Sitemap: https://overlayed.dev/sitemap-index.xml
