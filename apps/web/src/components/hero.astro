@@ -4,13 +4,15 @@ import Logo from "../components/logo.astro";
 
 <style>
     .bg-hero {
-        background-image: radial-gradient(ellipse at bottom, #4e567932, #13151a, transparent);
+        background-image: radial-gradient(ellipse at center, #4e56791e, #13151a, transparent);
     }
 </style>
 
-<div class="-mt-24 h-[400px] w-full grid place-content-center bg-hero relative overflow-hidden">
+<div class="relative h-[100%] w-full -mt-24 flex flex-col gap-4 justify-center">
     <Logo />
-    <div class="z-30 snow-container h-[400px] w-full drop-shadow-[0_0_10px_#5875f2] absolute left-0 top-0">
+    <div class="h-[100vh] w-full grid place-content-center bg-hero absolute left-0 top-0 overflow-hidden">
+        <div class="z-30 snow-container h-[400px] w-full drop-shadow-[0_0_10px_#5875f2] absolute left-0 top-0">
+        </div>
     </div>
 </div>
 
@@ -21,7 +23,7 @@ import Logo from "../components/logo.astro";
         }
 
         const colors = ['white', 'white', '#5875f2','white'];
-        const total = 200;
+        const total = 160;
         var snowContainer = document.querySelector('.snow-container');
         for (let i = 1; i <= total; i++) {
             const snowflake = document.createElement("div");
@@ -33,7 +35,7 @@ import Logo from "../components/logo.astro";
             const randomYoyoTime = randomRange(30000, 80000) / 100000;
             const randomYoyoY = randomYoyoTime * window.innerHeight;
             const randomScale = Math.random();
-            const fallDuration = `${randomRange(16, 24)}s`;
+            const fallDuration = `${randomRange(20, 46)}s`;
             const fallDelay = `${randomRange(1, 10) * -1}s`;
             const opacity = Math.random();
 
@@ -54,8 +56,12 @@ import Logo from "../components/logo.astro";
                 ${randomYoyoTime * 100}% {
                 transform: translate(${randomXEnd}px, ${randomYoyoY}px) scale(${randomScale});
                 }
-                to {
+                90% {
+                transform: translate(${randomXEndYoyo > 0 ? randomXEndYoyo + randomRange(50, 150) : randomXEndYoyo - randomRange(50, 150)}px, 600px) scale(${randomScale});
+                }
+                100% {
                 transform: translate(${randomXEndYoyo}px, 600px) scale(${randomScale});
+                opacity: 0;
                 }
             }
             `;
