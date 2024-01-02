@@ -1,0 +1,35 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Footer from "../../components/footer.astro";
+
+export const getStaticPaths = (async () => {
+  const blogPosts = await getCollection("blog");
+
+  return blogPosts.map((file) => {
+    return {
+      params: {
+        slug: file.slug,
+      },
+      props: file,
+    };
+  });
+}) satisfies GetStaticPaths;
+
+type Props = CollectionEntry<"blog">;
+
+const post: Props = Astro.props;
+
+const { Content } = await post.render();
+---
+
+<Layout
+  title={`Overlayed - ${post.data.title}`}
+  description={post.data.description}
+>
+  <main class="px-4 prose prose-invert mx-auto pt-28">
+    <Content />
+  </main>
+  <Footer />
+</Layout>

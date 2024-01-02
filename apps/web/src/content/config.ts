@@ -7,4 +7,13 @@ const legal = defineCollection({
   }),
 });
 
-export const collections = { legal };
+const blog = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    pubDate: z.string(),
+    description: z.string(),
+    draft: z.boolean().optional(),
+  }),
+});
+
+export const collections = { legal, blog };

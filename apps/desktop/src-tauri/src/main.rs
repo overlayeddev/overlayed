@@ -49,7 +49,7 @@ pub fn create_settings_window(app: AppHandle) -> tauri::Result<Window> {
 
   settings_window.set_title("Overlayed Settings");
   settings_window.set_resizable(false);
-  settings_window.set_size(PhysicalSize::new(1000, 1300));
+  settings_window.set_size(PhysicalSize::new(600, 800));
 
   Ok(settings_window)
 }
@@ -64,9 +64,6 @@ fn main() {
       theme: Mutex::new(ThemeType::Dark),
     })
     .setup(|app| {
-      // create the settings window
-      // create_settings_window(app);
-
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
       // the window should always be on top
