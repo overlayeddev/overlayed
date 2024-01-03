@@ -98,6 +98,8 @@ jobs:
           args: --config "src-tauri/tauri.conf.canary.json" --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
+          TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
       - name: Upload unstable ${{ matrix.setting.os }}
         uses: actions/upload-artifact@v3
         with:
