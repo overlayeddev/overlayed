@@ -4,6 +4,7 @@ import type { PlatformDownload } from "types/types";
 import { Mac } from "../react/icons/mac";
 import { Windows } from "../react/icons/windows";
 import { Linux } from "../react/icons/linux";
+import { track } from "@vercel/analytics";
 
 type DownloadButtonParams = {
   platform: PlatformDownload;
@@ -30,6 +31,11 @@ export default function DownloadButton({
         target="_blank"
         href={platform.url}
         className="flex flex-col items-center justify-center gap-2 w-20"
+        onClick={() => {
+          track("download", {
+            platform: platform.platform,
+          });
+        }}
       >
         <div className="w-10 h-10">
           <Image />

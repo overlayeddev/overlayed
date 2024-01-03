@@ -18,6 +18,7 @@
     "@astrojs/tailwind": "^5.0.2",
     "@astrojs/vercel": "^6.1.0",
     "@tailwindcss/typography": "^0.5.10",
+    "@vercel/analytics": "^1.1.1",
     "astro": "^3.4.3",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
