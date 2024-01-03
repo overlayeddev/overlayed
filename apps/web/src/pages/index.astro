@@ -1,22 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/card.astro";
-import Logo from "../components/logo.astro";
 import Link from "../components/link.astro";
 import Footer from "../components/footer.astro";
+import Hero from "../components/hero.astro";
 import { Download } from "../components/react/download";
 
+import user from "../img/users.png";
 import transparent from "../img/transparent.png";
-import users from "../img/users.png";
 import onTop from "../img/on-top.png";
 import resources from "../img/resources.png";
 ---
 
 <style>
   main {
-    margin: auto;
-    width: 800px;
-    max-width: calc(100% - 2rem);
     color: white;
     font-size: 20px;
     line-height: 1.6;
@@ -36,54 +33,62 @@ import resources from "../img/resources.png";
     gap: 2rem;
     padding: 0;
   }
+
+  .main-content {
+    margin: auto;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+  }
 </style>
 
 <Layout>
-  <main
-    class="pt-36 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-10"
-  >
-    <Logo />
+  <main class="pt-60">
+    <Hero />
 
-    <h1 class="!mb-0 z-30">
-      Welcome to <span class="text-[#5865f2]">Overlayed</span>
-    </h1>
-    <!-- prettier-ignore -->
-    <p class="text-center text-zinc-400">
-      A modern, <Link underline class="text-white" target="_blank" to="https://github.com/Hacksore/overlayed">open-source</Link>, and free voice chat overlay for Discord that supports macOS, Linux, and Windows!
-    </p>
-    <Link
-      to="/about"
-      class="bg-slate-800 hover:bg-gray-700 p-2 px-4 rounded-lg"
+    <div
+      class="relative z-50 main-content pt-4 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-10"
     >
-      Why does this exist?
-    </Link>
-    <Download client:load />
-    <div class="cards grid md:grid-cols-2 w-full items-center gap-8">
-      <Card
-        name="User List"
-        desc="See who is talking, muted, and deafened in the current voice channel"
-        src={users}
-        alt="User List"
-      />
-      <Card
-        name="Transparent & Clickthrough"
-        desc="Transparent window that can ignore mouse clicks"
-        src={transparent}
-        alt="Transparent"
-      />
-      <Card
-        name="Always on Top"
-        desc="Always stays on top so you can continue working or gaming"
-        src={onTop}
-        alt="Always on top"
-      />
-      <Card
-        name="Blazingly Fast™"
-        desc="Built with tauri an efficient rust framework"
-        src={resources}
-        alt="Lightweight"
-      />
+      <h1 class="!mb-0">
+        Welcome to <span class="text-[#5865f2]">Overlayed</span>
+      </h1>
+      <!-- prettier-ignore -->
+      <p class="text-center text-zinc-400">
+      A modern, <Link underline class="text-white" to="https://github.com/Hacksore/overlayed">open-source</Link>, and free voice chat overlay for Discord that supports macOS, Linux, and Windows!
+    </p>
+      <Link
+        to="/about"
+        class="bg-slate-800 hover:bg-gray-700 p-2 px-4 rounded-lg"
+      >
+        Why does this exist?
+      </Link>
+      <Download client:load />
+      <div class="cards grid md:grid-cols-2 w-full items-center gap-8">
+        <Card
+          name="User List"
+          desc="See who is talking, muted, and deafened in the current voice channel"
+          src={user}
+          alt="User List"
+        />
+        <Card
+          name="Transparent & Clickthrough"
+          desc="Transparent window that can ignore mouse clicks"
+          src={transparent}
+          alt="Transparent"
+        />
+        <Card
+          name="Always on Top"
+          desc="Always stays on top so you can continue working or gaming"
+          src={onTop}
+          alt="Always on top"
+        />
+        <Card
+          name="Blazingly Fast™"
+          desc="Built with tauri an efficient rust framework"
+          src={resources}
+          alt="Lightweight"
+        />
+      </div>
+      <Footer />
     </div>
-    <Footer />
   </main>
 </Layout>
