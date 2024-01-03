@@ -20,30 +20,30 @@ export const Download = () => {
   >([]);
 
   useEffect(() => {
-    fetch(`${API_HOST}/latest`)
-      .then((res) => res.json())
-      .then((res) => {
-        setPlatformDownloads(res);
-        setIsLoading(false);
-      });
-    // setIsLoading(false);
-    // setPlatformDownloads([
-    //   {
-    //     name: "linux",
-    //     url: "https://something",
-    //     platform: "linux",
-    //   },
-    //   {
-    //     name: "linux",
-    //     url: "https://something",
-    //     platform: "mac",
-    //   },
-    //   {
-    //     name: "linux",
-    //     url: "https://something",
-    //     platform: "windows",
-    //   },
-    // ]);
+    // fetch(`${API_HOST}/latest`)
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     setPlatformDownloads(res);
+    //     setIsLoading(false);
+    //   });
+    setIsLoading(false);
+    setPlatformDownloads([
+      {
+        name: "linux",
+        url: "https://something",
+        platform: "linux",
+      },
+      {
+        name: "linux",
+        url: "https://something",
+        platform: "mac",
+      },
+      {
+        name: "linux",
+        url: "https://something",
+        platform: "windows",
+      },
+    ]);
   }, []);
 
   return (
