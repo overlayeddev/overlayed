@@ -23,6 +23,9 @@ export default defineConfig({
   site: "https://overlayed.dev",
   trailingSlash: "never",
   integrations,
+  server: {
+    host: "0.0.0.0"
+  },
   adapter: vercel({
     webAnalytics: {
       enabled: true,

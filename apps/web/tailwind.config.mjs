@@ -6,6 +6,13 @@ export default {
       colors: {
         primary: "#5865F2",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: "100ch", // add required value here
+          },
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
