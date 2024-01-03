@@ -32,7 +32,7 @@ free to include any information you feel is relevant to the bug.
 
 #### How do I Submit a Good Bug Report?
 
-> ### You must never report security related issues, vulnerabilities, or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead, sensitive bugs must be sent by email to [overlayed@boult.me](mailto:overlayed@boult.me)
+> ### You must never report security related issues, vulnerabilities, or bugs including sensitive information to the issue tracker, or elsewhere in public. Instead, sensitive bugs must be sent by email to [support@overlayed.dev](mailto:support@overlayed.dev). 
 
 We use GitHub issues to track bugs and errors. If you run into an issue with the
 project:

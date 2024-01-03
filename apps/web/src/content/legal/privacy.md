@@ -7,7 +7,7 @@ description: View the Privacy Policy for Overlayed
 
 Overlayed ("we", "us", or "our") provides this Privacy Policy to inform you of our policies and procedures regarding the collection, use, and disclosure of personal information we may receive from users of our app ("Application"), accessible from [https://overlayed.dev](https://ovlerlayed.dev), and any other services offered by us in connection with our site (any and all of the foregoing the "Services").
 
-If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at [overlayed@boult.me](mailto:overlayed@boult.me).
+If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us at [support@overlayed.dev](mailto:support@overlayed.dev).
 
 This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in Overlayed. This policy is not applicable to any information collected offline or via channels other than this website.
 
