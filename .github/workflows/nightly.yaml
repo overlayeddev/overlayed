@@ -1,10 +1,8 @@
-name: "CI"
+name: "Nightly"
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master 
-  pull_request:
+  schedule:
+    - cron: 0 0 * * *
 
 jobs:
   quality:
@@ -37,6 +35,7 @@ jobs:
         run: pnpm lint
 
   build-tauri:
+    needs: quality
     strategy:
       fail-fast: false
       matrix:
@@ -93,7 +92,14 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install
       - uses: tauri-apps/tauri-action@dev
+        id: build_os
         with:
           projectPath: apps/desktop
+          args: --config "src-tauri/tauri.conf.canary.json" --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload unstable ${{ matrix.setting.os }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: "overlayed-unstable-${{ matrix.settings.os }}"
+          path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
