@@ -24,7 +24,7 @@ import Logo from "../components/logo.astro";
 >
   <Logo />
   <div
-    class="h-[100vh] w-full grid place-content-center bg-hero absolute left-0 top-0 overflow-hidden"
+    class="h-[100vh] w-full grid place-content-center sm:bg-hero absolute left-0 top-0 overflow-hidden"
   >
     <div
       class="z-30 snow-container h-[400px] w-full drop-shadow-[0_0_10px_#5875f2] absolute left-0 top-0"
@@ -38,8 +38,9 @@ import Logo from "../components/logo.astro";
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
+    const mobileMedia = window.matchMedia("(max-width: 720px)");
 
-    if (prefersReducedMotion.matches) {
+    if (prefersReducedMotion.matches || mobileMedia.matches) {
       return null;
     }
 
