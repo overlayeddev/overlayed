@@ -6,6 +6,9 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "web#build": {
+      "outputs": ["dist/**"]
+    },
     "lint": {},
     "clean": {
       "cache": false
