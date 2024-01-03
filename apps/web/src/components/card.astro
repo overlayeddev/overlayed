@@ -1,10 +1,11 @@
 ---
+import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
 export interface Props {
   name: string;
   desc: string;
-  src: string;
+  src: ImageMetadata;
   alt: string;
 }
 
