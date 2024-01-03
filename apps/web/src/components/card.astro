@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+
 export interface Props {
   name: string;
   desc: string;
@@ -80,5 +82,5 @@ const { name, desc, src, alt } = Astro.props;
   </div>
   <h2 class="pb-4 text-2xl font-bold text-white">{name}</h2>
   <p class="pb-4">{desc}</p>
-  <img src={src} alt={alt} class="w-full" />
+  <Image src={src} alt={alt} class="w-full" width={512} height={512} />
 </div>
