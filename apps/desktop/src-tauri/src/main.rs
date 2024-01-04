@@ -60,6 +60,7 @@ fn main() {
 
       // skip on windows
       // TODO: disabling this makes it hard to tab to settings window?
+      // make configurable?
       // window.set_skip_taskbar(true);
 
       // setting this seems to fix windows somehow

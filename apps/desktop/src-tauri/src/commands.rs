@@ -37,7 +37,7 @@ pub fn open_settings(window: Window, update: bool) {
 #[tauri::command]
 pub fn close_settings(window: Window) {
   let app = window.app_handle();
-  let settings_windows = app.get_window("settings");
+  let settings_windows = app.get_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
     settings_windows.hide();
   }

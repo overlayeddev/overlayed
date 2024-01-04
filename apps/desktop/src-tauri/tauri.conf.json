@@ -80,16 +80,14 @@
         "minWidth": 64
       },
       {
-        "label": "settings",
-        "fullscreen": false,
-        "resizable": false,
         "transparent": true,
         "decorations": true,
         "visible": false,
-        "title": "Overlayed Settings",
+        "label": "settings",
         "url": "#settings",
-        "width": 800,
-        "height": 600
+        "title": "Overlayed",
+        "width": 600,
+        "height": 500
       }
     ]
   }
