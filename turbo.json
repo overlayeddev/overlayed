@@ -4,10 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "web#build": {
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", ".vercel/output/**"]
     },
     "lint": {},
     "clean": {
