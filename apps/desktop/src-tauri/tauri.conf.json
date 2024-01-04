@@ -86,7 +86,7 @@
         "transparent": true,
         "decorations": true,
         "visible": false,
-        "title": "overlayed",
+        "title": "Overlayed Settings",
         "url": "#settings",
         "width": 800,
         "height": 600

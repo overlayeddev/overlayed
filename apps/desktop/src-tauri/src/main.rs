@@ -16,10 +16,7 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{
-  generate_handler, App, AppHandle, LogicalPosition, LogicalSize, Manager, Position, RunEvent,
-  Window, WindowBuilder,
-};
+use tauri::{generate_handler, App, Manager, RunEvent, Window};
 use tray::{create_tray_items, handle_tray_events};
 
 // TODO: make this configurable
@@ -46,19 +43,6 @@ fn apply_macos_specifics(_app: &mut App, window: &Window) {
   // app.set_activation_policy(ActivationPolicy::Accessory);
 }
 
-// TODO: move this somewhere else
-pub fn create_settings_window(app: AppHandle) -> tauri::Result<Window> {
-  let page = tauri::WindowUrl::App("#settings".into());
-  let settings_window = WindowBuilder::new(&app, SETTINGS_WINDOW_NAME, page).build()?;
-
-  settings_window.hide();
-  settings_window.set_title("Overlayed Settings");
-  settings_window.set_resizable(false);
-  settings_window.set_size(LogicalSize::new(800, 650));
-
-  Ok(settings_window)
-}
-
 fn main() {
   let app = tauri::Builder::default()
     // TODO: this should work on windows
@@ -81,10 +65,6 @@ fn main() {
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
       window.set_decorations(false);
-
-      // create settings to prevent flashbang?
-      // let app_handle = window.app_handle();
-      // create_settings_window(app_handle);
 
       // add mac things
       #[cfg(target_os = "macos")]
