@@ -11,7 +11,7 @@ export const SettingsView = ({
 }) => {
 
   return (
-    <div className="bg-zinc-900 h-full overflow-auto">
+    <div className="bg-zinc-900 w-[calc(100vw)] h-full">
       <Tabs defaultValue="account" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="account">General</TabsTrigger>
