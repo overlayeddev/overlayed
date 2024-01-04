@@ -7,6 +7,8 @@ import { invoke } from "@tauri-apps/api";
 const HIDE_TOGGLE_KEYBIND = "Command+Shift+G";
 const TOGGLE_CLICKTHROUGH_KEYBIND = "Command+Shift+H";
 
+// BUG: this is happening on the settings page!!!
+// TODO: this might need some rework to be better
 export const useKeybinds = () => {
   const { setAppVisible, visible } = useAppStore();
 
