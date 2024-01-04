@@ -16,7 +16,10 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{generate_handler, App, Window, Manager, RunEvent, WindowBuilder, AppHandle, PhysicalSize};
+use tauri::{
+  generate_handler, App, AppHandle, LogicalSize, Manager, RunEvent, Window,
+  WindowBuilder,
+};
 use tray::{create_tray_items, handle_tray_events};
 
 // #[cfg(target_os = "macos")]
@@ -49,7 +52,7 @@ pub fn create_settings_window(app: AppHandle) -> tauri::Result<Window> {
 
   settings_window.set_title("Overlayed Settings");
   settings_window.set_resizable(false);
-  settings_window.set_size(PhysicalSize::new(600, 800));
+  settings_window.set_size(LogicalSize::new(800, 650));
 
   Ok(settings_window)
 }
