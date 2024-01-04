@@ -45,7 +45,8 @@ export const Developer = () => {
         </div>
         <p className="pt-2">
           If you find any issues or bugs please report them on the
-          <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">{" "}
+          <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">
+            {" "}
             github repo
           </a>
         </p>
