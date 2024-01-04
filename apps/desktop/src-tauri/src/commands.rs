@@ -29,12 +29,6 @@ pub fn open_settings(window: Window, update: bool) {
     return;
   }
 
-  let setting_windows = create_settings_window(app);
-  if let Ok(win) = setting_windows {
-    if update {
-      win.eval("window.location = '#settings?update'").unwrap();
-    }
-  }
 }
 
 #[tauri::command]

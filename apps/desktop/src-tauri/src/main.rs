@@ -17,11 +17,12 @@ use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
 use tauri::{
-  generate_handler, App, AppHandle, LogicalSize, Manager, RunEvent, Window,
-  WindowBuilder,
+  generate_handler, App, AppHandle, LogicalPosition, LogicalSize, Manager, Position, RunEvent,
+  Window, WindowBuilder,
 };
 use tray::{create_tray_items, handle_tray_events};
 
+// TODO: make this configurable
 // #[cfg(target_os = "macos")]
 // use tauri::{ActivationPolicy};
 
@@ -50,6 +51,7 @@ pub fn create_settings_window(app: AppHandle) -> tauri::Result<Window> {
   let page = tauri::WindowUrl::App("#settings".into());
   let settings_window = WindowBuilder::new(&app, SETTINGS_WINDOW_NAME, page).build()?;
 
+  settings_window.hide();
   settings_window.set_title("Overlayed Settings");
   settings_window.set_resizable(false);
   settings_window.set_size(LogicalSize::new(800, 650));
@@ -79,6 +81,10 @@ fn main() {
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
       window.set_decorations(false);
+
+      // create settings to prevent flashbang?
+      // let app_handle = window.app_handle();
+      // create_settings_window(app_handle);
 
       // add mac things
       #[cfg(target_os = "macos")]

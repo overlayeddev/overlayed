@@ -78,6 +78,18 @@
         "height": 600,
         "minHeight": 106,
         "minWidth": 64
+      },
+      {
+        "label": "settings",
+        "fullscreen": false,
+        "resizable": false,
+        "transparent": true,
+        "decorations": true,
+        "visible": false,
+        "title": "overlayed",
+        "url": "#settings",
+        "width": 800,
+        "height": 600
       }
     ]
   }
