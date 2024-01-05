@@ -9,7 +9,6 @@ export const SettingsView = ({
 }: {
   update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
-
   return (
     <div className="bg-zinc-900 w-[calc(100vw)] h-full">
       <Tabs defaultValue="account" className="w-full">
