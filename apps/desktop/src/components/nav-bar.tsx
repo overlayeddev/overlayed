@@ -84,7 +84,6 @@ export const NavBar = ({
                   className="text-green-500"
                   size={20}
                   onClick={() => {
-                    // navigate("/settings?update");
                     invoke("open_settings", {
                       update: true,
                     });

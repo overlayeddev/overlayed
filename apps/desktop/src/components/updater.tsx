@@ -13,16 +13,23 @@ import {
   DialogTrigger,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { listen } from "@tauri-apps/api/event";
 
 export const Updater = ({
   update,
 }: {
   update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
-  const location = useLocation();
-  const [dialogOpen, setDialogOpen] = useState(location.search.includes("update"));
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      await listen("show_update_modal", () => {
+        setDialogOpen(true);
+      });
+    })();
+  }, []);
 
   if (update.isAvailable && update.status !== null) {
     return (
