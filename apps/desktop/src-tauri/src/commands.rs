@@ -27,9 +27,9 @@ pub fn open_settings(window: Window, update: bool) {
   if let Some(settings_windows) = settings_windows {
     settings_windows.show();
     if update {
-      settings_windows
-        .eval("window.location = '#settings?update'")
-        .unwrap();
+      println!("showing update modal");
+      // emit to the settings window to show update
+      settings_windows.emit(SHOW_UPDATE_MODAL, ()).unwrap();
     }
   }
 }

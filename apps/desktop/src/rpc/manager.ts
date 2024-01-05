@@ -9,7 +9,7 @@ import type { AppActions, AppState } from "../store";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
-import { axiom } from "@/axiom";
+import { MetricNames, track, trackEvent } from "@/metrics";
 
 interface TokenResponse {
   access_token: string;
@@ -254,19 +254,18 @@ class SocketManager {
       this.store.pushError(payload.data.message);
       // move to the error page
       this.navigate("/error");
+
+      // track error metric
+      track(MetricNames.DiscordAuthed, 0);
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // TODO: make tracking opt-out
-      axiom.ingest("overlayed-prod", [
-        {
-          event: "auth",
-          properties: {
-            userId: payload.data.user.id,
-            username: payload.data.user.username,
-            // NOTE: do we care about this?
-            discriminator: payload.data.user.discriminator,
-          },
-        },
-      ]);
+      track(MetricNames.DiscordAuthed, 1);
+
+      // track user login
+      trackEvent(MetricNames.DiscordUser, {
+        id: payload.data.user.id,
+        username: payload.data.user.username,
+      });
 
       // try to find the user
       this.requestUserChannel();

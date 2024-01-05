@@ -18,6 +18,7 @@ export const SettingsView = ({
           <TabsTrigger value="developer">Developer</TabsTrigger>
         </TabsList>
 
+        {update.isAvailable && <Updater update={update} />}
         <div className="p-4 pt-4 pb-14 overflow-auto">
           <div className="flex flex-col gap-4">
             <TabsContent value="account">
@@ -30,7 +31,6 @@ export const SettingsView = ({
           </div>
         </div>
       </Tabs>
-      {update.isAvailable && <Updater update={update} />}
     </div>
   );
 };
