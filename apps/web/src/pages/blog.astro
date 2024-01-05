@@ -27,10 +27,10 @@ blogPosts.sort(
             <div class="p-2">
               <li>
                 <a href={`/blog/${post.slug}`} class="group">
-                  <div class="transf text-black dark:text-white opacity-60 group-hover:opacity-100 text-2xl">
+                  <div class="transf opacity-60 group-hover:opacity-100 text-2xl">
                     {post.data.title}
                   </div>
-                  <div class="transf opacity-40 group-hover:opacity-80 space-x-1">
+                  <div class="opacity-40 group-hover:opacity-80 space-x-1">
                     <time datetime={post.data.pubDate}>
                       {new Date(post.data.pubDate).toLocaleDateString("en-us", {
                         year: "numeric",
