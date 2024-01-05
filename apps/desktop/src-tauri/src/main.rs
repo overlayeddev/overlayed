@@ -16,7 +16,7 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{generate_handler, App, Manager, RunEvent, Window};
+use tauri::{generate_handler, App, Event, Manager, Window};
 use tray::{create_tray_items, handle_tray_events};
 
 // TODO: make this configurable
@@ -103,8 +103,20 @@ fn main() {
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!");
 
-  app.run(|_app_handle, e| match e {
-    RunEvent::Ready => {}
+  app.run(|app, event| match event {
+    tauri::RunEvent::WindowEvent {
+      label,
+      event: win_event,
+      ..
+    } => match win_event {
+      // NOTE: prevent destroying the window
+      tauri::WindowEvent::CloseRequested { api, .. } => {
+        let win = app.get_window(label.as_str()).unwrap();
+        win.hide().unwrap();
+        api.prevent_close();
+      }
+      _ => {}
+    },
     _ => {}
   })
 }
