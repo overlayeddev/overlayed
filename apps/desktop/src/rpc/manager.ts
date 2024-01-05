@@ -9,6 +9,7 @@ import type { AppActions, AppState } from "../store";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
+import { axiom } from "@/axiom";
 
 interface TokenResponse {
   access_token: string;
@@ -101,7 +102,7 @@ class SocketManager {
     } catch (e) {
       console.log(e);
       this.isConnected = false;
-      this.navigate?.("/error");
+      this.navigate("/error");
     }
   }
 
@@ -143,7 +144,7 @@ class SocketManager {
     // TODO: this has to be a bug in the upstream lib, we should get a proper code
     // and not have to check the raw dawg string to see if something is wrong
     if (typeof event === "string" && (event as string).includes("Connection reset without closing handshake")) {
-      // this.navigate?.("/error");
+      this.navigate("/error");
     }
 
     // TODO: does this ever happen?
@@ -252,8 +253,21 @@ class SocketManager {
 
       this.store.pushError(payload.data.message);
       // move to the error page
-      this.navigate?.("/error");
+      this.navigate("/error");
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
+      // TODO: make tracking opt-out
+      axiom.ingest("overlayed-prod", [
+        {
+          event: "auth",
+          properties: {
+            userId: payload.data.user.id,
+            username: payload.data.user.username,
+            // NOTE: do we care about this?
+            discriminator: payload.data.user.discriminator,
+          },
+        },
+      ]);
+
       // try to find the user
       this.requestUserChannel();
 
@@ -267,7 +281,7 @@ class SocketManager {
       this.store.setMe(payload.data.user);
 
       // move the view to /channel
-      this.navigate?.("/channel");
+      this.navigate("/channel");
     }
 
     if (payload.evt === RPCEvent.SPEAKING_START || payload.evt === RPCEvent.SPEAKING_STOP) {

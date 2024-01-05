@@ -1,6 +1,6 @@
 use tauri::{Manager, State, SystemTrayHandle, Window};
 
-use crate::{constants::*, create_settings_window, Clickthrough, Storage};
+use crate::{constants::*, Clickthrough, Storage};
 
 #[tauri::command]
 pub fn sync_theme(window: Window, storage: State<Storage>, value: String) {
@@ -23,16 +23,13 @@ pub fn sync_theme(window: Window, storage: State<Storage>, value: String) {
 #[tauri::command]
 pub fn open_settings(window: Window, update: bool) {
   let app = window.app_handle();
-  let settings_windows = app.get_window("settings");
+  let settings_windows = app.get_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
     settings_windows.show();
-    return;
-  }
-
-  let setting_windows = create_settings_window(app);
-  if let Ok(win) = setting_windows {
     if update {
-      win.eval("window.location = '#settings?update'").unwrap();
+      settings_windows
+        .eval("window.location = '#settings?update'")
+        .unwrap();
     }
   }
 }
@@ -40,7 +37,7 @@ pub fn open_settings(window: Window, update: bool) {
 #[tauri::command]
 pub fn close_settings(window: Window) {
   let app = window.app_handle();
-  let settings_windows = app.get_window("settings");
+  let settings_windows = app.get_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
     settings_windows.hide();
   }

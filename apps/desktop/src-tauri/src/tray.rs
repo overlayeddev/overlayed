@@ -55,17 +55,10 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
 
         set_clickthrough(window.clone(), storage, false);
 
-        // if in dev mode
-        #[cfg(debug_assertions)]
-        window
-          .eval("window.location.href = 'http://localhost:1420/#/settings'")
-          .unwrap();
-
-        // if we are in built mode do this instead
-        #[cfg(not(debug_assertions))]
-        window
-          .eval("window.location.href = 'tauri://localhost#/settings'")
-          .unwrap();
+        // find the settings window and show it
+        let settings_window = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
+        settings_window.show().unwrap();
+      
       }
       TRAY_OPEN_DEVTOOLS => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();

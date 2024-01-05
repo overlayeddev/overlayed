@@ -16,9 +16,11 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{generate_handler, App, Window, Manager, RunEvent, WindowBuilder, AppHandle, PhysicalSize};
+use tauri::{generate_handler, App, Manager, Window};
+use tauri_plugin_window_state::StateFlags;
 use tray::{create_tray_items, handle_tray_events};
 
+// TODO: make this configurable
 // #[cfg(target_os = "macos")]
 // use tauri::{ActivationPolicy};
 
@@ -42,22 +44,15 @@ fn apply_macos_specifics(_app: &mut App, window: &Window) {
   // app.set_activation_policy(ActivationPolicy::Accessory);
 }
 
-// TODO: move this somewhere else
-pub fn create_settings_window(app: AppHandle) -> tauri::Result<Window> {
-  let page = tauri::WindowUrl::App("#settings".into());
-  let settings_window = WindowBuilder::new(&app, SETTINGS_WINDOW_NAME, page).build()?;
-
-  settings_window.set_title("Overlayed Settings");
-  settings_window.set_resizable(false);
-  settings_window.set_size(PhysicalSize::new(600, 800));
-
-  Ok(settings_window)
-}
-
 fn main() {
+  let mut flags = StateFlags::all();
+  // NOTE: we don't care about the visible flag
+  flags.remove(StateFlags::VISIBLE);
+
+  let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
   let app = tauri::Builder::default()
     // TODO: this should work on windows
-    .plugin(tauri_plugin_window_state::Builder::default().build())
+    .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .manage(Clickthrough(AtomicBool::new(false)))
     .manage(Storage {
@@ -71,6 +66,7 @@ fn main() {
 
       // skip on windows
       // TODO: disabling this makes it hard to tab to settings window?
+      // make configurable?
       // window.set_skip_taskbar(true);
 
       // setting this seems to fix windows somehow
@@ -82,8 +78,8 @@ fn main() {
       apply_macos_specifics(app, &window);
 
       // Open dev tools only when in dev mode
-      #[cfg(debug_assertions)]
-      window.open_devtools();
+      // #[cfg(debug_assertions)]
+      // window.open_devtools();
 
       let mode = dark_light::detect();
       let mode_string = match mode {
@@ -113,8 +109,20 @@ fn main() {
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!");
 
-  app.run(|_app_handle, e| match e {
-    RunEvent::Ready => {}
+  app.run(|app, event| match event {
+    tauri::RunEvent::WindowEvent {
+      label,
+      event: win_event,
+      ..
+    } => match win_event {
+      // NOTE: prevent destroying the window
+      tauri::WindowEvent::CloseRequested { api, .. } => {
+        let win = app.get_window(label.as_str()).unwrap();
+        win.hide().unwrap();
+        api.prevent_close();
+      }
+      _ => {}
+    },
     _ => {}
   })
 }
