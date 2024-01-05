@@ -255,7 +255,7 @@ class SocketManager {
       // move to the error page
       this.navigate("/error");
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
-      // TODO: make tracking opt-out 
+      // TODO: make tracking opt-out
       axiom.ingest("overlayed-prod", [
         {
           event: "auth",
@@ -265,7 +265,7 @@ class SocketManager {
             // NOTE: do we care about this?
             discriminator: payload.data.user.discriminator,
           },
-        }
+        },
       ]);
 
       // try to find the user
