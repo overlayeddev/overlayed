@@ -15,9 +15,9 @@ mod window_custom;
 
 use crate::commands::*;
 use constants::*;
-use tauri_plugin_window_state::StateFlags;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{generate_handler, App, Event, Manager, Window};
+use tauri::{generate_handler, App, Manager, Window};
+use tauri_plugin_window_state::StateFlags;
 use tray::{create_tray_items, handle_tray_events};
 
 // TODO: make this configurable
@@ -45,7 +45,6 @@ fn apply_macos_specifics(_app: &mut App, window: &Window) {
 }
 
 fn main() {
-
   let mut flags = StateFlags::all();
   // NOTE: we don't care about the visible flag
   flags.remove(StateFlags::VISIBLE);
