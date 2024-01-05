@@ -15,6 +15,7 @@ mod window_custom;
 
 use crate::commands::*;
 use constants::*;
+use tauri_plugin_window_state::StateFlags;
 use std::sync::{atomic::AtomicBool, Mutex};
 use tauri::{generate_handler, App, Event, Manager, Window};
 use tray::{create_tray_items, handle_tray_events};
@@ -44,9 +45,15 @@ fn apply_macos_specifics(_app: &mut App, window: &Window) {
 }
 
 fn main() {
+
+  let mut flags = StateFlags::all();
+  // NOTE: we don't care about the visible flag
+  flags.remove(StateFlags::VISIBLE);
+
+  let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
   let app = tauri::Builder::default()
     // TODO: this should work on windows
-    .plugin(tauri_plugin_window_state::Builder::default().build())
+    .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .manage(Clickthrough(AtomicBool::new(false)))
     .manage(Storage {
@@ -72,8 +79,8 @@ fn main() {
       apply_macos_specifics(app, &window);
 
       // Open dev tools only when in dev mode
-      #[cfg(debug_assertions)]
-      window.open_devtools();
+      // #[cfg(debug_assertions)]
+      // window.open_devtools();
 
       let mode = dark_light::detect();
       let mode_string = match mode {
