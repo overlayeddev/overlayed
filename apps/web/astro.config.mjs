@@ -4,10 +4,11 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
+import compress from "astro-compress";
 
 import proxyMiddleware from "./plugins/proxy-middleware.mjs";
 
-const integrations = [sitemap(), react(), tailwind(), mdx()];
+const integrations = [sitemap(), react(), tailwind(), mdx(), compress()];
 
 if (process.env.NODE_ENV !== "production") {
   integrations.push(
@@ -24,7 +25,7 @@ export default defineConfig({
   trailingSlash: "never",
   integrations,
   server: {
-    host: "0.0.0.0"
+    host: "0.0.0.0",
   },
   adapter: vercel({
     webAnalytics: {
