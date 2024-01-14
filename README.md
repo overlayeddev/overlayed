@@ -1,6 +1,5 @@
 # Overlayed
 
-<img alt="GitHub" height=20 src="https://img.shields.io/github/stars/Hacksore/overlayed?style=&logo=github&logoColor=white&label=Stars&labelColor=%23111&color=%23111" />
 <a href="https://discord.gg/eXmeNkVjye" target="_parent">
 <img alt="Discord" height=20 src="https://img.shields.io/discord/906349283358408704?style=&logo=discord&logoColor=white&label=%20&labelColor=%237389D8&color=%237389D8" />
 </a>
