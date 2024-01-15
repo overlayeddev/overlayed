@@ -8,16 +8,19 @@
     "clean": "turbo run clean && rm -rf node_modules .turbo",
     "lint": "turbo run lint",
     "format": "turbo run format",
-    "ui:add": "pnpm --filter ui ui:add"
+    "ui:add": "pnpm --filter ui ui:add",
+    "dl-contrib": "tsx scripts/generate-contributors.ts"
   },
   "type": "module",
   "devDependencies": {
     "@actions/github": "^6.0.0",
+    "dotenv": "^16.3.1",
     "eslint": "^8.48.0",
     "glob": "^10.3.10",
+    "lint": "workspace:*",
+    "octokit": "^3.1.2",
     "prettier": "^3.0.3",
     "tsconfig": "workspace:*",
-    "lint": "workspace:*",
     "tsx": "^4.1.4",
     "turbo": "latest"
   },
