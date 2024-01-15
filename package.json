@@ -14,6 +14,7 @@
   "type": "module",
   "devDependencies": {
     "@actions/github": "^6.0.0",
+    "dotenv": "^16.3.1",
     "eslint": "^8.48.0",
     "glob": "^10.3.10",
     "lint": "workspace:*",
