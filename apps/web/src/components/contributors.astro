@@ -1,0 +1,24 @@
+---
+import { contributors } from "../contributors";
+---
+
+<div
+  class={"card border-zinc-800 flex flex-col justify-center items-center p-6 rounded-2xl w-full"}
+>
+  <h2 class="text-3xl">Open Source Contributors</h2>
+  <div class="flex pt-8 gap-4 flex-wrap justify-center">
+    {
+      contributors.map((item) => {
+        return (
+          <a href={item.html_url} target="_blank" rel="noopener noreferrer">
+            <img
+              src={item.avatar_url}
+              alt={item.login}
+              class={"rounded-full w-16 h-16 mx-auto mb-4"}
+            />
+          </a>
+        );
+      })
+    }
+  </div>
+</div>
