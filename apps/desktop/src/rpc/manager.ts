@@ -217,7 +217,7 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch < TokenResponse > (`${STREAMKIT_URL}/overlay/token`, {
+      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
         method: "POST",
         body: Body.json({ code }),
       });
@@ -339,7 +339,7 @@ class SocketManager {
 // hook to get the socket SocketManager
 export const useSocket = () => {
   const navigate = useNavigate();
-  const socketRef = useRef < SocketManager | null > (null);
+  const socketRef = useRef<SocketManager | null>(null);
 
   useEffect(() => {
     if (socketRef.current) {

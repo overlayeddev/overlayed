@@ -7,7 +7,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 export const Audit = () => {
   const { userLog, resetUserLog } = useAppStore();
 
-
   return (
     <div className="flex flex-col text-center h-screen pb-4">
       <div className="flex items-center pb-4">
