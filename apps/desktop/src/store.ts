@@ -115,6 +115,7 @@ export const useAppStore = create<AppState & AppActions>()(
       }),
     setMe: data =>
       set(state => {
+        console.log("setting me", data)
         state.me = data;
       }),
     setTalking: (id, talking) =>

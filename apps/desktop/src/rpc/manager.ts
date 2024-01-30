@@ -6,7 +6,7 @@ import WebSocket from "tauri-plugin-websocket-api";
 import type { Message } from "tauri-plugin-websocket-api";
 import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
-import { useNavigate, type NavigateFunction } from "react-router-dom";
+import { useNavigate, type NavigateFunction, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
 import { MetricNames, track, trackEvent } from "@/metrics";
@@ -104,6 +104,13 @@ class SocketManager {
       this.isConnected = false;
       this.navigate("/error");
     }
+
+    // subscribe to local storage events to see if we need to move the user to the auth page
+    window.addEventListener("storage", e => {
+      if (e.key === "discord_access_token" && !e.newValue) {
+        this.navigate("/");
+      }
+    });
   }
 
   public disconnect() {
@@ -123,7 +130,7 @@ class SocketManager {
     this.send({
       args: {
         client_id: STREAM_KIT_APP_ID,
-        scopes: ["rpc", "identify"],
+        scopes: ["rpc", "identify", "rpc.notifications.read"],
       },
       cmd: RPCCommand.AUTHORIZE,
     });
@@ -339,9 +346,15 @@ class SocketManager {
 // hook to get the socket SocketManager
 export const useSocket = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const socketRef = useRef<SocketManager | null>(null);
 
   useEffect(() => {
+    if (location.pathname === "/settings") {
+      console.log("Not loading hte socket on the settings page");
+      return;
+    }
+
     if (socketRef.current) {
       console.log("Socket already initialized");
       return;

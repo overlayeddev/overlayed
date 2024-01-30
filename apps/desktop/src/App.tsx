@@ -12,9 +12,9 @@ import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 import { useUpdate } from "./hooks/use-update";
-import { LogView } from "./views/log";
 import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
+import { emit } from "@tauri-apps/api/event";
 
 function App() {
   useKeybinds();
@@ -47,7 +47,6 @@ function App() {
       <Routes>
         <Route path="/" Component={MainView} />
         <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
-        <Route path="/log" Component={LogView} />
         <Route
           path="/settings"
           element={
