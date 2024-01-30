@@ -31,7 +31,7 @@ pub struct Clickthrough(AtomicBool);
 
 // play with a struct with interior mutability
 #[derive(Debug)]
-struct Storage {
+pub struct Storage {
   theme: Mutex<ThemeType>,
 }
 
