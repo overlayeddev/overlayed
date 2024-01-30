@@ -14,14 +14,15 @@ import { invoke } from "@tauri-apps/api";
 import { useUpdate } from "./hooks/use-update";
 import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
-import { emit } from "@tauri-apps/api/event";
+import { listen } from "@tauri-apps/api/event";
+import { Events } from "./constants";
 
 function App() {
   useKeybinds();
   useSocket();
   useDisableWebFeatures();
   const { isAvailable, error, status } = useUpdate();
-  const { visible } = useAppStore();
+  const { visible, setMe } = useAppStore();
 
   const { clickthrough } = useClickthrough();
   const { horizontal, setHorizontalDirection } = useAlign();
@@ -33,6 +34,23 @@ function App() {
       const value = e.matches ? "dark" : "light";
       invoke("sync_theme", { value });
     });
+  }, []);
+
+  // setup a listener to receive messages from the settings window
+  // TODO: abstract
+  useEffect(() => {
+    const unlisten = listen(Events.AuthStateChanged, () => {
+      console.log("I was told to logout")
+      setMe(null);
+    });
+
+    // NOTE: this may or may not work
+    return () => {
+      (async () => {
+        const unlFn = await unlisten;
+        unlFn();
+      })();
+    };
   }, []);
 
   const visibleClass = visible ? "opacity-100" : "opacity-0";

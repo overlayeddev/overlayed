@@ -16,16 +16,17 @@ import {
 import { useAppStore } from "@/store";
 import { useEffect, useState } from "react";
 
-import { listen } from "@tauri-apps/api/event";
+import { emit, listen } from "@tauri-apps/api/event";
+import { Events } from "@/constants";
 export const Account = () => {
-  const { me, setMe } = useAppStore();
+  // NOTE: we can't use this as the react state is in another castle
+  const { me } = useAppStore();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const tokenExpires = localStorage.getItem("discord_expires_at");
-    listen("auth-state-changed", async () => {
-      console.log("auth state chanage");
-    });
 
+  // TODO: abstract?
+  // TODO: make constants
   useEffect(() => {
     listen("auth-state-changed", async () => {
       console.log("auth state chanage");
@@ -60,18 +61,20 @@ export const Account = () => {
               open={showLogoutDialog}
             >
               <DialogTrigger asChild>
-                <Button disabled={!me?.id} className="w-[100px]">
+                <Button className="w-[100px]">
                   Logout
                 </Button>
               </DialogTrigger>
               <DialogContent className="w-[80%]">
                 <form
-                  onSubmit={event => {
+                  onSubmit={async (event) => {
                     event.preventDefault();
                     setShowLogoutDialog(false);
-                    setMe(null);
+                    // TODO: move this to the other window
                     localStorage.removeItem("discord_access_token");
                     localStorage.removeItem("discord_expires_at");
+
+                    await emit(Events.AuthStateChanged);
                   }}
                 >
                   <DialogHeader>
@@ -92,7 +95,6 @@ export const Account = () => {
           </div>
         </div>
 
-        {JSON.stringify({ me })}
         <div>
           <Dialog
             onOpenChange={e => {
