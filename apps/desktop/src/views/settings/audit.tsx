@@ -18,7 +18,8 @@ export const Audit = () => {
 
       <div className="overflow-auto h-[230px]">
         {[...userLog].reverse().map((item, i) => {
-          const userInfoString = `${item.username} (${item.event}) <@${item.id}>`;
+          const timeInSeconds = Math.floor(item.timestamp / 1000);
+          const userInfoString = `${item.username} (${item.event}) <@${item.id}> <t:${timeInSeconds}:R>`;
           const Icon = item.event === "join" ? PhoneIncoming : PhoneOff;
           const className = item.event === "join" ? "text-green-500" : "text-red-500";
           return (
