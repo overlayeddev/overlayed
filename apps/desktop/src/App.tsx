@@ -14,7 +14,7 @@ import { invoke } from "@tauri-apps/api";
 import { useUpdate } from "./hooks/use-update";
 import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
-import { listen } from "@tauri-apps/api/event";
+import { emit, listen } from "@tauri-apps/api/event";
 import { Event } from "./constants";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
   useSocket();
   useDisableWebFeatures();
   const { isAvailable, error, status } = useUpdate();
-  const { visible, setMe } = useAppStore();
+  const { visible, setMe, me } = useAppStore();
 
   const { clickthrough } = useClickthrough();
   const { horizontal, setHorizontalDirection } = useAlign();
@@ -39,18 +39,25 @@ function App() {
   // setup a listener to receive messages from the settings window
   // TODO: abstract
   useEffect(() => {
-    const unlisten = listen(Event.AuthLogout, () => {
-      console.log("I was told to logout")
+    console.log("path", location.pathname);
+    if (location.pathname !== "/settings") return;
+    const unlistenAuthLogout = listen(Event.AuthLogout, () => {
+      console.log("I was told to logout");
       setMe(null);
     });
 
-    // NOTE: this may or may not work
-    return () => {
-      (async () => {
-        const unlFn = await unlisten;
-        unlFn();
-      })();
-    };
+    const unlistenAuthSync = listen(Event.AuthSync, async () => {
+      console.log("I was told to sync", me);
+      await emit(Event.AuthUpdate, me);
+    });
+
+    // // NOTE: this may or may not work to clean up
+    // return () => {
+    //   (async () => {
+    //     (await unlistenAuthLogout)();
+    //     (await unlistenAuthSync)();
+    //   })();
+    // };
   }, []);
 
   const visibleClass = visible ? "opacity-100" : "opacity-0";

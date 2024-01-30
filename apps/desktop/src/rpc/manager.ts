@@ -132,7 +132,7 @@ class SocketManager {
     this.send({
       args: {
         client_id: STREAM_KIT_APP_ID,
-        scopes: ["rpc", "identify", "rpc.notifications.read"],
+        scopes: ["rpc", "identify"],
       },
       cmd: RPCCommand.AUTHORIZE,
     });

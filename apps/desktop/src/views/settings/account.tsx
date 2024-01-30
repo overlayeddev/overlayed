@@ -25,25 +25,28 @@ export const Account = () => {
   const tokenExpires = localStorage.getItem("discord_expires_at");
 
   // TODO: abstract?
-  // TODO: make constants
   useEffect(() => {
-    const unlisten = listen(Event.AuthUpdate, data => {
-      console.log("Got update from main app");
-      setUser(data);
-    });
+    const init = async () => {
+      // TODO: how to unmount this?
+      await listen(Event.AuthUpdate, data => {
+        console.log("Got update from main app", data);
+        setUser(data.payload);
+      });
+
+      // sync the data in case we remount
+      console.log("inform the main app to sync");
+      await emit(Event.AuthSync);
+    };
+
+    init();
 
     // NOTE: this may or may not work
-    return () => {
-      (async () => {
-        const unlFn = await unlisten;
-        unlFn();
-      })();
-    };
   }, []);
 
   return (
     <>
       <div>
+        {JSON.stringify(user)}
         {user?.id ? (
           <p className="mb-3 font-bold">
             {user?.global_name} ({user?.id})
@@ -69,7 +72,9 @@ export const Account = () => {
               open={showLogoutDialog}
             >
               <DialogTrigger asChild>
-                <Button disabled={!user?.id} className="w-[100px]">Logout</Button>
+                <Button disabled={!user?.id} className="w-[100px]">
+                  Logout
+                </Button>
               </DialogTrigger>
               <DialogContent className="w-[80%]">
                 <form
