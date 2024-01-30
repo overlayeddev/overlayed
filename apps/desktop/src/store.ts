@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { OverlayedUser, VoiceStateUser } from "./types";
+import type { AuditLogUser, OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 import { enableMapSet } from "immer";
 
@@ -31,7 +31,7 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 
 export interface AppState {
   visible: boolean;
-  userLog: (OverlayedUser & { event: "join" | "leave" })[];
+  userLog: AuditLogUser[];
   clickThrough: boolean;
   // TODO: type this better
   me: any | null;
@@ -45,7 +45,7 @@ export interface AppState {
 
 export interface AppActions {
   resetUserLog: () => void;
-  logUser: (user: OverlayedUser & { event: "join" | "leave" }) => void;
+  logUser: (user: AuditLogUser) => void;
   setAppVisible: (value: boolean) => void;
   setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;

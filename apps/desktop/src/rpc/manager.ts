@@ -174,13 +174,13 @@ class SocketManager {
       }
 
       this.store.removeUser(payload.data.user.id);
-      this.store.logUser({ ...createUserStateItem(payload.data), event: "leave" });
+      this.store.logUser({ ...createUserStateItem(payload.data), event: "leave", timestamp: Date.now() });
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
       console.log("create user", payload.data);
       this.store.addUser(payload.data);
-      this.store.logUser({ ...createUserStateItem(payload.data), event: "join" });
+      this.store.logUser({ ...createUserStateItem(payload.data), event: "join", timestamp: Date.now() });
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {

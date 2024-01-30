@@ -139,3 +139,8 @@ export interface VoiceStateUser {
   voice_state: VoiceState;
   user: VoiceUser;
 }
+
+export interface AuditLogUser extends OverlayedUser {
+  event: "join" | "leave";
+  timestamp: number;
+}

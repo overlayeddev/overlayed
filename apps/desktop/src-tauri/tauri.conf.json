@@ -82,6 +82,7 @@
       {
         "transparent": true,
         "decorations": true,
+        "resizable": false,
         "visible": false,
         "label": "settings",
         "url": "#settings",

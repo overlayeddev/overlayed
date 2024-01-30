@@ -3,6 +3,7 @@ import type { UpdateStatus } from "@tauri-apps/api/updater";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
 import { Developer } from "./developer";
+import { Audit } from "./audit";
 
 export const SettingsView = ({
   update,
@@ -12,10 +13,11 @@ export const SettingsView = ({
   return (
     <div className="bg-zinc-900 w-[calc(100vw)] h-full">
       <Tabs defaultValue="account" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="account">General</TabsTrigger>
           <TabsTrigger value="password">Advanced</TabsTrigger>
           <TabsTrigger value="developer">Developer</TabsTrigger>
+          <TabsTrigger value="audit">Audit Log</TabsTrigger>
         </TabsList>
 
         {update.isAvailable && <Updater update={update} />}
@@ -27,6 +29,9 @@ export const SettingsView = ({
             <TabsContent value="password">TODO:</TabsContent>
             <TabsContent value="developer">
               <Developer />
+            </TabsContent>
+            <TabsContent value="audit">
+              <Audit />
             </TabsContent>
           </div>
         </div>
