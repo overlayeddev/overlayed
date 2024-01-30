@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 468
+        "contributions": 482
     },
     {
         "login": "maxdemaio",
@@ -102,6 +102,27 @@ export const contributors = [
         "repos_url": "https://api.github.com/users/borisnezlobin/repos",
         "events_url": "https://api.github.com/users/borisnezlobin/events{/privacy}",
         "received_events_url": "https://api.github.com/users/borisnezlobin/received_events",
+        "type": "User",
+        "site_admin": false,
+        "contributions": 1
+    },
+    {
+        "login": "mrnossiom",
+        "id": 43814157,
+        "node_id": "MDQ6VXNlcjQzODE0MTU3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/43814157?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/mrnossiom",
+        "html_url": "https://github.com/mrnossiom",
+        "followers_url": "https://api.github.com/users/mrnossiom/followers",
+        "following_url": "https://api.github.com/users/mrnossiom/following{/other_user}",
+        "gists_url": "https://api.github.com/users/mrnossiom/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/mrnossiom/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/mrnossiom/subscriptions",
+        "organizations_url": "https://api.github.com/users/mrnossiom/orgs",
+        "repos_url": "https://api.github.com/users/mrnossiom/repos",
+        "events_url": "https://api.github.com/users/mrnossiom/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/mrnossiom/received_events",
         "type": "User",
         "site_admin": false,
         "contributions": 1
