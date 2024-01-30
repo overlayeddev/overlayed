@@ -15,7 +15,7 @@ import { useUpdate } from "./hooks/use-update";
 import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
 import { listen } from "@tauri-apps/api/event";
-import { Events } from "./constants";
+import { Event } from "./constants";
 
 function App() {
   useKeybinds();
@@ -39,7 +39,7 @@ function App() {
   // setup a listener to receive messages from the settings window
   // TODO: abstract
   useEffect(() => {
-    const unlisten = listen(Events.AuthStateChanged, () => {
+    const unlisten = listen(Event.AuthLogout, () => {
       console.log("I was told to logout")
       setMe(null);
     });

@@ -10,6 +10,8 @@ import { useNavigate, type NavigateFunction, useLocation } from "react-router-do
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
 import { MetricNames, track, trackEvent } from "@/metrics";
+import { Event } from "@/constants";
+import { emit } from "@tauri-apps/api/event";
 
 interface TokenResponse {
   access_token: string;
@@ -285,6 +287,9 @@ class SocketManager {
 
       this.tokenStore?.setAccessTokenExpiry(payload.data.expires);
       this.store.setMe(payload.data.user);
+
+      // tell the settings window about the user info
+      await emit(Event.AuthUpdate, payload.data.user);
 
       // move the view to /channel
       this.navigate("/channel");

@@ -13,32 +13,40 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
-import { useAppStore } from "@/store";
 import { useEffect, useState } from "react";
 
 import { emit, listen } from "@tauri-apps/api/event";
-import { Events } from "@/constants";
+import { Event } from "@/constants";
 export const Account = () => {
-  // NOTE: we can't use this as the react state is in another castle
-  const { me } = useAppStore();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
+  // TODO: type this
+  const [user, setUser] = useState < any > (null);
   const tokenExpires = localStorage.getItem("discord_expires_at");
 
   // TODO: abstract?
   // TODO: make constants
   useEffect(() => {
-    listen("auth-state-changed", async () => {
-      console.log("auth state chanage");
+    const unlisten = listen(Event.AuthUpdate, data => {
+      console.log("Got update from main app");
+      setUser(data);
     });
+
+    // NOTE: this may or may not work
+    return () => {
+      (async () => {
+        const unlFn = await unlisten;
+        unlFn();
+      })();
+    };
   }, []);
 
   return (
     <>
       <div>
-        {me?.id ? (
+        {user?.id ? (
           <p className="mb-3 font-bold">
-            {me?.global_name} ({me?.id})
+            {user?.global_name} ({user?.id})
           </p>
         ) : (
           <p>Please Login to use Overlayed</p>
@@ -61,20 +69,19 @@ export const Account = () => {
               open={showLogoutDialog}
             >
               <DialogTrigger asChild>
-                <Button className="w-[100px]">
-                  Logout
-                </Button>
+                <Button disabled={!user?.id} className="w-[100px]">Logout</Button>
               </DialogTrigger>
               <DialogContent className="w-[80%]">
                 <form
-                  onSubmit={async (event) => {
+                  onSubmit={async event => {
                     event.preventDefault();
                     setShowLogoutDialog(false);
                     // TODO: move this to the other window
                     localStorage.removeItem("discord_access_token");
                     localStorage.removeItem("discord_expires_at");
+                    setUser(null);
 
-                    await emit(Events.AuthStateChanged);
+                    await emit(Event.AuthLogout);
                   }}
                 >
                   <DialogHeader>
