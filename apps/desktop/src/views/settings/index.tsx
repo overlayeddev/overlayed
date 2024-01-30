@@ -13,9 +13,8 @@ export const SettingsView = ({
   return (
     <div className="bg-zinc-900 w-[calc(100vw)] h-full">
       <Tabs defaultValue="account" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="account">General</TabsTrigger>
-          <TabsTrigger value="password">Advanced</TabsTrigger>
           <TabsTrigger value="developer">Developer</TabsTrigger>
           <TabsTrigger value="audit">Audit Log</TabsTrigger>
         </TabsList>
@@ -26,7 +25,6 @@ export const SettingsView = ({
             <TabsContent value="account">
               <Account />
             </TabsContent>
-            <TabsContent value="password">TODO:</TabsContent>
             <TabsContent value="developer">
               <Developer />
             </TabsContent>
