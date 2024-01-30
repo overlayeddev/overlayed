@@ -47,6 +47,8 @@ jobs:
         run: pnpm install
       - name: Run contributors script
         run: pnpm dl-contrib
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
