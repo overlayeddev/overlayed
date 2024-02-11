@@ -20,7 +20,7 @@ export const Account = () => {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   // TODO: type this
   const [user, setUser] = useState<any>(null);
-  const tokenExpires = localStorage.getItem("discord_expires_at");
+  const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
 
   // pull out the user data from localStorage
   useEffect(() => {
@@ -29,9 +29,15 @@ export const Account = () => {
       setUser(JSON.parse(user));
     }
 
+    // TODO: these should have keys that are shared from perhaps and abstraction
     const onStorageChange = (e: StorageEvent) => {
+      console.log("storage change", { e });
       if (e.key === "user_data" && e.newValue) {
         setUser(JSON.parse(e.newValue));
+      }
+
+      if (e.key === "discord_access_token_expiry" && e.newValue) {
+        setTokenExpires(e.newValue);
       }
     };
 
@@ -80,10 +86,11 @@ export const Account = () => {
                   onSubmit={async event => {
                     event.preventDefault();
                     setShowLogoutDialog(false);
-                    // TODO: move this to the other window
+                    // TODO: move this to the other window but for now this works
                     localStorage.removeItem("discord_access_token");
-                    localStorage.removeItem("discord_expires_at");
+                    localStorage.removeItem("discord_access_token_expiry");
                     localStorage.removeItem("user_data");
+                    setTokenExpires(null);
                     setUser(null);
                   }}
                 >

@@ -45,6 +45,7 @@ class UserdataStore {
 
   removeAccessToken() {
     this.store.removeItem(this.keys.accessToken);
+    this.store.removeItem(this.keys.accessTokenExpiry)
   }
 }
 
@@ -297,8 +298,6 @@ class SocketManager {
 
       // store in localstorage that we have auth
       this.userdataStore.setUserdata(payload.data.user);
-
-      console.log("sending at", Date.now());
 
       // move the view to /channel
       this.navigate("/channel");
