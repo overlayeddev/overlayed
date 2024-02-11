@@ -45,7 +45,7 @@ class UserdataStore {
 
   removeAccessToken() {
     this.store.removeItem(this.keys.accessToken);
-    this.store.removeItem(this.keys.accessTokenExpiry)
+    this.store.removeItem(this.keys.accessTokenExpiry);
   }
 }
 

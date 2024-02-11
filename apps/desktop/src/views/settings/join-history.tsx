@@ -46,7 +46,9 @@ export const JoinHistory = () => {
 
   return (
     <div className="flex flex-col h-screen pb-4">
-      <p className="text-sm text-gray-400 mb-2">Display join/leave events in the voice chat useful for moderation purposes </p>
+      <p className="text-sm text-gray-400 mb-2">
+        Display join/leave events in the voice chat useful for moderation purposes{" "}
+      </p>
 
       <div className="overflow-auto nice-scroll h-[220px]">
         {[...userLog].reverse().map((item, i) => {
