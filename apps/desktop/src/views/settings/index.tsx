@@ -28,7 +28,7 @@ export const SettingsView = ({
         </TabsList>
 
         {update.isAvailable && <Updater update={update} />}
-        <div className="p-4 pt-4 pb-14 overflow-auto">
+        <div className="p-4 pt-2 pb-14 overflow-auto">
           <div className="flex flex-col gap-4">
             <TabsContent value="account">
               <Account />

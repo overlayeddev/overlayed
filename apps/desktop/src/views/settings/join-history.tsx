@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Eraser, PhoneOff, PhoneIncoming } from "lucide-react";
+import { Trash, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useEffect, useRef, useState } from "react";
@@ -32,7 +32,7 @@ export const JoinHistory = () => {
     };
 
     unlisten();
-    
+
     return () => {
       (async () => {
         await unlisten();
@@ -45,22 +45,17 @@ export const JoinHistory = () => {
   };
 
   return (
-    <div className="flex flex-col text-center h-screen pb-4">
-      <div className="flex items-center pb-4">
-        <p className="text-2xl">Join History</p>
-        <Button onClick={resetUserLog} variant="ghost" size="sm" className="w-20">
-          <Eraser size={18} />
-        </Button>
-      </div>
+    <div className="flex flex-col h-screen pb-4">
+      <p className="text-sm text-gray-400 mb-2">Display join/leave events in the voice chat useful for moderation purposes </p>
 
-      <div className="overflow-auto h-[230px]">
+      <div className="overflow-auto nice-scroll h-[220px]">
         {[...userLog].reverse().map((item, i) => {
           const timeInSeconds = Math.floor(item.timestamp / 1000);
           const userInfoString = `${item.username} (${item.event}) <@${item.id}> <t:${timeInSeconds}:R>`;
           const Icon = item.event === "join" ? PhoneIncoming : PhoneOff;
           const className = item.event === "join" ? "text-green-500" : "text-red-500";
           return (
-            <Tooltip key={`user-${i}-${item.id}`} delayDuration={100}>
+            <Tooltip key={`user-${i}-${item.id}`} disableHoverableContent delayDuration={100}>
               <TooltipTrigger asChild>
                 <div className="text-lg cursor-pointer flex items-center text-white">
                   <Icon size={18} className={cn(className, "mr-2")} />{" "}
@@ -68,9 +63,9 @@ export const JoinHistory = () => {
                     onClick={() => {
                       navigator.clipboard.writeText(userInfoString);
                       toast({
-                        title: "Success",
+                        title: "User Info Copied",
                         variant: "success",
-                        description: "User info copied to clipboard",
+                        description: `${item.username} (${item.event}) copied to clipboard`,
                         duration: 3000,
                       });
                     }}
@@ -79,12 +74,19 @@ export const JoinHistory = () => {
                   </span>
                 </div>
               </TooltipTrigger>
-              <TooltipContent avoidCollisions={false} align="start">
+              <TooltipContent align="start">
                 {item.username} ({item.event})
               </TooltipContent>
             </Tooltip>
           );
         })}
+      </div>
+
+      <div className="flex justify-end items-center mt-4 pb-2">
+        <Button onClick={resetUserLog} variant="ghost" className="hover:bg-red-500">
+          <span className="mr-2">Clear list</span>
+          <Trash size={18} />
+        </Button>
       </div>
     </div>
   );
