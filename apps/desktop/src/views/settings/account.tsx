@@ -21,21 +21,27 @@ export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   // TODO: type this
-  const [user, setUser] = useState < any > (null);
+  const [user, setUser] = useState<any>(null);
   const tokenExpires = localStorage.getItem("discord_expires_at");
 
   // TODO: abstract?
   useEffect(() => {
     const init = async () => {
       // TODO: how to unmount this?
-      await listen(Event.AuthUpdate, data => {
-        console.log("Got update from main app", data);
-        setUser(data.payload);
+      await listen(Event.AuthUpdate, ({ payload, from }: any) => {
+        if (from === "settings") {
+          return;
+        }
+
+        console.log("Got update from main app", payload, from);
+        setUser(payload);
       });
 
       // sync the data in case we remount
       console.log("inform the main app to sync");
-      await emit(Event.AuthSync);
+      await emit(Event.AuthUpdate, {
+        from: "settings",
+      });
     };
 
     init();
@@ -46,7 +52,6 @@ export const Account = () => {
   return (
     <>
       <div>
-        {JSON.stringify(user)}
         {user?.id ? (
           <p className="mb-3 font-bold">
             {user?.global_name} ({user?.id})

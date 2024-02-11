@@ -289,7 +289,9 @@ class SocketManager {
       this.store.setMe(payload.data.user);
 
       // tell the settings window about the user info
-      await emit(Event.AuthUpdate, payload.data.user);
+      await emit(Event.AuthUpdate, { from: "main", payload: payload.data.user });
+
+      console.log("sending at", Date.now());
 
       // move the view to /channel
       this.navigate("/channel");

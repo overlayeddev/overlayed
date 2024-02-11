@@ -3,6 +3,8 @@ export const Event = {
   AuthLogout: "AuthLogout",
   /** This is used to send the auth data to the settings page from the main page */
   AuthUpdate: "AuthUpdate",
-  /** This is used to sync the settings page auth data from the main page */
-  AuthSync: "AuthSync",
+  /** Used to tell the settings window a user joins */
+  UserJoin: "UserJoin",
+  /** Used to tell the settings window a user leaves */
+  UserLeave: "UserLeave",
 } as const;

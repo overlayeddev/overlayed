@@ -12,6 +12,7 @@ mod commands;
 mod constants;
 mod tray;
 mod window_custom;
+mod utils;
 
 use crate::commands::*;
 use constants::*;
@@ -60,6 +61,7 @@ fn main() {
     })
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
+      let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
 
       // the window should always be on top
       window.set_always_on_top(true);
@@ -79,8 +81,9 @@ fn main() {
 
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
-      {
+      { 
         window.open_devtools();
+        settings.open_devtools();
       }
 
       let mode = dark_light::detect();
