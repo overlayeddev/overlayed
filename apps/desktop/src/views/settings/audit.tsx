@@ -1,11 +1,33 @@
 import { Button } from "@/components/ui/button";
-import { useAppStore } from "@/store";
 import { Eraser, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useEffect, useState } from "react";
+import { listen } from "@tauri-apps/api/event";
+import { Event } from "@/constants";
 
+const MAX_LOG_LENGTH = 100;
 export const Audit = () => {
-  const { userLog, resetUserLog } = useAppStore();
+  const [userLog, setUserLog] = useState<any[]>([]);
+  useEffect(() => {
+    const listener = async () => {
+      return await listen(Event.UserLogUpdate, event => {
+        setUserLog((prev: any) => {
+          const newLog = [...prev, event.payload];
+          if (newLog.length > MAX_LOG_LENGTH) {
+            newLog.shift();
+          }
+          return newLog;
+        });
+      });
+    };
+
+    listener();
+  }, []);
+
+  const resetUserLog = () => {
+    setUserLog([]);
+  };
 
   return (
     <div className="flex flex-col text-center h-screen pb-4">

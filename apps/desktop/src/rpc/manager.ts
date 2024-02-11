@@ -10,6 +10,8 @@ import { useNavigate, type NavigateFunction, useLocation } from "react-router-do
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
 import { MetricNames, track, trackEvent } from "@/metrics";
+import { emit } from "@tauri-apps/api/event";
+import { Event } from "@/constants";
 
 interface TokenResponse {
   access_token: string;
@@ -22,7 +24,7 @@ class UserdataStore {
   private keys = {
     accessToken: "discord_access_token",
     accessTokenExpiry: "discord_access_token_expiry",
-    userData: "user_data"
+    userData: "user_data",
   } as const;
 
   get accessToken() {
@@ -189,13 +191,12 @@ class SocketManager {
       }
 
       this.store.removeUser(payload.data.user.id);
-      this.store.logUser({ ...createUserStateItem(payload.data), event: "leave", timestamp: Date.now() });
+      await emit(Event.UserLogUpdate, { ...createUserStateItem(payload.data), event: "leave", timestamp: Date.now() });
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
-      console.log("create user", payload.data);
       this.store.addUser(payload.data);
-      this.store.logUser({ ...createUserStateItem(payload.data), event: "join", timestamp: Date.now() });
+      await emit(Event.UserLogUpdate, { ...createUserStateItem(payload.data), event: "join", timestamp: Date.now() });
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
@@ -294,8 +295,8 @@ class SocketManager {
       this.userdataStore.setAccessTokenExpiry(payload.data.expires);
       this.store.setMe(payload.data.user);
 
-      // store in localstorage that we have auth 
-      this.userdataStore.setUserdata(payload.data.user)
+      // store in localstorage that we have auth
+      this.userdataStore.setUserdata(payload.data.user);
 
       console.log("sending at", Date.now());
 

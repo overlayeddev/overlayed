@@ -4,15 +4,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
 import { Developer } from "./developer";
 import { Audit } from "./audit";
+import { useState } from "react";
 
 export const SettingsView = ({
   update,
 }: {
   update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
+  const [currentTab, setCurrentTab] = useState("account");
   return (
     <div className="bg-zinc-900 w-[calc(100vw)] h-full">
-      <Tabs defaultValue="account" className="w-full">
+      <Tabs
+        defaultValue="account"
+        className="w-full"
+        onValueChange={value => {
+          setCurrentTab(value);
+        }}
+      >
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="account">General</TabsTrigger>
           <TabsTrigger value="developer">Developer</TabsTrigger>
@@ -28,8 +36,10 @@ export const SettingsView = ({
             <TabsContent value="developer">
               <Developer />
             </TabsContent>
-            <TabsContent value="audit">
-              <Audit />
+            <TabsContent forceMount value="audit">
+              <div style={{ display: currentTab === "audit" ? "block" : "none" }}>
+                <Audit />
+              </div>
             </TabsContent>
           </div>
         </div>
