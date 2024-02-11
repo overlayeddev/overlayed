@@ -13,6 +13,9 @@ import { useUpdate } from "./hooks/use-update";
 import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
 import { useThemeSync } from "./hooks/use-theme-sync";
+import { Button } from "./components/ui/button";
+import { toast } from "./components/ui/use-toast";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   useKeybinds();
@@ -37,6 +40,7 @@ function App() {
         setAlignDirection={setHorizontalDirection}
       />
 
+      <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />
         <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />

@@ -2,16 +2,25 @@ import { Button } from "@/components/ui/button";
 import { Eraser, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
+import { useToast } from "@/components/ui/use-toast";
 
-const MAX_LOG_LENGTH = 100;
+const MAX_LOG_LENGTH = 420;
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<any[]>([]);
+  const { toast } = useToast();
+
+  const createdListener = useRef(false);
+
   useEffect(() => {
-    const listener = async () => {
-      return await listen(Event.UserLogUpdate, event => {
+    const unlisten = async () => {
+      if (createdListener.current) return;
+
+      // keep a flag to stop it from creating multiple listeners
+      createdListener.current = true;
+      return listen(Event.UserLogUpdate, event => {
         setUserLog((prev: any) => {
           const newLog = [...prev, event.payload];
           if (newLog.length > MAX_LOG_LENGTH) {
@@ -22,7 +31,13 @@ export const JoinHistory = () => {
       });
     };
 
-    listener();
+    unlisten();
+    
+    return () => {
+      (async () => {
+        await unlisten();
+      })();
+    };
   }, []);
 
   const resetUserLog = () => {
@@ -47,19 +62,25 @@ export const JoinHistory = () => {
           return (
             <Tooltip key={`user-${i}-${item.id}`} delayDuration={100}>
               <TooltipTrigger asChild>
-                <div className="text-lg flex items-center text-white">
+                <div className="text-lg cursor-pointer flex items-center text-white">
                   <Icon size={18} className={cn(className, "mr-2")} />{" "}
                   <span
                     onClick={() => {
                       navigator.clipboard.writeText(userInfoString);
+                      toast({
+                        title: "Success",
+                        variant: "success",
+                        description: "User info copied to clipboard",
+                        duration: 3000,
+                      });
                     }}
                   >
                     {item.username}
                   </span>
                 </div>
               </TooltipTrigger>
-              <TooltipContent avoidCollisions={false} align="center">
-                {userInfoString}
+              <TooltipContent avoidCollisions={false} align="start">
+                {item.username} ({item.event})
               </TooltipContent>
             </Tooltip>
           );
