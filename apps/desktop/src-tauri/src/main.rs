@@ -12,7 +12,6 @@ mod commands;
 mod constants;
 mod tray;
 mod window_custom;
-mod utils;
 
 use crate::commands::*;
 use constants::*;

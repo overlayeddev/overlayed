@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 
-import { emit, listen } from "@tauri-apps/api/event";
-import { Event } from "@/constants";
 export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
@@ -24,29 +22,25 @@ export const Account = () => {
   const [user, setUser] = useState<any>(null);
   const tokenExpires = localStorage.getItem("discord_expires_at");
 
-  // TODO: abstract?
+  // pull out the user data from localStorage
   useEffect(() => {
-    const init = async () => {
-      // TODO: how to unmount this?
-      await listen(Event.AuthUpdate, ({ payload, from }: any) => {
-        if (from === "settings") {
-          return;
-        }
+    const user = localStorage.getItem("user_data");
+    if (user) {
+      setUser(JSON.parse(user));
+    }
 
-        console.log("Got update from main app", payload, from);
-        setUser(payload);
-      });
-
-      // sync the data in case we remount
-      console.log("inform the main app to sync");
-      await emit(Event.AuthUpdate, {
-        from: "settings",
-      });
+    const onStorageChange = (e: StorageEvent) => {
+      if (e.key === "user_data" && e.newValue) {
+        setUser(JSON.parse(e.newValue));
+      }
     };
 
-    init();
+    // if we get a login update the data
+    window.addEventListener("storage", onStorageChange);
 
-    // NOTE: this may or may not work
+    return () => {
+      window.removeEventListener("storage", onStorageChange);
+    };
   }, []);
 
   return (
@@ -89,9 +83,8 @@ export const Account = () => {
                     // TODO: move this to the other window
                     localStorage.removeItem("discord_access_token");
                     localStorage.removeItem("discord_expires_at");
+                    localStorage.removeItem("user_data");
                     setUser(null);
-
-                    await emit(Event.AuthLogout);
                   }}
                 >
                   <DialogHeader>

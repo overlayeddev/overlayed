@@ -13,13 +13,11 @@ import { useUpdate } from "./hooks/use-update";
 import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
 import { useThemeSync } from "./hooks/use-theme-sync";
-import { useWindowMessage } from "./hooks/use-window-message";
 
 function App() {
   useKeybinds();
   useSocket();
   useThemeSync();
-  useWindowMessage();
   useDisableWebFeatures();
 
   const { isAvailable, error, status } = useUpdate();
