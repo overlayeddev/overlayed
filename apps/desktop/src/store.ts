@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AuditLogUser, OverlayedUser, VoiceStateUser } from "./types";
+import type { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 import { enableMapSet } from "immer";
 
