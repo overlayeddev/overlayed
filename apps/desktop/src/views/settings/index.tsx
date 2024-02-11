@@ -3,7 +3,7 @@ import type { UpdateStatus } from "@tauri-apps/api/updater";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
 import { Developer } from "./developer";
-import { Audit } from "./audit";
+import { JoinHistory } from "./join-history";
 import { useState } from "react";
 
 export const SettingsView = ({
@@ -24,7 +24,7 @@ export const SettingsView = ({
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="account">General</TabsTrigger>
           <TabsTrigger value="developer">Developer</TabsTrigger>
-          <TabsTrigger value="audit">Audit Log</TabsTrigger>
+          <TabsTrigger value="join-history">Join History</TabsTrigger>
         </TabsList>
 
         {update.isAvailable && <Updater update={update} />}
@@ -36,9 +36,9 @@ export const SettingsView = ({
             <TabsContent value="developer">
               <Developer />
             </TabsContent>
-            <TabsContent forceMount value="audit">
-              <div style={{ display: currentTab === "audit" ? "block" : "none" }}>
-                <Audit />
+            <TabsContent forceMount value="join-history">
+              <div style={{ display: currentTab === "join-history" ? "block" : "none" }}>
+                <JoinHistory />
               </div>
             </TabsContent>
           </div>

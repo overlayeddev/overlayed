@@ -7,7 +7,7 @@ import { listen } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 
 const MAX_LOG_LENGTH = 100;
-export const Audit = () => {
+export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<any[]>([]);
   useEffect(() => {
     const listener = async () => {
@@ -32,7 +32,7 @@ export const Audit = () => {
   return (
     <div className="flex flex-col text-center h-screen pb-4">
       <div className="flex items-center pb-4">
-        <p className="text-2xl">Audit Log</p>
+        <p className="text-2xl">Join History</p>
         <Button onClick={resetUserLog} variant="ghost" size="sm" className="w-20">
           <Eraser size={18} />
         </Button>
