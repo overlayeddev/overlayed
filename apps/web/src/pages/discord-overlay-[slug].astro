@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/footer.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const miscFiles = await getCollection("misc");
+
+  return miscFiles.map((file) => {
+    return {
+      params: {
+        slug: file.slug,
+      },
+      props: file,
+    };
+  });
+}
+
+
+type Props = CollectionEntry<"misc">;
+
+const post: Props = Astro.props;
+
+const { Content } = await post.render();
+const { title, text } = Astro.props;
+---
+
+<Layout title="test">
+  <main class="px-4 prose prose-invert mx-auto pt-28">
+    <h1>{title}</h1>
+    <p>{text}</p>
+
+    <Content />
+
+  </main>
+
+  <Footer />
+</Layout>
