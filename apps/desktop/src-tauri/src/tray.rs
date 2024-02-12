@@ -58,6 +58,7 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
         // find the settings window and show it
         let settings_window = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
         settings_window.show().unwrap();
+        settings_window.set_focus().unwrap();
       
       }
       TRAY_OPEN_DEVTOOLS => {
