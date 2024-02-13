@@ -10,7 +10,7 @@ export const getStaticPaths = (async () => {
   return blogPosts.map((file) => {
     return {
       params: {
-        slug: file.slug,
+        slug: `${file.data.customSlug}`
       },
       props: file,
     };

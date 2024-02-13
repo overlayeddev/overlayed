@@ -26,7 +26,7 @@ blogPosts.sort(
           blogPosts.map((post) => (
             <div class="p-2">
               <li>
-                <a href={`/blog/${post.slug}`} class="group">
+                <a href={`/blog/${post.data.customSlug}`} class="group">
                   <div class="transf opacity-60 group-hover:opacity-100 text-2xl">
                     {post.data.title}
                   </div>

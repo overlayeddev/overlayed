@@ -4,12 +4,12 @@ import Footer from "../components/footer.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 export async function getStaticPaths() {
-  const miscFiles = await getCollection("misc");
+  const blogFiles = await getCollection("blog");
 
-  return miscFiles.map((file) => {
+  return blogFiles.map((file) => {
     return {
       params: {
-        slug: file.slug,
+        slug: `${file.slug}`,
       },
       props: file,
     };
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 }
 
 
-type Props = CollectionEntry<"misc">;
+type Props = CollectionEntry<"blog">;
 
 const post: Props = Astro.props;
 
