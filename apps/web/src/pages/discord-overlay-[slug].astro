@@ -16,22 +16,16 @@ export async function getStaticPaths() {
   });
 }
 
-
 type Props = CollectionEntry<"blog">;
 
 const post: Props = Astro.props;
 
 const { Content } = await post.render();
-const { title, text } = Astro.props;
 ---
 
-<Layout title="test">
+<Layout title={`Overlayed - ${post.data.title}`}>
   <main class="px-4 prose prose-invert mx-auto pt-28">
-    <h1>{title}</h1>
-    <p>{text}</p>
-
     <Content />
-
   </main>
 
   <Footer />
