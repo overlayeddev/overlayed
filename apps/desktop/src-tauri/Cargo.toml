@@ -13,7 +13,7 @@ edition = "2021"
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
-tauri = { version = "1.5", features = [ "global-shortcut-all", "process-relaunch", "updater", "process-exit", "os-all",
+tauri = { version = "1.5", features = [ "notification-all", "global-shortcut-all", "process-relaunch", "updater", "process-exit", "os-all",
   "window-set-position",
   "shell-open",
   "path-all",

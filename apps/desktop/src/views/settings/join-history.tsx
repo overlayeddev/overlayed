@@ -3,9 +3,11 @@ import { Trash, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useEffect, useRef, useState } from "react";
-import { listen, type UnlistenFn } from "@tauri-apps/api/event";
+import { listen } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
+import { requestPermission, sendNotification } from "@tauri-apps/api/notification";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const MAX_LOG_LENGTH = 420;
 export const JoinHistory = () => {
@@ -15,11 +17,17 @@ export const JoinHistory = () => {
   const createdListener = useRef(false);
 
   useEffect(() => {
+    requestPermission();
     // keep a flag to stop it from creating multiple listeners
     if (createdListener.current) return;
     console.log("Creating listener for user log");
     listen(Event.UserLogUpdate, event => {
-      console.log(event);
+      const { event: eventType, username } = event.payload as any;
+      const joinLeave = eventType === "leave" ? "left" : "joined";
+      const moji = eventType === "leave" ? "🔴" : "🟢";
+      console.log("User log update", event.payload);
+      sendNotification({ title: `${moji} Join History`, body: `${username} has ${joinLeave} the VC!` });
+
       // TODO: type this
       setUserLog((prev: any) => {
         const newLog = [...prev, event.payload];
@@ -78,7 +86,17 @@ export const JoinHistory = () => {
         })}
       </div>
 
-      <div className="flex justify-end items-center mt-4 pb-2">
+      <div className="flex items-center gap-4 mt-4 pb-2">
+        <div>
+          <Checkbox id="notification" />
+          <label
+            htmlFor="notification"
+            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Enable join/leave notifications
+          </label>
+        </div>
+        <div className="flex-grow"></div>
         <Button onClick={resetUserLog} variant="ghost" className="hover:bg-red-500">
           <span className="mr-2">Clear list</span>
           <Trash size={18} />
