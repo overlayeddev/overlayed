@@ -19,7 +19,7 @@ export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   // TODO: type this
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState < any > (null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
 
   // pull out the user data from localStorage
@@ -53,9 +53,17 @@ export const Account = () => {
     <>
       <div>
         {user?.id ? (
-          <p className="mb-3 font-bold">
-            {user?.global_name} ({user?.id})
-          </p>
+          <div>
+            <img
+              style={{ width: 96, height: 96}}
+              src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`}
+              alt="user avatar"
+            />
+
+            <p className="mb-3 mt-3 font-bold">
+              {user?.global_name} ({user?.id})
+            </p>
+          </div>
         ) : (
           <p>Please Login to use Overlayed</p>
         )}
@@ -68,7 +76,7 @@ export const Account = () => {
           )}
         </div>
 
-        <div className="flex flex-col gap-4 pb-4">
+        <div className="flex gap-4 pb-4">
           <div>
             <Dialog
               onOpenChange={e => {
@@ -110,9 +118,7 @@ export const Account = () => {
               </DialogContent>
             </Dialog>
           </div>
-        </div>
 
-        <div>
           <Dialog
             onOpenChange={e => {
               setShowQuitDialog(e);
