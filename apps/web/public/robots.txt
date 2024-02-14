@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /auth
+Disallow: /cdn-cgi
 
 Sitemap: https://overlayed.dev/sitemap-index.xml

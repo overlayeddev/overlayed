@@ -7,9 +7,10 @@ import "../styles/prose.css";
 interface Props {
   title?: string;
   description?: string;
+  canonicalPath?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, canonicalPath } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,6 +18,7 @@ const { title, description } = Astro.props;
   <CommonHead
     title={title ?? SITE_TITLE}
     description={description ?? SITE_DESCRIPTION}
+    canonicalPath={canonicalPath}
   />
 
   <body>

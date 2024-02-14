@@ -5,21 +5,26 @@ export interface Props {
   title: string;
   description: string;
   image?: string;
+  canonicalPath?: string;
 }
 
+const defaultCanonicalUrl = removeTrailingSlash(
+  new URL(Astro.url.pathname, Astro.site).toString(),
+);
+
 // Image has website default
-const { title, description, image = SITE_IMAGE } = Astro.props;
+const { title, description, image = SITE_IMAGE, canonicalPath } = Astro.props;
 
 function removeTrailingSlash(str: string) {
   return str.replace(/\/+$/, "");
 }
 
-const canonicalUrl = removeTrailingSlash(
-  new URL(Astro.url.pathname, Astro.site).toString(),
-);
-
 const ogCacheKey = "v2";
 const ogImage = new URL(`${image}?c=${ogCacheKey}`, Astro.url);
+
+const activeCanonicalUrl = canonicalPath
+  ? new URL(canonicalPath, Astro.site).toString()
+  : defaultCanonicalUrl;
 ---
 
 <head>
@@ -28,7 +33,7 @@ const ogImage = new URL(`${image}?c=${ogCacheKey}`, Astro.url);
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="generator" content={Astro.generator} />
-  <link rel="canonical" href={canonicalUrl} />
+  <link rel="canonical" href={activeCanonicalUrl} />
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico" />
