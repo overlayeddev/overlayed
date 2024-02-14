@@ -1,5 +1,5 @@
 # Overlayed
-![Og image](https://github.com/Hacksore/overlayed/assets/996134/6cf1cfb9-42ca-4465-af63-1287c4444278)
+[![Og image](https://github.com/Hacksore/overlayed/assets/996134/6cf1cfb9-42ca-4465-af63-1287c4444278)](https://overlayed.dev?utm=github)
 
 <a href="https://discord.gg/eXmeNkVjye" target="_parent">
 <img alt="Discord" height=20 src="https://img.shields.io/discord/906349283358408704?style=&logo=discord&logoColor=white&label=%20&labelColor=%237389D8&color=%237389D8" />
