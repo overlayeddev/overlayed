@@ -30,13 +30,13 @@ export const SettingsView = ({
         {update.isAvailable && <Updater update={update} />}
         <div className="p-4 pt-2 pb-14 overflow-auto">
           <div className="flex flex-col gap-4">
-            <TabsContent value="account">
+            <TabsContent tabIndex={-1} value="account">
               <Account />
             </TabsContent>
-            <TabsContent value="developer">
+            <TabsContent tabIndex={-1} value="developer">
               <Developer />
             </TabsContent>
-            <TabsContent forceMount value="join-history">
+            <TabsContent tabIndex={-1} forceMount value="join-history">
               <div style={{ display: currentTab === "join-history" ? "block" : "none" }}>
                 <JoinHistory />
               </div>
