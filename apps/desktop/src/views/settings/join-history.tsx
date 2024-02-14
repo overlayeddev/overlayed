@@ -17,6 +17,7 @@ export const JoinHistory = () => {
   const createdListener = useRef(false);
 
   useEffect(() => {
+    // TODO: handle this better, maybe at the app level?
     requestPermission();
     // keep a flag to stop it from creating multiple listeners
     if (createdListener.current) return;
@@ -88,6 +89,7 @@ export const JoinHistory = () => {
 
       <div className="flex items-center gap-4 mt-4 pb-2">
         <div>
+          {/* wire this up so that it saves and guards notifications */}
           <Checkbox id="notification" />
           <label
             htmlFor="notification"
