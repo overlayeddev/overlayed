@@ -10,7 +10,7 @@ Overlayed was created because there is not an official "out of game" overlay for
 ## 📔 Backstory on the [Official Discord Game Overlay](https://support.discord.com/hc/en-us/articles/217659737-Game-Overlay-101)
 The way the Official game overlay works is very similar to how game hacking works. It will find the process that it wants to inject a browser rendering engine. 
 
-Keep in mind the Discord overlay only works on Windows so if you are on Linux or macOS there is no support for you. Also, the game overlay requires Discord themselves to reverse engineer every game which is why they have a limited list of supported games.
+Keep in mind the Discord overlay only works on Windows so if you are on Linux or Mac there is no support for you. Also, the game overlay requires Discord themselves to reverse engineer every game which is why they have a limited list of supported games.
 
 ## 🔍 How does it work
 TL;DR the Discord client exposes a websocket on port range `6463-6472` and you can use the [Discord RPC API](https://discord.com/developers/docs/topics/rpc) to interface with the desktop client.
