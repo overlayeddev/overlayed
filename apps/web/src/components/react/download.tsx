@@ -7,7 +7,7 @@ import DownloadButton from "./download-button";
 export const Platforms = {
   linux: "Linux",
   windows: "Windows",
-  mac: "macOS",
+  mac: "Mac",
 };
 
 const API_HOST =
@@ -29,7 +29,7 @@ export const Download = () => {
   }, []);
 
   return (
-    <div className="relative w-full pb-20 overflow-hidden">
+    <div className="relative w-full overflow-hidden">
       <div className="flex flex-col items-center">
         <h2 className="text-2xl pb-8">Download</h2>
         {isLoading ? (

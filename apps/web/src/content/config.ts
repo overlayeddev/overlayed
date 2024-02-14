@@ -17,5 +17,4 @@ const blog = defineCollection({
   }),
 });
 
-
 export const collections = { legal, blog };
