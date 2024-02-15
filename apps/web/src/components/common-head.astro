@@ -83,25 +83,25 @@ const activeCanonicalUrl = canonicalPath
   <AstroFont
     config={[
       {
-        name: "geist",
+        name: "roboto",
         src: [
           {
             style: "normal",
             weight: "400",
-            path: join(process.cwd(), "public", "fonts", "Geist-Regular.otf"),
+            path: join(process.cwd(), "public", "fonts", "Roboto-Regular.otf"),
           },
           {
             style: "medium",
             weight: "500",
-            path: join(process.cwd(), "public", "fonts", "Geist-Regular.otf"),
+            path: join(process.cwd(), "public", "fonts", "Roboto-Regular.otf"),
           },
           {
             style: "medium",
             weight: "700",
-            path: join(process.cwd(), "public", "fonts", "Geist-Regular.otf"),
+            path: join(process.cwd(), "public", "fonts", "Roboto-Regular.otf"),
           },
         ],
-        preload: false,
+        preload: true,
         display: "swap",
         selector: "body",
         fallback: "sans-serif",
