@@ -21,6 +21,7 @@
     "@vercel/analytics": "^1.1.1",
     "astro": "^3.4.3",
     "astro-compress": "^2.2.7",
+    "astro-font": "^0.0.77",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
     "tailwindcss": "^3.3.5"
