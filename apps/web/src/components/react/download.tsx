@@ -39,7 +39,7 @@ export const Download = () => {
               .map((_, i) => (
                 <div
                   key={`skeleton-loader-${i}`}
-                  className="w-28 h-28 bg-slate-800 rounded-lg animate-pulse"
+                  className="w-28 h-28 bg-neutral-800 rounded-lg animate-pulse"
                 ></div>
               ))}
           </div>
