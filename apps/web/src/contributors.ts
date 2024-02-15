@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 499
+        "contributions": 503
     },
     {
         "login": "maxdemaio",
@@ -128,6 +128,27 @@ export const contributors = [
         "contributions": 1
     },
     {
+        "login": "rishi-raj-jain",
+        "id": 46300090,
+        "node_id": "MDQ6VXNlcjQ2MzAwMDkw",
+        "avatar_url": "https://avatars.githubusercontent.com/u/46300090?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/rishi-raj-jain",
+        "html_url": "https://github.com/rishi-raj-jain",
+        "followers_url": "https://api.github.com/users/rishi-raj-jain/followers",
+        "following_url": "https://api.github.com/users/rishi-raj-jain/following{/other_user}",
+        "gists_url": "https://api.github.com/users/rishi-raj-jain/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/rishi-raj-jain/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/rishi-raj-jain/subscriptions",
+        "organizations_url": "https://api.github.com/users/rishi-raj-jain/orgs",
+        "repos_url": "https://api.github.com/users/rishi-raj-jain/repos",
+        "events_url": "https://api.github.com/users/rishi-raj-jain/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/rishi-raj-jain/received_events",
+        "type": "User",
+        "site_admin": false,
+        "contributions": 1
+    },
+    {
         "login": "turbobot-temp",
         "id": 145653950,
         "node_id": "U_kgDOCK6Avg",
@@ -144,6 +165,27 @@ export const contributors = [
         "repos_url": "https://api.github.com/users/turbobot-temp/repos",
         "events_url": "https://api.github.com/users/turbobot-temp/events{/privacy}",
         "received_events_url": "https://api.github.com/users/turbobot-temp/received_events",
+        "type": "User",
+        "site_admin": false,
+        "contributions": 1
+    },
+    {
+        "login": "trobonox",
+        "id": 57040351,
+        "node_id": "MDQ6VXNlcjU3MDQwMzUx",
+        "avatar_url": "https://avatars.githubusercontent.com/u/57040351?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/trobonox",
+        "html_url": "https://github.com/trobonox",
+        "followers_url": "https://api.github.com/users/trobonox/followers",
+        "following_url": "https://api.github.com/users/trobonox/following{/other_user}",
+        "gists_url": "https://api.github.com/users/trobonox/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/trobonox/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/trobonox/subscriptions",
+        "organizations_url": "https://api.github.com/users/trobonox/orgs",
+        "repos_url": "https://api.github.com/users/trobonox/repos",
+        "events_url": "https://api.github.com/users/trobonox/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/trobonox/received_events",
         "type": "User",
         "site_admin": false,
         "contributions": 1
