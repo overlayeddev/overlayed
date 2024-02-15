@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const MAX_LOG_LENGTH = 420;
 export const JoinHistory = () => {
-  const [userLog, setUserLog] = useState < any[] > ([]);
+  const [userLog, setUserLog] = useState<any[]>([]);
   const { toast } = useToast();
 
   const createdListener = useRef(false);
