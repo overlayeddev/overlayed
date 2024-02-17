@@ -5,6 +5,8 @@ export type DirectionLR = "left" | "right" | "center";
 export type DirectionTB = "top" | "bottom";
 
 // TODO: this is hard to use we zzz
+// NOTE: how can i handle versions updates where i add new keys
+// NOTE: this looks cool https://github.com/harshkhandeparkar/tauri-settings/issues
 interface OverlayedConfig {
   clickthrough: boolean;
   horizontal: DirectionLR;
