@@ -78,8 +78,10 @@ fn main() {
       apply_macos_specifics(app, &window);
 
       // Open dev tools only when in dev mode
-      // #[cfg(debug_assertions)]
-      // window.open_devtools();
+      #[cfg(debug_assertions)]
+      {
+        window.open_devtools();
+      }
 
       let mode = dark_light::detect();
       let mode_string = match mode {

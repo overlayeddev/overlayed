@@ -9,6 +9,7 @@ interface OverlayedConfig {
   clickthrough: boolean;
   horizontal: DirectionLR;
   vertical: DirectionTB;
+  telemetry: boolean;
 }
 
 type OverlayedConfigKey = keyof OverlayedConfig;
@@ -18,6 +19,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   horizontal: "right",
   // TODO: vertical alignment? i.e., if aligned to bottom, then the navbar should be at the bottom (and corner radius changes appropriately)
   vertical: "bottom",
+  telemetry: true,
 };
 
 export class Config {

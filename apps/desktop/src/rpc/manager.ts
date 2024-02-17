@@ -258,7 +258,7 @@ class SocketManager {
       // track error metric
       track(MetricNames.DiscordAuthed, 0);
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
-      // TODO: make tracking opt-out
+      // track success metric
       track(MetricNames.DiscordAuthed, 1);
 
       // track user login
