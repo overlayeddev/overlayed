@@ -3,7 +3,8 @@ import { Trash, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useEffect, useRef, useState } from "react";
-import { UnlistenFn, listen } from "@tauri-apps/api/event";
+import { listen } from "@tauri-apps/api/event";
+import type { UnlistenFn } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { requestPermission, sendNotification } from "@tauri-apps/api/notification";
@@ -12,24 +13,25 @@ import Config from "@/config";
 
 const MAX_LOG_LENGTH = 420;
 export const JoinHistory = () => {
-  const [userLog, setUserLog] = useState < any[] > ([]);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [userLog, setUserLog] = useState<any[]>([]);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(Config.get("joinHistoryNotifications"));
   const { toast } = useToast();
-  const createdListener = useRef(false);
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
+  // NOTE: this might be considered a react ware crime
+  const notificationsEnabledRef = useRef(false);
 
   useEffect(() => {
+    if (notificationListener.current) return;
+
     // TODO: handle this better, maybe at the app level?
     requestPermission();
-    // keep a flag to stop it from creating multiple listeners
-    if (createdListener.current) return;
-    console.log("Creating listener for user log");
+
     notificationListener.current = listen(Event.UserLogUpdate, event => {
       const { event: eventType, username } = event.payload as any;
-      const joinLeave = eventType === "leave" ? "left" : "joined";
-      const moji = eventType === "leave" ? "🔴" : "🟢";
-      console.log("User log update", event.payload);
-      sendNotification({ title: "👤 Join History", body: `${moji} ${username} has ${joinLeave} the VC!` });
+      if (notificationsEnabledRef.current) {
+        const joinLeave = eventType === "leave" ? "left" : "joined";
+        sendNotification({ title: "Join History", body: `${joinLeave.toUpperCase()} ${username}` });
+      }
 
       // TODO: type this
       setUserLog((prev: any) => {
@@ -40,21 +42,13 @@ export const JoinHistory = () => {
         return newLog;
       });
     });
-
-    // set the flag to true
-    createdListener.current = true;
-
-    // read current state of notifications toggle
-    setNotificationsEnabled(Config.get("joinHistoryNotifications"));
   }, []);
 
-  // if we select no notifications, we should remove the listener
+  // keep the notifications toggle in sync with the config
   useEffect(() => {
-    if (!notificationsEnabled && notificationListener.current) {
-      notificationListener.current.then(unlisten => {
-        unlisten();
-      });
-    }
+    setNotificationsEnabled(notificationsEnabled);
+    // HACK: add a ref to avoid stale closure
+    notificationsEnabledRef.current = notificationsEnabled;
   }, [notificationsEnabled]);
 
   const resetUserLog = () => {
@@ -64,7 +58,7 @@ export const JoinHistory = () => {
   return (
     <div className="flex flex-col pb-4">
       <p className="text-sm text-gray-400 mb-2">
-        Display join/leave events in the voice chat useful for moderation purposes{" "}
+        Display join/leave events in the voice chat useful for moderation purposes
       </p>
 
       <div className="overflow-auto nice-scroll h-[216px]">
@@ -103,9 +97,9 @@ export const JoinHistory = () => {
 
       <div className="flex items-center gap-4 mt-4 pb-2">
         <div>
-          {/* wire this up so that it saves and guards notifications */}
           <Checkbox
             id="notification"
+            checked={notificationsEnabled}
             onCheckedChange={() => {
               Config.set("joinHistoryNotifications", !notificationsEnabled);
               setNotificationsEnabled(!notificationsEnabled);

@@ -192,12 +192,24 @@ class SocketManager {
       }
 
       this.store.removeUser(payload.data.user.id);
-      await emit(Event.UserLogUpdate, { ...createUserStateItem(payload.data), event: "leave", timestamp: Date.now() });
+
+      // inform settings window for events other than me
+      if (this.store.me?.id !== payload.data.user.id) {
+        await emit(Event.UserLogUpdate, {
+          ...createUserStateItem(payload.data),
+          event: "leave",
+          timestamp: Date.now(),
+        });
+      }
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
       this.store.addUser(payload.data);
-      await emit(Event.UserLogUpdate, { ...createUserStateItem(payload.data), event: "join", timestamp: Date.now() });
+
+      // inform settings window for events other than me
+      if (this.store.me?.id !== payload.data.user.id) {
+        await emit(Event.UserLogUpdate, { ...createUserStateItem(payload.data), event: "join", timestamp: Date.now() });
+      }
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
