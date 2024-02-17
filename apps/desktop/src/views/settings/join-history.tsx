@@ -30,6 +30,8 @@ export const JoinHistory = () => {
       const { event: eventType, username } = event.payload as any;
       if (notificationsEnabledRef.current) {
         const joinLeave = eventType === "leave" ? "left" : "joined";
+        // TODO: clicking this would be nice to pop open the join history tab
+        // BLOCKED: by https://github.com/tauri-apps/tauri/issues/3698
         sendNotification({ title: "Join History", body: `${joinLeave.toUpperCase()} ${username}` });
       }
 
