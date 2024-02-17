@@ -3,18 +3,20 @@ import { Trash, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useEffect, useRef, useState } from "react";
-import { listen } from "@tauri-apps/api/event";
+import { UnlistenFn, listen } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { requestPermission, sendNotification } from "@tauri-apps/api/notification";
 import { Checkbox } from "@/components/ui/checkbox";
+import Config from "@/config";
 
 const MAX_LOG_LENGTH = 420;
 export const JoinHistory = () => {
-  const [userLog, setUserLog] = useState<any[]>([]);
+  const [userLog, setUserLog] = useState < any[] > ([]);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { toast } = useToast();
-
   const createdListener = useRef(false);
+  const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
 
   useEffect(() => {
     // TODO: handle this better, maybe at the app level?
@@ -22,12 +24,12 @@ export const JoinHistory = () => {
     // keep a flag to stop it from creating multiple listeners
     if (createdListener.current) return;
     console.log("Creating listener for user log");
-    listen(Event.UserLogUpdate, event => {
+    notificationListener.current = listen(Event.UserLogUpdate, event => {
       const { event: eventType, username } = event.payload as any;
       const joinLeave = eventType === "leave" ? "left" : "joined";
       const moji = eventType === "leave" ? "🔴" : "🟢";
       console.log("User log update", event.payload);
-      sendNotification({ title: `${moji} Join History`, body: `${username} has ${joinLeave} the VC!` });
+      sendNotification({ title: "👤 Join History", body: `${moji} ${username} has ${joinLeave} the VC!` });
 
       // TODO: type this
       setUserLog((prev: any) => {
@@ -41,7 +43,19 @@ export const JoinHistory = () => {
 
     // set the flag to true
     createdListener.current = true;
+
+    // read current state of notifications toggle
+    setNotificationsEnabled(Config.get("joinHistoryNotifications"));
   }, []);
+
+  // if we select no notifications, we should remove the listener
+  useEffect(() => {
+    if (!notificationsEnabled && notificationListener.current) {
+      notificationListener.current.then(unlisten => {
+        unlisten();
+      });
+    }
+  }, [notificationsEnabled]);
 
   const resetUserLog = () => {
     setUserLog([]);
@@ -90,7 +104,13 @@ export const JoinHistory = () => {
       <div className="flex items-center gap-4 mt-4 pb-2">
         <div>
           {/* wire this up so that it saves and guards notifications */}
-          <Checkbox id="notification" />
+          <Checkbox
+            id="notification"
+            onCheckedChange={() => {
+              Config.set("joinHistoryNotifications", !notificationsEnabled);
+              setNotificationsEnabled(!notificationsEnabled);
+            }}
+          />
           <label
             htmlFor="notification"
             className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
