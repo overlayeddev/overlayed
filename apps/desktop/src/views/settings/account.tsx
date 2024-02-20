@@ -213,7 +213,7 @@ export const Account = () => {
 
       <div className="pt-2 flex h-full text-gray-400 items-center">
         <p>
-          Fond a bug? Please report them on the{" "}
+          Found a bug? Please report them on the{" "}
           <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">
             github repo
           </a>
