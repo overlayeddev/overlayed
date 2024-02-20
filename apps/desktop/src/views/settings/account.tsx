@@ -68,7 +68,7 @@ export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   // TODO: type this
-  const [user, setUser] = useState < any > (null);
+  const [user, setUser] = useState<any>(null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
 
   // pull out the user data from localStorage
