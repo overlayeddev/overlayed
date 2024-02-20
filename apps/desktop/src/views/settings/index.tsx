@@ -2,7 +2,6 @@ import { Updater } from "@/components/updater";
 import type { UpdateStatus } from "@tauri-apps/api/updater";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
-import { Developer } from "./developer";
 import { JoinHistory } from "./join-history";
 import { useState } from "react";
 
@@ -21,20 +20,16 @@ export const SettingsView = ({
           setCurrentTab(value);
         }}
       >
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="account">General</TabsTrigger>
-          <TabsTrigger value="developer">Developer</TabsTrigger>
           <TabsTrigger value="join-history">Join History</TabsTrigger>
         </TabsList>
 
         {update.isAvailable && <Updater update={update} />}
-        <div className="p-4 pt-2 pb-14 overflow-auto">
+        <div className="p-4 pt-0 pb-14 overflow-auto">
           <div className="flex flex-col gap-4">
             <TabsContent tabIndex={-1} value="account">
               <Account />
-            </TabsContent>
-            <TabsContent tabIndex={-1} value="developer">
-              <Developer />
             </TabsContent>
             <TabsContent tabIndex={-1} forceMount value="join-history">
               <div style={{ display: currentTab === "join-history" ? "block" : "none" }}>

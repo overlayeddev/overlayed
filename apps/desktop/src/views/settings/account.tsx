@@ -3,6 +3,10 @@ import { exit } from "@tauri-apps/api/process";
 import * as dateFns from "date-fns";
 import { saveWindowState, StateFlags } from "tauri-plugin-window-state-api";
 
+import { shell } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api";
+import { usePlatformInfo } from "@/hooks/use-platform-info";
+
 import {
   Dialog,
   DialogTrigger,
@@ -15,11 +19,56 @@ import {
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
 
+export const Developer = () => {
+  const platformInfo = usePlatformInfo();
+  return (
+    <>
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-4 pb-2">
+          <Button
+            variant="outline"
+            onClick={async () => {
+              await invoke("open_devtools");
+            }}
+          >
+            Open Devtools
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              shell.open(platformInfo.configDir);
+            }}
+          >
+            Open Config Dir
+          </Button>
+        </div>
+        <div className="flex flex-col gap-2 pb-4">
+          <div>
+            <p className="text-sm">
+              <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm">
+              <strong>Tauri Version</strong> {platformInfo.tauriVersion}
+            </p>
+          </div>
+          <div>
+            <p className="text-sm">
+              <strong>App Version</strong> {platformInfo.appVersion}
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   // TODO: type this
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState < any > (null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
 
   // pull out the user data from localStorage
@@ -49,30 +98,36 @@ export const Account = () => {
   }, []);
 
   return (
-    <>
-      <div>
-        {user?.id ? (
-          <div>
+    <div>
+      <div className="h-[282px]">
+        <div className="flex items-center mb-2">
+          {user?.id && (
             <img
-              style={{ width: 96, height: 96 }}
+              style={{ width: 64, height: 64 }}
+              className="mr-3"
               src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`}
               alt="user avatar"
             />
-
-            <p className="mb-3 mt-3 font-bold">
-              {user?.global_name} ({user?.id})
-            </p>
-          </div>
-        ) : (
-          <p>Please Login to use Overlayed</p>
-        )}
-
-        <div className="pb-4">
-          {tokenExpires && (
-            <p className="text-sm">
-              <strong>Token Expires</strong> {dateFns.formatDistanceToNow(new Date(tokenExpires))}
-            </p>
           )}
+          <div>
+            {user?.id ? (
+              <div>
+                <p className="mb-3 mt-3 font-bold">
+                  {user?.global_name} ({user?.id})
+                </p>
+              </div>
+            ) : (
+              <p>Please Login to use Overlayed</p>
+            )}
+
+            <div className="pb-4">
+              {tokenExpires && (
+                <p className="text-sm">
+                  <strong>Token Expires</strong> {dateFns.formatDistanceToNow(new Date(tokenExpires))}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="flex gap-4 pb-4">
@@ -153,7 +208,17 @@ export const Account = () => {
             </DialogContent>
           </Dialog>
         </div>
+        <Developer />
       </div>
-    </>
+
+      <div className="pt-2 flex h-full text-gray-400 items-center">
+        <p>
+          Fond a bug? Please report them on the{" "}
+          <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">
+            github repo
+          </a>
+        </p>
+      </div>
+    </div>
   );
 };
