@@ -376,7 +376,6 @@ export const useSocket = () => {
 
   useEffect(() => {
     if (location.pathname === "/settings") {
-      console.log("Not loading hte socket on the settings page");
       return;
     }
 

@@ -31,7 +31,6 @@ export const Account = () => {
 
     // TODO: these should have keys that are shared from perhaps and abstraction
     const onStorageChange = (e: StorageEvent) => {
-      console.log("storage change", { e });
       if (e.key === "user_data" && e.newValue) {
         setUser(JSON.parse(e.newValue));
       }
