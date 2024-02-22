@@ -14,3 +14,13 @@
   background: #3a3b3d;
   color: #fff;
 }
+
+.prose pre {
+  background: #3A3B3D;
+}
+
+/* this is a hack to reset it  */
+.prose pre code {
+  background: none;
+  border: none;
+}
