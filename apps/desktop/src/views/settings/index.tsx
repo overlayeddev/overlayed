@@ -15,7 +15,6 @@ export const SettingsView = ({
     <div className="bg-zinc-900 w-[calc(100vw)] h-full">
       <Tabs
         defaultValue="account"
-        className="w-full"
         onValueChange={value => {
           setCurrentTab(value);
         }}
@@ -26,17 +25,24 @@ export const SettingsView = ({
         </TabsList>
 
         {update.isAvailable && <Updater update={update} />}
-        <div className="p-4 pt-0 pb-14 overflow-auto">
-          <div className="flex flex-col gap-4">
-            <TabsContent tabIndex={-1} value="account">
-              <Account />
-            </TabsContent>
-            <TabsContent tabIndex={-1} forceMount value="join-history">
-              <div style={{ display: currentTab === "join-history" ? "block" : "none" }}>
-                <JoinHistory />
-              </div>
-            </TabsContent>
-          </div>
+        <div className="p-4 pt-0">
+          <TabsContent tabIndex={-1} value="account">
+            <Account />
+          </TabsContent>
+          <TabsContent tabIndex={-1} forceMount value="join-history">
+            <div style={{ display: currentTab === "join-history" ? "block" : "none" }}>
+              <JoinHistory />
+            </div>
+          </TabsContent>
+        </div>
+
+        <div className="h-10 pl-4 absolute bottom-0 w-full bg-zinc-800 text-gray-400 flex items-center">
+          <p>
+            Found a bug? Please report them on the{" "}
+            <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">
+              github repo
+            </a>
+          </p>
         </div>
       </Tabs>
     </div>

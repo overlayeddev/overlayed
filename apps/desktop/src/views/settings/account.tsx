@@ -26,6 +26,7 @@ export const Developer = () => {
       <div className="flex flex-col gap-2">
         <div className="flex gap-4 pb-2">
           <Button
+            size="sm"
             variant="outline"
             onClick={async () => {
               await invoke("open_devtools");
@@ -34,6 +35,7 @@ export const Developer = () => {
             Open Devtools
           </Button>
           <Button
+            size="sm"
             variant="outline"
             onClick={() => {
               shell.open(platformInfo.configDir);
@@ -42,20 +44,22 @@ export const Developer = () => {
             Open Config Dir
           </Button>
         </div>
-        <div className="flex flex-col gap-2 pb-4">
+        <div className="flex items-center text-zinc-400 gap-2 pb-4">
           <div>
             <p className="text-sm">
               <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
             </p>
           </div>
+          <span className="text-xs">/</span>
           <div>
             <p className="text-sm">
-              <strong>Tauri Version</strong> {platformInfo.tauriVersion}
+              <strong>Tauri</strong> {platformInfo.tauriVersion}
             </p>
           </div>
+          <span className="text-sm">/</span>
           <div>
             <p className="text-sm">
-              <strong>App Version</strong> {platformInfo.appVersion}
+              <strong>App</strong> {platformInfo.appVersion}
             </p>
           </div>
         </div>
@@ -139,7 +143,7 @@ export const Account = () => {
               open={showLogoutDialog}
             >
               <DialogTrigger asChild>
-                <Button disabled={!user?.id} className="w-[100px]">
+                <Button size="sm" disabled={!user?.id} className="w-[100px]">
                   Logout
                 </Button>
               </DialogTrigger>
@@ -180,7 +184,9 @@ export const Account = () => {
             open={showQuitDialog}
           >
             <DialogTrigger asChild>
-              <Button className="w-[100px]">Quit</Button>
+              <Button size="sm" className="w-[100px]">
+                Quit
+              </Button>
             </DialogTrigger>
             <DialogContent className="w-[80%]">
               <form
@@ -209,15 +215,6 @@ export const Account = () => {
           </Dialog>
         </div>
         <Developer />
-      </div>
-
-      <div className="pt-2 flex h-full text-gray-400 items-center">
-        <p>
-          Found a bug? Please report them on the{" "}
-          <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">
-            github repo
-          </a>
-        </p>
       </div>
     </div>
   );

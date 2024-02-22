@@ -62,8 +62,30 @@ export const JoinHistory = () => {
       <p className="text-sm text-gray-400 mb-2">
         Display join/leave events in the voice chat useful for moderation purposes
       </p>
-
-      <div className="overflow-auto nice-scroll h-[216px]">
+      <div className="flex items-center gap-4 pb-2">
+        <div>
+          <Checkbox
+            id="notification"
+            checked={notificationsEnabled}
+            onCheckedChange={() => {
+              Config.set("joinHistoryNotifications", !notificationsEnabled);
+              setNotificationsEnabled(!notificationsEnabled);
+            }}
+          />
+          <label
+            htmlFor="notification"
+            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Enable join/leave notifications
+          </label>
+        </div>
+        <div className="flex-grow"></div>
+        <Button size="sm" onClick={resetUserLog} variant="ghost" className="hover:bg-red-500">
+          <span className="mr-2">Clear list</span>
+          <Trash size={18} />
+        </Button>
+      </div>
+      <div className="overflow-auto nice-scroll pb-4 h-[160px]">
         {[...userLog].reverse().map((item, i) => {
           const timeInSeconds = Math.floor(item.timestamp / 1000);
           const userInfoString = `${item.username} (${item.event}) <@${item.id}> <t:${timeInSeconds}:R>`;
@@ -95,30 +117,6 @@ export const JoinHistory = () => {
             </Tooltip>
           );
         })}
-      </div>
-
-      <div className="flex items-center gap-4 mt-4 pb-2">
-        <div>
-          <Checkbox
-            id="notification"
-            checked={notificationsEnabled}
-            onCheckedChange={() => {
-              Config.set("joinHistoryNotifications", !notificationsEnabled);
-              setNotificationsEnabled(!notificationsEnabled);
-            }}
-          />
-          <label
-            htmlFor="notification"
-            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Enable join/leave notifications
-          </label>
-        </div>
-        <div className="flex-grow"></div>
-        <Button onClick={resetUserLog} variant="ghost" className="hover:bg-red-500">
-          <span className="mr-2">Clear list</span>
-          <Trash size={18} />
-        </Button>
       </div>
     </div>
   );
