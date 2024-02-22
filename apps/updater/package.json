@@ -8,7 +8,7 @@
 		"check:format": "prettier --check \"**/*.{ts,js,md}\"",
 		"clean": "rm -rf dist .turbo node_modules",
 		"format": "prettier --write .",
-		"start": "wrangler dev"
+		"start": "wrangler dev --port 8787"
 	},
 	"devDependencies": {
 		"types": "workspace:*",

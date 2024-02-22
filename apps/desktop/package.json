@@ -18,10 +18,12 @@
   "dependencies": {
     "@axiomhq/js": "1.0.0-rc.1",
     "@icons-pack/react-simple-icons": "^9.1.0",
+    "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@radix-ui/themes": "^2.0.1",
     "@tanstack/react-router": "0.0.1-beta.204",

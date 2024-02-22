@@ -12,6 +12,7 @@ interface OverlayedConfig {
   horizontal: DirectionLR;
   vertical: DirectionTB;
   telemetry: boolean;
+  joinHistoryNotifications: boolean;
 }
 
 type OverlayedConfigKey = keyof OverlayedConfig;
@@ -22,6 +23,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   // TODO: vertical alignment? i.e., if aligned to bottom, then the navbar should be at the bottom (and corner radius changes appropriately)
   vertical: "bottom",
   telemetry: true,
+  joinHistoryNotifications: false,
 };
 
 export class Config {
@@ -37,6 +39,22 @@ export class Config {
     try {
       const config = await readTextFile(this.configPath);
       this.config = JSON.parse(config);
+
+      // get the new keys that don't exist in the config and merge them in
+      const newKeys = Object.keys(DEFAULT_OVERLAYED_CONFIG).filter(key => !Object.keys(this.config).includes(key));
+
+      this.config = {
+        ...DEFAULT_OVERLAYED_CONFIG,
+        ...this.config,
+        ...newKeys.reduce((acc, key) => {
+          // @ts-ignore
+          acc[key] = DEFAULT_OVERLAYED_CONFIG[key as OverlayedConfigKey];
+          return acc;
+        }, {} as OverlayedConfig),
+      };
+
+      // fuck it persist it
+      this.save();
     } catch (e) {
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();

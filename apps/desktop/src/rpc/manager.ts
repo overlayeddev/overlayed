@@ -6,35 +6,46 @@ import WebSocket from "tauri-plugin-websocket-api";
 import type { Message } from "tauri-plugin-websocket-api";
 import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
-import { useNavigate, type NavigateFunction } from "react-router-dom";
+import { useNavigate, type NavigateFunction, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
 import { MetricNames, track, trackEvent } from "@/metrics";
+import { emit } from "@tauri-apps/api/event";
+import { Event } from "@/constants";
 
 interface TokenResponse {
   access_token: string;
 }
 
 // create a thin wrapper around local storage to save and load an access token
-class TokenStore {
+class UserdataStore {
   private store = window.localStorage;
-  private key = "discord_access_token";
-  private expireKey = "discord_expires_at";
+
+  private keys = {
+    accessToken: "discord_access_token",
+    accessTokenExpiry: "discord_access_token_expiry",
+    userData: "user_data",
+  } as const;
 
   get accessToken() {
-    return this.store.getItem(this.key);
+    return this.store.getItem(this.keys.accessToken);
   }
 
   setAccessToken(token: string) {
-    this.store.setItem(this.key, token);
+    this.store.setItem(this.keys.accessToken, token);
   }
 
   setAccessTokenExpiry(dateString: string) {
-    this.store.setItem(this.expireKey, dateString);
+    this.store.setItem(this.keys.accessTokenExpiry, dateString);
+  }
+
+  setUserdata(userdata: any) {
+    this.store.setItem(this.keys.userData, JSON.stringify(userdata));
   }
 
   removeAccessToken() {
-    this.store.removeItem(this.key);
+    this.store.removeItem(this.keys.accessToken);
+    this.store.removeItem(this.keys.accessTokenExpiry);
   }
 }
 
@@ -68,7 +79,8 @@ interface DiscordPayload {
 class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
-  public tokenStore: TokenStore | null = null;
+  // TODO: move this so we can use it in settings too
+  public userdataStore: UserdataStore = new UserdataStore();
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
 
@@ -84,7 +96,6 @@ class SocketManager {
     console.log("Init web socket manager");
     this.disconnect();
 
-    this.tokenStore = new TokenStore();
     this._navigate = navigate;
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
@@ -104,6 +115,13 @@ class SocketManager {
       this.isConnected = false;
       this.navigate("/error");
     }
+
+    // subscribe to local storage events to see if we need to move the user to the auth page
+    window.addEventListener("storage", e => {
+      if (e.key === "discord_access_token" && !e.newValue) {
+        this.navigate("/");
+      }
+    });
   }
 
   public disconnect() {
@@ -159,7 +177,7 @@ class SocketManager {
     // console.log(payload);
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
-      const acessToken = this.tokenStore?.accessToken;
+      const acessToken = this.userdataStore.accessToken;
       if (acessToken) {
         this.login(acessToken);
       } else {
@@ -174,13 +192,24 @@ class SocketManager {
       }
 
       this.store.removeUser(payload.data.user.id);
-      this.store.logUser({ ...createUserStateItem(payload.data), event: "leave", timestamp: Date.now() });
+
+      // inform settings window for events other than me
+      if (this.store.me?.id !== payload.data.user.id) {
+        await emit(Event.UserLogUpdate, {
+          ...createUserStateItem(payload.data),
+          event: "leave",
+          timestamp: Date.now(),
+        });
+      }
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_CREATE) {
-      console.log("create user", payload.data);
       this.store.addUser(payload.data);
-      this.store.logUser({ ...createUserStateItem(payload.data), event: "join", timestamp: Date.now() });
+
+      // inform settings window for events other than me
+      if (this.store.me?.id !== payload.data.user.id) {
+        await emit(Event.UserLogUpdate, { ...createUserStateItem(payload.data), event: "join", timestamp: Date.now() });
+      }
     }
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
@@ -223,7 +252,7 @@ class SocketManager {
       });
 
       // we need send the token to discord
-      this.tokenStore?.setAccessToken(res.data.access_token);
+      this.userdataStore.setAccessToken(res.data.access_token);
 
       // login with the token
       this.login(res.data.access_token);
@@ -248,7 +277,7 @@ class SocketManager {
       // if they have an invalid we remove it and make them auth again
       if (payload.data.code === RPCErrors.INVALID_TOKEN) {
         this.store.pushError(payload.data.message);
-        this.tokenStore?.removeAccessToken();
+        this.userdataStore.removeAccessToken();
       }
 
       this.store.pushError(payload.data.message);
@@ -276,8 +305,11 @@ class SocketManager {
         evt: RPCEvent.VOICE_CHANNEL_SELECT,
       });
 
-      this.tokenStore?.setAccessTokenExpiry(payload.data.expires);
+      this.userdataStore.setAccessTokenExpiry(payload.data.expires);
       this.store.setMe(payload.data.user);
+
+      // store in localstorage that we have auth
+      this.userdataStore.setUserdata(payload.data.user);
 
       // move the view to /channel
       this.navigate("/channel");
@@ -339,9 +371,14 @@ class SocketManager {
 // hook to get the socket SocketManager
 export const useSocket = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const socketRef = useRef<SocketManager | null>(null);
 
   useEffect(() => {
+    if (location.pathname === "/settings") {
+      return;
+    }
+
     if (socketRef.current) {
       console.log("Socket already initialized");
       return;

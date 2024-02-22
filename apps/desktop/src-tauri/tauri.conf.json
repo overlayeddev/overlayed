@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "Overlayed",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "tauri": {
     "updater": {
@@ -25,7 +25,9 @@
       "os": {
         "all": true
       },
-      "all": false,
+      "notification": {
+        "all": true
+      },
       "process": {
         "relaunch": true,
         "exit": true

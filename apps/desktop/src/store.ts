@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AuditLogUser, OverlayedUser, VoiceStateUser } from "./types";
+import type { OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 import { enableMapSet } from "immer";
 
@@ -31,7 +31,6 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 
 export interface AppState {
   visible: boolean;
-  userLog: AuditLogUser[];
   clickThrough: boolean;
   // TODO: type this better
   me: any | null;
@@ -44,8 +43,6 @@ export interface AppState {
 }
 
 export interface AppActions {
-  resetUserLog: () => void;
-  logUser: (user: AuditLogUser) => void;
   setAppVisible: (value: boolean) => void;
   setClickThrough: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
@@ -103,7 +100,6 @@ export const useAppStore = create<AppState & AppActions>()(
   // @ts-ignore
   immer(set => ({
     visible: true,
-    userLog: [],
     me: null,
     discordErrors: new Set(),
     clickThrough: false,
@@ -158,14 +154,6 @@ export const useAppStore = create<AppState & AppActions>()(
     resetErrors: () =>
       set(state => {
         state.discordErrors.clear();
-      }),
-    logUser: user =>
-      set(state => {
-        state.userLog.push(user);
-      }),
-    resetUserLog: () =>
-      set(state => {
-        state.userLog = [];
       }),
   }))
 );

@@ -80,7 +80,9 @@ fn main() {
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       {
+        let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
         window.open_devtools();
+        settings.open_devtools();
       }
 
       let mode = dark_light::detect();

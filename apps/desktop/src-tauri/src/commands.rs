@@ -26,6 +26,7 @@ pub fn open_settings(window: Window, update: bool) {
   let settings_windows = app.get_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
     settings_windows.show();
+    settings_windows.set_focus();
     if update {
       println!("showing update modal");
       // emit to the settings window to show update

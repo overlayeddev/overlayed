@@ -9,32 +9,25 @@ import { NavBar } from "./components/nav-bar";
 import { useClickthrough } from "./hooks/use-clickthrough";
 import { useAlign } from "./hooks/use-align";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
-import { useEffect } from "react";
-import { invoke } from "@tauri-apps/api";
 import { useUpdate } from "./hooks/use-update";
-import { LogView } from "./views/log";
 import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
+import { useThemeSync } from "./hooks/use-theme-sync";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   useKeybinds();
   useSocket();
+  useThemeSync();
   useDisableWebFeatures();
+
   const { isAvailable, error, status } = useUpdate();
   const { visible } = useAppStore();
 
   const { clickthrough } = useClickthrough();
   const { horizontal, setHorizontalDirection } = useAlign();
 
-  // NOTE: this is janky and wish we could do all in rust
-  useEffect(() => {
-    const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
-    darkThemeMq.addEventListener("change", e => {
-      const value = e.matches ? "dark" : "light";
-      invoke("sync_theme", { value });
-    });
-  }, []);
-
+  // how is thse now right wong
   const visibleClass = visible ? "opacity-100" : "opacity-0";
   return (
     <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
@@ -44,10 +37,11 @@ function App() {
         alignDirection={horizontal}
         setAlignDirection={setHorizontalDirection}
       />
+
+      <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />
         <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
-        <Route path="/log" Component={LogView} />
         <Route
           path="/settings"
           element={

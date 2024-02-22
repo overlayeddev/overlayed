@@ -140,7 +140,7 @@ export interface VoiceStateUser {
   user: VoiceUser;
 }
 
-export interface AuditLogUser extends OverlayedUser {
+export interface JoinHistoryLogUser extends OverlayedUser {
   event: "join" | "leave";
   timestamp: number;
 }

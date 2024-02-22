@@ -91,3 +91,18 @@
 ul {
   list-style: circle;
 }
+
+.nice-scroll::-webkit-scrollbar {
+  width: 18px;
+}
+
+.nice-scroll::-webkit-scrollbar-track {
+  background: #1f1f1f;
+  border-radius: 8px;
+}
+
+.nice-scroll::-webkit-scrollbar-thumb {
+  background-color: #6b6b6b;
+  border-radius: 8px;
+  border: 4px solid #1f1f1f;
+}
