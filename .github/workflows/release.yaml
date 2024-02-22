@@ -91,6 +91,7 @@ jobs:
           TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
           TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
         with:
           projectPath: "${{ env.APP_DIR }}"
           releaseId: ${{ needs.create-release.outputs.release_id }}
