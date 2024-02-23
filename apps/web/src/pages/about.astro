@@ -7,7 +7,7 @@ interface Frontmatter {
   description?: string;
 }
 
-const [about] = await Astro.glob<Frontmatter>("../content/about/index.md");
+const [about] = await Astro.glob<Frontmatter>("../content/about/index.mdx");
 ---
 
 <Layout
