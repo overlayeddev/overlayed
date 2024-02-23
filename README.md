@@ -13,7 +13,7 @@ A modern, open-source, and free voice chat overlay for Discord that supports Mac
 ### Installation 
 #### Homebrew
 ```
-brew install hacksore/tap/overlayed
+brew install overlayed
 ```
 #### Guides for all Platforms
 https://overlayed.dev/blog/installation-guide
