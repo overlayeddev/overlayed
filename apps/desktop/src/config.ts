@@ -7,15 +7,16 @@ export type DirectionTB = "top" | "bottom";
 // TODO: this is hard to use we zzz
 // NOTE: how can i handle versions updates where i add new keys
 // NOTE: this looks cool https://github.com/harshkhandeparkar/tauri-settings/issues
-interface OverlayedConfig {
+export interface OverlayedConfig {
   clickthrough: boolean;
   horizontal: DirectionLR;
   vertical: DirectionTB;
   telemetry: boolean;
   joinHistoryNotifications: boolean;
+  showOnlyTalkingUsers: boolean;
 }
 
-type OverlayedConfigKey = keyof OverlayedConfig;
+export type OverlayedConfigKey = keyof OverlayedConfig;
 
 export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   clickthrough: false,
@@ -24,6 +25,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   vertical: "bottom",
   telemetry: true,
   joinHistoryNotifications: false,
+  showOnlyTalkingUsers: false,
 };
 
 export class Config {
