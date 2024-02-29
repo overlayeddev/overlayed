@@ -66,19 +66,21 @@ import resources from "../img/resources.png";
       <p class="text-center text-zinc-400">
       A modern, <Link underline class="text-white" to="https://github.com/Hacksore/overlayed">open-source</Link>, and free voice chat overlay for Discord that supports Mac, Linux, and Windows!
     </p>
-      <Link
-        to="/about"
-        class="bg-slate-800 hover:bg-gray-700 p-2 px-4 rounded-lg"
-      >
-        Why does this exist?
-      </Link>
       <Download client:load />
-      <Link
-        to="/blog/installation-guide"
-        class="bg-gray-800 hover:bg-gray-700 p-2 px-4 rounded-lg"
-      >
-        Installation Guide
-      </Link>
+      <div class="flex gap-2 sm:gap-6">
+        <Link
+          to="/blog/installation-guide"
+          class="bg-gray-800 hover:bg-gray-700 p-2 px-4 rounded-lg"
+        >
+          Installation Guide
+        </Link>
+        <Link
+          to="/about"
+          class="bg-slate-800 hover:bg-gray-700 p-2 px-4 rounded-lg"
+        >
+          Why does this exist?
+        </Link>
+      </div>
       <div class="cards grid md:grid-cols-2 w-full items-center gap-8">
         <Card
           name="User List"
