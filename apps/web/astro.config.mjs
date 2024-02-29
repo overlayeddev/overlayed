@@ -12,10 +12,10 @@ const integrations = [sitemap(), react(), tailwind(), mdx(), compress()];
 
 if (process.env.NODE_ENV !== "production") {
   integrations.push(
-    proxyMiddleware("/latest", {
-      target: "http://localhost:8787",
-      changeOrigin: true,
-    }),
+    proxyMiddleware([
+      "/stars",
+      "/latest"
+    ]),
   );
 }
 

@@ -1,8 +1,15 @@
 // plugins/proxy-middleware.mjs
 import { createProxyMiddleware } from "http-proxy-middleware";
 
-export default (context, options) => {
-  const apiProxy = createProxyMiddleware(context, options);
+export default (paths) => {
+  const filter = function(pathname) {
+    return paths.includes(pathname)
+  };
+
+  const apiProxy = createProxyMiddleware(filter, {
+    target: "http://localhost:8787",
+    changeOrigin: true,
+  });
 
   return {
     name: "proxy",
