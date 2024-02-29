@@ -13,7 +13,6 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
 
   return (
     <div>
-      {JSON.stringify(showOnlyTalkingUsers)}
       <div className={`py-2 ${alignDirection == "center" ? "flex flex-wrap justify-center" : ""}`}>
         {userList.map(([_, item]) => (
           <User key={item.id} item={item} alignDirection={alignDirection} />

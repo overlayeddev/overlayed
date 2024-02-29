@@ -12,7 +12,6 @@ export const useConfigValue = <T>(
   useEffect(() => {
     const listenFn = listen<OverlayedConfig>("config_update", event => {
       const { payload } = event;
-      console.log("config_update", event.payload);
 
       // update the latest value
       setValue(payload[key]);
