@@ -1,4 +1,4 @@
-import { ReleaseResponse } from "./types";
+import { ReleaseResponse, RepoResponse } from "./types";
 import { LatestVersion } from "types/types";
 
 const GIT_USER = "Hacksore";
@@ -15,6 +15,34 @@ const filenameToPlatform = (filename: string) => {
 		return "linux";
 	}
 };
+
+export async function getStars({
+	authToken,
+}: {
+	authToken: string;
+}): Promise<number | null> {
+	// fetch all releases from github
+	try {
+		const releases: RepoResponse = await fetch(
+			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}`,
+			{
+				cf: {
+					cacheTtl: 300,
+					cacheEverything: true,
+				},
+				headers: {
+					Authorization: `token ${authToken}`,
+					"User-Agent": "overlayed-updater v1",
+				},
+			},
+		).then((res) => res.json());
+
+		return releases.stargazers_count;
+	} catch (err) {
+		console.log(err);
+		return null;
+	}
+}
 
 export async function getPlatformDownloads({
 	authToken,

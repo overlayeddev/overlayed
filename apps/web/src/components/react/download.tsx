@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 // TODO: fix imports
 import type { PlatformDownload } from "types/types";
 import DownloadButton from "./download-button";
+import { API_HOST } from "../../config";
 
 export const Platforms = {
   linux: "Linux",
@@ -10,8 +11,6 @@ export const Platforms = {
   mac: "Mac",
 };
 
-const API_HOST =
-  process.env.NODE_ENV === "production" ? "https://update.overlayed.dev" : "";
 
 export const Download = () => {
   const [isLoading, setIsLoading] = useState(true);

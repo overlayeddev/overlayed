@@ -1,5 +1,11 @@
 import type { Endpoints } from "@octokit/types";
 
+export type RepoResponse =
+	Endpoints["GET /repos/{owner}/{repo}"]["response"]["data"];
+
+export type ReleaseResponse =
+	Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"];
+
 export interface LatestVersion {
 	version: string;
 	notes: string;
@@ -11,6 +17,3 @@ export interface LatestVersion {
 		};
 	}[];
 }
-
-export type ReleaseResponse =
-	Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"];

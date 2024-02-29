@@ -1,5 +1,5 @@
 import { Hono } from "hono/quick";
-import { getLatestVersions, getPlatformDownloads } from "./utils";
+import { getLatestVersions, getPlatformDownloads, getStars } from "./utils";
 import { cors } from "hono/cors";
 
 type Bindings = {
@@ -9,6 +9,16 @@ type Bindings = {
 const app = new Hono<{ Bindings: Bindings }>();
 
 app.use("*", cors());
+
+app.get("/stars", async (c) => {
+	const stars = await getStars({
+		authToken: c.env.GITHUB_TOKEN,
+	});
+
+	return c.body(JSON.stringify({ stars }), 200, {
+		"Content-Type": "application/json",
+	});
+});
 
 app.get("/latest", async (c) => {
 	return c.body(
