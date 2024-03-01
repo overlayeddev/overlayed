@@ -27,6 +27,11 @@ blogPosts.sort(
             <div class="p-2">
               <li>
                 <a href={`/blog/${post.data.customSlug}`} class="group">
+                  <img
+                    src={post.data.ogImage}
+                    alt={post.data.title}
+                    class="w-full h-64 object-cover rounded-lg"
+                  />
                   <div class="transf opacity-60 group-hover:opacity-100 text-2xl">
                     {post.data.title}
                   </div>

@@ -13,6 +13,7 @@ const blog = defineCollection({
     customSlug: z.string(),
     canonicalPath: z.string().optional(),
     pubDate: z.string(),
+    ogImage: z.string(),
     description: z.string(),
     draft: z.boolean().optional(),
   }),
