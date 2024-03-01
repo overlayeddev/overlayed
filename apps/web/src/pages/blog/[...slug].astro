@@ -27,6 +27,7 @@ const { Content } = await post.render();
 <Layout
   title={post.data.title}
   description={post.data.description}
+  ogImage={post.data.ogImage.src}
   canonicalPath={post.data.canonicalPath}
 >
   <main class="px-4 prose prose-invert mx-auto pt-28">
