@@ -8,17 +8,18 @@ const legal = defineCollection({
 });
 
 const blog = defineCollection({
-  schema: ({ image }) => z.object({
-    title: z.string(),
-    customSlug: z.string(),
-    canonicalPath: z.string().optional(),
-    pubDate: z.string(),
-    ogImage: image().refine((img) => img.width >= 1200, {
-      message: "OG image must be at least 1080 pixels wide!",
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      customSlug: z.string(),
+      canonicalPath: z.string().optional(),
+      pubDate: z.string(),
+      ogImage: image().refine((img) => img.width >= 1200, {
+        message: "OG image must be at least 1080 pixels wide!",
+      }),
+      description: z.string(),
+      draft: z.boolean().optional(),
     }),
-    description: z.string(),
-    draft: z.boolean().optional(),
-  }),
 });
 
 export const collections = { legal, blog };
