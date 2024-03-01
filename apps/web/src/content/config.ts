@@ -8,12 +8,14 @@ const legal = defineCollection({
 });
 
 const blog = defineCollection({
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     customSlug: z.string(),
     canonicalPath: z.string().optional(),
     pubDate: z.string(),
-    ogImage: z.string(),
+    ogImage: image().refine((img) => img.width >= 1200, {
+      message: "OG image must be at least 1080 pixels wide!",
+    }),
     description: z.string(),
     draft: z.boolean().optional(),
   }),

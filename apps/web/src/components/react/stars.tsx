@@ -20,9 +20,9 @@ export const Stars = () => {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="duration-150 group-hover:stroke-indigo-400 group-hover:rotate-180 lucide lucide-sparkles"
       >
         {" "}
@@ -65,9 +65,9 @@ export const Stars = () => {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         className="duration-300 group-hover:translate-x-0.5 lucide lucide-chevron-right"
       >
         {" "}

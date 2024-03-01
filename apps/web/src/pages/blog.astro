@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 const blogPosts = await getCollection("blog", ({ data }) => {
@@ -18,16 +19,16 @@ blogPosts.sort(
   title="Blog – Installing Overlayed on Windows"
   description="How to install Overlayed on Windows Step by Step"
 >
-  <main class="flex mx-auto px-4 pt-24">
-    <section class="mx-auto">
+  <main class="mx-auto px-8 pt-28">
+    <section>
       <h1 class="text-4xl font-bold text-center mb-10">Blog</h1>
-      <ul class="space-y-4">
+      <ul class="flex flex-wrap gap-4 justify-center">
         {
           blogPosts.map((post) => (
             <div class="p-2">
               <li>
                 <a href={`/blog/${post.data.customSlug}`} class="group">
-                  <img
+                  <Image
                     src={post.data.ogImage}
                     alt={post.data.title}
                     class="w-full h-64 object-cover rounded-lg"
