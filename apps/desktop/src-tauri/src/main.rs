@@ -16,14 +16,12 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::{atomic::AtomicBool, Mutex};
-use tauri::{generate_handler, App, Manager, Window};
+use tauri::{generate_handler, Manager};
 use tauri_plugin_window_state::StateFlags;
 use tray::{create_tray_items, handle_tray_events};
 
-// TODO: make this configurable
-// #[cfg(target_os = "macos")]
-// use tauri::{ActivationPolicy};
-
+#[cfg(target_os = "macos")]
+use tauri::{App, Window};
 #[cfg(target_os = "macos")]
 use window_custom::WindowExt as _;
 
@@ -39,9 +37,6 @@ pub struct Storage {
 fn apply_macos_specifics(_app: &mut App, window: &Window) {
   window.set_visisble_on_all_workspaces(true);
   window.set_transparent_titlebar(true, true);
-
-  // TODO: disabling this makes it hard to tab to settings window?
-  // app.set_activation_policy(ActivationPolicy::Accessory);
 }
 
 fn main() {

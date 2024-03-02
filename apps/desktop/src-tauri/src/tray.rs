@@ -3,11 +3,7 @@ use tauri::{
 };
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
-use crate::{
-  commands::{set_clickthrough, toggle_clickthrough},
-  constants::*,
-  Clickthrough,
-};
+use crate::{commands::toggle_clickthrough, constants::*, Clickthrough};
 
 pub fn create_tray_items() -> SystemTray {
   // System tray configuration
@@ -54,7 +50,6 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
         let settings_window = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
         settings_window.show().unwrap();
         settings_window.set_focus().unwrap();
-      
       }
       TRAY_OPEN_DEVTOOLS => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
