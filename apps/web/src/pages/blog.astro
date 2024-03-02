@@ -24,7 +24,9 @@ blogPosts.sort(
   <main class="mx-auto px-8 pt-28">
     <section>
       <h1 class="text-4xl font-bold text-center mb-10">Blog</h1>
-      <ul class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3">
+      <ul
+        class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3"
+      >
         {
           blogPosts.map((post) => (
             <div class="p-2">
@@ -36,7 +38,7 @@ blogPosts.sort(
                     width={395}
                     height={208}
                     quality="max"
-                    // class="w-full object-cover rounded-lg"
+                    class="w-full object-cover rounded-lg"
                     class="w-full object-cover rounded lg:rounded-md"
                   />
                   <div class="opacity-60 group-hover:opacity-100 text-2xl pt-2">
