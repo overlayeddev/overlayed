@@ -11,7 +11,7 @@ export const Stars = () => {
   }, []);
 
   return (
-    <div className="text-sm m-2 backdrop-blur-[8px] md:text-base group border hover:no-underline border-zinc-400/50 bg-gradient-to-r from-indigo-300/30 to-white/5 rounded-full p-2 px-3 sm:p-1 sm:px-2 mx-auto flex gap-2 items-center text-zinc-50 font-thin duration-300 hover:border-primary">
+    <div className="text-sm m-2 backdrop-blur-[8px] md:text-base group border hover:no-underline border-zinc-400/50 bg-gradient-to-r from-indigo-300/30 to-white/5 rounded-full p-2 px-3 sm:p-1 sm:px-2 mx-auto flex gap-2 items-center text-zinc-50 font-thin duration-200 hover:border-primary">
       {" "}
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ export const Stars = () => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="duration-150 group-hover:stroke-indigo-400 group-hover:rotate-180 lucide lucide-sparkles"
+        className="duration-200 group-hover:stroke-indigo-400 group-hover:rotate-180 lucide lucide-sparkles"
       >
         {" "}
         <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>{" "}
@@ -56,8 +56,8 @@ export const Stars = () => {
         )}
       </span>{" "}
       <span className="opacity-50">|</span>{" "}
-      <span className="hidden sm:block font-bold">Give us a star on Github</span>{" "}
-      <span className="sm:hidden font-bold">Star us on Github</span>{" "}
+      <span className="hidden sm:block font-semibold">Give us a star on Github</span>{" "}
+      <span className="sm:hidden font-semibold">Star us on Github</span>{" "}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -68,7 +68,7 @@ export const Stars = () => {
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="duration-300 group-hover:translate-x-0.5 lucide lucide-chevron-right"
+        className="duration-200 group-hover:translate-x-0.5 lucide lucide-chevron-right"
       >
         {" "}
         <path d="m9 18 6-6-6-6"></path>{" "}
