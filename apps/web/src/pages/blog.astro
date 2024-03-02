@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import blogOgImage from "../assets/og/overlayed-blog.png";
 
@@ -32,16 +31,14 @@ blogPosts.sort(
             <div class="p-2">
               <li>
                 <a href={`/blog/${post.data.customSlug}`} class="group">
-                  <Image
-                    src={post.data.ogImage}
+                  <img
+                    src={post.data.ogImage.src}
                     alt={post.data.title}
                     width={395}
                     height={208}
-                    quality="max"
-                    class="w-full object-cover rounded-lg"
                     class="w-full object-cover rounded lg:rounded-md"
                   />
-                  <div class="opacity-60 group-hover:opacity-100 text-2xl pt-2">
+                  <div class="opacity-60 group-hover:opacity-100 text-2xl pt-3">
                     {post.data.title}
                   </div>
                   <div class="opacity-40 group-hover:opacity-80 space-x-1">
