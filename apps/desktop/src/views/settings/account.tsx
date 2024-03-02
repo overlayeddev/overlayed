@@ -58,9 +58,9 @@ export const Developer = () => {
               const newBool = !showOnlyTalkingUsers;
               setShowOnlyTalkingUsers(newBool);
               Config.set("showOnlyTalkingUsers", newBool);
-              console.log("showOnlyTalkingUsers", newBool);
 
-              // inform react app # 2
+              // let the main app know the updated config
+              // TODO: is there a more efficient way to do this rather than sending the whole config?
               await emit("config_update", Config.getConfig());
             }}
           />
