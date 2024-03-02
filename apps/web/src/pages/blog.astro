@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import blogOgImage from "../assets/og/overlayed-blog.png";
 
 const blogPosts = await getCollection("blog", ({ data }) => {
   return data.draft !== true;
@@ -18,11 +19,12 @@ blogPosts.sort(
 <Layout
   title="Blog – Installing Overlayed on Windows"
   description="How to install Overlayed on Windows Step by Step"
+  ogImage={blogOgImage.src}
 >
   <main class="mx-auto px-8 pt-28">
     <section>
       <h1 class="text-4xl font-bold text-center mb-10">Blog</h1>
-      <ul class="flex flex-wrap gap-4 justify-center">
+      <ul class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3">
         {
           blogPosts.map((post) => (
             <div class="p-2">
@@ -31,8 +33,11 @@ blogPosts.sort(
                   <Image
                     src={post.data.ogImage}
                     alt={post.data.title}
+                    width={395}
+                    height={208}
                     quality="max"
-                    class="w-full h-64 object-cover rounded-lg"
+                    // class="w-full object-cover rounded-lg"
+                    class="w-full object-cover rounded lg:rounded-md"
                   />
                   <div class="opacity-60 group-hover:opacity-100 text-2xl pt-2">
                     {post.data.title}
