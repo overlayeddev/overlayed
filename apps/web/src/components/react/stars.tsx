@@ -56,8 +56,8 @@ export const Stars = () => {
         )}
       </span>{" "}
       <span className="opacity-50">|</span>{" "}
-      <span className="hidden sm:block">Give us a star on Github</span>{" "}
-      <span className="sm:hidden">Star us on Github</span>{" "}
+      <span className="hidden sm:block font-bold">Give us a star on Github</span>{" "}
+      <span className="sm:hidden font-bold">Star us on Github</span>{" "}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
