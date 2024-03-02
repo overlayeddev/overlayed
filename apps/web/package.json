@@ -39,6 +39,7 @@
     "react-dom": "^18.2.0",
     "sharp": "^0.33.1",
     "types": "workspace:*",
-    "utils": "workspace:*"
+    "utils": "workspace:*",
+    "vite": "^5.1.4"
   }
 }

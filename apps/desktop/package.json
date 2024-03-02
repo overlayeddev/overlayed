@@ -57,6 +57,6 @@
     "tailwindcss": "^3.3.5",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.2",
-    "vite": "^4.4.4"
+    "vite": "^5.1.4"
   }
 }
