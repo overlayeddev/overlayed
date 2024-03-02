@@ -50,11 +50,6 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
         window.eval("window.location.reload();").unwrap();
       }
       TRAY_SETTINGS => {
-        let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
-        let storage = app.state::<Clickthrough>();
-
-        set_clickthrough(window.clone(), storage, false);
-
         // find the settings window and show it
         let settings_window = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
         settings_window.show().unwrap();
