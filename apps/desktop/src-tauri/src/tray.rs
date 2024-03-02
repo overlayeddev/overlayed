@@ -15,7 +15,14 @@ pub fn create_tray_items() -> SystemTray {
       ))
       .add_item(CustomMenuItem::new(TRAY_SHOW_APP, "Show Overlayed"))
       .add_item(CustomMenuItem::new(TRAY_RELOAD, "Reload App"))
-      .add_item(CustomMenuItem::new(TRAY_OPEN_DEVTOOLS, "Open Devtools"))
+      .add_item(CustomMenuItem::new(
+        TRAY_OPEN_DEVTOOLS_MAIN,
+        "Open Devtools (main window)",
+      ))
+      .add_item(CustomMenuItem::new(
+        TRAY_OPEN_DEVTOOLS_SETTINGS,
+        "Open Devtools (settings window)",
+      ))
       .add_item(CustomMenuItem::new(TRAY_SETTINGS, "Settings"))
       .add_native_item(tauri::SystemTrayMenuItem::Separator)
       .add_item(CustomMenuItem::new(TRAY_QUIT, "Quit")),
@@ -51,9 +58,15 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
         settings_window.show().unwrap();
         settings_window.set_focus().unwrap();
       }
-      TRAY_OPEN_DEVTOOLS => {
+      TRAY_OPEN_DEVTOOLS_MAIN => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
         window.open_devtools();
+        window.show().unwrap();
+      }
+      TRAY_OPEN_DEVTOOLS_SETTINGS => {
+        let window = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
+        window.open_devtools();
+        window.show().unwrap();
       }
       TRAY_QUIT => {
         app.save_window_state(StateFlags::all()); // will save the state of all open windows to disk

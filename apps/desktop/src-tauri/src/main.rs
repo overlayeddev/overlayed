@@ -19,11 +19,10 @@ use std::sync::{atomic::AtomicBool, Mutex};
 use tauri::{generate_handler, Manager};
 use tauri_plugin_window_state::StateFlags;
 use tray::{create_tray_items, handle_tray_events};
+use window_custom::WindowExt;
 
 #[cfg(target_os = "macos")]
 use tauri::{App, Window};
-#[cfg(target_os = "macos")]
-use window_custom::WindowExt as _;
 
 pub struct Clickthrough(AtomicBool);
 
@@ -55,14 +54,17 @@ fn main() {
     })
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
+      let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
 
       // the window should always be on top
       window.set_always_on_top(true);
 
-      // skip on windows
-      // TODO: disabling this makes it hard to tab to settings window?
-      // make configurable?
-      // window.set_skip_taskbar(true);
+      // set the document title for the main window
+      // TODO: we could just get the tauri window title in js as an alternative?
+      window.set_document_title("Main");
+
+      // set the document title for the settings window
+      settings.set_document_title("Settings");
 
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
@@ -75,7 +77,6 @@ fn main() {
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       {
-        let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
         window.open_devtools();
         settings.open_devtools();
       }

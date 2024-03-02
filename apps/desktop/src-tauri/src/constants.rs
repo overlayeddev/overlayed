@@ -6,7 +6,8 @@ pub const TRAY_TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
 pub const TRAY_SHOW_APP: &str = "show_app";
 pub const TRAY_RELOAD: &str = "reload";
 pub const TRAY_SETTINGS: &str = "show_settings";
-pub const TRAY_OPEN_DEVTOOLS: &str = "open_devtools";
+pub const TRAY_OPEN_DEVTOOLS_MAIN: &str = "open_devtools_main";
+pub const TRAY_OPEN_DEVTOOLS_SETTINGS: &str = "open_devtools_settings";
 pub const TRAY_QUIT: &str = "quit";
 
 /// random events

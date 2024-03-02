@@ -21,6 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { emit } from "@tauri-apps/api/event";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
@@ -128,17 +129,16 @@ export const Account = () => {
     };
   }, []);
 
+  const avatarUrl = `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`;
   return (
     <div>
       <div className="h-[282px]">
         <div className="flex items-center mb-2">
           {user?.id && (
-            <img
-              style={{ width: 64, height: 64 }}
-              className="mr-3"
-              src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`}
-              alt="user avatar"
-            />
+            <Avatar className="mr-3 w-16 h-16">
+              <AvatarImage src={avatarUrl} />
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
           )}
           <div>
             {user?.id ? (
