@@ -43,18 +43,27 @@ const { title, description, canonicalPath, ogImage } = Astro.props;
           Courier New,
           monospace;
       }
+      *::selection {
+        color: white;
+        background-color: #5855f2;
+      }
+
+      body {
+        scroll-behavior: smooth;
+      }
+
       body::-webkit-scrollbar {
         width: 18px;
       }
 
       body::-webkit-scrollbar-track {
-        background: #1f1f1f;
+        background: #13151a;
       }
 
       body::-webkit-scrollbar-thumb {
         background-color: #6b6b6b;
         border-radius: 8px;
-        border: 4px solid #1f1f1f;
+        border: 4px solid #13151a;
       }
     </style>
   </body>
