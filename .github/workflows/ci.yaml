@@ -37,6 +37,7 @@ jobs:
         run: pnpm lint
 
   build-tauri:
+    name: Build (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
