@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 529
+        "contributions": 541
     },
     {
         "login": "maxdemaio",
@@ -65,6 +65,27 @@ export const contributors = [
         "contributions": 3
     },
     {
+        "login": "Pyr33x",
+        "id": 83529331,
+        "node_id": "MDQ6VXNlcjgzNTI5MzMx",
+        "avatar_url": "https://avatars.githubusercontent.com/u/83529331?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Pyr33x",
+        "html_url": "https://github.com/Pyr33x",
+        "followers_url": "https://api.github.com/users/Pyr33x/followers",
+        "following_url": "https://api.github.com/users/Pyr33x/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Pyr33x/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Pyr33x/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Pyr33x/subscriptions",
+        "organizations_url": "https://api.github.com/users/Pyr33x/orgs",
+        "repos_url": "https://api.github.com/users/Pyr33x/repos",
+        "events_url": "https://api.github.com/users/Pyr33x/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Pyr33x/received_events",
+        "type": "User",
+        "site_admin": false,
+        "contributions": 2
+    },
+    {
         "login": "MVAodhan",
         "id": 69143973,
         "node_id": "MDQ6VXNlcjY5MTQzOTcz",
@@ -102,27 +123,6 @@ export const contributors = [
         "repos_url": "https://api.github.com/users/borisnezlobin/repos",
         "events_url": "https://api.github.com/users/borisnezlobin/events{/privacy}",
         "received_events_url": "https://api.github.com/users/borisnezlobin/received_events",
-        "type": "User",
-        "site_admin": false,
-        "contributions": 1
-    },
-    {
-        "login": "Pyr33x",
-        "id": 83529331,
-        "node_id": "MDQ6VXNlcjgzNTI5MzMx",
-        "avatar_url": "https://avatars.githubusercontent.com/u/83529331?v=4",
-        "gravatar_id": "",
-        "url": "https://api.github.com/users/Pyr33x",
-        "html_url": "https://github.com/Pyr33x",
-        "followers_url": "https://api.github.com/users/Pyr33x/followers",
-        "following_url": "https://api.github.com/users/Pyr33x/following{/other_user}",
-        "gists_url": "https://api.github.com/users/Pyr33x/gists{/gist_id}",
-        "starred_url": "https://api.github.com/users/Pyr33x/starred{/owner}{/repo}",
-        "subscriptions_url": "https://api.github.com/users/Pyr33x/subscriptions",
-        "organizations_url": "https://api.github.com/users/Pyr33x/orgs",
-        "repos_url": "https://api.github.com/users/Pyr33x/repos",
-        "events_url": "https://api.github.com/users/Pyr33x/events{/privacy}",
-        "received_events_url": "https://api.github.com/users/Pyr33x/received_events",
         "type": "User",
         "site_admin": false,
         "contributions": 1
