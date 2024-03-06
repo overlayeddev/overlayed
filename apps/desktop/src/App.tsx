@@ -27,16 +27,17 @@ function App() {
   const { clickthrough } = useClickthrough();
   const { horizontal, setHorizontalDirection } = useAlign();
 
-  // how is thse now right wong
   const visibleClass = visible ? "opacity-100" : "opacity-0";
   return (
     <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
-      <NavBar
-        isUpdateAvailable={isAvailable}
-        clickthrough={clickthrough}
-        alignDirection={horizontal}
-        setAlignDirection={setHorizontalDirection}
-      />
+      {!clickthrough && (
+        <NavBar
+          isUpdateAvailable={isAvailable}
+          clickthrough={clickthrough}
+          alignDirection={horizontal}
+          setAlignDirection={setHorizontalDirection}
+        />
+      )}
 
       <Toaster />
       <Routes>
