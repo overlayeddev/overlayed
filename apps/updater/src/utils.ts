@@ -20,7 +20,7 @@ export async function getStars({
 	authToken,
 }: {
 	authToken: string;
-}): Promise<number | null> {
+}): Promise<{ stars: number, updateAt: string } | null> {
 	// fetch all releases from github
 	try {
 		const releases: RepoResponse = await fetch(
@@ -37,7 +37,10 @@ export async function getStars({
 			},
 		).then((res) => res.json());
 
-		return releases.stargazers_count;
+		return {
+			stars: releases.stargazers_count,
+			updateAt: releases.updated_at,
+		};
 	} catch (err) {
 		console.log(err);
 		return null;

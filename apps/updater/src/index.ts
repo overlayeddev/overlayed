@@ -11,13 +11,13 @@ const app = new Hono<{ Bindings: Bindings }>();
 app.use("*", cors());
 
 app.get("/stars", async (c) => {
-	const stars = await getStars({
+	const response = await getStars({
 		authToken: c.env.GITHUB_TOKEN,
 	});
 
-	return c.body(JSON.stringify({ stars, updateAt: Date.now() }), 200, {
+	return c.body(JSON.stringify(response), 200, {
 		"Content-Type": "application/json",
-		"Cache-Control": "public, max-age=300",
+		"Cache-Control": "max-age=300",
 	});
 });
 
