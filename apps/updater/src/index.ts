@@ -15,8 +15,9 @@ app.get("/stars", async (c) => {
 		authToken: c.env.GITHUB_TOKEN,
 	});
 
-	return c.body(JSON.stringify({ stars }), 200, {
+	return c.body(JSON.stringify({ stars, updateAt: Date.now() }), 200, {
 		"Content-Type": "application/json",
+		"Cache-Control": "public, max-age=300",
 	});
 });
 
@@ -28,7 +29,6 @@ app.get("/latest", async (c) => {
 			}),
 		),
 		200,
-
 		{
 			"Content-Type": "application/json",
 		},
