@@ -11,12 +11,15 @@ export const Platforms = {
   mac: "Mac",
 };
 
-
 export const Download = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [platformDownloads, setPlatformDownloads] = useState<
-    PlatformDownload[]
-  >([]);
+  const [platformDownloads, setPlatformDownloads] = useState<{
+    downloads: PlatformDownload[];
+    latestVersion: string;
+  }>({
+    downloads: [],
+    latestVersion: "",
+  });
 
   useEffect(() => {
     fetch(`${API_HOST}/latest`)
@@ -24,30 +27,39 @@ export const Download = () => {
       .then((res) => {
         setPlatformDownloads(res);
         setIsLoading(false);
-    });
+      });
   }, []);
 
   return (
     <div className="relative w-full overflow-hidden">
       <div className="flex flex-col items-center">
-        <h2 className="text-2xl pb-8">Download</h2>
         {isLoading ? (
-          <div className="flex gap-2 sm:gap-6">
-            {Array(3)
-              .fill("")
-              .map((_, i) => (
-                <div
-                  key={`skeleton-loader-${i}`}
-                  className="w-28 h-28 bg-slate-800 rounded-lg animate-pulse"
-                ></div>
-              ))}
-          </div>
+          <>
+            <h2 className="text-2xl pb-8">
+              Loading...
+            </h2>
+            <div className="flex gap-2 sm:gap-6">
+              {Array(3)
+                .fill("")
+                .map((_, i) => (
+                  <div
+                    key={`skeleton-loader-${i}`}
+                    className="w-28 h-28 bg-slate-800 rounded-lg animate-pulse"
+                  ></div>
+                ))}
+            </div>
+          </>
         ) : (
-          <div className="flex gap-2 sm:gap-6">
-            {platformDownloads.map((item) => (
-              <DownloadButton key={item.platform} platform={item} />
-            ))}
-          </div>
+          <>
+            <h2 className="text-2xl pb-8">
+              Download ({platformDownloads.latestVersion})
+            </h2>
+            <div className="flex gap-2 sm:gap-6">
+              {platformDownloads.downloads.map((item) => (
+                <DownloadButton key={item.platform} platform={item} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

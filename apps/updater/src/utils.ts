@@ -68,13 +68,15 @@ export async function getPlatformDownloads({
 			},
 		).then((res) => res.json());
 
-		return releases.assets
+		const versions = releases.assets
 			.map((asset) => ({
 				name: asset.name,
 				url: asset.browser_download_url,
 				platform: filenameToPlatform(asset.name),
 			}))
 			.filter((asset) => asset.name.match(/\.(dmg|msi|AppImage)$/));
+
+		return { versions, latestVersion: releases.tag_name };
 	} catch (err) {
 		console.log(err);
 		return null;

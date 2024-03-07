@@ -22,12 +22,28 @@ app.get("/stars", async (c) => {
 });
 
 app.get("/latest", async (c) => {
-	return c.body(
-		JSON.stringify(
-			await getPlatformDownloads({
-				authToken: c.env.GITHUB_TOKEN,
+	const response = await getPlatformDownloads({
+		authToken: c.env.GITHUB_TOKEN,
+	});
+
+	if (!response) {
+		return c.body(
+			JSON.stringify({
+				downloads: [],
+				latestVersion: "",
 			}),
-		),
+			500,
+			{
+				"Content-Type": "application/json",
+			},
+		);
+	}
+
+	return c.body(
+		JSON.stringify({
+			downloads: response.versions,
+			latestVersion: response.latestVersion,
+		}),
 		200,
 		{
 			"Content-Type": "application/json",
