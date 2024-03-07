@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import { getCollection } from "astro:content";
-import blogOgImage from "../assets/og/overlayed-blog.png";
+import blogOgImage from "../assets/blog/overlayed-blog.png";
 
 const blogPosts = await getCollection("blog", ({ data }) => {
   return data.draft !== true;
