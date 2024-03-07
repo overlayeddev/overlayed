@@ -20,7 +20,7 @@ export async function getStars({
 	authToken,
 }: {
 	authToken: string;
-}): Promise<{ stars: number, updateAt: string } | null> {
+}): Promise<{ stars: number; updateAt: string } | null> {
 	// fetch all releases from github
 	try {
 		const releases: RepoResponse = await fetch(
