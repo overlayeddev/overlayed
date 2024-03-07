@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== "production") {
 
 // https://astro.build/config
 export default defineConfig({
-  site: `https://${process.env.VERCEL_URL}`,
+  site: "https://overlayed.dev",
   trailingSlash: "never",
   integrations,
   server: {
