@@ -31,10 +31,10 @@ const { Content } = await post.render();
   canonicalPath={post.data.canonicalPath}
 >
   <main class="px-4 prose prose-invert mx-auto pt-28">
-    <h1 class="text-4xl font-bold text-center mb-2">
+    <h1 class="text-4xl font-bold text-start md:text-center mb-2">
       {post.data.title}
     </h1>
-    <p class="font-bold text-zinc-400 text-center mt-0 mb-10">
+    <p class="font-bold text-zinc-400 text-start md:text-center mt-0 mb-10">
       {post.data.pubDate}
     </p>
     <Content />
