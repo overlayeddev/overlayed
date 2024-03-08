@@ -1,3 +1,3 @@
 # Overlayed
 
-The website for the marketing for overlayed.
+The website for the marketing of overlayed.
