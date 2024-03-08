@@ -1,9 +1,7 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { Platforms } from "./download";
 import type { PlatformDownload } from "types/types";
-import { Mac } from "../react/icons/mac";
-import { Windows } from "../react/icons/windows";
-import { Linux } from "../react/icons/linux";
+import { MacIcon, WindowsIcon, LinuxIcon } from "./icons";
 import { track } from "@vercel/analytics";
 
 type DownloadButtonParams = {
@@ -12,9 +10,9 @@ type DownloadButtonParams = {
 };
 
 const PlatformIcons = {
-  mac: Mac,
-  windows: Windows,
-  linux: Linux,
+  mac: MacIcon,
+  windows: WindowsIcon,
+  linux: LinuxIcon,
 };
 
 export default function DownloadButton({
