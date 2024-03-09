@@ -6,6 +6,7 @@ import { saveWindowState, StateFlags } from "tauri-plugin-window-state-api";
 import { shell } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
+import Config from "@/config";
 
 import {
   Dialog,
@@ -18,9 +19,14 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { emit } from "@tauri-apps/api/event";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
+  const [showOnlyTalkingUsers, setShowOnlyTalkingUsers] = useState(Config.get("showOnlyTalkingUsers"));
+
   return (
     <>
       <div className="flex flex-col gap-2">
@@ -43,6 +49,28 @@ export const Developer = () => {
           >
             Open Config Dir
           </Button>
+        </div>
+
+        <div className="flex items-center pb-2">
+          <Checkbox
+            id="notification"
+            checked={showOnlyTalkingUsers}
+            onCheckedChange={async () => {
+              const newBool = !showOnlyTalkingUsers;
+              setShowOnlyTalkingUsers(newBool);
+              Config.set("showOnlyTalkingUsers", newBool);
+
+              // let the main app know the updated config
+              // TODO: is there a more efficient way to do this rather than sending the whole config?
+              await emit("config_update", Config.getConfig());
+            }}
+          />
+          <label
+            htmlFor="notification"
+            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Only show users who are speaking
+          </label>
         </div>
         <div className="flex items-center text-zinc-400 gap-2 pb-4">
           <div>
@@ -101,17 +129,16 @@ export const Account = () => {
     };
   }, []);
 
+  const avatarUrl = `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`;
   return (
     <div>
       <div className="h-[282px]">
         <div className="flex items-center mb-2">
           {user?.id && (
-            <img
-              style={{ width: 64, height: 64 }}
-              className="mr-3"
-              src={`https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`}
-              alt="user avatar"
-            />
+            <Avatar className="mr-3 w-16 h-16">
+              <AvatarImage src={avatarUrl} />
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
           )}
           <div>
             {user?.id ? (

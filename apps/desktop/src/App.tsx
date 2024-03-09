@@ -14,12 +14,18 @@ import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
 import { useThemeSync } from "./hooks/use-theme-sync";
 import { Toaster } from "./components/ui/toaster";
+import { useEffect } from "react";
 
 function App() {
   useKeybinds();
   useSocket();
   useThemeSync();
   useDisableWebFeatures();
+
+  useEffect(() => {
+    const styleForLog = "font-size: 20px; color: #00dffd";
+    console.log(`%cOverlayed ${document.title} Window`, styleForLog);
+  }, []);
 
   const { isAvailable, error, status } = useUpdate();
   const { visible } = useAppStore();

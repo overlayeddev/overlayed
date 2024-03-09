@@ -28,7 +28,6 @@ pub fn open_settings(window: Window, update: bool) {
     settings_windows.show();
     settings_windows.set_focus();
     if update {
-      println!("showing update modal");
       // emit to the settings window to show update
       settings_windows.emit(SHOW_UPDATE_MODAL, ()).unwrap();
     }

@@ -63,7 +63,7 @@ export const JoinHistory = () => {
         Display join/leave events in the voice chat useful for moderation purposes
       </p>
       <div className="flex items-center gap-4 pb-2">
-        <div>
+        <div className="flex items-center">
           <Checkbox
             id="notification"
             checked={notificationsEnabled}

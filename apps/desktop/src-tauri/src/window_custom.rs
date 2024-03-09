@@ -18,6 +18,7 @@ pub trait WindowExt {
   #[cfg(target_os = "macos")]
   fn set_visisble_on_all_workspaces(&self, enabled: bool);
   fn navigate(&self, url: &str);
+  fn set_document_title(&self, url: &str);
 }
 
 impl<R: Runtime> WindowExt for Window<R> {
@@ -91,6 +92,25 @@ impl<R: Runtime> WindowExt for Window<R> {
     #[cfg(not(debug_assertions))]
     {
       let str = format!("window.location.href = 'tauri://localhost#{:?}'", url);
+      self
+        .eval(&str)
+        .unwrap();
+    }
+  }
+
+  fn set_document_title(&self, title: &str) {
+    // if in dev mode
+    #[cfg(debug_assertions)]
+    {
+      let str = format!("document.title = '{:}'", title);
+      self
+        .eval(&str)
+        .unwrap();
+    }
+
+    #[cfg(not(debug_assertions))]
+    {
+      let str = format!("document.title = '{:}'", title);
       self
         .eval(&str)
         .unwrap();
