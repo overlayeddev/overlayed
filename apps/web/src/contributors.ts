@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 563
+        "contributions": 566
     },
     {
         "login": "maxdemaio",
@@ -83,7 +83,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Pyr33x/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 2
+        "contributions": 3
     },
     {
         "login": "MVAodhan",
