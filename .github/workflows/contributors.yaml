@@ -54,5 +54,7 @@ jobs:
           commit-message: "Update contributors"
           title: "🤖 Update contributors"
           branch: chore/update-contributors
-          base: master 
+          labels: |
+            skip-changelog
+          base: master
           delete-branch: true
