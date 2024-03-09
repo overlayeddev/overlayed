@@ -1,0 +1,14 @@
+# Add web label if they changed web code
+web:
+  - changed-files:
+      - any-glob-to-any-file: apps/web/**
+
+# Add desktop label if they changed desktop code
+desktop:
+  - changed-files:
+      - any-glob-to-any-file: apps/desktop/**
+
+# Add updater label if they changed updater code
+updater:
+  - changed-files:
+      - any-glob-to-any-file: apps/updater/**
