@@ -36,7 +36,7 @@ export class Config {
   }
 
   init = async () => {
-    this.configPath = `${await appConfigDir()}config.json`;
+    this.configPath = `${await appConfigDir()}/config.json`;
 
     try {
       const config = await readTextFile(this.configPath);
@@ -48,6 +48,7 @@ export class Config {
       this.config = {
         ...DEFAULT_OVERLAYED_CONFIG,
         ...this.config,
+        // NOTE: set new keys added to the default value
         ...newKeys.reduce((acc, key) => {
           // @ts-ignore
           acc[key] = DEFAULT_OVERLAYED_CONFIG[key as OverlayedConfigKey];
