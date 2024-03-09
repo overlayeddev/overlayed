@@ -200,6 +200,10 @@ import { GithubIcon, TwitterIcon, OverlayedIcon, DiscordIcon } from "./icons";
         mobileNavItems.classList.add("mobile-nav-items-show");
         menuButton.classList.add("rotate");
         menuButton.ariaExpanded = "true";
+        console.log("checking...");
+        setTimeout(() => {
+          document.body.style.overflow = 'hidden'; // prevent scrolling near end of animation
+        }, 220);
       } else {
         menuButton.classList.remove("keep");
         mobileNavView.classList.remove("slide-rl-animation");
