@@ -1,6 +1,7 @@
 ---
 import { DISCORD_INVITE_LINK } from "../config";
 import { GithubIcon, TwitterIcon, OverlayedIcon, DiscordIcon } from "./icons";
+import Link from "../components/link.astro";
 ---
 
 <style>
@@ -164,7 +165,7 @@ import { GithubIcon, TwitterIcon, OverlayedIcon, DiscordIcon } from "./icons";
   >
     <!--match icon color with others (from layout)-->
     <span
-      class="hamburger-lines w-5 h-[2px] bg-gray-700 dark:bg-gray-200 before:bg-gray-700 before:dark:bg-gray-200 after:bg-gray-700 after:dark:bg-gray-200"
+      class="hamburger-lines w-5 h-[2px] bg-gray-200 before:bg-gray-200 after:bg-gray-200"
     ></span>
   </button>
 </nav>
@@ -178,9 +179,9 @@ import { GithubIcon, TwitterIcon, OverlayedIcon, DiscordIcon } from "./icons";
     class="mobile-nav-items-selector-init flex flex-col gap-12"
   >
     <!--Note: after clicking, we should transition the mobile-nav-view away -->
-    <a href="/" title="Home">Home</a>
-    <a href="/about" title="About">About</a>
-    <a href="/blog" title="Blog">Blog</a>
+    <Link to="/" title="Home">Home</Link>
+    <Link to="/about" title="About">About</Link>
+    <Link to="/blog" title="Blog">Blog</Link>
   </div>
 </div>
 
@@ -202,7 +203,7 @@ import { GithubIcon, TwitterIcon, OverlayedIcon, DiscordIcon } from "./icons";
         menuButton.ariaExpanded = "true";
         console.log("checking...");
         setTimeout(() => {
-          document.body.style.overflow = 'hidden'; // prevent scrolling near end of animation
+          document.body.style.overflow = "hidden"; // prevent scrolling near end of animation
         }, 220);
       } else {
         menuButton.classList.remove("keep");
