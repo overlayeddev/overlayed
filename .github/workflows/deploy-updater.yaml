@@ -10,11 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes 
+        with:
+          filters: |
+            updater:
+              - 'apps/updater/**'
       - uses: pnpm/action-setup@v3
+        if: steps.changes.outputs.updater == 'true'
         with:
           version: 8
       - name: Deploy
+        if: steps.changes.outputs.updater == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
