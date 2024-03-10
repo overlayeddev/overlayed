@@ -7,6 +7,21 @@ on:
   pull_request:
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    outputs:
+      # Expose matched filters as job 'packages' output variable
+      packages: ${{ steps.filter.outputs.changes }}
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          desktop: apps/desktop/**
   quality:
     runs-on: "ubuntu-latest"
     steps:
@@ -38,6 +53,7 @@ jobs:
 
   build-tauri:
     name: Build (${{ matrix.settings.os }})
+    needs: changes
     strategy:
       fail-fast: false
       matrix:
