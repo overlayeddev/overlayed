@@ -7,6 +7,21 @@ on:
   pull_request:
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    outputs:
+      # Expose matched filters as job 'packages' output variable
+      desktop: ${{ steps.filter.outputs.changes }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          desktop: apps/desktop/**
   quality:
     runs-on: "ubuntu-latest"
     steps:
@@ -38,6 +53,7 @@ jobs:
 
   build-tauri:
     name: Build (${{ matrix.settings.os }})
+    needs: changes
     strategy:
       fail-fast: false
       matrix:
@@ -61,18 +77,23 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
+        if: steps.changes.outputs.desktop == 'true'
       - name: Setup node
+        if: steps.changes.outputs.desktop == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
       - uses: pnpm/action-setup@v3
+        if: steps.changes.outputs.desktop == 'true'
         with:
           version: 8
       - name: Get pnpm store directory
+        if: steps.changes.outputs.desktop == 'true'
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
       - uses: actions/cache@v4
+        if: steps.changes.outputs.desktop == 'true'
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
@@ -80,20 +101,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
       - name: Install Rust stable
+        if: steps.changes.outputs.desktop == 'true'
         uses: dtolnay/rust-toolchain@stable
         with:
           target: "${{ matrix.settings.toolchain }}"
       - uses: Swatinem/rust-cache@v2
+        if: steps.changes.outputs.desktop == 'true'
         with:
           workspaces: "apps/desktop/src-tauri/target"
       - name: Install dependencies (ubuntu only)
-        if: matrix.settings.host == 'ubuntu-latest'
+        if: matrix.settings.host == 'ubuntu-latest' && steps.changes.outputs.desktop == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
       - name: install frontend dependencies
+        if: steps.changes.outputs.desktop == 'true'
         run: pnpm install
       - uses: tauri-apps/tauri-action@dev
+        if: steps.changes.outputs.desktop == 'true'
         with:
           projectPath: apps/desktop
         env:
