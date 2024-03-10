@@ -16,7 +16,7 @@
 		"lint": "workspace:*",
 		"types": "workspace:*",
 		"typescript": "^5.4.2",
-		"wrangler": "^3.31.0"
+		"wrangler": "^3.32.0"
 	},
 	"dependencies": {
 		"hono": "^4.0.10"
