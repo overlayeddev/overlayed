@@ -54,7 +54,7 @@ jobs:
   build-tauri:
     name: Build (${{ matrix.settings.os }})
     needs: changes
-    if: steps.changes.outputs.desktop == 'true'
+    if: steps.changes.outputs.src == 'true'
     strategy:
       fail-fast: false
       matrix:
