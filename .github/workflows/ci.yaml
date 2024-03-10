@@ -14,7 +14,7 @@ jobs:
       pull-requests: read
     outputs:
       # Expose matched filters as job 'packages' output variable
-      packages: ${{ steps.filter.outputs.changes }}
+      desktop: ${{ steps.filter.outputs.changes }}
     steps:
     - uses: actions/checkout@v4
     - uses: dorny/paths-filter@v3
@@ -54,7 +54,7 @@ jobs:
   build-tauri:
     name: Build (${{ matrix.settings.os }})
     needs: changes
-    if: steps.changes.outputs.src == 'true'
+    if: steps.changes.outputs.desktop == 'true'
     strategy:
       fail-fast: false
       matrix:
