@@ -1,10 +1,10 @@
 # action scripts
 
-These are scripts that are ran in he the release.yaml.
-
+These are scripts that are ran in the `release.yaml`.
 You can use `scripts/test.ts` as a test harness to test them locally.
 
-# NOTE: i had to remove this cause it was breaking CF pages
-```
-"@types/github-script": "github:actions/github-script",
-```
+NOTE: make sure to have an `.env` file in the root with a `GITHUB_TOKEN` so that the calls work.
+
+### Typescript for `scripts/actions'
+Right now the biggest blocker is this ticket
+https://github.com/actions/github-script/issues/294
