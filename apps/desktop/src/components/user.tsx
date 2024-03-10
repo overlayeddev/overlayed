@@ -16,8 +16,9 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
   const volume = Math.floor(volumeRaw);
   return (
     <div
-      className={`flex gap-2 py-1 p-2 justify-start items-center ${alignDirection == "right" ? "flex-row-reverse" : "flex-row"
-        }`}
+      className={`flex gap-2 py-1 p-2 justify-start items-center ${
+        alignDirection == "right" ? "flex-row-reverse" : "flex-row"
+      }`}
     >
       <div className={`pointer-events-none relative rounded-full border-2 ${avatarClass} ${talkingClass}`}>
         <img
@@ -33,8 +34,9 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
         />
 
         <div
-          className={`absolute left-[10px] bottom-[-4px] bg-black rounded-full text-red-500 ${alignDirection == "center" ? "flaex" : "md:hidden"
-            }`}
+          className={`absolute left-[10px] bottom-[-4px] bg-black rounded-full text-red-500 ${
+            alignDirection == "center" ? "flaex" : "md:hidden"
+          }`}
         >
           {mutedAndDeafened && <HeadphonesOff />}
           {selfMuted && !selfDeafened && <MicOff />}
@@ -42,10 +44,11 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
       </div>
 
       <div
-        className={`max-w-[calc(100%_-_50px)] md:flex hidden pointer-events-none items-center rounded-md bg-zinc-800 ${mutedClass} p-1 pl-2 pr-2 ${alignDirection == "center" ? "hidden md:hidden" : ""
-          }`}
+        className={`max-w-[calc(100%_-_50px)] md:flex hidden pointer-events-none items-center rounded-md bg-zinc-800 ${mutedClass} p-1 pl-2 pr-2 ${
+          alignDirection == "center" ? "hidden md:hidden" : ""
+        }`}
       >
-        {volume < 100 && (volume)}
+        {volume < 100 && volume}
         <span className="truncate text-ellipsis">{item.username}</span>
         <div className="flex">
           {selfMuted && <MicOff />}
