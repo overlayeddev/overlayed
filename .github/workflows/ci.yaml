@@ -54,7 +54,6 @@ jobs:
   build-tauri:
     name: Build (${{ matrix.settings.os }})
     needs: changes
-    if: steps.changes.outputs.desktop == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -111,6 +110,7 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install
       - uses: tauri-apps/tauri-action@dev
+        if: steps.changes.outputs.desktop == 'true'
         with:
           projectPath: apps/desktop
         env:
