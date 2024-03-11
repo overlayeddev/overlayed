@@ -10,6 +10,24 @@ import Link from "../components/link.astro";
     -webkit-backdrop-filter: blur(28px);
   }
 
+  /** overlayed text hover animation **/
+  #ovr {
+    mask-image: linear-gradient(
+      60deg,
+      #9d9ffc 25%,
+      rgb(0, 0, 0, 0.2) 50%,
+      #9d9ffc 75%
+    );
+    mask-size: 400%;
+    mask-position: 100%;
+  }
+  #ovr:hover {
+    mask-position: 0%;
+    transition:
+      mask-position 500ms ease,
+      -webkit-mask-position 500ms ease;
+  }
+
   /** start mobile menu nav styles **/
   .hamburger-lines {
     position: relative;
@@ -116,14 +134,14 @@ import Link from "../components/link.astro";
       <div>
         <OverlayedIcon />
       </div>
-      <div class="font-bold text-xl">Overlayed</div>
+      <div id="ovr" class="font-bold text-xl">Overlayed</div>
     </a>
   </div>
   <!--spacer -->
   <div class="hidden md:flex gap-4">
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
+    <Link to="/" title="Home">Home</Link>
+    <Link to="/about" title="About">About</Link>
+    <Link to="/blog" title="Blog">Blog</Link>
   </div>
   <!--spacer small screen-->
   <div class="flex md:hidden"></div>
@@ -176,7 +194,7 @@ import Link from "../components/link.astro";
 >
   <div
     id="mobile-nav-items-selector"
-    class="mobile-nav-items-selector-init flex flex-col gap-12"
+    class="mobile-nav-items-selector-init flex flex-col gap-12 text-center"
   >
     <!--Note: after clicking, we should transition the mobile-nav-view away -->
     <Link to="/" title="Home">Home</Link>

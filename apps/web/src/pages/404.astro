@@ -1,6 +1,7 @@
 ---
-import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
+import Layout from "../layouts/Layout.astro";
+import Link from "../components/link.astro";
 ---
 
 <Layout
@@ -8,9 +9,16 @@ import Footer from "../components/footer.astro";
   description="The page you are looking for cannot be found"
 >
   <main class="pt-40">
-    <div class="flex justify-center items-center flex-col">
-      <h1 class="font-bold text-5xl mb-8">404</h1>
+    <div class="flex justify-center items-center text-center flex-col">
+      <h1 class="font-bold text-5xl mb-5">404</h1>
       <p class="text-2xl">The page you are looking for cannot be found</p>
+      <Link
+        to="/"
+        title="Home"
+        class="select-none mt-8 text-2xl text-indigo-400 transition ease-in-out hover:text-indigo-300"
+      >
+        Return
+      </Link>
       <Footer />
     </div>
   </main>
