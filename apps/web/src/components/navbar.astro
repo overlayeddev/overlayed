@@ -120,10 +120,10 @@ import Link from "../components/link.astro";
     </a>
   </div>
   <!--spacer -->
-  <div class="hidden md:flex gap-4 divide-y">
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/blog">Blog</a>
+  <div class="hidden md:flex gap-4">
+    <Link to="/" title="Home">Home</Link>
+    <Link to="/about" title="About">About</Link>
+    <Link to="/blog" title="Blog">Blog</Link>
   </div>
   <!--spacer small screen-->
   <div class="flex md:hidden"></div>
