@@ -127,7 +127,7 @@ import Link from "../components/link.astro";
 </style>
 
 <nav
-  class="flex justify-between items-center navbar-blur text-white p-5 fixed z-[66] h-16 w-full !bg-[#13151a]/10 transition"
+  class="grid grid-cols-3 navbar-blur text-white p-5 fixed z-[66] h-16 w-full !bg-[#13151a]/10 transition"
 >
   <div class="flex gap-4 items-center">
     <a href="/" class="flex gap-4">
@@ -138,14 +138,14 @@ import Link from "../components/link.astro";
     </a>
   </div>
   <!--spacer -->
-  <div class="hidden md:flex gap-4">
+  <div class="hidden md:flex justify-center gap-4">
     <Link to="/" title="Home">Home</Link>
     <Link to="/about" title="About">About</Link>
     <Link to="/blog" title="Blog">Blog</Link>
   </div>
   <!--spacer small screen-->
   <div class="flex md:hidden"></div>
-  <div class="hidden md:flex gap-4">
+  <div class="hidden md:flex justify-end gap-4">
     <a
       aria-label="discord"
       target="_blank"
@@ -172,10 +172,11 @@ import Link from "../components/link.astro";
     </a>
   </div>
 
+  <div class="flex justify-end">
   <!--mobile menu -->
   <button
     id="mobile-menu-button"
-    class="md:hidden w-10 h-10 grid items-center justify-center"
+    class="md:hidden w-10 h-10 grid items-center justify-"
     type="button"
     aria-label="Open navigation"
     aria-controls="main-navigation"
@@ -186,6 +187,7 @@ import Link from "../components/link.astro";
       class="hamburger-lines w-5 h-[2px] bg-gray-200 before:bg-gray-200 after:bg-gray-200"
     ></span>
   </button>
+  </div>
 </nav>
 
 <div
