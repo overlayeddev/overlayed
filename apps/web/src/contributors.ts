@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 572
+        "contributions": 589
     },
     {
         "login": "maxdemaio",
@@ -41,28 +41,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/maxdemaio/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 5
-    },
-    {
-        "login": "niemal",
-        "id": 9192165,
-        "node_id": "MDQ6VXNlcjkxOTIxNjU=",
-        "avatar_url": "https://avatars.githubusercontent.com/u/9192165?v=4",
-        "gravatar_id": "",
-        "url": "https://api.github.com/users/niemal",
-        "html_url": "https://github.com/niemal",
-        "followers_url": "https://api.github.com/users/niemal/followers",
-        "following_url": "https://api.github.com/users/niemal/following{/other_user}",
-        "gists_url": "https://api.github.com/users/niemal/gists{/gist_id}",
-        "starred_url": "https://api.github.com/users/niemal/starred{/owner}{/repo}",
-        "subscriptions_url": "https://api.github.com/users/niemal/subscriptions",
-        "organizations_url": "https://api.github.com/users/niemal/orgs",
-        "repos_url": "https://api.github.com/users/niemal/repos",
-        "events_url": "https://api.github.com/users/niemal/events{/privacy}",
-        "received_events_url": "https://api.github.com/users/niemal/received_events",
-        "type": "User",
-        "site_admin": false,
-        "contributions": 3
+        "contributions": 6
     },
     {
         "login": "Pyr33x",
@@ -81,6 +60,27 @@ export const contributors = [
         "repos_url": "https://api.github.com/users/Pyr33x/repos",
         "events_url": "https://api.github.com/users/Pyr33x/events{/privacy}",
         "received_events_url": "https://api.github.com/users/Pyr33x/received_events",
+        "type": "User",
+        "site_admin": false,
+        "contributions": 4
+    },
+    {
+        "login": "niemal",
+        "id": 9192165,
+        "node_id": "MDQ6VXNlcjkxOTIxNjU=",
+        "avatar_url": "https://avatars.githubusercontent.com/u/9192165?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/niemal",
+        "html_url": "https://github.com/niemal",
+        "followers_url": "https://api.github.com/users/niemal/followers",
+        "following_url": "https://api.github.com/users/niemal/following{/other_user}",
+        "gists_url": "https://api.github.com/users/niemal/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/niemal/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/niemal/subscriptions",
+        "organizations_url": "https://api.github.com/users/niemal/orgs",
+        "repos_url": "https://api.github.com/users/niemal/repos",
+        "events_url": "https://api.github.com/users/niemal/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/niemal/received_events",
         "type": "User",
         "site_admin": false,
         "contributions": 3
