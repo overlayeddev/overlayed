@@ -1,6 +1,5 @@
 ---
 import { AstroFont } from "astro-font";
-import { join } from "path";
 import { SITE_IMAGE } from "../config";
 
 export interface Props {
@@ -21,7 +20,7 @@ function removeTrailingSlash(str: string) {
   return str.replace(/\/+$/, "");
 }
 
-const ogCacheKey = "v2";
+const ogCacheKey = "v3";
 const ogImage = new URL(`${image}?c=${ogCacheKey}`, Astro.url);
 
 const activeCanonicalUrl = canonicalPath
