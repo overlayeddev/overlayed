@@ -7,8 +7,7 @@ import Footer from "../../components/footer.astro";
 export const getStaticPaths = (async () => {
   const blogPosts = await getCollection("blog");
 
-  // TODO: fix type
-  return blogPosts.map((file: any) => {
+  return blogPosts.map((file) => {
     return {
       params: {
         slug: `${file.data.customSlug}`,

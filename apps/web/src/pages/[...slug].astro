@@ -7,8 +7,7 @@ import Footer from "../components/footer.astro";
 export const getStaticPaths = (async () => {
   const legalFiles = await getCollection("legal");
 
-  // TODO: fix type
-  return legalFiles.map((file: any) => {
+  return legalFiles.map((file) => {
     return {
       params: {
         slug: file.slug,
