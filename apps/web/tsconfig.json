@@ -1,11 +1,7 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "incremental": true,
-    "lib": ["ES2015", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "target": "ES6",
     "strictNullChecks": true,
-    "jsx": "react-jsx"
-  }
+    "baseUrl": "."
+   }
 }
