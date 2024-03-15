@@ -5,6 +5,7 @@
     "lib": ["ES2015", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "target": "ES6",
+    "strictNullChecks": true,
     "jsx": "react-jsx"
   }
 }

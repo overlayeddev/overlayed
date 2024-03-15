@@ -11,12 +11,7 @@ import proxyMiddleware from "./plugins/proxy-middleware.mjs";
 const integrations = [sitemap(), react(), tailwind(), mdx(), compress()];
 
 if (process.env.NODE_ENV !== "production") {
-  integrations.push(
-    proxyMiddleware([
-      "/stars",
-      "/latest"
-    ]),
-  );
+  integrations.push(proxyMiddleware(["/stars", "/latest"]));
 }
 
 // https://astro.build/config

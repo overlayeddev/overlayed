@@ -50,7 +50,7 @@ import Logo from "../components/logo.astro";
 
     const colors = ["white", "white", "#5875f2", "white"];
     const total = 160;
-    var snowContainer = document.querySelector(".snow-container");
+    const snowContainer = document.querySelector(".snow-container")!;
     for (let i = 1; i <= total; i++) {
       const snowflake = document.createElement("div");
 

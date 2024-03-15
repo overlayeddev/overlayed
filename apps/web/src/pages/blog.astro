@@ -10,7 +10,7 @@ const blogPosts = await getCollection("blog", ({ data }) => {
 
 // Sort my blog posts
 blogPosts.sort(
-  (a, b) =>
+  (a: any, b: any) =>
     new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
 );
 ---
@@ -27,7 +27,8 @@ blogPosts.sort(
         class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3"
       >
         {
-          blogPosts.map((post) => (
+          // TODO: how the hell do we type this?
+          blogPosts.map((post: any) => (
             <div class="p-2">
               <li>
                 <a href={`/blog/${post.data.customSlug}`} class="group">
