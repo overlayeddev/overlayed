@@ -35,7 +35,6 @@ jobs:
         run: pnpm lint
 
   build-tauri:
-    needs: quality
     name: Build (${{ matrix.settings.os }})
     strategy:
       fail-fast: false
@@ -102,7 +101,7 @@ jobs:
           TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
           TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
       - name: Upload unstable ${{ matrix.setting.os }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "overlayed-unstable-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
