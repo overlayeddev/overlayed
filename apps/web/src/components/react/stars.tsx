@@ -45,6 +45,7 @@ const AnimatedArrow = () => {
     <svg
       width="16"
       height="16"
+      fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
       strokeWidth="2"
