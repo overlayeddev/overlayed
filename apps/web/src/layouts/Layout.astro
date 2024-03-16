@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../constants";
 import CommonHead from "../components/common-head.astro";
 import Navbar from "../components/navbar.astro";
 import "../styles/prose.css";
@@ -50,16 +50,6 @@ const { title, description, canonicalPath, ogImage } = Astro.props;
 
       body {
         scroll-behavior: smooth;
-      }
-
-      body::-webkit-scrollbar-track {
-        background: #13151a;
-      }
-
-      body::-webkit-scrollbar-thumb {
-        background-color: #6b6b6b;
-        border-radius: 8px;
-        border: 4px solid #13151a;
       }
     </style>
   </body>

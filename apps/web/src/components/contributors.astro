@@ -5,7 +5,7 @@ import { contributors } from "../contributors";
 <div
   class={"card border-zinc-800 flex flex-col text-center justify-center items-center p-6 rounded-2xl w-full"}
 >
-  <h2 class="text-3xl">Open Source Contributors</h2>
+  <h2 class="text-3xl font-medium">Open Source Contributors</h2>
   <div class="flex pt-8 gap-4 flex-wrap justify-center">
     {
       contributors.map((item) => {
@@ -16,7 +16,7 @@ import { contributors } from "../contributors";
               src={item.avatar_url}
               alt={item.login}
               class={
-                "rounded-full w-16 h-16 mx-auto mb-4 transform transition hover:scale-105 duration-150"
+                "rounded-full w-16 h-16 mx-auto mb-4 transform transition hover:scale-105 duration-150 select-none"
               }
             />
           </a>

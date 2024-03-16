@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // TODO: fix imports
 import type { PlatformDownload } from "types/types";
 import DownloadButton from "./download-button";
-import { API_HOST } from "../../config";
+import { API_HOST } from "../../constants";
 
 export const Platforms = {
   linux: "Linux",
