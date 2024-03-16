@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API_HOST } from "../../config";
+import { API_HOST } from "../../constants";
 
 const LoadingSpinner = () => {
   return (

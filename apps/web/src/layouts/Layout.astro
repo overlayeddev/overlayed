@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION } from "../config";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../constants";
 import CommonHead from "../components/common-head.astro";
 import Navbar from "../components/navbar.astro";
 import "../styles/prose.css";
@@ -51,7 +51,6 @@ const { title, description, canonicalPath, ogImage } = Astro.props;
       body {
         scroll-behavior: smooth;
       }
-      
     </style>
   </body>
 </html>
