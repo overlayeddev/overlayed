@@ -8,6 +8,34 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>();
 
+app.get("/oauth/callback", async (c) => {
+	const code = c.req.query("code");
+
+	if (!code) {
+		return c.body(
+			JSON.stringify({
+				error: "No code provided",
+			}),
+			400,
+			{
+				"Content-Type": "application/json",
+			},
+		);
+	}
+
+	const response = await fetchAuthToken(code, {
+		CLIENT_SECRET: c.env.CLIENT_SECRET,
+		CLIENT_ID: c.env.CLIENT_ID,
+	});
+	const payload = await response.json();
+
+	return c.body(JSON.stringify(payload), {
+		headers: {
+			Accept: "application/json",
+		},
+	});
+});
+
 // allow our app to request a token
 app.post("/token", async (c) => {
 	const body = (await c.req.parseBody()) as { code: string };
