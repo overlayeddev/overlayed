@@ -1,6 +1,7 @@
-name: Deploy Updater
+name: Deploy api
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -15,17 +16,17 @@ jobs:
         id: changes 
         with:
           filters: |
-            updater:
-              - 'apps/updater/**'
+            api:
+              - 'apps/api/**'
       - uses: pnpm/action-setup@v3
-        if: steps.changes.outputs.updater == 'true'
+        if: steps.changes.outputs.api == 'true' && ${{ github.event_name }}" != "workflow_dispatch"
         with:
           version: 8
       - name: Deploy
-        if: steps.changes.outputs.updater == 'true'
+        if: steps.changes.outputs.api == 'true' && ${{ github.event_name }}" != "workflow_dispatch"
         uses: cloudflare/wrangler-action@v3
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: apps/updater
+          workingDirectory: apps/api
           packageManager: pnpm
