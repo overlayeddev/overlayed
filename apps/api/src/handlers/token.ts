@@ -1,5 +1,5 @@
 import { Hono } from "hono/quick";
-import { fetchAuthToken } from "../utils.js";
+import { fetchAuthToken, isProd } from "../utils.js";
 
 type Bindings = {
 	CLIENT_ID: string;
@@ -51,10 +51,15 @@ app.post("/token", async (c) => {
 		);
 	}
 
-	const response = await fetchAuthToken(body.code, {
-		CLIENT_SECRET: c.env.CLIENT_SECRET,
-		CLIENT_ID: c.env.CLIENT_ID,
-	});
+	const response = await fetchAuthToken(
+		body.code,
+		{
+			CLIENT_SECRET: c.env.CLIENT_SECRET,
+			CLIENT_ID: c.env.CLIENT_ID,
+		},
+		// TODO: THIH find another way to do this
+		isProd(c.req.url),
+	);
 	const payload = await response.json();
 
 	return new Response(JSON.stringify(payload), {

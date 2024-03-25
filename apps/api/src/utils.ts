@@ -127,11 +127,6 @@ export async function getLatestVersions({ authToken }: { authToken: string }) {
 	}
 }
 
-// @ts-ignore
-// eslint-disable-next-line no-undef
-const isProd = typeof CF !== "undefined" && CF.environment === "production";
-const baseUrl = isProd ? "https://api.overlayed.dev" : "http://localhost:8787";
-
 // auth stuffz
 export const fetchAuthToken = (
 	code: string,
@@ -139,8 +134,14 @@ export const fetchAuthToken = (
 		CLIENT_ID: string;
 		CLIENT_SECRET: string;
 	},
+	// TODO: find a better way
+	isProd: boolean,
 ) => {
 	const form = new URLSearchParams();
+	const baseUrl = isProd
+		? "https://api.overlayed.dev"
+		: "http://localhost:8787";
+
 	form.append("client_id", env.CLIENT_ID);
 	form.append("client_secret", env.CLIENT_SECRET);
 	form.append("grant_type", "authorization_code");
@@ -158,3 +159,7 @@ export const fetchAuthToken = (
 		},
 	});
 };
+
+export function isProd(url) {
+	return url.startsWith("https://auth.");
+}
