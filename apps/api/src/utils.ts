@@ -127,6 +127,11 @@ export async function getLatestVersions({ authToken }: { authToken: string }) {
 	}
 }
 
+// @ts-ignore
+// eslint-disable-next-line no-undef
+const isProd = typeof CF !== "undefined" && CF.environment === "production";
+const baseUrl = isProd ? "https://api.overlayed.dev" : "http://localhost:8787";
+
 // auth stuffz
 export const fetchAuthToken = (
 	code: string,
@@ -135,16 +140,12 @@ export const fetchAuthToken = (
 		CLIENT_SECRET: string;
 	},
 ) => {
-	const baseUrl = "https://auth.overlayed.dev";
-
 	const form = new URLSearchParams();
 	form.append("client_id", env.CLIENT_ID);
 	form.append("client_secret", env.CLIENT_SECRET);
 	form.append("grant_type", "authorization_code");
+	form.append("redirect_uri", `${baseUrl}/oauth/callback`);
 	form.append("code", code);
-
-	// we can just set this to localhost for now?
-	form.append("redirect_uri", baseUrl);
 
 	return fetch("https://discord.com/api/oauth2/token", {
 		method: "POST",
