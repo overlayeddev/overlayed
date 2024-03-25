@@ -39,6 +39,31 @@ importers:
         specifier: ^1.12.5
         version: 1.12.5
 
+  apps/api:
+    dependencies:
+      hono:
+        specifier: ^4.0.10
+        version: 4.0.10
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20240222.0
+        version: 4.20240222.0
+      '@octokit/types':
+        specifier: ^12.6.0
+        version: 12.6.0
+      lint:
+        specifier: workspace:*
+        version: link:../../tooling/config-eslint
+      types:
+        specifier: workspace:*
+        version: link:../../packages/types
+      typescript:
+        specifier: ^5.4.2
+        version: 5.4.2
+      wrangler:
+        specifier: ^3.32.0
+        version: 3.32.0(@cloudflare/workers-types@4.20240222.0)
+
   apps/desktop:
     dependencies:
       '@axiomhq/js':
@@ -156,31 +181,6 @@ importers:
       vite:
         specifier: ^5.1.5
         version: 5.1.5
-
-  apps/updater:
-    dependencies:
-      hono:
-        specifier: ^4.0.10
-        version: 4.0.10
-    devDependencies:
-      '@cloudflare/workers-types':
-        specifier: ^4.20240222.0
-        version: 4.20240222.0
-      '@octokit/types':
-        specifier: ^12.6.0
-        version: 12.6.0
-      lint:
-        specifier: workspace:*
-        version: link:../../tooling/config-eslint
-      types:
-        specifier: workspace:*
-        version: link:../../packages/types
-      typescript:
-        specifier: ^5.4.2
-        version: 5.4.2
-      wrangler:
-        specifier: ^3.32.0
-        version: 3.32.0(@cloudflare/workers-types@4.20240222.0)
 
   apps/web:
     dependencies:

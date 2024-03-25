@@ -126,3 +126,32 @@ export async function getLatestVersions({ authToken }: { authToken: string }) {
 		return null;
 	}
 }
+
+// auth stuffz
+export const fetchAuthToken = (
+	code: string,
+	env: {
+		CLIENT_ID: string;
+		CLIENT_SECRET: string;
+	},
+) => {
+	const baseUrl = "https://auth.overlayed.dev";
+
+	const form = new URLSearchParams();
+	form.append("client_id", env.CLIENT_ID);
+	form.append("client_secret", env.CLIENT_SECRET);
+	form.append("grant_type", "authorization_code");
+	form.append("code", code);
+
+	// we can just set this to localhost for now?
+	form.append("redirect_uri", baseUrl);
+
+	return fetch("https://discord.com/api/oauth2/token", {
+		method: "POST",
+		body: form.toString(),
+		headers: {
+			"User-Agent": "overlayed-auth-api",
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+	});
+};
