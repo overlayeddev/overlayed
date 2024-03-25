@@ -2,7 +2,7 @@ import { RPCCommand } from "./command";
 import { fetch, Body } from "@tauri-apps/api/http";
 import { RPCEvent } from "./event";
 import * as uuid from "uuid";
-import WebSocket from "tauri-plugin-websocket-api";
+// import WebSocket from "tauri-plugin-websocket-api";
 import type { Message } from "tauri-plugin-websocket-api";
 import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
@@ -61,9 +61,9 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.VOICE_STATE_UPDATE,
 ];
 
-const STREAM_KIT_APP_ID = "207646673902501888";
+const OVERLAYED_APP_ID = "905987126099836938";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
-const STREAMKIT_URL = "https://streamkit.discord.com";
+const OVERLAYED_ORIGIN_URL = "https://overlayed.dev";
 
 interface DiscordPayload {
   cmd: `${RPCCommand}`;
@@ -96,35 +96,49 @@ class SocketManager {
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
-    console.log("Init web socket manager");
-    this.disconnect();
+    const socket = new WebSocket(`${WEBSOCKET_URL}/?v=1&client_id=${OVERLAYED_APP_ID}`);
 
-    this._navigate = navigate;
+    socket.onopen = () => {
+      console.log("Connected to discord");
+    };
 
-    const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
-    try {
-      this.socket = await WebSocket.connect(connectionUrl, {
-        headers: {
-          // we need to set the origin header to the discord streamkit domain
-          origin: STREAMKIT_URL,
-        },
-      });
+    socket.onmessage = (event) => {
+      console.log("Message from discord", event.data);
+    };
 
-      this.isConnected = true;
+    socket.onclose = (code) => {
+      console.log("Disconnected from discord", code);
+    };
 
-      this.socket.addListener(this.onMessage.bind(this));
-    } catch (e) {
-      console.log(e);
-      this.isConnected = false;
-      this.navigate("/error");
-    }
-
-    // subscribe to local storage events to see if we need to move the user to the auth page
-    window.addEventListener("storage", e => {
-      if (e.key === "discord_access_token" && !e.newValue) {
-        this.navigate("/");
-      }
-    });
+    // console.log("Init web socket manager");
+    // this.disconnect();
+    //
+    // this._navigate = navigate;
+    //
+    // const connectionUrl = `${WEBSOCKET_URL}/?v=1`;
+    // try {
+    //   this.socket = await WebSocket.connect(connectionUrl, {
+    //     // headers: {
+    //     //   // we need to set the origin header to the discord streamkit domain
+    //     //   origin: OVERLAYED_ORIGIN_URL,
+    //     // },
+    //   });
+    //
+    //   this.isConnected = true;
+    //
+    //   this.socket.addListener(this.onMessage.bind(this));
+    // } catch (e) {
+    //   console.log(e);
+    //   this.isConnected = false;
+    //   this.navigate("/error");
+    // }
+    //
+    // // subscribe to local storage events to see if we need to move the user to the auth page
+    // window.addEventListener("storage", e => {
+    //   if (e.key === "discord_access_token" && !e.newValue) {
+    //     this.navigate("/");
+    //   }
+    // });
   }
 
   public disconnect() {
@@ -143,7 +157,7 @@ class SocketManager {
   private authenticate() {
     this.send({
       args: {
-        client_id: STREAM_KIT_APP_ID,
+        client_id: OVERLAYED_APP_ID,
         scopes: ["rpc", "identify"],
       },
       cmd: RPCCommand.AUTHORIZE,
@@ -164,6 +178,7 @@ class SocketManager {
   private async onMessage(event: Message) {
     // TODO: this has to be a bug in the upstream lib, we should get a proper code
     // and not have to check the raw dawg string to see if something is wrong
+    console.log(event)
     if (typeof event === "string" && (event as string).includes("Connection reset without closing handshake")) {
       this.navigate("/error");
     }
@@ -250,7 +265,7 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
+      const res = await fetch<TokenResponse>(`${OVERLAYED_ORIGIN_URL}/overlay/token`, {
         method: "POST",
         body: Body.json({ code }),
       });
