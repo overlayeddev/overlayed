@@ -160,6 +160,6 @@ export const fetchAuthToken = (
 	});
 };
 
-export function isProd(url) {
-	return url.startsWith("https://auth.");
+export function isProd(url: string) {
+	return url.startsWith("https://api.");
 }
