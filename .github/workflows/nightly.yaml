@@ -100,6 +100,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
           TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
+          VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
       - name: Upload unstable ${{ matrix.setting.os }}
         uses: actions/upload-artifact@v4
         with:
