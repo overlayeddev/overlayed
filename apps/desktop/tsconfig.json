@@ -1,7 +1,6 @@
 {
   "extends": "tsconfig/vite-react.json",
   "compilerOptions": {
-    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

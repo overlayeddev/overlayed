@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 import type { PlatformDownload } from "types";
-import DownloadButton from "./download-button";
-import { API_HOST } from "../../constants";
+import DownloadButton from "./download-button.js";
+import { API_HOST } from "../../constants.js";
 
 export const Platforms = {
   linux: "Linux",

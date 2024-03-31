@@ -1,4 +1,4 @@
-import { ReleaseResponse, RepoResponse } from "./types";
+import { ReleaseResponse, RepoResponse } from "./types.js";
 import { LatestVersion } from "types";
 
 const GIT_USER = "Hacksore";
