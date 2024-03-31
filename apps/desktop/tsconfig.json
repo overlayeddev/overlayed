@@ -1,7 +1,7 @@
 {
   "extends": "tsconfig/vite-react.json",
   "compilerOptions": {
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
