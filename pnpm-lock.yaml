@@ -54,6 +54,9 @@ importers:
       lint:
         specifier: workspace:*
         version: link:../../tooling/config-eslint
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tooling/config-typescript
       types:
         specifier: workspace:*
         version: link:../../packages/types

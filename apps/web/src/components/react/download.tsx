@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-// TODO: fix imports
-import type { PlatformDownload } from "types/types";
+import type { PlatformDownload } from "types";
 import DownloadButton from "./download-button";
 import { API_HOST } from "../../constants";
 

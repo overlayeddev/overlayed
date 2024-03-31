@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { Platforms } from "./download";
-import type { PlatformDownload } from "types/types";
+import type { PlatformDownload } from "types";
 import { MacIcon, WindowsIcon, LinuxIcon } from "./icons";
 import { track } from "@vercel/analytics";
 
