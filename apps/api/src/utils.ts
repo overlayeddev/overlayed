@@ -1,5 +1,5 @@
-import { ReleaseResponse, RepoResponse } from "./types";
-import { LatestVersion } from "types/types";
+import { ReleaseResponse, RepoResponse } from "./types.js";
+import { LatestVersion } from "types";
 
 const GIT_USER = "Hacksore";
 const GIT_REPO = "overlayed";

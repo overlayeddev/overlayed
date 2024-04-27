@@ -2,8 +2,10 @@
 	"name": "api",
 	"version": "0.0.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"deploy": "wrangler deploy",
+		"build": "wrangler deploy --dry-run --outdir=dist",
 		"lint": "eslint . --ext .js,.ts",
 		"check:format": "prettier --check \"**/*.{ts,js,md}\"",
 		"clean": "rm -rf dist .turbo node_modules",
@@ -15,6 +17,7 @@
 		"@octokit/types": "^12.6.0",
 		"lint": "workspace:*",
 		"types": "workspace:*",
+		"tsconfig": "workspace:*",
 		"typescript": "^5.4.2",
 		"wrangler": "^3.32.0"
 	},

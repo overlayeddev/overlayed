@@ -54,6 +54,9 @@ importers:
       lint:
         specifier: workspace:*
         version: link:../../tooling/config-eslint
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tooling/config-typescript
       types:
         specifier: workspace:*
         version: link:../../packages/types
@@ -257,6 +260,9 @@ importers:
       sharp:
         specifier: ^0.33.2
         version: 0.33.2
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tooling/config-typescript
       types:
         specifier: workspace:*
         version: link:../../packages/types

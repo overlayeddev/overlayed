@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 
-// TODO: fix imports
-import type { PlatformDownload } from "types/types";
-import DownloadButton from "./download-button";
-import { API_HOST } from "../../constants";
+import type { PlatformDownload } from "types";
+import DownloadButton from "./download-button.js";
+import { API_HOST } from "../../constants.js";
 
 export const Platforms = {
   linux: "Linux",
