@@ -176,10 +176,10 @@ class SocketManager {
 
     const payload: DiscordPayload = JSON.parse(event.data);
 
-    // console.log(payload);
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
       const acessToken = this.userdataStore.accessToken;
+
       if (acessToken) {
         this.login(acessToken);
       } else {
