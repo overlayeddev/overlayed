@@ -14,14 +14,9 @@ import { useKeybinds } from "./hooks/use-keybinds";
 import { useAppStore } from "./store";
 import { useThemeSync } from "./hooks/use-theme-sync";
 import { Toaster } from "./components/ui/toaster";
-import { Suspense, useEffect, useRef } from "react";
-import { migrate } from "./migrations/new-app-id";
-("./migrations/new-app-id");
+import { useEffect } from "react";
 
 function App() {
-
-  const migrateRef = useRef(false);
-
   useKeybinds();
   useSocket();
   useThemeSync();
@@ -40,51 +35,37 @@ function App() {
 
   const visibleClass = visible ? "opacity-100" : "opacity-0";
 
-  // run migrations and show loading spinner if doing them
-  useEffect(() => {
-    if (migrateRef.current) return;
-    
-    migrate().then(() => console.log("Migrations complete"))
-
-    // mark it done
-    migrateRef.current = true;
-
-  }, []);
-
   return (
-    <Suspense fallback={<h2>Running..</h2>}>
-      <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
-        {!clickthrough && (
-          <NavBar
-            isUpdateAvailable={isAvailable}
-            clickthrough={clickthrough}
-            alignDirection={horizontal}
-            setAlignDirection={setHorizontalDirection}
-          />
-        )}
+    <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
+      {!clickthrough && (
+        <NavBar
+          isUpdateAvailable={isAvailable}
+          clickthrough={clickthrough}
+          alignDirection={horizontal}
+          setAlignDirection={setHorizontalDirection}
+        />
+      )}
 
-        <Toaster />
-        <Routes>
-          <Route path="/" Component={MainView} />
-          <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
-          <Route
-            path="/settings"
-            element={
-              <SettingsView
-                update={{
-                  isAvailable,
-                  error,
-                  status,
-                }}
-              />
-            }
-          />
-          <Route path="/error" Component={ErrorView} />
-        </Routes>
-      </div>
-    </Suspense>
+      <Toaster />
+      <Routes>
+        <Route path="/" Component={MainView} />
+        <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
+        <Route
+          path="/settings"
+          element={
+            <SettingsView
+              update={{
+                isAvailable,
+                error,
+                status,
+              }}
+            />
+          }
+        />
+        <Route path="/error" Component={ErrorView} />
+      </Routes>
+    </div>
   );
 }
 
 export default App;
-
