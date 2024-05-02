@@ -2,7 +2,7 @@ import { RPCCommand } from "./command";
 import { fetch, Body } from "@tauri-apps/api/http";
 import { RPCEvent } from "./event";
 import * as uuid from "uuid";
-// import WebSocket from "tauri-plugin-websocket-api";
+import TauriWebSocket from "tauri-plugin-websocket-api";
 import type { Message } from "tauri-plugin-websocket-api";
 import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
@@ -61,9 +61,10 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.VOICE_STATE_UPDATE,
 ];
 
-const OVERLAYED_APP_ID = "905987126099836938";
+console.log("ligma");
+const APP_ID = "905987126099836938";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
-const OVERLAYED_ORIGIN_URL = "https://overlayed.dev";
+const API_URL = "https://api.overlayed.dev";
 
 interface DiscordPayload {
   cmd: `${RPCCommand}`;
@@ -80,7 +81,7 @@ interface DiscordPayload {
  * A generic manager the socket
  */
 class SocketManager {
-  public socket: WebSocket | null = null;
+  public socket: TauriWebSocket | null = null;
   public currentChannelId = null;
   // TODO: move this so we can use it in settings too
   public userdataStore: UserdataStore = new UserdataStore();
@@ -102,13 +103,20 @@ class SocketManager {
       console.log("Connected to discord");
     };
 
-    socket.onmessage = (event) => {
-      console.log("Message from discord", event.data);
-    };
+    console.log(window.location);
+    const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
 
-    socket.onclose = (code) => {
-      console.log("Disconnected from discord", code);
-    };
+    try {
+      console.log("atempting connection to discord...");
+      this.socket = await TauriWebSocket.connect(connectionUrl, {
+        headers: {
+          // we need to set the origin header to the discord streamkit domain
+          origin: API_URL,
+        },
+      });
+
+      this.isConnected = true;
+      console.log("✅ Connected to discord websocket");
 
     // console.log("Init web socket manager");
     // this.disconnect();
@@ -157,7 +165,7 @@ class SocketManager {
   private authenticate() {
     this.send({
       args: {
-        client_id: OVERLAYED_APP_ID,
+        client_id: APP_ID,
         scopes: ["rpc", "identify"],
       },
       cmd: RPCCommand.AUTHORIZE,
@@ -165,6 +173,7 @@ class SocketManager {
   }
 
   private login(accessToken: string) {
+    console.log("Logging in with access token");
     this.send({
       cmd: RPCCommand.AUTHENTICATE,
       args: { access_token: accessToken },
@@ -265,16 +274,22 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${OVERLAYED_ORIGIN_URL}/overlay/token`, {
-        method: "POST",
-        body: Body.json({ code }),
-      });
+      try {
+        const res = await fetch<TokenResponse>(`${API_URL}/token`, {
+          method: "POST",
+          body: Body.json({ code }),
+        });
 
-      // we need send the token to discord
-      this.userdataStore.setAccessToken(res.data.access_token);
+        console.log(res);
 
-      // login with the token
-      this.login(res.data.access_token);
+        // we need send the token to discord
+        this.userdataStore.setAccessToken(res.data.access_token);
+
+        // login with the token
+        this.login(res.data.access_token);
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
