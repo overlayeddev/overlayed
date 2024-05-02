@@ -61,7 +61,7 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.VOICE_STATE_UPDATE,
 ];
 
-const APP_ID = "905987126099836938";
+export const APP_ID = "905987126099836938";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
 const API_URL = "https://api.overlayed.dev";
 

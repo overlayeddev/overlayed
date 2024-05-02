@@ -36,9 +36,10 @@
         "open": ".*"
       },
       "fs": {
-        "scope": ["$APPDATA/*"],
+        "scope": ["$APPCONFIG/**", "$APPDATA/**"],
         "readFile": true,
         "writeFile": true,
+        "createDir": true,
         "exists": true
       },
       "http": {
