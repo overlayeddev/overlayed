@@ -2,7 +2,7 @@ import { RPCCommand } from "./command";
 import { fetch, Body } from "@tauri-apps/api/http";
 import { RPCEvent } from "./event";
 import * as uuid from "uuid";
-import TauriWebSocket from "tauri-plugin-websocket-api";
+import WebSocket from "tauri-plugin-websocket-api";
 import type { Message } from "tauri-plugin-websocket-api";
 import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
@@ -61,7 +61,6 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.VOICE_STATE_UPDATE,
 ];
 
-console.log("ligma");
 const APP_ID = "905987126099836938";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
 const API_URL = "https://api.overlayed.dev";
@@ -81,7 +80,7 @@ interface DiscordPayload {
  * A generic manager the socket
  */
 class SocketManager {
-  public socket: TauriWebSocket | null = null;
+  public socket: WebSocket | null = null;
   public currentChannelId = null;
   // TODO: move this so we can use it in settings too
   public userdataStore: UserdataStore = new UserdataStore();
@@ -97,56 +96,34 @@ class SocketManager {
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
-    const socket = new WebSocket(`${WEBSOCKET_URL}/?v=1&client_id=${OVERLAYED_APP_ID}`);
+    console.log("Init web socket manager");
+    this.disconnect();
 
-    socket.onopen = () => {
-      console.log("Connected to discord");
-    };
+    this._navigate = navigate;
 
-    console.log(window.location);
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
-
     try {
-      console.log("atempting connection to discord...");
-      this.socket = await TauriWebSocket.connect(connectionUrl, {
+      this.socket = await WebSocket.connect(connectionUrl, {
         headers: {
-          // we need to set the origin header to the discord streamkit domain
           origin: API_URL,
         },
       });
 
       this.isConnected = true;
-      console.log("✅ Connected to discord websocket");
 
-    // console.log("Init web socket manager");
-    // this.disconnect();
-    //
-    // this._navigate = navigate;
-    //
-    // const connectionUrl = `${WEBSOCKET_URL}/?v=1`;
-    // try {
-    //   this.socket = await WebSocket.connect(connectionUrl, {
-    //     // headers: {
-    //     //   // we need to set the origin header to the discord streamkit domain
-    //     //   origin: OVERLAYED_ORIGIN_URL,
-    //     // },
-    //   });
-    //
-    //   this.isConnected = true;
-    //
-    //   this.socket.addListener(this.onMessage.bind(this));
-    // } catch (e) {
-    //   console.log(e);
-    //   this.isConnected = false;
-    //   this.navigate("/error");
-    // }
-    //
-    // // subscribe to local storage events to see if we need to move the user to the auth page
-    // window.addEventListener("storage", e => {
-    //   if (e.key === "discord_access_token" && !e.newValue) {
-    //     this.navigate("/");
-    //   }
-    // });
+      this.socket.addListener(this.onMessage.bind(this));
+    } catch (e) {
+      console.log(e);
+      this.isConnected = false;
+      this.navigate("/error");
+    }
+
+    // subscribe to local storage events to see if we need to move the user to the auth page
+    window.addEventListener("storage", e => {
+      if (e.key === "discord_access_token" && !e.newValue) {
+        this.navigate("/");
+      }
+    });
   }
 
   public disconnect() {
@@ -173,7 +150,6 @@ class SocketManager {
   }
 
   private login(accessToken: string) {
-    console.log("Logging in with access token");
     this.send({
       cmd: RPCCommand.AUTHENTICATE,
       args: { access_token: accessToken },
@@ -187,7 +163,6 @@ class SocketManager {
   private async onMessage(event: Message) {
     // TODO: this has to be a bug in the upstream lib, we should get a proper code
     // and not have to check the raw dawg string to see if something is wrong
-    console.log(event)
     if (typeof event === "string" && (event as string).includes("Connection reset without closing handshake")) {
       this.navigate("/error");
     }
@@ -274,22 +249,16 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      try {
-        const res = await fetch<TokenResponse>(`${API_URL}/token`, {
-          method: "POST",
-          body: Body.json({ code }),
-        });
+      const res = await fetch<TokenResponse>(`${API_URL}/token`, {
+        method: "POST",
+        body: Body.json({ code }),
+      });
 
-        console.log(res);
+      // we need send the token to discord
+      this.userdataStore.setAccessToken(res.data.access_token);
 
-        // we need send the token to discord
-        this.userdataStore.setAccessToken(res.data.access_token);
-
-        // login with the token
-        this.login(res.data.access_token);
-      } catch (e) {
-        console.error(e);
-      }
+      // login with the token
+      this.login(res.data.access_token);
     }
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
