@@ -43,7 +43,7 @@ app.get("/oauth/callback", async (c) => {
 
 // allow our app to request a token
 app.post("/token", async (c) => {
-	const body = (await c.req.parseBody()) as { code: string };
+	const body = (await c.req.json()) as { code: string };
 	if (!body.code) {
 		return c.body(
 			JSON.stringify({
