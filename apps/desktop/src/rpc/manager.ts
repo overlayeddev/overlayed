@@ -277,9 +277,13 @@ class SocketManager {
     // console.log(payload);
     // we are ready to do things cause we are fully authed
     if (payload.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
-      // if they have an invalid we remove it and make them auth again
+      // they have a token from the old client id
+      if (payload.data.code === RPCErrors.INVALID_CLIENTID) {
+        this.userdataStore.removeAccessToken();
+      }
+
+      // they have an invalid token
       if (payload.data.code === RPCErrors.INVALID_TOKEN) {
-        this.store.pushError(payload.data.message);
         this.userdataStore.removeAccessToken();
       }
 
