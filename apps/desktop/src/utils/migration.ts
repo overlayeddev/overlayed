@@ -2,8 +2,8 @@ import { BaseDirectory, createDir, exists, readTextFile, writeFile } from "@taur
 
 export async function completeMigration(name: string) {
   try {
-    if (!await exists("migrations", { dir: BaseDirectory.AppConfig })) {
-      await createDir("migrations", { dir: BaseDirectory.AppConfig }); 
+    if (!(await exists("migrations", { dir: BaseDirectory.AppConfig }))) {
+      await createDir("migrations", { dir: BaseDirectory.AppConfig });
     }
 
     await writeFile(`migrations/${name}.json`, JSON.stringify({ completed: true }), { dir: BaseDirectory.AppConfig });
