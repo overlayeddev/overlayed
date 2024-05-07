@@ -1,3 +1,7 @@
 name = "updater"
 main = "src/index.ts"
 compatibility_date = "2023-11-21"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "overlayed-nightly"

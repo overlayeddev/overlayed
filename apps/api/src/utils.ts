@@ -1,4 +1,4 @@
-import { ReleaseResponse, RepoResponse } from "./types.js";
+import { ActionRun, ReleaseResponse, RepoResponse } from "./types.js";
 import { LatestVersion } from "types";
 
 const GIT_USER = "Hacksore";
@@ -159,6 +159,15 @@ export const fetchAuthToken = (
 		},
 	});
 };
+
+export async function getUnstablePlatformDownloads({
+	authToken,
+}: {
+	authToken: string;
+}) {
+	// TODO:: fetch from cloudflare r2
+	return {}
+}
 
 export function isProd(url: string) {
 	return url.startsWith("https://api.");

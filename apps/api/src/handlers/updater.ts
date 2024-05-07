@@ -1,5 +1,5 @@
 import { Hono } from "hono/quick";
-import { getLatestVersions, getPlatformDownloads, getStars } from "../utils.js";
+import { getLatestVersions, getPlatformDownloads, getStars, getUnstablePlatformDownloads } from "../utils.js";
 
 type Bindings = {
 	GITHUB_TOKEN: string;
@@ -41,6 +41,34 @@ app.get("/latest", async (c) => {
 			downloads: response.versions,
 			latestVersion: response.latestVersion,
 		}),
+		200,
+		{
+			"Content-Type": "application/json",
+		},
+	);
+});
+
+
+app.get("/latest/unstable", async (c) => {
+	const response = await getUnstablePlatformDownloads({
+		authToken: c.env.GITHUB_TOKEN,
+	});
+
+	if (!response) {
+		return c.body(
+			JSON.stringify({
+				downloads: [],
+				latestVersion: "",
+			}),
+			500,
+			{
+				"Content-Type": "application/json",
+			},
+		);
+	}
+
+	return c.body(
+		JSON.stringify(response),
 		200,
 		{
 			"Content-Type": "application/json",

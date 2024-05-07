@@ -34,9 +34,7 @@ export const Download = () => {
       <div className="flex flex-col items-center">
         {isLoading ? (
           <>
-            <h2 className="text-2xl pb-8">
-              Loading...
-            </h2>
+            <h2 className="text-2xl pb-8">Loading...</h2>
             <div className="flex gap-2 sm:gap-6">
               {Array(3)
                 .fill("")
@@ -49,7 +47,7 @@ export const Download = () => {
             </div>
           </>
         ) : (
-          <>
+          <div className="text-center">
             <h2 className="text-2xl pb-8">
               Download ({platformDownloads.latestVersion})
             </h2>
@@ -58,7 +56,9 @@ export const Download = () => {
                 <DownloadButton key={item.platform} platform={item} />
               ))}
             </div>
-          </>
+            <p className="text-sm pt-2">
+                <a href="/download/unstable">Looking for unstable?</a></p>
+          </div>
         )}
       </div>
     </div>
