@@ -38,6 +38,18 @@ async function start() {
 
   const dir = path.join(__dirname, "../apps/web/src");
   await fs.writeFile(`${dir}/contributors.ts`, text);
+
+  // download all the avatars as well
+  const avatarsDir = path.join(dir, "assets", "avatars");
+  await fs.mkdir(avatarsDir, { recursive: true });
+
+  for (const contributor of contributors) {
+    if (contributor.avatar_url) {
+      const avatar = await fetch(contributor.avatar_url).then(res => res.blob());
+      const arrayBuffer = await new Response(avatar).arrayBuffer();
+      await fs.writeFile(`${avatarsDir}/${contributor.login?.toLowerCase()}.png`, Buffer.from(arrayBuffer));
+    }
+  }
 }
 
 start();

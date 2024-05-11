@@ -1,5 +1,12 @@
 ---
 import { contributors } from "../contributors";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/avatars/*.png",
+);
+
 ---
 
 <div
@@ -11,9 +18,9 @@ import { contributors } from "../contributors";
       contributors.map((item) => {
         return (
           <a href={item.html_url} target="_blank" rel="noopener noreferrer">
-            <img
+            <Image
               title={item.login}
-              src={item.avatar_url}
+              src={images[`/src/assets/avatars/${item.login.toLowerCase()}.png`]()}
               alt={item.login}
               class={
                 "rounded-full w-16 h-16 mx-auto mb-4 transform transition hover:scale-105 duration-150 select-none"
