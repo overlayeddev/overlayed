@@ -18,7 +18,6 @@
 		"lint": "workspace:*",
 		"types": "workspace:*",
 		"tsconfig": "workspace:*",
-		"typescript": "^5.4.2",
 		"wrangler": "^3.32.0"
 	},
 	"dependencies": {

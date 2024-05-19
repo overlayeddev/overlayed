@@ -1,5 +1,6 @@
 import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
+import eslintPluginAstro from "eslint-plugin-astro";
 
 // NOTE: v9 is way diff
 // https://eslint.org/blog/2022/08/new-config-system-part-1/
@@ -27,4 +28,5 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  ...eslintPluginAstro.configs.recommended,
 );
