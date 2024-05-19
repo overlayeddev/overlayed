@@ -69,7 +69,7 @@ const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
   });
 
   const userMapSorted: Record<string, OverlayedUser> = {};
-  for (const [_, item] of sortedUserArray) {
+  for (const [, item] of sortedUserArray) {
     userMapSorted[item.user.id] = createUserStateItem(item);
   }
 
@@ -87,7 +87,7 @@ const sortOverlayedUsers = (myId: string | undefined, users: Record<string, Over
   });
 
   const userMapSorted: Record<string, OverlayedUser> = {};
-  for (const [_, item] of sortedUserArray) {
+  for (const [, item] of sortedUserArray) {
     userMapSorted[item.id] = item;
   }
 
@@ -96,8 +96,6 @@ const sortOverlayedUsers = (myId: string | undefined, users: Record<string, Over
 
 // TODO: split this into multiple stores
 export const useAppStore = create<AppState & AppActions>()(
-  // TODO: fix later
-  // @ts-ignore
   immer(set => ({
     visible: true,
     me: null,

@@ -50,7 +50,7 @@ export class Config {
         ...this.config,
         // NOTE: set new keys added to the default value
         ...newKeys.reduce((acc, key) => {
-          // @ts-ignore
+          // @ts-expect-error not sure why this errors but need to fix it
           acc[key] = DEFAULT_OVERLAYED_CONFIG[key as OverlayedConfigKey];
           return acc;
         }, {} as OverlayedConfig),
@@ -58,9 +58,11 @@ export class Config {
 
       // fuck it persist it
       this.save();
-    } catch (e) {
+    } catch (e: unknown) {
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();
+
+      console.error(e);
     }
   };
 

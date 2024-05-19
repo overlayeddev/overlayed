@@ -11,4 +11,10 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  {
+    rules: {
+      // TODO: I should turn this off
+      "@typescript-eslint/no-explicit-any": "off",
+    }
+  }
 );
