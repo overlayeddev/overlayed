@@ -54,7 +54,7 @@ export const Updater = ({
         </DialogTrigger>
         <DialogContent className="w-[80%]">
           <form
-            onSubmit={async _event => {
+            onSubmit={async () => {
               // TODO:
               console.log("installing update");
               try {
