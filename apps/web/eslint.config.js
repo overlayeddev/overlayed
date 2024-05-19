@@ -6,27 +6,17 @@ import eslintPluginAstro from "eslint-plugin-astro";
 // https://eslint.org/blog/2022/08/new-config-system-part-1/
 // https://eslint.org/blog/2022/08/new-config-system-part-2/
 
-// module.exports = {
-//   extends: [require.resolve("lint/node")],
-//   overrides: [
-//     {
-//       files: ["*.astro"],
-//       parser: "astro-eslint-parser",
-//       parserOptions: {
-//         parser: "@typescript-eslint/parser",
-//         extraFileExtensions: [".astro"],
-//       },
-//       rules: {},
-//     },
-//   ],
-// };
-
-// TODO: tracking support via https://github.com/eslint/eslint/issues/18391
 export default tseslint.config(
   {
-    ignores: ["dist", ".vercel"],
+    ignores: ["dist", ".vercel", "**/*.mjs", "**/*.d.ts"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   ...eslintPluginAstro.configs.recommended,
+  {
+    rules: {
+      // TODO: I should turn this off
+      "@typescript-eslint/no-explicit-any": "off",
+    }
+  }
 );
