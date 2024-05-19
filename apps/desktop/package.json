@@ -7,7 +7,7 @@
     "start": "tauri dev",
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint 'src/**/*' --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint",
     "clean": "rm -rf dist .turbo node_modules",
     "check:format": "prettier --check 'src/**/*.{ts,js,tsx,jsx}'",
     "format": "prettier --write .",
