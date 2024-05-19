@@ -50,8 +50,6 @@ app.get("/latest", async (c) => {
 
 app.get("/:target/:arch/:currentVersion", async (c) => {
 	// TODO: updater metrics maybe?
-	const target = c.req.param("target");
-	const arch = c.req.param("arch");
 	const currentVersion = c.req.param("currentVersion");
 
 	try {
