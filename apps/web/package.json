@@ -5,7 +5,7 @@
   "scripts": {
     "start": "astro dev",
     "build": "astro check && astro build",
-    "lint": "eslint --ext .astro,.js,.ts 'src/**/*'",
+    "lint": "eslint",
     "check:format": "prettier --check \"**/*.{astro,ts,js}\"",
     "clean": "rm -rf dist .turbo node_modules .vercel .astro",
     "format": "prettier --write \"**/*.{astro,ts,js}\"",
