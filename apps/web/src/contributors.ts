@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 624
+        "contributions": 625
     },
     {
         "login": "maxdemaio",
