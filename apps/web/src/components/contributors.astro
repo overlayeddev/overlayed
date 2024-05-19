@@ -6,7 +6,6 @@ import { Image } from "astro:assets";
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/avatars/*.png",
 );
-
 ---
 
 <div
@@ -20,7 +19,9 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
           <a href={item.html_url} target="_blank" rel="noopener noreferrer">
             <Image
               title={item.login}
-              src={images[`/src/assets/avatars/${item.login.toLowerCase()}.png`]()}
+              src={images[
+                `/src/assets/avatars/${item.login.toLowerCase()}.png`
+              ]()}
               alt={item.login}
               class={
                 "rounded-full w-16 h-16 mx-auto mb-4 transform transition hover:scale-105 duration-150 select-none"
