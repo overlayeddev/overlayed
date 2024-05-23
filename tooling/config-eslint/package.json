@@ -1,19 +1,21 @@
 {
   "name": "lint",
   "version": "0.0.0",
-  "type": "commonjs",
+  "type": "module",
   "files": [
     "node.js",
-    "next.js"
+    "next.js",
+    "package.json"
   ],
   "scripts": {
     "format": "prettier \"**/*.{ts,tsx,md,mdx,json}\" --check"
   },
   "dependencies": {
-    "typescript-eslint": "^8.0.0-alpha.14",
     "@vercel/style-guide": "^4.0.2",
     "eslint": "^9.3.0",
     "eslint-config-turbo": "^1.13.3",
-    "tsconfig": "workspace:*"
+    "tsconfig": "workspace:*",
+    "@eslint/js": "^9.3.0",
+    "typescript-eslint": "^8.0.0-alpha.14"
   }
 }

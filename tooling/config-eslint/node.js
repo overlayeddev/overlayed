@@ -1,14 +1,19 @@
-const { rules } = require("./utils/rules");
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
 
-module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
+const config = tseslint.config(
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    ignores: ["node_modules/", "dist/"],
   },
-  extends: ["eslint:recommended"],
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
-  root: true,
-  rules,
-};
+  {
+    rules: {
+      quotes: ["error", "double"],
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  }
+);
+
+export default config;

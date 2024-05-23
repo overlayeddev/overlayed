@@ -1,8 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import blogOgImage from "../assets/blog/overlayed-blog.png";
+
+// get type of posts
+type BlogPost = CollectionEntry<"blog">;
 
 const blogPosts = await getCollection("blog", ({ data }) => {
   return data.draft !== true;
@@ -10,7 +13,7 @@ const blogPosts = await getCollection("blog", ({ data }) => {
 
 // Sort my blog posts
 blogPosts.sort(
-  (a: any, b: any) =>
+  (a: BlogPost, b: BlogPost) =>
     new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf(),
 );
 ---
@@ -27,8 +30,7 @@ blogPosts.sort(
         class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 sm:gap-y-16 lg:grid-cols-3"
       >
         {
-          // TODO: how the hell do we type this?
-          blogPosts.map((post: any) => (
+          blogPosts.map((post: BlogPost) => (
             <div class="p-2">
               <li>
                 <a href={`/blog/${post.data.customSlug}`} class="group">
