@@ -6,10 +6,10 @@ import { useConfigValue } from "@/hooks/use-config-value";
 export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR }) => {
   const { users, me } = useAppStore();
 
-  const { value: showOnlyTalkingUsers } = useConfigValue<boolean>("showOnlyTalkingUsers");
+  const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
 
   const allUsers = Object.entries(users);
-  const userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking || item.id === me.id) : allUsers;
+  const userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking || item.id === me?.id) : allUsers;
 
   return (
     <div>

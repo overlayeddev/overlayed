@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { OverlayedUser, VoiceStateUser } from "./types";
+import type { CurrentChannel, OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 import { enableMapSet } from "immer";
 
@@ -33,10 +33,7 @@ export interface AppState {
   visible: boolean;
   clickThrough: boolean;
   me: OverlayedUser | null;
-  currentChannel: {
-    id: string;
-    name: string;
-  } | null;
+  currentChannel: CurrentChannel | null;
   users: Record<string, OverlayedUser>;
   discordErrors: Set<string>;
 }
@@ -50,7 +47,7 @@ export interface AppActions {
   clearUsers: () => void;
   removeUser: (id: string) => void;
   addUser: (user: VoiceStateUser) => void;
-  setCurrentChannel: (channel: string | null) => void;
+  setCurrentChannel: (channel: CurrentChannel | null) => void;
   setMe: (user: OverlayedUser | null) => void;
   pushError: (message: string) => void;
   resetErrors: () => void;

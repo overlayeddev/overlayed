@@ -83,6 +83,11 @@ export interface OverlayedUser {
   lastUpdate: number;
 }
 
+export interface CurrentChannel {
+  id: string;
+  name: string;
+}
+
 export interface VoiceStateData {
   nick: string;
   mute: boolean;

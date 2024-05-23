@@ -25,5 +25,6 @@ export const useConfigValue = <T>(
     };
   }, []);
 
+  // @ts-expect-error need to fix this?
   return { value };
 };

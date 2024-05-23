@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { emit } from "@tauri-apps/api/event";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { VoiceStateUser, VoiceUser } from "@/types";
+import type { VoiceUser } from "@/types";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();

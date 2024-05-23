@@ -235,6 +235,7 @@ class SocketManager {
       // try to find the user
       this.requestUserChannel();
 
+      // TODO: is this needed cause it's just the id for some reason
       this.store.setCurrentChannel(payload.data.channel_id);
       if (payload.data?.channel_id) {
         this.send({
