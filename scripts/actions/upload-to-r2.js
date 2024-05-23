@@ -16,9 +16,12 @@ const S3 = new S3Client({
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }, paths, os = "mac") => {
+  console.log("Paths:", paths);
+
   // parse the paths
   const files = paths.split("\n").map(path => path.trim());
 
+  console.log("Files:", files);
   for (const f of files) {
     const fileData = await fs.readFile(f);
     const fileName = f.split(path.sep).pop();
