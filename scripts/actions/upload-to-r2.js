@@ -15,7 +15,7 @@ const S3 = new S3Client({
 });
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
-export const script = async ({ context, github }, paths, os) => {
+export const script = async ({ context, github }, paths, os = "mac") => {
   // parse the paths
   const files = paths.split("\n").map(path => path.trim());
 
