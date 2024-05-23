@@ -20,7 +20,7 @@ export interface OverlayedUser {
    */
   avatarHash: string;
 
-  avatarDecorationData: any;
+  avatarDecorationData: unknown;
 
   /**
    * @property {boolean} talking - flag to indicate if the user is talking
@@ -101,7 +101,7 @@ export interface ChannelJoinEvent {
   user_limit: string;
   guild_id: string;
   position: number;
-  messages: any;
+  messages: unknown[];
   voice_states: VoiceStateData[];
 }
 
@@ -121,7 +121,7 @@ interface VoiceState {
 // TODO: name these better
 interface VoiceUser {
   avatar: string;
-  avatar_decoration_data: any;
+  avatar_decoration_data: unknown;
   bot: boolean;
   discriminator: string;
   flags: number;
