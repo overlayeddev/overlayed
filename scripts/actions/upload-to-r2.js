@@ -1,4 +1,3 @@
-// TODO: upload the nightly bins to r2
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { promises as fs } from "fs";
 
@@ -17,15 +16,13 @@ const S3 = new S3Client({
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }, paths) => {
-  console.log("TODO: impl this");
-  console.log("Paths:", paths);
-
   // parse the paths
   const files = paths.split("\n").map((path) => path.trim());
 
   for (const f of files) {
     const fileData = await fs.readFile(f);
 
+    console.log(`Uploading ${f} to ${R2_BUCKET}`);
     const command = new PutObjectCommand({
       Bucket: R2_BUCKET,
       Key: f,
