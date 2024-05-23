@@ -112,7 +112,7 @@ jobs:
         with:
           script: |
             const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
-            cost os = "${{ matrix.settings.os }}"
+            cost os = ${{ matrix.settings.os }}
             const paths = ${{ steps.build_os.outputs.artifactPaths }}
             await script({ github, context }, paths, os);
         env:
