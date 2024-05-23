@@ -5,7 +5,7 @@
   "scripts": {
     "start": "astro dev",
     "build": "astro check && astro build",
-    "lint": "eslint --ext .astro,.js,.ts 'src/**/*'",
+    "lint": "eslint",
     "check:format": "prettier --check \"**/*.{astro,ts,js}\"",
     "clean": "rm -rf dist .turbo node_modules .vercel .astro",
     "format": "prettier --write \"**/*.{astro,ts,js}\"",
@@ -30,7 +30,7 @@
     "@astrojs/check": "^0.5.9",
     "@astrojs/react": "^3.1.0",
     "@types/react": "^18.2.64",
-    "eslint-plugin-astro": "^0.29.1",
+    "eslint-plugin-astro": "^1.2.0",
     "http-proxy-middleware": "^2.0.6",
     "lint": "workspace:*",
     "prettier": "^3.2.5",
@@ -39,9 +39,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sharp": "^0.33.2",
-    "types": "workspace:*",
     "tsconfig": "workspace:*",
-    "typescript": "^5.4.2",
+    "types": "workspace:*",
     "utils": "workspace:*",
     "vite": "^5.1.5"
   }

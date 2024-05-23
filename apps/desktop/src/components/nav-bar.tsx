@@ -1,5 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Settings, Pin, Download, ArrowLeftToLine, ArrowRightToLine, ChevronsRightLeft } from "lucide-react";
+import {
+  Settings,
+  Pin,
+  Download,
+  ArrowLeftToLine,
+  ArrowRightToLine,
+  ChevronsRightLeft,
+  type LucideIcon,
+} from "lucide-react";
 
 import React from "react";
 import { invoke } from "@tauri-apps/api";
@@ -16,7 +24,7 @@ const mapping = {
 interface Alignment {
   direction: DirectionLR;
   name: string;
-  icon: React.FC<any>;
+  icon: LucideIcon;
 }
 
 const horizontalAlignments: Alignment[] = [

@@ -10,11 +10,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { requestPermission, sendNotification } from "@tauri-apps/api/notification";
 import { Checkbox } from "@/components/ui/checkbox";
 import Config from "@/config";
+import type { JoinHistoryLogUser } from "@/types";
 
 const MAX_LOG_LENGTH = 420;
+
 export const JoinHistory = () => {
-  const [userLog, setUserLog] = useState<any[]>([]);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(Config.get("joinHistoryNotifications"));
+  const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(Config.get("joinHistoryNotifications")!);
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
   // NOTE: this might be considered a react ware crime
@@ -27,7 +29,8 @@ export const JoinHistory = () => {
     requestPermission();
 
     notificationListener.current = listen(Event.UserLogUpdate, event => {
-      const { event: eventType, username } = event.payload as any;
+      const payload = event.payload as JoinHistoryLogUser;
+      const { event: eventType, username } = payload;
       if (notificationsEnabledRef.current) {
         const joinLeave = eventType === "leave" ? "left" : "joined";
         // TODO: clicking this would be nice to pop open the join history tab
@@ -35,9 +38,8 @@ export const JoinHistory = () => {
         sendNotification({ title: "Join History", body: `${joinLeave.toUpperCase()} ${username}` });
       }
 
-      // TODO: type this
-      setUserLog((prev: any) => {
-        const newLog = [...prev, event.payload];
+      setUserLog((prev: JoinHistoryLogUser[]) => {
+        const newLog = [...prev, payload];
         if (newLog.length > MAX_LOG_LENGTH) {
           newLog.shift();
         }

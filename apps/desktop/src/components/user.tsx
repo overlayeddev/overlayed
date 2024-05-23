@@ -22,9 +22,9 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
       <div className={`pointer-events-none relative rounded-full border-2 ${avatarClass} ${talkingClass}`}>
         <img
           onError={e => {
-            // @ts-ignore
+            // @ts-expect-error need to fix this prolly
             e.target.onerror = null;
-            // @ts-ignore
+            // @ts-expect-error need to fix this prolly
             e.target.src = "/img/default.png";
           }}
           src={avatarUrl}

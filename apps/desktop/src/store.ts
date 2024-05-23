@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { OverlayedUser, VoiceStateUser } from "./types";
+import type { CurrentChannel, OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 import { enableMapSet } from "immer";
 
@@ -32,12 +32,8 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 export interface AppState {
   visible: boolean;
   clickThrough: boolean;
-  // TODO: type this better
-  me: any | null;
-  currentChannel: {
-    id: string;
-    name: string;
-  } | null;
+  me: OverlayedUser | null;
+  currentChannel: CurrentChannel | null;
   users: Record<string, OverlayedUser>;
   discordErrors: Set<string>;
 }
@@ -51,8 +47,7 @@ export interface AppActions {
   clearUsers: () => void;
   removeUser: (id: string) => void;
   addUser: (user: VoiceStateUser) => void;
-  // TODO: type this
-  setCurrentChannel: (channel: any) => void;
+  setCurrentChannel: (channel: CurrentChannel | null) => void;
   setMe: (user: OverlayedUser | null) => void;
   pushError: (message: string) => void;
   resetErrors: () => void;
@@ -69,7 +64,7 @@ const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
   });
 
   const userMapSorted: Record<string, OverlayedUser> = {};
-  for (const [_, item] of sortedUserArray) {
+  for (const [, item] of sortedUserArray) {
     userMapSorted[item.user.id] = createUserStateItem(item);
   }
 
@@ -87,7 +82,7 @@ const sortOverlayedUsers = (myId: string | undefined, users: Record<string, Over
   });
 
   const userMapSorted: Record<string, OverlayedUser> = {};
-  for (const [_, item] of sortedUserArray) {
+  for (const [, item] of sortedUserArray) {
     userMapSorted[item.id] = item;
   }
 
@@ -96,8 +91,6 @@ const sortOverlayedUsers = (myId: string | undefined, users: Record<string, Over
 
 // TODO: split this into multiple stores
 export const useAppStore = create<AppState & AppActions>()(
-  // TODO: fix later
-  // @ts-ignore
   immer(set => ({
     visible: true,
     me: null,

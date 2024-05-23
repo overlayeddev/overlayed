@@ -7,7 +7,7 @@
     "start": "tauri dev",
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint 'src/**/*' --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint",
     "clean": "rm -rf dist .turbo node_modules",
     "check:format": "prettier --check 'src/**/*.{ts,js,tsx,jsx}'",
     "format": "prettier --write .",
@@ -54,7 +54,6 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "tsconfig": "workspace:*",
-    "typescript": "^5.4.2",
     "vite": "^5.1.5"
   }
 }
