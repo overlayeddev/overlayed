@@ -70,7 +70,7 @@ export class Config {
     return this.config;
   }
 
-  get(key: OverlayedConfigKey): any | null {
+  get<K extends keyof OverlayedConfig>(key: K): OverlayedConfig[K] | null {
     return this.config[key] || null;
   }
 
