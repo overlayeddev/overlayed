@@ -50,7 +50,9 @@ switch (arg) {
     await uploadSignedBins({ github, context }, draftId);
     break;
   case "r2":
-    await uploadBinsToR2({ github, context }, ...subArgs);
+    const [paths, os] = subArgs
+    console.log({ paths, os });
+    await uploadBinsToR2({ github, context }, paths, os);
     break;
   default:
     console.log("No script found, accepted answers are: create, download, upload, r2");
