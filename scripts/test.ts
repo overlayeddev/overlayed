@@ -9,11 +9,20 @@ import { script as downloadDraftBins } from "./actions/download-draft-bins.js";
 // @ts-ignore
 import { script as createRelease } from "./actions/create-release.js";
 
+// @ts-ignore
+import { script as uploadBinsToR2 } from "./actions/upload-to-r2.js";
+
 const { GITHUB_TOKEN } = process.env;
 if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not found");
 
+// all args as an array
+const args = process.argv.slice(2);
+
 // get first arg
-const [arg] = process.argv.slice(2);
+const [arg] = args;
+
+// sub args to the command
+const subArgs = args.slice(1);
 
 process.env.GITHUB_REPOSITORY = "Hacksore/overlayed";
 
@@ -40,6 +49,9 @@ switch (arg) {
   case "upload":
     await uploadSignedBins({ github, context }, draftId);
     break;
+  case "r2":
+    await uploadBinsToR2({ github, context }, ...subArgs);
+    break;
   default:
-    console.log("No script found, accepted answers are: create, download, upload");
+    console.log("No script found, accepted answers are: create, download, upload, r2");
 }
