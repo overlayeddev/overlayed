@@ -1,5 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Settings, Pin, Download, ArrowLeftToLine, ArrowRightToLine, ChevronsRightLeft, type LucideIcon } from "lucide-react";
+import {
+  Settings,
+  Pin,
+  Download,
+  ArrowLeftToLine,
+  ArrowRightToLine,
+  ChevronsRightLeft,
+  type LucideIcon,
+} from "lucide-react";
 
 import React from "react";
 import { invoke } from "@tauri-apps/api";
