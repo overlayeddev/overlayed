@@ -22,6 +22,13 @@ export const script = async ({ context, github }, paths, os = "mac") => {
   for (const f of files) {
     const fileData = await fs.readFile(f);
     const fileName = f.split(path.sep).pop();
+
+    // TODO: zip the .app and upload to r2 but for now skip it so we can cook
+    if (fileName.endsWith(".app")) {
+      console.log(`Skipping ${fileName} as we need to add support for zipping .app files.`);
+      continue;
+    }
+
     console.log(`Uploading ${fileName} to ${R2_BUCKET}`);
     const command = new PutObjectCommand({
       Bucket: R2_BUCKET,
