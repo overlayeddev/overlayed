@@ -9,6 +9,9 @@ import { script as downloadDraftBins } from "./actions/download-draft-bins.js";
 // @ts-ignore
 import { script as createRelease } from "./actions/create-release.js";
 
+// @ts-ignore
+import { script as uploadBinsToR2 } from "./actions/upload-to-r2.js";
+
 const { GITHUB_TOKEN } = process.env;
 if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not found");
 
@@ -39,6 +42,9 @@ switch (arg) {
     break;
   case "upload":
     await uploadSignedBins({ github, context }, draftId);
+    break;
+  case "r2":
+    await uploadBinsToR2({ github, context }, "something");
     break;
   default:
     console.log("No script found, accepted answers are: create, download, upload");
