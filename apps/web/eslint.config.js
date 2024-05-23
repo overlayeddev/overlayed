@@ -6,7 +6,7 @@ import baseConfig from "lint/node.js";
 const config = tseslint.config(
 	...baseConfig,
 	{
-		ignores: [".astro", ".vercel"],
+		ignores: [".astro", ".vercel", "*.mjs"],
 	},
   ...eslintPluginAstro.configs.recommended,
 	{
