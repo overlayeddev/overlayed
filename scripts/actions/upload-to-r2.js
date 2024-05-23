@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { promises as fs } from "node:fs";
-import path from "node:path"
+import path from "node:path";
 
 // get r2 credentials
 const { R2_BUCKET, R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY } = process.env;
@@ -29,6 +29,10 @@ export const script = async ({ context, github }, paths) => {
       Body: fileData,
     });
 
-    await S3.send(command);
+    try {
+      await S3.send(command);
+    } catch (e) {
+      console.error(`Failed to upload ${fileName} to ${R2_BUCKET}: ${e}`);
+    }
   }
 };
