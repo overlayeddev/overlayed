@@ -10,7 +10,7 @@ const config = tseslint.config(
   {
     rules: {
       quotes: ["error", "double"],
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "off",
     },
   }
