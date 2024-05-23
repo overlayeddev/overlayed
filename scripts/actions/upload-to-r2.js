@@ -13,24 +13,21 @@ const S3 = new S3Client({
   },
 });
 
-
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }, paths) => {
   // parse the paths
-  const files = paths.split("\n").map((path) => path.trim());
+  const files = paths.split("\n").map(path => path.trim());
 
   for (const f of files) {
     const fileData = await fs.readFile(f);
-
     const fileName = f.split("/").pop();
     console.log(`Uploading ${fileName} to ${R2_BUCKET}`);
     const command = new PutObjectCommand({
       Bucket: R2_BUCKET,
-      Key: f,
+      Key: fileName,
       Body: fileData,
     });
 
     await S3.send(command);
   }
-
 };
