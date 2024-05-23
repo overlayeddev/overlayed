@@ -55,7 +55,7 @@ importers:
         version: 4.3.10
     devDependencies:
       '@cloudflare/workers-types':
-        specifier: ^4.20240222.0
+        specifier: ^4.20240512.0
         version: 4.20240512.0
       '@octokit/types':
         specifier: ^12.6.0
@@ -70,7 +70,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/types
       wrangler:
-        specifier: ^3.32.0
+        specifier: ^3.57.1
         version: 3.57.1(@cloudflare/workers-types@4.20240512.0)
 
   apps/desktop:

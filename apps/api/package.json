@@ -13,12 +13,12 @@
 		"start": "wrangler dev --port 8787"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20240222.0",
+		"@cloudflare/workers-types": "^4.20240512.0",
 		"@octokit/types": "^12.6.0",
 		"lint": "workspace:*",
-		"types": "workspace:*",
 		"tsconfig": "workspace:*",
-		"wrangler": "^3.32.0"
+		"types": "workspace:*",
+		"wrangler": "^3.57.1"
 	},
 	"dependencies": {
 		"hono": "^4.0.10"

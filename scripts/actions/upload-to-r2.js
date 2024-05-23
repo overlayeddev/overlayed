@@ -14,6 +14,7 @@ const S3 = new S3Client({
   },
 });
 
+// op run --env-file=.env -- npx tsx scripts/test.ts r2 "/Users/hacksore/code/opensource/overlayed/apps/desktop/src-tauri/target/release/bundle/dmg/Overlayed_0.4.0_aarch64.dmg" "mac"
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }, paths, os = "mac") => {
   if (typeof paths === "string") {
