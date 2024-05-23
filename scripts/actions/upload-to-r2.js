@@ -22,7 +22,8 @@ export const script = async ({ context, github }, paths) => {
   for (const f of files) {
     const fileData = await fs.readFile(f);
 
-    console.log(`Uploading ${f} to ${R2_BUCKET}`);
+    const fileName = f.split("/").pop();
+    console.log(`Uploading ${fileName} to ${R2_BUCKET}`);
     const command = new PutObjectCommand({
       Bucket: R2_BUCKET,
       Key: f,
