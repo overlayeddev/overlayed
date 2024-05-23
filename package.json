@@ -13,6 +13,7 @@
   "type": "module",
   "devDependencies": {
     "@actions/github": "^6.0.0",
+    "@types/github-script": "github:actions/github-script",
     "dotenv": "^16.4.5",
     "eslint": "^9.3.0",
     "glob": "^10.3.10",
