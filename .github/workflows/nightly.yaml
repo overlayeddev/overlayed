@@ -113,7 +113,7 @@ jobs:
           script: |
             const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
             cost os = "${{ matrix.settings.os }}"
-            const paths = "${{ join(fromJSON(steps.build_os.outputs.artifactPaths).replace("\\", "\\\"), '\n') }}"
+            const paths = "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n').replace("\\", "\\\") }}"
             await script({ github, context }, paths, os);
         env:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
