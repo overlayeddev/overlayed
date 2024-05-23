@@ -32,8 +32,7 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 export interface AppState {
   visible: boolean;
   clickThrough: boolean;
-  // TODO: type this better
-  me: any | null;
+  me: OverlayedUser | null;
   currentChannel: {
     id: string;
     name: string;
@@ -51,8 +50,7 @@ export interface AppActions {
   clearUsers: () => void;
   removeUser: (id: string) => void;
   addUser: (user: VoiceStateUser) => void;
-  // TODO: type this
-  setCurrentChannel: (channel: any) => void;
+  setCurrentChannel: (channel: string) => void;
   setMe: (user: OverlayedUser | null) => void;
   pushError: (message: string) => void;
   resetErrors: () => void;
