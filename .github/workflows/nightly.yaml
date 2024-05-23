@@ -110,8 +110,8 @@ jobs:
       - name: Upload to r2
         uses: actions/github-script@v7
         with:
+          # TODO: this is janky and we can do better i think?
           script: |
-            # TODO: this is janky and we can do better i think?
             const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
             const os = "${{ matrix.settings.os }}"
             const paths = ${{ steps.build_os.outputs.artifactPaths }}
