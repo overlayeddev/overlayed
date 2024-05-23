@@ -34,6 +34,7 @@ function App() {
   const { horizontal, setHorizontalDirection } = useAlign();
 
   const visibleClass = visible ? "opacity-100" : "opacity-0";
+
   return (
     <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
       {!clickthrough && (

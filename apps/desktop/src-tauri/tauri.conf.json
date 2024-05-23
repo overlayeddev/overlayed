@@ -36,15 +36,16 @@
         "open": ".*"
       },
       "fs": {
-        "scope": ["$APPDATA/*"],
+        "scope": ["$APPCONFIG/**", "$APPDATA/**"],
         "readFile": true,
         "writeFile": true,
+        "createDir": true,
         "exists": true
       },
       "http": {
         "all": true,
         "request": true,
-        "scope": ["https://streamkit.discord.com/overlay/token"]
+        "scope": ["https://api.overlayed.dev/token"]
       },
       "path": {
         "all": true

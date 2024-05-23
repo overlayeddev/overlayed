@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Trash, PhoneOff, PhoneIncoming } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/tw";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useEffect, useRef, useState } from "react";
 import { listen } from "@tauri-apps/api/event";

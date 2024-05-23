@@ -61,9 +61,9 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.VOICE_STATE_UPDATE,
 ];
 
-const STREAM_KIT_APP_ID = "207646673902501888";
+export const APP_ID = "905987126099836938";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
-const STREAMKIT_URL = "https://streamkit.discord.com";
+const API_URL = "https://api.overlayed.dev";
 
 interface DiscordPayload {
   cmd: `${RPCCommand}`;
@@ -101,12 +101,11 @@ class SocketManager {
 
     this._navigate = navigate;
 
-    const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${STREAM_KIT_APP_ID}`;
+    const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
     try {
       this.socket = await WebSocket.connect(connectionUrl, {
         headers: {
-          // we need to set the origin header to the discord streamkit domain
-          origin: STREAMKIT_URL,
+          origin: API_URL,
         },
       });
 
@@ -143,7 +142,7 @@ class SocketManager {
   private authenticate() {
     this.send({
       args: {
-        client_id: STREAM_KIT_APP_ID,
+        client_id: APP_ID,
         scopes: ["rpc", "identify"],
       },
       cmd: RPCCommand.AUTHORIZE,
@@ -177,10 +176,10 @@ class SocketManager {
 
     const payload: DiscordPayload = JSON.parse(event.data);
 
-    // console.log(payload);
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
       const acessToken = this.userdataStore.accessToken;
+
       if (acessToken) {
         this.login(acessToken);
       } else {
@@ -250,7 +249,7 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${STREAMKIT_URL}/overlay/token`, {
+      const res = await fetch<TokenResponse>(`${API_URL}/token`, {
         method: "POST",
         body: Body.json({ code }),
       });
@@ -278,9 +277,13 @@ class SocketManager {
     // console.log(payload);
     // we are ready to do things cause we are fully authed
     if (payload.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
-      // if they have an invalid we remove it and make them auth again
+      // they have a token from the old client id
+      if (payload.data.code === RPCErrors.INVALID_CLIENTID) {
+        this.userdataStore.removeAccessToken();
+      }
+
+      // they have an invalid token
       if (payload.data.code === RPCErrors.INVALID_TOKEN) {
-        this.store.pushError(payload.data.message);
         this.userdataStore.removeAccessToken();
       }
 
