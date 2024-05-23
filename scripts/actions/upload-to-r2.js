@@ -1,5 +1,6 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
+import path from "node:path"
 
 // get r2 credentials
 const { R2_BUCKET, R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY } = process.env;
@@ -20,7 +21,7 @@ export const script = async ({ context, github }, paths) => {
 
   for (const f of files) {
     const fileData = await fs.readFile(f);
-    const fileName = f.split("/").pop();
+    const fileName = f.split(path.sep).pop();
     console.log(`Uploading ${fileName} to ${R2_BUCKET}`);
     const command = new PutObjectCommand({
       Bucket: R2_BUCKET,
