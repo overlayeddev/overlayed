@@ -12,6 +12,7 @@ import { RPCErrors } from "./errors";
 import { MetricNames, track, trackEvent } from "@/metrics";
 import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
+import type { VoiceUser } from "@/types";
 
 interface TokenResponse {
   access_token: string;
@@ -39,7 +40,7 @@ class UserdataStore {
     this.store.setItem(this.keys.accessTokenExpiry, dateString);
   }
 
-  setUserdata(userdata: any) {
+  setUserdata(userdata: VoiceUser) {
     this.store.setItem(this.keys.userData, JSON.stringify(userdata));
   }
 
@@ -67,7 +68,9 @@ const STREAMKIT_URL = "https://streamkit.discord.com";
 interface DiscordPayload {
   cmd: `${RPCCommand}`;
   // TODO: how do i type this properly?
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
   evt?: `${RPCEvent}` | null;
   nonce?: string;

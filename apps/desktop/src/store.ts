@@ -50,7 +50,7 @@ export interface AppActions {
   clearUsers: () => void;
   removeUser: (id: string) => void;
   addUser: (user: VoiceStateUser) => void;
-  setCurrentChannel: (channel: string) => void;
+  setCurrentChannel: (channel: string | null) => void;
   setMe: (user: OverlayedUser | null) => void;
   pushError: (message: string) => void;
   resetErrors: () => void;

@@ -119,7 +119,7 @@ interface VoiceState {
 }
 
 // TODO: name these better
-interface VoiceUser {
+export interface VoiceUser {
   avatar: string;
   avatar_decoration_data: unknown;
   bot: boolean;
