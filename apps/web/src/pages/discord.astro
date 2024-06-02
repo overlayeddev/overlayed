@@ -1,0 +1,46 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/footer.astro";
+
+import discordOgImage from "../assets/blog/discord.png";
+import { DISCORD_INVITE_LINK } from "../constants";
+---
+
+<Layout
+  title={"Overlayed - Discord"}
+  description="Join our Discord server to get help, report bugs, or just chat with the community."
+  ogImage={discordOgImage.src}
+>
+  <main class="mx-auto px-8 pt-28">
+    <section>
+      <div class="flex flex-col">
+        <div class="flex m-auto flex-col items-center justify-center">
+          <p class="max-w-[900px] text-center font-extrabold text-[3rem]">
+            Discord is the best place to report issues, get support, and chat
+            with the community.
+          </p>
+          <a
+            href={DISCORD_INVITE_LINK}
+            class="bg-blue-700 hover:bg-blue-800 text-white text-[3rem] flex items-center max-w-[400px] justify-center h-24 font-bold py-2 px-12 rounded-2xl my-10"
+            >Join Discord</a
+          >
+        </div>
+
+        <hr class="mb-8 border-zinc-800" />
+        <div class="flex flex-col items-center">
+          <p
+            class="text-zinc-400 mb-4 max-w-[900px] text-center font-bold text-[1.75rem]"
+          >
+            Curious and wanna look around?
+          </p>
+          <iframe
+            class="w-full"
+            src="https://e.widgetbot.io/channels/906349283358408704/913829657189687327"
+            allow="clipboard-write; fullscreen"
+            height="600"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
