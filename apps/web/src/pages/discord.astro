@@ -6,22 +6,33 @@ import discordOgImage from "../assets/blog/discord.png";
 import { DISCORD_INVITE_LINK } from "../constants";
 ---
 
+<style>
+  /* TODO: move this to a shared layout?*/
+  .main-content {
+    margin: auto;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+  }
+</style>
+
 <Layout
   title={"Overlayed - Discord"}
   description="Join our Discord server to get help, report bugs, or just chat with the community."
   ogImage={discordOgImage.src}
 >
-  <main class="mx-auto px-8 pt-28">
+  <main class="main-content px-8 pt-28">
     <section>
       <div class="flex flex-col">
-        <div class="flex m-auto flex-col items-center justify-center">
-          <p class="max-w-[900px] text-center font-extrabold text-[3rem]">
+        <div
+          class="flex m-auto flex-col leading-[3rem] items-center justify-center"
+        >
+          <p class="max-w-[900px] text-center font-extrabold text-[2.5rem]">
             Discord is the best place to report issues, get support, and chat
             with the community.
           </p>
           <a
             href={DISCORD_INVITE_LINK}
-            class="bg-blue-700 hover:bg-blue-800 text-white text-[3rem] flex items-center max-w-[400px] justify-center h-24 font-bold py-2 px-12 rounded-2xl my-10"
+            class="bg-blue-700 hover:bg-blue-800 text-white text-[1.75rem] sm:text-[1.5rem] md:text-[3rem] flex items-center justify-center xs:h-32 h-24 font-bold py-2 px-12 rounded-2xl my-10"
             >Join Discord</a
           >
         </div>
