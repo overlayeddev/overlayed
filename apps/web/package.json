@@ -23,7 +23,7 @@
     "astro-compress": "^2.2.13",
     "astro-font": "^0.0.77",
     "clsx": "^2.1.0",
-    "tailwind-merge": "^2.2.1",
+    "tailwind-merge": "^2.3.0",
     "tailwindcss": "^3.4.3"
   },
   "devDependencies": {
