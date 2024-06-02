@@ -13,7 +13,7 @@ export const useThemeSync = () => {
       .then(u => (unlisten = u));
     return () => {
       // @ts-expect-error learn how to type this
-      unlisten && unlisten();
+      if (unlisten) unlisten();
     };
   }, []);
 };
