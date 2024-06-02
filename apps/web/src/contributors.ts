@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 624
+        "contributions": 647
     },
     {
         "login": "maxdemaio",
@@ -144,27 +144,6 @@ export const contributors = [
         "repos_url": "https://api.github.com/users/mrnossiom/repos",
         "events_url": "https://api.github.com/users/mrnossiom/events{/privacy}",
         "received_events_url": "https://api.github.com/users/mrnossiom/received_events",
-        "type": "User",
-        "site_admin": false,
-        "contributions": 1
-    },
-    {
-        "login": "rishi-raj-jain",
-        "id": 46300090,
-        "node_id": "MDQ6VXNlcjQ2MzAwMDkw",
-        "avatar_url": "https://avatars.githubusercontent.com/u/46300090?v=4",
-        "gravatar_id": "",
-        "url": "https://api.github.com/users/rishi-raj-jain",
-        "html_url": "https://github.com/rishi-raj-jain",
-        "followers_url": "https://api.github.com/users/rishi-raj-jain/followers",
-        "following_url": "https://api.github.com/users/rishi-raj-jain/following{/other_user}",
-        "gists_url": "https://api.github.com/users/rishi-raj-jain/gists{/gist_id}",
-        "starred_url": "https://api.github.com/users/rishi-raj-jain/starred{/owner}{/repo}",
-        "subscriptions_url": "https://api.github.com/users/rishi-raj-jain/subscriptions",
-        "organizations_url": "https://api.github.com/users/rishi-raj-jain/orgs",
-        "repos_url": "https://api.github.com/users/rishi-raj-jain/repos",
-        "events_url": "https://api.github.com/users/rishi-raj-jain/events{/privacy}",
-        "received_events_url": "https://api.github.com/users/rishi-raj-jain/received_events",
         "type": "User",
         "site_admin": false,
         "contributions": 1
