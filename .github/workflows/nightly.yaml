@@ -1,6 +1,11 @@
 name: "Nightly"
 on:
   workflow_dispatch:
+    inputs:
+      dynamic_branch:
+        description: Select branch
+        required: true
+        default: main
   schedule:
     - cron: 0 0 * * *
 
