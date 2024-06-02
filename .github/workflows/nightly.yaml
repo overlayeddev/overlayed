@@ -2,7 +2,7 @@ name: "Nightly"
 on:
   workflow_dispatch:
     inputs:
-      dynamic_branch:
+      branch:
         description: Select branch
         required: true
         default: main
@@ -14,6 +14,8 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
       - name: Setup node
         uses: actions/setup-node@v4
         with:
@@ -64,6 +66,8 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
       - name: Setup node
         uses: actions/setup-node@v4
         with:
