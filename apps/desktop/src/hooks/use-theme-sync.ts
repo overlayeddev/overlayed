@@ -1,13 +1,19 @@
 import { invoke } from "@tauri-apps/api";
+import { appWindow } from "@tauri-apps/api/window";
 import { useEffect } from "react";
 
 export const useThemeSync = () => {
-  // NOTE: this is janky and wish we could do all in rust
   useEffect(() => {
-    const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
-    darkThemeMq.addEventListener("change", e => {
-      const value = e.matches ? "dark" : "light";
-      invoke("sync_theme", { value });
-    });
+    // @ts-expect-error learn how to type this
+    let unlisten;
+    appWindow
+      .onThemeChanged(({ payload: theme }) => {
+        invoke("sync_theme", { value: theme });
+      })
+      .then(u => (unlisten = u));
+    return () => {
+      // @ts-expect-error learn how to type this
+      unlisten && unlisten();
+    };
   }, []);
 };
