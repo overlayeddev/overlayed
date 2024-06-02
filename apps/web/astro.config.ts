@@ -18,7 +18,6 @@ if (process.env.NODE_ENV !== "production") {
 export default defineConfig({
   site: "https://overlayed.dev",
   trailingSlash: "never",
-  // @ts-expect-error this is probably because we need a newer ts version?
   integrations,
   server: {
     host: "0.0.0.0",
