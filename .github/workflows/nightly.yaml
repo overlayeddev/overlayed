@@ -112,17 +112,17 @@ jobs:
           name: "overlayed-unstable-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
 
-      - name: Upload to r2
-        uses: actions/github-script@v7
-        with:
-          # TODO: this is janky and we can do better i think?
-          script: |
-            const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
-            const os = "${{ matrix.settings.os }}"
-            const paths = ${{ steps.build_os.outputs.artifactPaths }}
-            await script({ github, context }, paths, os);
-        env:
-          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
-          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+      # - name: Upload to r2
+      #   uses: actions/github-script@v7
+      #   with:
+      #     # TODO: this is janky and we can do better i think?
+      #     script: |
+      #       const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
+      #       const os = "${{ matrix.settings.os }}"
+      #       const paths = ${{ steps.build_os.outputs.artifactPaths }}
+      #       await script({ github, context }, paths, os);
+      #   env:
+      #     R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+      #     R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      #     R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      #     R2_BUCKET: ${{ secrets.R2_BUCKET }}
