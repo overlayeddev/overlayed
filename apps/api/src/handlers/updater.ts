@@ -8,7 +8,7 @@ type Bindings = {
 	BUCKET: R2Bucket;
 };
 
-const app = new Hono < { Bindings: Bindings } > ();
+const app = new Hono<{ Bindings: Bindings }>();
 // TODO: either use a github client or make a wrapper to simplify the rest call
 
 app.get("/stars", async (c) => {
@@ -54,14 +54,22 @@ app.get("/latest", async (c) => {
 
 app.get("/canary", async (c) => {
 	const files = await c.env.BUCKET.list({
-		prefix: "mac/",
+		prefix: "canary/",
 	});
 
 	// get the latest canary build for each platform
+	const downloads = files.objects.map((file) => {
+		const platform = file.key.split("/")[1].split("-")[2];
+		return {
+			name: file.key,
+			url: `https://artifacts.overlayed.dev/download/canary/${platform}`,
+			platform,
+		};
+	});
 
 	return c.body(
 		JSON.stringify({
-			downloads: [],
+			downloads,
 			latestVersion: "v0.0.0",
 		}),
 		200,
