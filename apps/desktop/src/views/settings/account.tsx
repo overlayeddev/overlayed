@@ -49,7 +49,6 @@ export const Developer = () => {
             Open Config Dir
           </Button>
         </div>
-
       </div>
     </>
   );
@@ -58,13 +57,9 @@ export const AppInfo = () => {
   const [showOnlyTalkingUsers, setShowOnlyTalkingUsers] = useState(Config.get("showOnlyTalkingUsers")!);
   const platformInfo = usePlatformInfo();
 
-
-
   return (
-
     <div>
       <div className="flex items-center pb-2">
-
         <Checkbox
           id="notification"
           checked={showOnlyTalkingUsers}
@@ -105,8 +100,8 @@ export const AppInfo = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
