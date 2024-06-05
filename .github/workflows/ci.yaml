@@ -112,5 +112,6 @@ jobs:
           projectPath: apps/desktop
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_KEY_PASSWORD: ""
           TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
           TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
