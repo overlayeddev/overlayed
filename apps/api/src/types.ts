@@ -6,6 +6,12 @@ export type RepoResponse =
 export type ReleaseResponse =
 	Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"];
 
+export type WorkflowRuns =
+	Endpoints["GET /repos/{owner}/{repo}/actions/workflows/{workflow_id}/runs"]["response"]["data"];
+
+export type Artifacts =
+	Endpoints["GET /repos/{owner}/{repo}/actions/artifacts"]["response"]["data"];
+
 export interface LatestVersion {
 	version: string;
 	notes: string;
