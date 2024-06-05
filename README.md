@@ -1,6 +1,6 @@
 # Overlayed
 <p align="center">
-  <img src="https://github.com/Hacksore/overlayed/assets/996134/fd4bacb9-1f60-48f5-aeef-2303cbb4bb13" height="128" />
+  <img src="https://github.com/Hacksore/overlayed/assets/996134/62f03539-3f5f-4638-9362-e403f74ab537" height="128" />
 </p>
 
 <a href="https://discord.gg/eXmeNkVjye" target="_parent">
