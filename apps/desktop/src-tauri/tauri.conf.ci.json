@@ -1,0 +1,13 @@
+{
+  "package": {
+    "productName": "Overlayed-CI",
+    "version": "0.0.0"
+  },
+  "tauri": {
+    "bundle": {
+      "active": false,
+      "targets": "all",
+      "identifier": "com.hacksore.ci.overlayed"
+    }
+  }
+}

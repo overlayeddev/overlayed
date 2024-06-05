@@ -110,5 +110,6 @@ jobs:
         if: steps.changes.outputs.desktop == 'true'
         with:
           projectPath: apps/desktop
+          args: --config "src-tauri/tauri.conf.ci.json"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
