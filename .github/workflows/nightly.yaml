@@ -110,10 +110,10 @@ jobs:
           TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
           TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
           VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
-      - name: Upload unstable ${{ matrix.setting.os }}
+      - name: Upload canary ${{ matrix.setting.os }}
         uses: actions/upload-artifact@v4
         with:
-          name: "overlayed-unstable-${{ matrix.settings.os }}"
+          name: "overlayed-canary-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
 
       # - name: Upload to r2
