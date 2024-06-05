@@ -26,6 +26,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@radix-ui/themes": "^2.0.3",
+    "@sentry/react": "^8.7.0",
     "@tanstack/react-router": "0.0.1-beta.204",
     "@tauri-apps/api": "^1.5.3",
     "class-variance-authority": "^0.7.0",
