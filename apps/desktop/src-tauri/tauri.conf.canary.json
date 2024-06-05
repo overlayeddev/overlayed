@@ -7,8 +7,8 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.hacksore.unstable.overlayed",
-      "icon": ["icons/unstable.icns", "icons/unstable.ico", "icons/unstable.png"]
+      "identifier": "com.hacksore.canary.overlayed",
+      "icon": ["icons/canary.icns", "icons/canary.ico", "icons/canary.png"]
     }
   }
 }
