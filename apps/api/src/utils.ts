@@ -1,4 +1,6 @@
 import { ReleaseResponse, RepoResponse } from "./types.js";
+
+// @ts-expect-error something is wrong with types here
 import { LatestVersion } from "types";
 
 const GIT_USER = "Hacksore";

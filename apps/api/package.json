@@ -10,7 +10,7 @@
 		"check:format": "prettier --check \"**/*.{ts,js,md}\"",
 		"clean": "rm -rf dist .turbo node_modules",
 		"format": "prettier --write .",
-		"start": "wrangler dev --port 8787"
+		"start": "wrangler dev --remote --port 8787"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20240512.0",
@@ -21,6 +21,8 @@
 		"wrangler": "^3.57.1"
 	},
 	"dependencies": {
+		"@octokit/core": "^6.1.2",
+		"@octokit/rest": "^20.1.1",
 		"hono": "^4.0.10"
 	}
 }

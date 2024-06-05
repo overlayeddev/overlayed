@@ -28,7 +28,7 @@ export default function DownloadButton({
       <a
         target="_blank"
         href={platform.url}
-        className="flex flex-col items-center justify-center gap-2 w-20"
+        className="flex flex-col items-center justify-center gap-2 h-20 w-20"
         onClick={() => {
           track("download", {
             platform: platform.platform,
