@@ -26,8 +26,6 @@ import type { VoiceUser } from "@/types";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
-  const [showOnlyTalkingUsers, setShowOnlyTalkingUsers] = useState(Config.get("showOnlyTalkingUsers")!);
-
   return (
     <>
       <div className="flex flex-col gap-2">
@@ -52,50 +50,63 @@ export const Developer = () => {
           </Button>
         </div>
 
-        <div className="flex items-center pb-2">
-          <Checkbox
-            id="notification"
-            checked={showOnlyTalkingUsers}
-            onCheckedChange={async () => {
-              const newBool = !showOnlyTalkingUsers;
-              setShowOnlyTalkingUsers(newBool);
-              Config.set("showOnlyTalkingUsers", newBool);
-
-              // let the main app know the updated config
-              // TODO: is there a more efficient way to do this rather than sending the whole config?
-              await emit("config_update", Config.getConfig());
-            }}
-          />
-          <label
-            htmlFor="notification"
-            className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Only show users who are speaking
-          </label>
-        </div>
-        <div className="flex items-center text-zinc-400 gap-2 pb-4">
-          <div>
-            <p className="text-sm">
-              <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
-            </p>
-          </div>
-          <span className="text-xs">/</span>
-          <div>
-            <p className="text-sm">
-              <strong>Tauri</strong> {platformInfo.tauriVersion}
-            </p>
-          </div>
-          <span className="text-sm">/</span>
-          <div>
-            <p className="text-sm">
-              <strong>App</strong> {platformInfo.appVersion}
-            </p>
-          </div>
-        </div>
       </div>
     </>
   );
 };
+export const AppInfo = () => {
+  const [showOnlyTalkingUsers, setShowOnlyTalkingUsers] = useState(Config.get("showOnlyTalkingUsers")!);
+  const platformInfo = usePlatformInfo();
+
+
+
+  return (
+
+    <div>
+      <div className="flex items-center pb-2">
+
+        <Checkbox
+          id="notification"
+          checked={showOnlyTalkingUsers}
+          onCheckedChange={async () => {
+            const newBool = !showOnlyTalkingUsers;
+            setShowOnlyTalkingUsers(newBool);
+            Config.set("showOnlyTalkingUsers", newBool);
+
+            // let the main app know the updated config
+            // TODO: is there a more efficient way to do this rather than sending the whole config?
+            await emit("config_update", Config.getConfig());
+          }}
+        />
+        <label
+          htmlFor="notification"
+          className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Only show users who are speaking
+        </label>
+      </div>
+      <div className="flex items-center gap-2 pb-4 text-zinc-400">
+        <div>
+          <p className="text-sm">
+            <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
+          </p>
+        </div>
+        <span className="text-xs">/</span>
+        <div>
+          <p className="text-sm">
+            <strong>Tauri</strong> {platformInfo.tauriVersion}
+          </p>
+        </div>
+        <span className="text-sm">/</span>
+        <div>
+          <p className="text-sm">
+            <strong>App</strong> {platformInfo.appVersion}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
@@ -128,14 +139,13 @@ export const Account = () => {
       window.removeEventListener("storage", onStorageChange);
     };
   }, []);
-
   const avatarUrl = `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`;
   return (
     <div>
       <div className="h-[282px]">
         <div className="flex items-center mb-2">
           {user?.id && (
-            <Avatar className="mr-3 w-16 h-16">
+            <Avatar className="w-16 h-16 mr-3">
               <AvatarImage src={avatarUrl} />
               <AvatarFallback>U</AvatarFallback>
             </Avatar>
@@ -143,7 +153,7 @@ export const Account = () => {
           <div>
             {user?.id ? (
               <div>
-                <p className="mb-3 mt-3 font-bold">
+                <p className="mt-3 mb-3 font-bold">
                   {user?.global_name} ({user?.id})
                 </p>
               </div>
@@ -161,7 +171,7 @@ export const Account = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 pb-4">
+        <div className="flex flex-row gap-4 pb-4">
           <div>
             <Dialog
               onOpenChange={e => {
@@ -188,8 +198,8 @@ export const Account = () => {
                   }}
                 >
                   <DialogHeader>
-                    <DialogTitle className="text-xl mb-4 text-white">Logout</DialogTitle>
-                    <DialogDescription className="text-xl mb-4 text-white">
+                    <DialogTitle className="mb-4 text-xl text-white">Logout</DialogTitle>
+                    <DialogDescription className="mb-4 text-xl text-white">
                       Are you sure you want to log out of Overlayed?
                     </DialogDescription>
                   </DialogHeader>
@@ -224,8 +234,8 @@ export const Account = () => {
                 }}
               >
                 <DialogHeader>
-                  <DialogTitle className="text-xl mb-4 text-white">Quit Overlayed</DialogTitle>
-                  <DialogDescription className="text-xl mb-4 text-white">
+                  <DialogTitle className="mb-4 text-xl text-white">Quit Overlayed</DialogTitle>
+                  <DialogDescription className="mb-4 text-xl text-white">
                     Are you sure you want to quit the Overlayed app?
                   </DialogDescription>
                 </DialogHeader>
@@ -240,8 +250,9 @@ export const Account = () => {
               </form>
             </DialogContent>
           </Dialog>
+          <Developer />
         </div>
-        <Developer />
+        <AppInfo />
       </div>
     </div>
   );

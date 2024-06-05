@@ -23,7 +23,6 @@ export const SettingsView = ({
           <TabsTrigger value="account">General</TabsTrigger>
           <TabsTrigger value="join-history">Join History</TabsTrigger>
         </TabsList>
-
         {update.isAvailable && <Updater update={update} />}
         <div className="p-4 pt-0">
           <TabsContent tabIndex={-1} value="account">
@@ -35,7 +34,6 @@ export const SettingsView = ({
             </div>
           </TabsContent>
         </div>
-
         <div className="h-10 pl-4 absolute bottom-0 w-full bg-zinc-800 text-gray-400 flex items-center">
           <p>
             Found a bug? Please report them on the{" "}
