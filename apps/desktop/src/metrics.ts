@@ -13,8 +13,10 @@ export const MetricNames = {
 
 type MetricNamesValues = (typeof MetricNames)[keyof typeof MetricNames];
 
-// NOTE: allow opt-out of tracking
-const isTelemetryEnabled = () => Config.get("telemetry");
+// NOTE: allow opt-out of tracking from the settings UI
+const isTelemetryEnabled = () => {
+  return import.meta.env.VITE_AXIOM_TOKEN && Config.get("telemetry");
+};
 
 /** Will track metric was successful or not. */
 export const track = (name: MetricNamesValues, status: number) => {

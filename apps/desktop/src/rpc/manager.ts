@@ -1,5 +1,6 @@
 import { RPCCommand } from "./command";
 import { fetch, Body } from "@tauri-apps/api/http";
+import { type } from "@tauri-apps/api/os";
 import { RPCEvent } from "./event";
 import * as uuid from "uuid";
 import WebSocket from "tauri-plugin-websocket-api";
@@ -305,6 +306,8 @@ class SocketManager {
         id: payload.data.user.id,
         username: payload.data.user.username,
         version: this.version,
+        discordAppId: APP_ID,
+        os: await type(),
       });
 
       // try to find the user
