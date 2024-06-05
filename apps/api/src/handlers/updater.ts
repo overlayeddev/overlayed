@@ -58,8 +58,7 @@ app.get("/canary", async (c) => {
 
 	return c.body(
 		JSON.stringify({
-			downloads: [
-			],
+			downloads: [],
 			latestVersion: "v0.0.0",
 		}),
 		200,
