@@ -1,4 +1,4 @@
-name: "Nightly"
+name: "Canary"
 on:
   workflow_dispatch:
     inputs:
