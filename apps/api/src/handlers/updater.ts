@@ -62,7 +62,7 @@ app.get("/canary", async (c) => {
 		const platform = file.key.split("/")[1].split("-")[2];
 		return {
 			name: file.key,
-			url: `https://artifacts.overlayed.dev/canary/${file.key}`,
+			url: `https://artifacts.overlayed.dev/${file.key}`,
 			platform,
 		};
 	});
