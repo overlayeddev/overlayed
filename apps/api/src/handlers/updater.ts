@@ -7,7 +7,7 @@ type Bindings = {
 	BUCKET: R2Bucket;
 };
 
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono < { Bindings: Bindings } > ();
 // TODO: either use a github client or make a wrapper to simplify the rest call
 
 app.get("/stars", async (c) => {
@@ -120,35 +120,28 @@ app.get("/upload-canary-artifacts", async (c) => {
 		},
 	).then((res) => res.json());
 
-	// return them like the other endpoints
-	const canaryArtifacts = uploadedArtifacts.artifacts.map((artifact) => {
-		return {
-			name: artifact.name,
-			url: artifact.archive_download_url,
-			platform: artifact.name.split("-")[1],
-		};
-	});
-
-	console.log(canaryArtifacts, JSON.stringify(c.env.GITHUB_TOKEN.split("")));
-
 	// download all the files and upload them to r2
-	for (const artifact of canaryArtifacts) {
-		const file = await fetch(artifact.url, {
+	for (const artifact of uploadedArtifacts.artifacts) {
+		console.log(`Downloading ${artifact.name}`, artifact.archive_download_url);
+		const signedUrlResponse = await fetch(artifact.archive_download_url, {
 			headers: {
 				Accept: "application/vnd.github+json",
 				Authorization: `Bearer ${c.env.GITHUB_TOKEN}`,
 				"X-GitHub-Api-Version": "2022-11-28",
 				"User-Agent": "overlayed-updater v1",
 			},
-		}).then((res) => res.text());
+			redirect: "follow",
+		});
 
-		console.log(file)
-
-		console.log(`Uploading ${artifact.name} to r2`);
-		await c.env.BUCKET.put(`canary/${artifact.name}`, file);
+		if (signedUrlResponse.redirected) {
+			const fileData = await fetch(signedUrlResponse.url).then((res) =>
+				res.arrayBuffer(),
+			);
+			await c.env.BUCKET.put(`canary/${artifact.name}`, fileData);
+		}
 	}
 
-	return c.body(JSON.stringify(canaryArtifacts), 200, {
+	return c.body(JSON.stringify({}), 200, {
 		"Content-Type": "application/json",
 	});
 });
