@@ -1,0 +1,47 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Footer from "../../components/footer.astro";
+
+import discordOgImage from "../../assets/blog/discord.png";
+import { Download } from "../../components/react/download";
+---
+
+<style>
+  /* TODO: move this to a shared layout?*/
+  .main-content {
+    margin: auto;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+  }
+</style>
+
+<Layout
+  title={"Overlayed - Discord"}
+  description="Join our Discord server to get help, report bugs, or just chat with the community."
+  ogImage={discordOgImage.src}
+>
+  <main class="main-content px-8 pt-28">
+    <section>
+      <div class="flex flex-col">
+        <div
+          class="flex m-auto flex-col text-center items-center justify-center"
+        >
+          <h1 class="text-[4rem] leading-[4.5rem] font-extrabold mb-8">
+            Overlayed Canary
+          </h1>
+          <p
+            class="max-w-[900px] leading-[3rem] text-center text-zinc-400 font-bold text-[2.5rem]"
+          >
+            Overlayed Canary is a pre-release version of Overlayed that is
+            updated more frequently.
+          </p>
+
+          <div class="pt-8">
+            <Download client:load canary />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

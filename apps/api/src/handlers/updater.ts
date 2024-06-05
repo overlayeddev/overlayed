@@ -1,8 +1,9 @@
 import { Hono } from "hono/quick";
-import { getLatestVersions, getPlatformDownloads, getStars, getUnstablePlatformDownloads } from "../utils.js";
+import { getLatestVersions, getPlatformDownloads, getStars } from "../utils.js";
 
 type Bindings = {
 	GITHUB_TOKEN: string;
+	BUCKET: R2Bucket;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -48,27 +49,19 @@ app.get("/latest", async (c) => {
 	);
 });
 
-
-app.get("/latest/unstable", async (c) => {
-	const response = await getUnstablePlatformDownloads({
-		authToken: c.env.GITHUB_TOKEN,
+app.get("/canary", async (c) => {
+	const files = await c.env.BUCKET.list({
+		prefix: "mac/",
 	});
 
-	if (!response) {
-		return c.body(
-			JSON.stringify({
-				downloads: [],
-				latestVersion: "",
-			}),
-			500,
-			{
-				"Content-Type": "application/json",
-			},
-		);
-	}
+	// get the latest canary build for each platform
 
 	return c.body(
-		JSON.stringify(response),
+		JSON.stringify({
+			downloads: [
+			],
+			latestVersion: "v0.0.0",
+		}),
 		200,
 		{
 			"Content-Type": "application/json",

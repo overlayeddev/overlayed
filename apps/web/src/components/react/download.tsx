@@ -10,7 +10,7 @@ export const Platforms = {
   mac: "Mac",
 };
 
-export const Download = () => {
+export const Download = ({ canary = true }: { canary?: boolean }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [platformDownloads, setPlatformDownloads] = useState<{
     downloads: PlatformDownload[];
@@ -20,8 +20,10 @@ export const Download = () => {
     latestVersion: "",
   });
 
+  const apiPath = canary ? "canary" : "latest";
+
   useEffect(() => {
-    fetch(`${API_HOST}/latest`)
+    fetch(`${API_HOST}/${apiPath}`)
       .then((res) => res.json())
       .then((res) => {
         setPlatformDownloads(res);
@@ -56,9 +58,12 @@ export const Download = () => {
                 <DownloadButton key={item.platform} platform={item} />
               ))}
             </div>
-            <p className="text-sm pt-2">
-                <a href="/download/unstable">Looking for unstable?</a></p>
           </div>
+        )}
+        {!canary && (
+          <p className="text-sm pt-3 font-bold">
+            <a href="/download/canary">Looking for Canary?</a>
+          </p>
         )}
       </div>
     </div>
