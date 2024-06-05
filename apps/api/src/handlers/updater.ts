@@ -4,6 +4,7 @@ import { Artifacts, WorkflowRuns } from "../types.js";
 
 type Bindings = {
 	GITHUB_TOKEN: string;
+	CANARY_UPLOAD_SECRET: string;
 	BUCKET: R2Bucket;
 };
 
@@ -71,7 +72,22 @@ app.get("/canary", async (c) => {
 });
 
 // TODO: error handle this
-app.get("/upload-canary-artifacts", async (c) => {
+app.post("/upload-canary-artifacts", async (c) => {
+	// check if they send the secret
+	const { secret } = (await c.req.json()) as { secret: string };
+
+	if (secret !== c.env.CANARY_UPLOAD_SECRET) {
+		return c.body(
+			JSON.stringify({
+				error: "Invalid secret",
+			}),
+			403,
+			{
+				"Content-Type": "application/json",
+			},
+		);
+	}
+
 	const canaryWorkflowRunsResponse = await fetch(
 		"https://api.github.com/repos/Hacksore/overlayed/actions/workflows/canary.yaml/runs",
 		{
