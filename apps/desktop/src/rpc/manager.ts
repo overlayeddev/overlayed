@@ -13,6 +13,7 @@ import { MetricNames, track, trackEvent } from "@/metrics";
 import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
+import { getVersion } from "@tauri-apps/api/app";
 
 interface TokenResponse {
   access_token: string;
@@ -86,6 +87,7 @@ class SocketManager {
   public userdataStore: UserdataStore = new UserdataStore();
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
+  public version: string | undefined;
 
   private navigate(url: string) {
     if (window.location.hash.includes("#settings")) return;
@@ -100,6 +102,7 @@ class SocketManager {
     this.disconnect();
 
     this._navigate = navigate;
+    this.version = await getVersion();
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
     try {
@@ -301,6 +304,7 @@ class SocketManager {
       trackEvent(MetricNames.DiscordUser, {
         id: payload.data.user.id,
         username: payload.data.user.username,
+        version: this.version,
       });
 
       // try to find the user
