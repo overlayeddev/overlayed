@@ -13,6 +13,7 @@
     "format": {},
     "check:format": {},
     "build:tauri": {},
+    "build:canary": {},
     "start": {
       "cache": false,
       "persistent": true

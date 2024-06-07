@@ -4,6 +4,7 @@
     "start": "turbo start",
     "build": "turbo run build",
     "build:tauri": "turbo run build:tauri",
+    "build:canary": "turbo run build:canary",
     "check:format": "turbo run check:format",
     "clean": "turbo run clean && rm -rf node_modules .turbo",
     "lint": "turbo run lint",
