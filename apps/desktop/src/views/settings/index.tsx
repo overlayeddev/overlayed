@@ -4,13 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
 import { JoinHistory } from "./join-history";
 import { useState } from "react";
-import { isCanary } from "@/hooks/use-platform-info";
+import { usePlatformInfo } from "@/hooks/use-platform-info";
 
 export const SettingsView = ({
   update,
 }: {
   update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
 }) => {
+  const { canary } = usePlatformInfo();
   const [currentTab, setCurrentTab] = useState("account");
   return (
     <div className="bg-zinc-900 w-[calc(100vw)] h-full">
@@ -29,7 +30,7 @@ export const SettingsView = ({
             <p>Canary build careful...</p>
           </div>
         </div>
-        {!isCanary() && update.isAvailable && <Updater update={update} />}
+        {canary && update.isAvailable && <Updater update={update} />}
         <div className="p-4 pt-0">
           <TabsContent tabIndex={-1} value="account">
             <Account />

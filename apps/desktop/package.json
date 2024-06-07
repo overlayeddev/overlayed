@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "start": "tauri dev",
+    "start:canary": "tauri dev --config src-tauri/tauri.conf.canary.json",
     "dev": "vite",
     "build": "tsc && vite build",
-    "build:canary": "cargo tauri build --config 'src-tauri/tauri.conf.canary.json'",
+    "build:canary": " tauri build --config 'src-tauri/tauri.conf.canary.json'",
     "lint": "eslint",
     "clean": "rm -rf dist .turbo node_modules",
     "check:format": "prettier --check 'src/**/*.{ts,js,tsx,jsx}'",

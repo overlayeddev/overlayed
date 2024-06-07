@@ -12,6 +12,7 @@ export const usePlatformInfo = () => {
     kernalVersion: "",
     arch: "",
     name: "",
+    canary: false,
     configDir: "",
   });
 
@@ -43,12 +44,10 @@ export const usePlatformInfo = () => {
         arch,
         configDir,
         name,
+        canary: name.includes("Canary"),
       });
     });
   }, []);
 
   return platformInfo;
-};
-export const isCanary = () => {
-  return usePlatformInfo().name.includes("Canary");
 };
