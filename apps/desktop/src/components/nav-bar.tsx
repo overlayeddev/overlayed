@@ -66,7 +66,6 @@ export const NavBar = ({
 
   const routesToShowOn = ["/channel", "/error", "/"];
   const { canary } = usePlatformInfo();
-  console.log("canary", canary);
   if (!routesToShowOn.includes(location.pathname)) return null;
 
   return (
