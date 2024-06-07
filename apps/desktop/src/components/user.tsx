@@ -11,7 +11,6 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
   const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted || muted ? "text-zinc-400" : "";
   const mutedAndDeafened = selfMuted && selfDeafened;
-  const avatarClass = selfMuted || selfDeafened ? "text-red-500" : "";
 
   // TODO: use tw merge so this looks better i guess
 
@@ -33,15 +32,17 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
           className="rounded-full w-8 h-8"
         />
 
+        {/* This is cheese string mode */}
         <div
           className={`absolute left-[10px] bottom-[-4px] bg-black rounded-full ${alignDirection == "center" ? "flaex" : "md:hidden"
             }`}
         >
-          {(mutedAndDeafened || deafened) && <HeadphonesOff />}
+          {(mutedAndDeafened || deafened) && (!muted && !selfMuted) && <HeadphonesOff className={deafened ? "fill-red-600" : "fill-current"} />}
           {(selfMuted || muted) && !selfDeafened && <MicOff className={muted ? "fill-red-600" : "fill-current"} />}
         </div>
       </div>
 
+      {/* This is the normal list */}
       <div
         className={`max-w-[calc(100%_-_50px)] md:flex hidden pointer-events-none items-center rounded-md bg-zinc-800 ${mutedClass} p-1 pl-2 pr-2 ${alignDirection == "center" ? "hidden md:hidden" : ""
           }`}
@@ -49,7 +50,7 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
         <span className="truncate text-ellipsis">{item.username}</span>
         <div className="flex">
           {(selfMuted || muted) && <MicOff className={muted ? "fill-red-600" : "fill-current"} />}
-          {(selfDeafened || deafened) && <HeadphonesOff />}
+          {(selfDeafened || deafened) && <HeadphonesOff className={deafened ? "fill-red-600" : "fill-current"} />}
         </div>
       </div>
     </div>
