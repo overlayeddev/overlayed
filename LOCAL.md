@@ -27,3 +27,13 @@ From the root of the monorepo run
 ```sh
 pnpm start --filter=desktop
 ```
+
+### 4. Building the latest version locally
+```
+pnpm build:tauri
+```
+
+### 5. Building the canary version locally
+```
+pnpm build:canary
+```
