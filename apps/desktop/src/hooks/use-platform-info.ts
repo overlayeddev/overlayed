@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { getTauriVersion, getVersion } from "@tauri-apps/api/app";
+import { getName, getTauriVersion, getVersion } from "@tauri-apps/api/app";
 import { appConfigDir } from "@tauri-apps/api/path";
-import { platform as getPlatform, version as getKernalVersion, arch as getArch } from "@tauri-apps/api/os";
+import { platform as getPlatform, version as getKernalVersion, arch as getArch, } from "@tauri-apps/api/os";
 
 export const usePlatformInfo = () => {
   const [platformInfo, setPlatformInfo] = useState({
@@ -11,15 +11,16 @@ export const usePlatformInfo = () => {
     os: "",
     kernalVersion: "",
     arch: "",
+    name: "",
     configDir: "",
   });
 
   useEffect(() => {
-    const allPromises = [getTauriVersion(), getVersion(), getPlatform(), getKernalVersion(), getArch(), appConfigDir()];
+    const allPromises = [getTauriVersion(), getVersion(), getPlatform(), getKernalVersion(), getArch(), appConfigDir(), getName()];
 
     // get all the dataz
     Promise.allSettled(allPromises).then(results => {
-      const [tauriVersion = "", appVersion = "", os = "", kernalVersion = "", arch = "", configDir = ""] = results.map(
+      const [tauriVersion = "", appVersion = "", os = "", kernalVersion = "", arch = "", configDir = "", name = ""] = results.map(
         result => {
           if (result.status === "fulfilled") {
             return result.value;
@@ -27,7 +28,6 @@ export const usePlatformInfo = () => {
           return "";
         }
       );
-
       setPlatformInfo({
         tauriVersion,
         appVersion,
@@ -35,9 +35,13 @@ export const usePlatformInfo = () => {
         kernalVersion,
         arch,
         configDir,
+        name
       });
     });
   }, []);
 
   return platformInfo;
 };
+export const useCanary = () => {
+  return usePlatformInfo().name.includes("Canary");
+}

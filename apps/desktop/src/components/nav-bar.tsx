@@ -8,13 +8,13 @@ import {
   ChevronsRightLeft,
   type LucideIcon,
 } from "lucide-react";
+import { useCanary } from "@/hooks/use-platform-info";
 
 import React from "react";
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
-
 const mapping = {
   left: 0,
   center: 1,
@@ -86,7 +86,7 @@ export const NavBar = ({
         </div>
         {location.pathname !== "/settings" && (
           <div className="hidden gap-4 md:flex">
-            {showUpdateButton && (
+            {!useCanary() && showUpdateButton && (
               <button>
                 <Download
                   className="text-green-500"

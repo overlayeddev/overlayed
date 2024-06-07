@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
 import { JoinHistory } from "./join-history";
 import { useState } from "react";
+import { useCanary } from "@/hooks/use-platform-info";
 
 export const SettingsView = ({
   update,
@@ -23,7 +24,7 @@ export const SettingsView = ({
           <TabsTrigger value="account">General</TabsTrigger>
           <TabsTrigger value="join-history">Join History</TabsTrigger>
         </TabsList>
-        {update.isAvailable && <Updater update={update} />}
+        {!useCanary() && update.isAvailable && <Updater update={update} />}
         <div className="p-4 pt-0">
           <TabsContent tabIndex={-1} value="account">
             <Account />
@@ -34,7 +35,7 @@ export const SettingsView = ({
             </div>
           </TabsContent>
         </div>
-        <div className="h-10 pl-4 absolute bottom-0 w-full bg-zinc-800 text-gray-400 flex items-center">
+        <div className="absolute bottom-0 flex items-center w-full h-10 pl-4 text-gray-400 bg-zinc-800">
           <p>
             Found a bug? Please report them on the{" "}
             <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">
