@@ -40,7 +40,7 @@ export interface OverlayedUser {
   /**
    * @property {boolean} suppress - flag to indicate if the user is suppressed (maybe no voice channels?)
    */
-  suppress: boolean;
+  suppressed: boolean;
 
   /**
    * @property {boolean} selfDeafened - flag to indicate if the user is self deafened
