@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
 import { JoinHistory } from "./join-history";
 import { useState } from "react";
-import { useCanary } from "@/hooks/use-platform-info";
+import { isCanary } from "@/hooks/use-platform-info";
 
 export const SettingsView = ({
   update,
@@ -24,7 +24,12 @@ export const SettingsView = ({
           <TabsTrigger value="account">General</TabsTrigger>
           <TabsTrigger value="join-history">Join History</TabsTrigger>
         </TabsList>
-        {!useCanary() && update.isAvailable && <Updater update={update} />}
+        <div className="py-2 h-[48px] bg-orange-800">
+          <div className="!text-white text-lg font-bold cursor-pointer flex gap-2 items-center justify-center">
+            <p>Canary build careful...</p>
+          </div>
+        </div>
+        {!isCanary() && update.isAvailable && <Updater update={update} />}
         <div className="p-4 pt-0">
           <TabsContent tabIndex={-1} value="account">
             <Account />

@@ -8,7 +8,7 @@ import {
   ChevronsRightLeft,
   type LucideIcon,
 } from "lucide-react";
-import { useCanary } from "@/hooks/use-platform-info";
+import { isCanary } from "@/hooks/use-platform-info";
 
 import React from "react";
 import { invoke } from "@tauri-apps/api";
@@ -86,7 +86,7 @@ export const NavBar = ({
         </div>
         {location.pathname !== "/settings" && (
           <div className="hidden gap-4 md:flex">
-            {!useCanary() && showUpdateButton && (
+            {!isCanary() && showUpdateButton && (
               <button>
                 <Download
                   className="text-green-500"
