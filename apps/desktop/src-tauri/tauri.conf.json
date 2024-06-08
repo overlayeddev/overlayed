@@ -36,7 +36,7 @@
         "open": ".*"
       },
       "fs": {
-        "scope": ["$APPCONFIG/**", "$APPDATA/**"],
+        "scope": ["$APPCONFIG/**", "$CONFIG/**", "$APPDATA/**"],
         "readFile": true,
         "writeFile": true,
         "createDir": true,
@@ -47,6 +47,7 @@
         "request": true,
         "scope": [
           "https://api.overlayed.dev/token",
+          "https://api.axiom.co/v1/datasets/overlayed-prod/ingest",
           "https://o4506462955503616.ingest.us.sentry.io/api/4507379579289600/envelope"
         ]
       },

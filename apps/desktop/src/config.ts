@@ -1,4 +1,4 @@
-import { writeFile, readTextFile } from "@tauri-apps/api/fs";
+import { writeFile, readTextFile, createDir } from "@tauri-apps/api/fs";
 import { appConfigDir } from "@tauri-apps/api/path";
 
 export type DirectionLR = "left" | "right" | "center";
@@ -36,8 +36,7 @@ export class Config {
   }
 
   init = async () => {
-    this.configPath = `${await appConfigDir()}/config.json`;
-
+    this.configPath = (await appConfigDir()) + "config.json";
     try {
       const config = await readTextFile(this.configPath);
       this.config = JSON.parse(config);
@@ -80,6 +79,15 @@ export class Config {
   }
 
   async save() {
+    // crate the config dir if it's not there
+    try {
+      await createDir(await appConfigDir(), {
+        recursive: true,
+      });
+    } catch (err: unknown) {
+      // noop
+    }
+
     await writeFile({
       path: this.configPath,
       contents: JSON.stringify(this.config, null, 2),
