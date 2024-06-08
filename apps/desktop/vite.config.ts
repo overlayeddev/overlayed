@@ -11,7 +11,7 @@ export default defineConfig(async () => ({
     sentryVitePlugin({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       org: "overlayed",
-      project: "overlayed-desktop-react",
+      project: "overlayed-desktop-production",
     }),
   ],
   build: {

@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     const styleForLog = "font-size: 20px; color: #00dffd";
-    console.log(`%cOverlayed ${document.title} Window`, styleForLog);
+    console.log(`%cOverlayed ${window.location.hash} Window`, styleForLog);
   }, []);
 
   const { isAvailable, error, status } = useUpdate();

@@ -1,5 +1,5 @@
 import { axiom } from "@/axiom";
-import Config from "./config";
+import Config from "@/config";
 
 export const OVERLAYED_DATASET = "overlayed-prod";
 
@@ -17,6 +17,14 @@ type MetricNamesValues = (typeof MetricNames)[keyof typeof MetricNames];
 const isTelemetryEnabled = () => {
   return import.meta.env.VITE_AXIOM_TOKEN && Config.get("telemetry");
 };
+
+console.log("config", await Config.getConfig());
+// tell the user if they have telemetry disabled
+if(!Config.get("telemetry")) {
+  console.warn("Disabling axiom telemetry because the user has disabled it");
+} else {
+  console.log("Axiom telemetry is enabled!");
+}
 
 /** Will track metric was successful or not. */
 export const track = (name: MetricNamesValues, status: number) => {

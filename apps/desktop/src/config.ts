@@ -1,5 +1,6 @@
 import { writeFile, readTextFile, createDir } from "@tauri-apps/api/fs";
 import { appConfigDir } from "@tauri-apps/api/path";
+import * as Sentry from "@sentry/react";
 
 export type DirectionLR = "left" | "right" | "center";
 export type DirectionTB = "top" | "bottom";
@@ -31,11 +32,15 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
 export class Config {
   private config: OverlayedConfig = DEFAULT_OVERLAYED_CONFIG;
   private configPath: string = "";
+  private loaded = false;
   constructor() {
-    this.init();
+    console.log("config constructor");
+    this.load();
   }
 
-  init = async () => {
+  load = async () => {
+    if (this.loaded) return;
+
     this.configPath = (await appConfigDir()) + "config.json";
     try {
       const config = await readTextFile(this.configPath);
@@ -55,17 +60,28 @@ export class Config {
         }, {} as OverlayedConfig),
       };
 
+      // make sure to disable sentry if they have disabled telemetry
+      if (!this.config.telemetry) {
+        console.warn("Disabling sentry.io telemetry because the user has disabled it");
+        Sentry.close();
+      }
+
       // fuck it persist it
       this.save();
+
+      console.log("config loaded")
     } catch (e: unknown) {
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();
 
       // we don't need to raise an error cause it's the first time they have used overlayed probably?
     }
+
+    this.loaded = true;
   };
 
-  getConfig(): OverlayedConfig {
+  async getConfig(): Promise<OverlayedConfig> {
+    await this.load();
     return this.config;
   }
 
