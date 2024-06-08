@@ -26,9 +26,9 @@ export const SettingsView = ({
           <TabsTrigger value="join-history">Join History</TabsTrigger>
         </TabsList>
         {canary && (
-          <div className="h-[32px] bg-orange-800 flex items-center justify-center">
+          <div className="h-[32px] bg-yellow-400 font-semibold text-black flex items-center justify-center">
             <a target="_blank" href="https://overlayed.dev/download/canary#about">
-              <p>⚠️ The canary build my be unstable (click to learn more)</p>
+              <p>The canary build my be unstable (click to learn more)</p>
             </a>
           </div>
         )}
