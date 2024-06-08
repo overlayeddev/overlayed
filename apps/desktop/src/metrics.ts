@@ -19,10 +19,10 @@ const isTelemetryEnabled = () => {
 };
 
 // tell the user if they have telemetry disabled
-if(!Config.get("telemetry")) {
-  console.warn("Disabling axiom telemetry because the user has disabled it");
+if (!(await Config.get("telemetry"))) {
+  console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");
 } else {
-  console.log("Axiom telemetry is enabled!");
+  console.log("[TELEMETRY] Axiom telemetry is enabled!");
 }
 
 /** Will track metric was successful or not. */

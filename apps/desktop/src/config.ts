@@ -34,7 +34,6 @@ export class Config {
   private configPath: string = "";
   private loaded = false;
   constructor() {
-    console.log("config constructor");
     this.load();
   }
 
@@ -62,8 +61,10 @@ export class Config {
 
       // make sure to disable sentry if they have disabled telemetry
       if (!this.config.telemetry) {
-        console.warn("Disabling sentry.io telemetry because the user has disabled it");
+        console.warn("[TELEMETRY] Disabling sentry.io telemetry because the user has disabled it");
         Sentry.close();
+      } else {
+        console.log("[TELEMETRY] sentry.io telemetry is enabled!");
       }
 
       // fuck it persist it
@@ -118,7 +119,3 @@ export class Config {
 const config = new Config();
 
 export default config;
-
-export const useConfig = () => {
-  // TODO: impl this 
-}
