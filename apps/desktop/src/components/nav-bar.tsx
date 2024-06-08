@@ -8,13 +8,12 @@ import {
   ChevronsRightLeft,
   type LucideIcon,
 } from "lucide-react";
-
+import { usePlatformInfo } from "@/hooks/use-platform-info";
 import React from "react";
 import { invoke } from "@tauri-apps/api";
 import overlayedConfig, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
-
 const mapping = {
   left: 0,
   center: 1,
@@ -66,6 +65,7 @@ export const NavBar = ({
   const showUpdateButton = location.pathname !== "/settings" && isUpdateAvailable;
 
   const routesToShowOn = ["/channel", "/error", "/"];
+  const { canary } = usePlatformInfo();
   if (!routesToShowOn.includes(location.pathname)) return null;
 
   return (
@@ -75,7 +75,13 @@ export const NavBar = ({
     >
       <div data-tauri-drag-region className="flex justify-between">
         <div className="flex items-center">
-          <img src="/img/32x32.png" alt="logo" data-tauri-drag-region className="w-8 h-8 mr-2" />
+          <img
+            src={canary ? "/img/32x32-canary.png " : "/img/32x32.png"}
+            alt="logo"
+            data-tauri-drag-region
+            className="w-8 h-8 mr-2"
+          />
+
           {location.pathname === "/channel" ? (
             <div data-tauri-drag-region className="hidden md:inline">
               {currentChannel?.name}
@@ -86,7 +92,7 @@ export const NavBar = ({
         </div>
         {location.pathname !== "/settings" && (
           <div className="hidden gap-4 md:flex">
-            {showUpdateButton && (
+            {!canary && showUpdateButton && (
               <button>
                 <Download
                   className="text-green-500"
