@@ -81,6 +81,9 @@ importers:
       '@axiomhq/js':
         specifier: 1.0.0-rc.1
         version: 1.0.0-rc.1
+      '@icons-pack/react-simple-icons':
+        specifier: ^9.5.0
+        version: 9.5.0(react@18.3.1)
       '@radix-ui/react-avatar':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1253,6 +1256,11 @@ packages:
   '@humanwhocodes/retry@0.3.0':
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
+
+  '@icons-pack/react-simple-icons@9.5.0':
+    resolution: {integrity: sha512-+y7GW8magFYS4bmlInrsW1q6NOy0dd3eNwjKashlg9hyhPF6PKTWB401qkXaH23mieb5TMMyf/U4mDDPfrjgGQ==}
+    peerDependencies:
+      react: ^16.13 || ^17 || ^18
 
   '@img/sharp-darwin-arm64@0.33.4':
     resolution: {integrity: sha512-p0suNqXufJs9t3RqLBO6vvrgr5OhgbWp76s5gTRvdmxmuv9E1rcaqGUsl3l4mKVmXPkTkTErXediAui4x+8PSA==}
@@ -7631,6 +7639,10 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.3.0': {}
+
+  '@icons-pack/react-simple-icons@9.5.0(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
 
   '@img/sharp-darwin-arm64@0.33.4':
     optionalDependencies:

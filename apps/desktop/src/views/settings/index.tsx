@@ -5,6 +5,15 @@ import { Account } from "./account";
 import { JoinHistory } from "./join-history";
 import { useState } from "react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
+import { SiTwitter, SiTwitch, SiDiscord, type IconType } from "@icons-pack/react-simple-icons";
+
+function Link({ icon: Icon, url }: { icon: IconType; url: string }) {
+  return (
+    <a className="text-gray-400 hover:text-gray-300" target="_blank" rel="noreferrer" href={url}>
+      <Icon />
+    </a>
+  );
+}
 
 export const SettingsView = ({
   update,
@@ -28,7 +37,7 @@ export const SettingsView = ({
         {canary && (
           <div className="h-[32px] bg-yellow-400 font-semibold text-black flex items-center justify-center">
             <a target="_blank" href="https://overlayed.dev/download/canary#about">
-              <p>The canary build my be unstable (click to learn more)</p>
+              <p>The canary build may be unstable (click to learn more)</p>
             </a>
           </div>
         )}
@@ -50,6 +59,11 @@ export const SettingsView = ({
               github repo
             </a>
           </p>
+          <div className="flex flex-grow pr-4 justify-end gap-3 ">
+            <Link icon={SiTwitter} url="https://x.com/OverlayedDev" />
+            <Link icon={SiTwitch} url="https://twitch.tv/OverlayedDev" />
+            <Link icon={SiDiscord} url="https://discord.gg/eXmeNkVjye" />
+          </div>
         </div>
       </Tabs>
     </div>
