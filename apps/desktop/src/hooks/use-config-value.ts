@@ -2,21 +2,19 @@ import Config, { DEFAULT_OVERLAYED_CONFIG, type OverlayedConfig, type OverlayedC
 import { listen } from "@tauri-apps/api/event";
 import { useEffect, useState } from "react";
 
+/**
+ * i want a single key from the config
+ */
 export const useConfigValue = <T extends OverlayedConfigKey>(
   key: T
 ): {
   value: OverlayedConfig[T];
 } => {
-  const [value, setValue] = useState<OverlayedConfig>(DEFAULT_OVERLAYED_CONFIG);
+  const [value, setValue] = useState<OverlayedConfig[T]>(DEFAULT_OVERLAYED_CONFIG[key]);
 
   useEffect(() => {
     const init = () => {
-      Config.get<T>(key).then(val =>
-        setValue(oldVal => ({
-          ...oldVal,
-          [key]: val,
-        }))
-      );
+      Config.get<T>(key).then(setValue)
     };
 
     init();
@@ -26,7 +24,6 @@ export const useConfigValue = <T extends OverlayedConfigKey>(
 
       // update the latest value
       // TODO: fix
-      // @ts-expect-error idk
       setValue(payload[key]);
     });
 
@@ -38,6 +35,5 @@ export const useConfigValue = <T extends OverlayedConfigKey>(
     };
   }, []);
 
-  // @ts-expect-error need to fix this?
   return { value };
 };

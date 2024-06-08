@@ -11,12 +11,15 @@ import { requestPermission, sendNotification } from "@tauri-apps/api/notificatio
 import { Checkbox } from "@/components/ui/checkbox";
 import Config from "@/config";
 import type { JoinHistoryLogUser } from "@/types";
+import { useConfigValue } from "@/hooks/use-config-value";
+import { emit } from "@tauri-apps/api/event";
 
 const MAX_LOG_LENGTH = 420;
 
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(Config.get("joinHistoryNotifications")!);
+  const { value: joinHistoryNotifications } = useConfigValue("joinHistoryNotifications");
+
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
   // NOTE: this might be considered a react ware crime
@@ -50,10 +53,9 @@ export const JoinHistory = () => {
 
   // keep the notifications toggle in sync with the config
   useEffect(() => {
-    setNotificationsEnabled(notificationsEnabled);
     // HACK: add a ref to avoid stale closure
-    notificationsEnabledRef.current = notificationsEnabled;
-  }, [notificationsEnabled]);
+    notificationsEnabledRef.current = joinHistoryNotifications;
+  }, [joinHistoryNotifications]);
 
   const resetUserLog = () => {
     setUserLog([]);
@@ -68,10 +70,10 @@ export const JoinHistory = () => {
         <div className="flex items-center">
           <Checkbox
             id="notification"
-            checked={notificationsEnabled}
-            onCheckedChange={() => {
-              Config.set("joinHistoryNotifications", !notificationsEnabled);
-              setNotificationsEnabled(!notificationsEnabled);
+            checked={joinHistoryNotifications}
+            onCheckedChange={async () => {
+              await Config.set("joinHistoryNotifications", !joinHistoryNotifications);
+              await emit("config_update", await Config.getConfig());
             }}
           />
           <label
