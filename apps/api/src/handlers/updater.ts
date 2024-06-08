@@ -57,20 +57,29 @@ app.get("/canary", async (c) => {
 		prefix: "canary/",
 	});
 
+	// fetch the latest version form the bucket
+	const latestFile = await c.env.BUCKET.get("canary/latest.json");
+	const latest = (await latestFile?.json()) as {
+		updated: string;
+		latestVersion: string;
+	};
+
 	// get the latest canary build for each platform
-	const downloads = files.objects.map((file) => {
-		const platform = file.key.split("/")[1].split("-")[2];
-		return {
-			name: file.key,
-			url: `https://artifacts.overlayed.dev/${file.key}`,
-			platform,
-		};
-	});
+	const downloads = files.objects
+		.map((file) => {
+			const platform = file.key.split("/")[1].split("-")[2];
+			return {
+				name: file.key,
+				url: `https://artifacts.overlayed.dev/${file.key}`,
+				platform,
+			};
+		})
+		.filter((file) => file.name !== "canary/latest.json");
 
 	return c.body(
 		JSON.stringify({
 			downloads,
-			latestVersion: "v0.0.0",
+			...latest,
 		}),
 		200,
 		{
@@ -144,6 +153,7 @@ app.post("/upload-canary-artifacts", async (c) => {
 		},
 	).then((res) => res.json());
 
+	const uploaded = [];
 	// download all the files and upload them to r2
 	for (const artifact of uploadedArtifacts.artifacts) {
 		console.log(`Downloading ${artifact.name}`, artifact.archive_download_url);
@@ -162,12 +172,31 @@ app.post("/upload-canary-artifacts", async (c) => {
 				res.arrayBuffer(),
 			);
 			await c.env.BUCKET.put(`canary/${artifact.name}`, fileData);
+
+			uploaded.push(artifact.name);
 		}
 	}
 
-	return c.body(JSON.stringify({}), 200, {
-		"Content-Type": "application/json",
-	});
+	// upload a manifest with the last update and "version"
+	await c.env.BUCKET.put(
+		"canary/latest.json",
+		JSON.stringify({
+			updated: new Date().toISOString(),
+			latestVersion: successfulRun.head_sha,
+		}),
+	);
+
+	console.log("uploaded manifest", uploaded);
+
+	return c.body(
+		JSON.stringify({
+			uploaded,
+		}),
+		200,
+		{
+			"Content-Type": "application/json",
+		},
+	);
 });
 
 app.get("/:target/:arch/:currentVersion", async (c) => {

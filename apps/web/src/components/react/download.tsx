@@ -15,6 +15,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
   const [platformDownloads, setPlatformDownloads] = useState<{
     downloads: PlatformDownload[];
     latestVersion: string;
+    updated?: string;
   }>({
     downloads: [],
     latestVersion: "",
@@ -50,9 +51,15 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
           </>
         ) : (
           <div className="text-center">
-            <h2 className="text-2xl pb-8">
-              Download ({platformDownloads.latestVersion})
+            <h2 className="text-2xl pb-2">
+              Download ({platformDownloads.latestVersion.substring(0, 7)})
             </h2>
+            {/* if canary show last update */}
+            {canary && (
+              <p className="text-sm pb-4 font-bold">
+                Last update: {platformDownloads.updated}
+              </p>
+            )}
             <div className="flex gap-2 sm:gap-6">
               {platformDownloads.downloads.map((item) => (
                 <DownloadButton key={item.platform} platform={item} />
