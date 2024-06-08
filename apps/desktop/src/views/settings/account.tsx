@@ -57,6 +57,8 @@ export const AppInfo = () => {
   const [showOnlyTalkingUsers, setShowOnlyTalkingUsers] = useState(Config.get("showOnlyTalkingUsers")!);
   const platformInfo = usePlatformInfo();
 
+  // TODO: refactor to support async config
+
   return (
     <div>
       <div className="flex items-center pb-2">

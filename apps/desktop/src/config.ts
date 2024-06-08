@@ -85,7 +85,7 @@ export class Config {
     return this.config;
   }
 
-  get<K extends keyof OverlayedConfig>(key: K): OverlayedConfig[K] | null {
+  async get<K extends keyof OverlayedConfig>(key: K): Promise<OverlayedConfig[K] | null> {
     return this.config[key] || null;
   }
 
