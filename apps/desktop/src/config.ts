@@ -62,7 +62,7 @@ export class Config {
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();
 
-      console.error(e);
+      // we don't need to raise an error cause it's the first time they have used overlayed probably?
     }
   };
 
