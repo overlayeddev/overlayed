@@ -95,7 +95,7 @@ export const AppInfo = () => {
         <span className="text-sm">/</span>
         <div>
           <p className="text-sm">
-            <strong>App</strong> {platformInfo.appVersion}
+            <strong>App</strong> {platformInfo.canary ? "Canary" : platformInfo.appVersion}
           </p>
         </div>
       </div>
