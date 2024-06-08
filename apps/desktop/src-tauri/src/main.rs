@@ -61,10 +61,10 @@ fn main() {
 
       // set the document title for the main window
       // TODO: we could just get the tauri window title in js as an alternative?
-      window.set_document_title("Main");
+      window.set_document_title("Overlayed - Main");
 
       // set the document title for the settings window
-      settings.set_document_title("Settings");
+      settings.set_document_title("Overlayed - Settings");
 
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?

@@ -76,7 +76,7 @@
         "resizable": true,
         "transparent": true,
         "decorations": false,
-        "title": "Main",
+        "title": "Overlayed - Main",
         "width": 420,
         "height": 600,
         "minHeight": 106,
@@ -89,7 +89,7 @@
         "visible": false,
         "label": "settings",
         "url": "#settings",
-        "title": "Settings",
+        "title": "Overlayed - Settings",
         "width": 600,
         "height": 400
       }
