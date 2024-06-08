@@ -45,7 +45,10 @@
       "http": {
         "all": true,
         "request": true,
-        "scope": ["https://api.overlayed.dev/token"]
+        "scope": [
+          "https://api.overlayed.dev/token",
+          "https://o4506462955503616.ingest.us.sentry.io/api/4507379579289600/envelope"
+        ]
       },
       "path": {
         "all": true
