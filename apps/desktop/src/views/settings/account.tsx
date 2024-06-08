@@ -75,7 +75,7 @@ export const AppInfo = () => {
           htmlFor="notification"
           className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          Only show users who are speaking ({JSON.stringify(showOnlyTalkingUsers)})
+          Only show users who are speaking
         </label>
       </div>
       <div className="flex items-center gap-2 pb-4 text-zinc-400">
