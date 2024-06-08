@@ -23,6 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { emit } from "@tauri-apps/api/event";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
+import { useConfigValue } from "@/hooks/use-config-value";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
@@ -54,8 +55,8 @@ export const Developer = () => {
   );
 };
 export const AppInfo = () => {
-  const [showOnlyTalkingUsers, setShowOnlyTalkingUsers] = useState(Config.get("showOnlyTalkingUsers")!);
   const platformInfo = usePlatformInfo();
+  const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
 
   return (
     <div>
@@ -65,12 +66,9 @@ export const AppInfo = () => {
           checked={showOnlyTalkingUsers}
           onCheckedChange={async () => {
             const newBool = !showOnlyTalkingUsers;
-            setShowOnlyTalkingUsers(newBool);
-            Config.set("showOnlyTalkingUsers", newBool);
+            await Config.set("showOnlyTalkingUsers", newBool);
 
-            // let the main app know the updated config
-            // TODO: is there a more efficient way to do this rather than sending the whole config?
-            await emit("config_update", Config.getConfig());
+            await emit("config_update", await Config.getConfig());
           }}
         />
         <label

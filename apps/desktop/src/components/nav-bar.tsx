@@ -11,7 +11,7 @@ import {
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import React from "react";
 import { invoke } from "@tauri-apps/api";
-import overlayedConfig, { type DirectionLR } from "../config";
+import Config, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
 const mapping = {
@@ -108,20 +108,20 @@ export const NavBar = ({
             <button title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
               <IconComponent
                 size={20}
-                onClick={() => {
+                onClick={async () => {
                   const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
                   setCurrentAlignment(newAlignment);
                   setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
-                  overlayedConfig.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
+                  await Config.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
                 }}
               />
             </button>
             <button title="Enable clickthrough">
               <Pin
                 size={20}
-                onClick={() => {
+                onClick={async () => {
                   invoke("toggle_clickthrough");
-                  overlayedConfig.set("clickthrough", !clickthrough);
+                  await Config.set("clickthrough", !clickthrough);
                   navigate("/channel");
                 }}
               />

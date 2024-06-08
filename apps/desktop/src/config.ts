@@ -1,5 +1,6 @@
 import { writeFile, readTextFile, createDir } from "@tauri-apps/api/fs";
 import { appConfigDir } from "@tauri-apps/api/path";
+import * as Sentry from "@sentry/react";
 
 export type DirectionLR = "left" | "right" | "center";
 export type DirectionTB = "top" | "bottom";
@@ -31,11 +32,14 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
 export class Config {
   private config: OverlayedConfig = DEFAULT_OVERLAYED_CONFIG;
   private configPath: string = "";
+  private loaded = false;
   constructor() {
-    this.init();
+    this.load();
   }
 
-  init = async () => {
+  load = async () => {
+    if (this.loaded) return;
+
     this.configPath = (await appConfigDir()) + "config.json";
     try {
       const config = await readTextFile(this.configPath);
@@ -55,6 +59,14 @@ export class Config {
         }, {} as OverlayedConfig),
       };
 
+      // make sure to disable sentry if they have disabled telemetry
+      if (!this.config.telemetry) {
+        console.warn("[TELEMETRY] Disabling sentry.io telemetry because the user has disabled it");
+        Sentry.close();
+      } else {
+        console.log("[TELEMETRY] sentry.io telemetry is enabled!");
+      }
+
       // fuck it persist it
       this.save();
     } catch (e: unknown) {
@@ -63,17 +75,24 @@ export class Config {
 
       // we don't need to raise an error cause it's the first time they have used overlayed probably?
     }
+
+    this.loaded = true;
   };
 
-  getConfig(): OverlayedConfig {
+  async getConfig(): Promise<OverlayedConfig> {
+    await this.load();
     return this.config;
   }
 
-  get<K extends keyof OverlayedConfig>(key: K): OverlayedConfig[K] | null {
-    return this.config[key] || null;
+  async get<K extends keyof OverlayedConfig>(key: K): Promise<OverlayedConfig[K]> {
+    await this.load();
+
+    return this.config[key];
   }
 
-  set<K extends keyof OverlayedConfig>(key: K, value: OverlayedConfig[K]): void {
+  async set<K extends keyof OverlayedConfig>(key: K, value: OverlayedConfig[K]): Promise<void> {
+    await this.load();
+
     this.config[key] = value;
     this.save();
   }
@@ -95,4 +114,6 @@ export class Config {
   }
 }
 
-export default new Config();
+const config = new Config();
+
+export default config;
