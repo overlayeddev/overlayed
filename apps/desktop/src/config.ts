@@ -1,4 +1,5 @@
 import { writeFile, readTextFile, createDir } from "@tauri-apps/api/fs";
+import { useEffect, useState } from "react";
 import { appConfigDir } from "@tauri-apps/api/path";
 import * as Sentry from "@sentry/react";
 
@@ -69,7 +70,7 @@ export class Config {
       // fuck it persist it
       this.save();
 
-      console.log("config loaded")
+      console.log("config loaded");
     } catch (e: unknown) {
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();
@@ -85,11 +86,15 @@ export class Config {
     return this.config;
   }
 
-  async get<K extends keyof OverlayedConfig>(key: K): Promise<OverlayedConfig[K] | null> {
-    return this.config[key] || null;
+  async get<K extends keyof OverlayedConfig>(key: K): Promise<OverlayedConfig[K]> {
+    await this.load();
+
+    return this.config[key];
   }
 
-  set<K extends keyof OverlayedConfig>(key: K, value: OverlayedConfig[K]): void {
+  async set<K extends keyof OverlayedConfig>(key: K, value: OverlayedConfig[K]): Promise<void> {
+    await this.load();
+
     this.config[key] = value;
     this.save();
   }
@@ -111,4 +116,10 @@ export class Config {
   }
 }
 
-export default new Config();
+const config = new Config();
+
+export default config;
+
+export const useConfig = () => {
+  // TODO: impl this 
+}
