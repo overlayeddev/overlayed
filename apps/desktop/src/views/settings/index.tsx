@@ -62,6 +62,10 @@ export const SettingsView = ({
               href="https://github.com/overlayeddev/overlayed"
             >
               github repo
+            </a>{" "}
+            /
+            <a className="text-blue-400 pl-2" target="_blank" rel="noreferrer" href="https://overlayed.dev/licenses">
+              licenses
             </a>
           </p>
           <div className="flex flex-grow pr-4 justify-end gap-3 ">

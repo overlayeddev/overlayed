@@ -1,0 +1,2390 @@
+{
+  "MIT": [
+    {
+      "name": "@alloc/quick-lru",
+      "version": "5.2.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@alloc+quick-lru@5.2.0/node_modules/@alloc/quick-lru",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/quick-lru#readme",
+      "description": "Simple “Least Recently Used” (LRU) cache"
+    },
+    {
+      "name": "@axiomhq/js",
+      "version": "1.0.0-rc.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@axiomhq+js@1.0.0-rc.1/node_modules/@axiomhq/js",
+      "license": "MIT",
+      "author": "Axiom, Inc.",
+      "homepage": "https://github.com/axiomhq/axiom-js/blob/main/packages/js/README.md",
+      "description": "The official javascript bindings for the Axiom API"
+    },
+    {
+      "name": "@babel/code-frame",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+code-frame@7.24.7/node_modules/@babel/code-frame",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-code-frame",
+      "description": "Generate errors that contain a code frame that point to source locations."
+    },
+    {
+      "name": "@babel/compat-data",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+compat-data@7.24.7/node_modules/@babel/compat-data",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": ""
+    },
+    {
+      "name": "@babel/core",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+core@7.24.7/node_modules/@babel/core",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-core",
+      "description": "Babel compiler core."
+    },
+    {
+      "name": "@babel/generator",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+generator@7.24.7/node_modules/@babel/generator",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-generator",
+      "description": "Turns an AST into code."
+    },
+    {
+      "name": "@babel/helper-compilation-targets",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-compilation-targets@7.24.7/node_modules/@babel/helper-compilation-targets",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "Helper functions on Babel compilation targets"
+    },
+    {
+      "name": "@babel/helper-environment-visitor",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-environment-visitor@7.24.7/node_modules/@babel/helper-environment-visitor",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-environment-visitor",
+      "description": "Helper visitor to only visit nodes in the current 'this' context"
+    },
+    {
+      "name": "@babel/helper-function-name",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-function-name@7.24.7/node_modules/@babel/helper-function-name",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-function-name",
+      "description": "Helper function to change the property 'name' of every function"
+    },
+    {
+      "name": "@babel/helper-hoist-variables",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-hoist-variables@7.24.7/node_modules/@babel/helper-hoist-variables",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-hoist-variables",
+      "description": "Helper function to hoist variables"
+    },
+    {
+      "name": "@babel/helper-module-imports",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-module-imports@7.24.7/node_modules/@babel/helper-module-imports",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-imports",
+      "description": "Babel helper functions for inserting module loads"
+    },
+    {
+      "name": "@babel/helper-module-transforms",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-module-transforms@7.24.7_@babel+core@7.24.7/node_modules/@babel/helper-module-transforms",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-module-transforms",
+      "description": "Babel helper functions for implementing ES6 module transformations"
+    },
+    {
+      "name": "@babel/helper-simple-access",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-simple-access@7.24.7/node_modules/@babel/helper-simple-access",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-simple-access",
+      "description": "Babel helper for ensuring that access to a given value is performed through simple accesses"
+    },
+    {
+      "name": "@babel/helper-split-export-declaration",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-split-export-declaration@7.24.7/node_modules/@babel/helper-split-export-declaration",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-split-export-declaration",
+      "description": ""
+    },
+    {
+      "name": "@babel/helper-string-parser",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-string-parser@7.24.7/node_modules/@babel/helper-string-parser",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helper-string-parser",
+      "description": "A utility package to parse strings"
+    },
+    {
+      "name": "@babel/helper-validator-identifier",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-validator-identifier@7.24.7/node_modules/@babel/helper-validator-identifier",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "Validate identifier/keywords name"
+    },
+    {
+      "name": "@babel/helper-validator-option",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helper-validator-option@7.24.7/node_modules/@babel/helper-validator-option",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://github.com/babel/babel#readme",
+      "description": "Validate plugin/preset options"
+    },
+    {
+      "name": "@babel/helpers",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+helpers@7.24.7/node_modules/@babel/helpers",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-helpers",
+      "description": "Collection of helper functions used by Babel transforms."
+    },
+    {
+      "name": "@babel/highlight",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+highlight@7.24.7/node_modules/@babel/highlight",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-highlight",
+      "description": "Syntax highlight JavaScript strings for output in terminals."
+    },
+    {
+      "name": "@babel/parser",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+parser@7.24.7/node_modules/@babel/parser",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-parser",
+      "description": "A JavaScript parser"
+    },
+    {
+      "name": "@babel/runtime",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+runtime@7.24.7/node_modules/@babel/runtime",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-runtime",
+      "description": "babel's modular runtime helpers"
+    },
+    {
+      "name": "@babel/template",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+template@7.24.7/node_modules/@babel/template",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-template",
+      "description": "Generate an AST from a string template."
+    },
+    {
+      "name": "@babel/traverse",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+traverse@7.24.7/node_modules/@babel/traverse",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-traverse",
+      "description": "The Babel Traverse module maintains the overall tree state, and is responsible for replacing, removing, and adding nodes"
+    },
+    {
+      "name": "@babel/types",
+      "version": "7.24.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@babel+types@7.24.7/node_modules/@babel/types",
+      "license": "MIT",
+      "author": "The Babel Team",
+      "homepage": "https://babel.dev/docs/en/next/babel-types",
+      "description": "Babel Types is a Lodash-esque utility library for AST nodes"
+    },
+    {
+      "name": "@floating-ui/core",
+      "version": "1.6.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@floating-ui+core@1.6.2/node_modules/@floating-ui/core",
+      "license": "MIT",
+      "author": "atomiks",
+      "homepage": "https://floating-ui.com",
+      "description": "Positioning library for floating elements: tooltips, popovers, dropdowns, and more"
+    },
+    {
+      "name": "@floating-ui/dom",
+      "version": "1.6.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@floating-ui+dom@1.6.5/node_modules/@floating-ui/dom",
+      "license": "MIT",
+      "author": "atomiks",
+      "homepage": "https://floating-ui.com",
+      "description": "Floating UI for the web"
+    },
+    {
+      "name": "@floating-ui/react-dom",
+      "version": "2.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@floating-ui+react-dom@2.1.0_react-dom@18.3.1_react@18.3.1/node_modules/@floating-ui/react-dom",
+      "license": "MIT",
+      "author": "atomiks",
+      "homepage": "https://floating-ui.com/docs/react-dom",
+      "description": "Floating UI for React DOM"
+    },
+    {
+      "name": "@floating-ui/utils",
+      "version": "0.2.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@floating-ui+utils@0.2.2/node_modules/@floating-ui/utils",
+      "license": "MIT",
+      "author": "atomiks",
+      "homepage": "https://floating-ui.com",
+      "description": "Utilities for Floating UI"
+    },
+    {
+      "name": "@jridgewell/gen-mapping",
+      "version": "0.3.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@jridgewell+gen-mapping@0.3.5/node_modules/@jridgewell/gen-mapping",
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/gen-mapping#readme",
+      "description": "Generate source maps"
+    },
+    {
+      "name": "@jridgewell/resolve-uri",
+      "version": "3.1.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@jridgewell+resolve-uri@3.1.2/node_modules/@jridgewell/resolve-uri",
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/resolve-uri#readme",
+      "description": "Resolve a URI relative to an optional base URI"
+    },
+    {
+      "name": "@jridgewell/set-array",
+      "version": "1.2.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@jridgewell+set-array@1.2.1/node_modules/@jridgewell/set-array",
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/set-array#readme",
+      "description": "Like a Set, but provides the index of the `key` in the backing array"
+    },
+    {
+      "name": "@jridgewell/sourcemap-codec",
+      "version": "1.4.15",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@jridgewell+sourcemap-codec@1.4.15/node_modules/@jridgewell/sourcemap-codec",
+      "license": "MIT",
+      "author": "Rich Harris",
+      "homepage": "https://github.com/jridgewell/sourcemap-codec#readme",
+      "description": "Encode/decode sourcemap mappings"
+    },
+    {
+      "name": "@jridgewell/trace-mapping",
+      "version": "0.3.25",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@jridgewell+trace-mapping@0.3.25/node_modules/@jridgewell/trace-mapping",
+      "license": "MIT",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/jridgewell/trace-mapping#readme",
+      "description": "Trace the original position through a source map"
+    },
+    {
+      "name": "@nodelib/fs.scandir",
+      "version": "2.1.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@nodelib+fs.scandir@2.1.5/node_modules/@nodelib/fs.scandir",
+      "license": "MIT",
+      "homepage": "https://github.com/nodelib/nodelib/tree/master#readme",
+      "description": "List files and directories inside the specified directory"
+    },
+    {
+      "name": "@nodelib/fs.stat",
+      "version": "2.0.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@nodelib+fs.stat@2.0.5/node_modules/@nodelib/fs.stat",
+      "license": "MIT",
+      "homepage": "https://github.com/nodelib/nodelib/tree/master#readme",
+      "description": "Get the status of a file with some features"
+    },
+    {
+      "name": "@nodelib/fs.walk",
+      "version": "1.2.8",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@nodelib+fs.walk@1.2.8/node_modules/@nodelib/fs.walk",
+      "license": "MIT",
+      "homepage": "https://github.com/nodelib/nodelib/tree/master#readme",
+      "description": "A library for efficiently walking a directory recursively"
+    },
+    {
+      "name": "@pkgjs/parseargs",
+      "version": "0.11.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@pkgjs+parseargs@0.11.0/node_modules/@pkgjs/parseargs",
+      "license": "MIT",
+      "author": "",
+      "homepage": "https://github.com/pkgjs/parseargs#readme",
+      "description": "Polyfill of future proposal for `util.parseArgs()`"
+    },
+    {
+      "name": "@radix-ui/colors",
+      "version": "3.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+colors@3.0.0/node_modules/@radix-ui/colors",
+      "license": "MIT"
+    },
+    {
+      "name": "@radix-ui/number",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+number@1.0.1/node_modules/@radix-ui/number",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/primitive",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+primitive@1.0.1/node_modules/@radix-ui/primitive",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-accessible-icon",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-accessible-icon@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-accessible-icon",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-alert-dialog",
+      "version": "1.0.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-alert-dialog@1.0.5_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-alert-dialog",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-arrow",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-arrow@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-arrow",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-aspect-ratio",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-aspect-ratio@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-aspect-ratio",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-avatar",
+      "version": "1.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-avatar@1.0.4_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-avatar",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-checkbox",
+      "version": "1.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-checkbox@1.0.4_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-checkbox",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-collection",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-collection@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-collection",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-compose-refs",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-compose-refs@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-compose-refs",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-context",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-context@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-context",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-context-menu",
+      "version": "2.1.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-context-menu@2.1.5_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-context-menu",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "version": "1.0.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-dialog@1.0.5_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-dialog",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-direction",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-direction@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-direction",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-dismissable-layer",
+      "version": "1.0.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-dismissable-layer@1.0.5_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-dismissable-layer",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-dropdown-menu",
+      "version": "2.0.6",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-dropdown-menu@2.0.6_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-dropdown-menu",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-focus-guards",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-focus-guards@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-focus-guards",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-focus-scope",
+      "version": "1.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-focus-scope@1.0.4_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-focus-scope",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-form",
+      "version": "0.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-form@0.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-form",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-hover-card",
+      "version": "1.0.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-hover-card@1.0.7_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-hover-card",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-id",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-id@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-id",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-label",
+      "version": "2.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-label@2.0.2_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-label",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-menu",
+      "version": "2.0.6",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-menu@2.0.6_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-menu",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-popover",
+      "version": "1.0.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-popover@1.0.7_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-popover",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-popper",
+      "version": "1.1.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-popper@1.1.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-popper",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-portal",
+      "version": "1.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-portal@1.0.4_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-portal",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-presence",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-presence@1.0.1_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-presence",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-primitive",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-primitive@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-primitive",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-radio-group",
+      "version": "1.1.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-radio-group@1.1.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-radio-group",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-roving-focus",
+      "version": "1.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-roving-focus@1.0.4_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-roving-focus",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-scroll-area",
+      "version": "1.0.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-scroll-area@1.0.5_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-scroll-area",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-select",
+      "version": "2.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-select@2.0.0_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-select",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-separator",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-separator@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-separator",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-slider",
+      "version": "1.1.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-slider@1.1.2_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-slider",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "version": "1.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-slot@1.0.2_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-slot",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-switch",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-switch@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-switch",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-tabs",
+      "version": "1.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-tabs@1.0.4_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-tabs",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-toast",
+      "version": "1.1.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-toast@1.1.5_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-toast",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-tooltip",
+      "version": "1.0.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-tooltip@1.0.7_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-tooltip",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-callback-ref",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-use-callback-ref@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-use-callback-ref",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-controllable-state",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-use-controllable-state@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-use-controllable-state",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-escape-keydown",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-use-escape-keydown@1.0.3_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-use-escape-keydown",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-layout-effect",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-use-layout-effect@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-use-layout-effect",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-previous",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-use-previous@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-use-previous",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-rect",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-use-rect@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-use-rect",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-use-size",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-use-size@1.0.1_@types+react@18.3.3_react@18.3.1/node_modules/@radix-ui/react-use-size",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/react-visually-hidden",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+react-visually-hidden@1.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/react-visually-hidden",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/rect",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+rect@1.0.1/node_modules/@radix-ui/rect",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/primitives"
+    },
+    {
+      "name": "@radix-ui/themes",
+      "version": "2.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@radix-ui+themes@2.0.3_@types+react-dom@18.3.0_@types+react@18.3.3_react-dom@18.3.1_react@18.3.1/node_modules/@radix-ui/themes",
+      "license": "MIT",
+      "homepage": "https://radix-ui.com/themes"
+    },
+    {
+      "name": "@remix-run/router",
+      "version": "1.16.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@remix-run+router@1.16.1/node_modules/@remix-run/router",
+      "license": "MIT",
+      "author": "Remix Software",
+      "homepage": "https://github.com/remix-run/react-router#readme",
+      "description": "Nested/Data-driven/Framework-agnostic Routing"
+    },
+    {
+      "name": "@sentry-internal/browser-utils",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry-internal+browser-utils@8.8.0/node_modules/@sentry-internal/browser-utils",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/browser-utils",
+      "description": "Browser Utilities for all Sentry JavaScript SDKs"
+    },
+    {
+      "name": "@sentry-internal/feedback",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry-internal+feedback@8.8.0/node_modules/@sentry-internal/feedback",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/feedback",
+      "description": "Sentry SDK integration for user feedback"
+    },
+    {
+      "name": "@sentry-internal/replay",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry-internal+replay@8.8.0/node_modules/@sentry-internal/replay",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://docs.sentry.io/platforms/javascript/session-replay/",
+      "description": "User replays for Sentry"
+    },
+    {
+      "name": "@sentry-internal/replay-canvas",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry-internal+replay-canvas@8.8.0/node_modules/@sentry-internal/replay-canvas",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://docs.sentry.io/platforms/javascript/session-replay/",
+      "description": "Replay canvas integration"
+    },
+    {
+      "name": "@sentry/babel-plugin-component-annotate",
+      "version": "2.18.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+babel-plugin-component-annotate@2.18.0/node_modules/@sentry/babel-plugin-component-annotate",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/babel-plugin-component-annotate",
+      "description": "A Babel plugin that annotates frontend components with additional data to enrich the experience in Sentry"
+    },
+    {
+      "name": "@sentry/browser",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+browser@8.8.0/node_modules/@sentry/browser",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/browser",
+      "description": "Official Sentry SDK for browsers"
+    },
+    {
+      "name": "@sentry/bundler-plugin-core",
+      "version": "2.18.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+bundler-plugin-core@2.18.0/node_modules/@sentry/bundler-plugin-core",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/bundler-plugin-core",
+      "description": "Sentry Bundler Plugin Core"
+    },
+    {
+      "name": "@sentry/core",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+core@8.8.0/node_modules/@sentry/core",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/core",
+      "description": "Base implementation for all Sentry JavaScript SDKs"
+    },
+    {
+      "name": "@sentry/react",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+react@8.8.0_react@18.3.1/node_modules/@sentry/react",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/react",
+      "description": "Official Sentry SDK for React.js"
+    },
+    {
+      "name": "@sentry/types",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+types@8.8.0/node_modules/@sentry/types",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/types",
+      "description": "Types for all Sentry JavaScript SDKs"
+    },
+    {
+      "name": "@sentry/utils",
+      "version": "8.8.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+utils@8.8.0/node_modules/@sentry/utils",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript/tree/master/packages/utils",
+      "description": "Utilities for all Sentry JavaScript SDKs"
+    },
+    {
+      "name": "@sentry/vite-plugin",
+      "version": "2.18.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+vite-plugin@2.18.0/node_modules/@sentry/vite-plugin",
+      "license": "MIT",
+      "author": "Sentry",
+      "homepage": "https://github.com/getsentry/sentry-javascript-bundler-plugins/tree/main/packages/vite-plugin",
+      "description": "Official Sentry Vite plugin"
+    },
+    {
+      "name": "@tanstack/history",
+      "version": "0.0.1-beta.204",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@tanstack+history@0.0.1-beta.204/node_modules/@tanstack/history",
+      "license": "MIT",
+      "author": "Tanner Linsley",
+      "homepage": "https://tanstack.com",
+      "description": ""
+    },
+    {
+      "name": "@tanstack/react-router",
+      "version": "0.0.1-beta.204",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@tanstack+react-router@0.0.1-beta.204_react-dom@18.3.1_react@18.3.1/node_modules/@tanstack/react-router",
+      "license": "MIT",
+      "author": "Tanner Linsley",
+      "homepage": "https://tanstack.com/router",
+      "description": ""
+    },
+    {
+      "name": "@tanstack/react-store",
+      "version": "0.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@tanstack+react-store@0.0.1_react-dom@18.3.1_react@18.3.1/node_modules/@tanstack/react-store",
+      "license": "MIT",
+      "author": "Tanner Linsley",
+      "homepage": "https://tanstack.com/",
+      "description": ""
+    },
+    {
+      "name": "@tanstack/router-core",
+      "version": "0.0.1-beta.204",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@tanstack+router-core@0.0.1-beta.204_react-dom@18.3.1_react@18.3.1/node_modules/@tanstack/router-core",
+      "license": "MIT",
+      "author": "Tanner Linsley",
+      "homepage": "https://tanstack.com/router",
+      "description": ""
+    },
+    {
+      "name": "@tanstack/store",
+      "version": "0.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@tanstack+store@0.0.1/node_modules/@tanstack/store",
+      "license": "MIT",
+      "author": "Tanner Linsley",
+      "homepage": "https://tanstack.com/store",
+      "description": ""
+    },
+    {
+      "name": "@types/prop-types",
+      "version": "15.7.12",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@types+prop-types@15.7.12/node_modules/@types/prop-types",
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/prop-types",
+      "description": "TypeScript definitions for prop-types"
+    },
+    {
+      "name": "@types/react",
+      "version": "18.3.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@types+react@18.3.3/node_modules/@types/react",
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react",
+      "description": "TypeScript definitions for react"
+    },
+    {
+      "name": "@types/react-dom",
+      "version": "18.3.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@types+react-dom@18.3.0/node_modules/@types/react-dom",
+      "license": "MIT",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-dom",
+      "description": "TypeScript definitions for react-dom"
+    },
+    {
+      "name": "acorn",
+      "version": "8.11.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/acorn@8.11.3/node_modules/acorn",
+      "license": "MIT",
+      "homepage": "https://github.com/acornjs/acorn",
+      "description": "ECMAScript parser"
+    },
+    {
+      "name": "agent-base",
+      "version": "6.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/agent-base@6.0.2/node_modules/agent-base",
+      "license": "MIT",
+      "author": "Nathan Rajlich",
+      "homepage": "https://github.com/TooTallNate/node-agent-base#readme",
+      "description": "Turn a function into an `http.Agent` instance"
+    },
+    {
+      "name": "ansi-regex",
+      "version": "5.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/ansi-regex@5.0.1/node_modules/ansi-regex",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/ansi-regex#readme",
+      "description": "Regular expression for matching ANSI escape codes"
+    },
+    {
+      "name": "ansi-styles",
+      "version": "4.3.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/ansi-styles@4.3.0/node_modules/ansi-styles",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/ansi-styles#readme",
+      "description": "ANSI escape codes for styling strings in the terminal"
+    },
+    {
+      "name": "any-promise",
+      "version": "1.3.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/any-promise@1.3.0/node_modules/any-promise",
+      "license": "MIT",
+      "author": "Kevin Beaty",
+      "homepage": "http://github.com/kevinbeaty/any-promise",
+      "description": "Resolve any installed ES6 compatible promise"
+    },
+    {
+      "name": "arg",
+      "version": "5.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/arg@5.0.2/node_modules/arg",
+      "license": "MIT",
+      "author": "Josh Junon",
+      "homepage": "https://github.com/vercel/arg#readme",
+      "description": "Unopinionated, no-frills CLI argument parser"
+    },
+    {
+      "name": "aria-hidden",
+      "version": "1.2.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/aria-hidden@1.2.4/node_modules/aria-hidden",
+      "license": "MIT",
+      "author": "Anton Korzunov",
+      "homepage": "https://github.com/theKashey/aria-hidden#readme",
+      "description": "Cast aria-hidden to everything, except..."
+    },
+    {
+      "name": "balanced-match",
+      "version": "1.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/balanced-match@1.0.2/node_modules/balanced-match",
+      "license": "MIT",
+      "author": "Julian Gruber",
+      "homepage": "https://github.com/juliangruber/balanced-match",
+      "description": "Match balanced character pairs, like \"{\" and \"}\""
+    },
+    {
+      "name": "binary-extensions",
+      "version": "2.3.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/binary-extensions@2.3.0/node_modules/binary-extensions",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/binary-extensions#readme",
+      "description": "List of binary file extensions"
+    },
+    {
+      "name": "brace-expansion",
+      "version": "2.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/brace-expansion@2.0.1/node_modules/brace-expansion",
+      "license": "MIT",
+      "author": "Julian Gruber",
+      "homepage": "https://github.com/juliangruber/brace-expansion",
+      "description": "Brace expansion as known from sh/bash"
+    },
+    {
+      "name": "braces",
+      "version": "3.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/braces@3.0.3/node_modules/braces",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/micromatch/braces",
+      "description": "Bash-like brace expansion, implemented in JavaScript. Safer than other brace expansion libs, with complete support for the Bash 4.3 braces specification, without sacrificing speed."
+    },
+    {
+      "name": "browserslist",
+      "version": "4.23.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/browserslist@4.23.0/node_modules/browserslist",
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/browserslist/browserslist#readme",
+      "description": "Share target browsers between different front-end tools, like Autoprefixer, Stylelint and babel-env-preset"
+    },
+    {
+      "name": "camelcase-css",
+      "version": "2.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/camelcase-css@2.0.1/node_modules/camelcase-css",
+      "license": "MIT",
+      "author": "Steven Vachon",
+      "homepage": "https://github.com/stevenvachon/camelcase-css#readme",
+      "description": "Convert a kebab-cased CSS property into a camelCased DOM property."
+    },
+    {
+      "name": "chalk",
+      "version": "2.4.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/chalk@2.4.2/node_modules/chalk",
+      "license": "MIT",
+      "homepage": "https://github.com/chalk/chalk#readme",
+      "description": "Terminal string styling done right"
+    },
+    {
+      "name": "chokidar",
+      "version": "3.6.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/chokidar@3.6.0/node_modules/chokidar",
+      "license": "MIT",
+      "author": "Paul Miller",
+      "homepage": "https://github.com/paulmillr/chokidar",
+      "description": "Minimal and efficient cross-platform file watching library"
+    },
+    {
+      "name": "classnames",
+      "version": "2.5.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/classnames@2.5.1/node_modules/classnames",
+      "license": "MIT",
+      "author": "Jed Watson",
+      "homepage": "https://github.com/JedWatson/classnames#readme",
+      "description": "A simple utility for conditionally joining classNames together"
+    },
+    {
+      "name": "clsx",
+      "version": "2.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/clsx@2.1.1/node_modules/clsx",
+      "license": "MIT",
+      "author": "Luke Edwards",
+      "homepage": "https://github.com/lukeed/clsx#readme",
+      "description": "A tiny (239B) utility for constructing className strings conditionally."
+    },
+    {
+      "name": "color-convert",
+      "version": "2.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/color-convert@2.0.1/node_modules/color-convert",
+      "license": "MIT",
+      "author": "Heather Arthur",
+      "homepage": "https://github.com/Qix-/color-convert#readme",
+      "description": "Plain color conversion functions"
+    },
+    {
+      "name": "color-name",
+      "version": "1.1.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/color-name@1.1.4/node_modules/color-name",
+      "license": "MIT",
+      "author": "DY",
+      "homepage": "https://github.com/colorjs/color-name",
+      "description": "A list of color names and its values"
+    },
+    {
+      "name": "commander",
+      "version": "4.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/commander@4.1.1/node_modules/commander",
+      "license": "MIT",
+      "author": "TJ Holowaychuk",
+      "homepage": "https://github.com/tj/commander.js#readme",
+      "description": "the complete solution for node.js command-line programs"
+    },
+    {
+      "name": "convert-source-map",
+      "version": "2.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/convert-source-map@2.0.0/node_modules/convert-source-map",
+      "license": "MIT",
+      "author": "Thorsten Lorenz",
+      "homepage": "https://github.com/thlorenz/convert-source-map",
+      "description": "Converts a source-map from/to  different formats and allows adding/changing properties."
+    },
+    {
+      "name": "cross-spawn",
+      "version": "7.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn",
+      "license": "MIT",
+      "author": "André Cruz",
+      "homepage": "https://github.com/moxystudio/node-cross-spawn",
+      "description": "Cross platform child_process#spawn and child_process#spawnSync"
+    },
+    {
+      "name": "cssesc",
+      "version": "3.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/cssesc@3.0.0/node_modules/cssesc",
+      "license": "MIT",
+      "author": "Mathias Bynens",
+      "homepage": "https://mths.be/cssesc",
+      "description": "A JavaScript library for escaping CSS strings and identifiers while generating the shortest possible ASCII-only output."
+    },
+    {
+      "name": "csstype",
+      "version": "3.1.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/csstype@3.1.3/node_modules/csstype",
+      "license": "MIT",
+      "author": "Fredrik Nicol",
+      "homepage": "https://github.com/frenic/csstype#readme",
+      "description": "Strict TypeScript and Flow types for style based on MDN data"
+    },
+    {
+      "name": "date-fns",
+      "version": "2.30.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/date-fns@2.30.0/node_modules/date-fns",
+      "license": "MIT",
+      "homepage": "https://github.com/date-fns/date-fns#readme",
+      "description": "Modern JavaScript date utility library"
+    },
+    {
+      "name": "debug",
+      "version": "4.3.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/debug@4.3.5/node_modules/debug",
+      "license": "MIT",
+      "author": "Josh Junon",
+      "homepage": "https://github.com/debug-js/debug#readme",
+      "description": "Lightweight debugging utility for Node.js and the browser"
+    },
+    {
+      "name": "detect-node-es",
+      "version": "1.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/detect-node-es@1.1.0/node_modules/detect-node-es",
+      "license": "MIT",
+      "author": "Ilya Kantor",
+      "homepage": "https://github.com/thekashey/detect-node",
+      "description": "Detect Node.JS (as opposite to browser environment). ESM modification"
+    },
+    {
+      "name": "dlv",
+      "version": "1.1.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/dlv@1.1.3/node_modules/dlv",
+      "license": "MIT",
+      "author": "Jason Miller",
+      "homepage": "https://github.com/developit/dlv#readme",
+      "description": "Safely get a dot-notated property within an object."
+    },
+    {
+      "name": "emoji-regex",
+      "version": "8.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/emoji-regex@8.0.0/node_modules/emoji-regex",
+      "license": "MIT",
+      "author": "Mathias Bynens",
+      "homepage": "https://mths.be/emoji-regex",
+      "description": "A regular expression to match all Emoji-only symbols as per the Unicode Standard."
+    },
+    {
+      "name": "escalade",
+      "version": "3.1.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/escalade@3.1.2/node_modules/escalade",
+      "license": "MIT",
+      "author": "Luke Edwards",
+      "homepage": "https://github.com/lukeed/escalade#readme",
+      "description": "A tiny (183B to 210B) and fast utility to ascend parent directories"
+    },
+    {
+      "name": "escape-string-regexp",
+      "version": "1.0.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/escape-string-regexp@1.0.5/node_modules/escape-string-regexp",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/escape-string-regexp#readme",
+      "description": "Escape RegExp special characters"
+    },
+    {
+      "name": "fast-glob",
+      "version": "3.3.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/fast-glob@3.3.2/node_modules/fast-glob",
+      "license": "MIT",
+      "author": "Denis Malinochkin",
+      "homepage": "https://github.com/mrmlnc/fast-glob#readme",
+      "description": "It's a very fast and efficient glob library for Node.js"
+    },
+    {
+      "name": "fetch-retry",
+      "version": "5.0.6",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/fetch-retry@5.0.6/node_modules/fetch-retry",
+      "license": "MIT",
+      "author": "Jon K. Bernhardsen",
+      "homepage": "https://github.com/jonbern/fetch-retry#readme",
+      "description": "Extend any fetch library with retry functionality"
+    },
+    {
+      "name": "fill-range",
+      "version": "7.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/fill-range@7.1.1/node_modules/fill-range",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/jonschlinkert/fill-range",
+      "description": "Fill in a range of numbers or letters, optionally passing an increment or `step` to use, or create a regex-compatible range with `options.toRegex`"
+    },
+    {
+      "name": "find-up",
+      "version": "5.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/find-up@5.0.0/node_modules/find-up",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/find-up#readme",
+      "description": "Find a file or directory by walking up parent directories"
+    },
+    {
+      "name": "fsevents",
+      "version": "2.3.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/fsevents@2.3.3/node_modules/fsevents",
+      "license": "MIT",
+      "homepage": "https://github.com/fsevents/fsevents",
+      "description": "Native Access to MacOS FSEvents"
+    },
+    {
+      "name": "function-bind",
+      "version": "1.1.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/function-bind@1.1.2/node_modules/function-bind",
+      "license": "MIT",
+      "author": "Raynos",
+      "homepage": "https://github.com/Raynos/function-bind",
+      "description": "Implementation of Function.prototype.bind"
+    },
+    {
+      "name": "gensync",
+      "version": "1.0.0-beta.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/gensync@1.0.0-beta.2/node_modules/gensync",
+      "license": "MIT",
+      "author": "Logan Smyth",
+      "homepage": "https://github.com/loganfsmyth/gensync",
+      "description": "Allows users to use generators in order to write common functions that can be both sync or async."
+    },
+    {
+      "name": "get-nonce",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/get-nonce@1.0.1/node_modules/get-nonce",
+      "license": "MIT",
+      "author": "Anton Korzunov",
+      "homepage": "https://github.com/theKashey/get-nonce",
+      "description": "returns nonce"
+    },
+    {
+      "name": "globals",
+      "version": "11.12.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/globals@11.12.0/node_modules/globals",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/globals#readme",
+      "description": "Global identifiers from different JavaScript environments"
+    },
+    {
+      "name": "has-flag",
+      "version": "3.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/has-flag@3.0.0/node_modules/has-flag",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/has-flag#readme",
+      "description": "Check if argv has a specific flag"
+    },
+    {
+      "name": "hasown",
+      "version": "2.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/hasown@2.0.2/node_modules/hasown",
+      "license": "MIT",
+      "author": "Jordan Harband",
+      "homepage": "https://github.com/inspect-js/hasOwn#readme",
+      "description": "A robust, ES3 compatible, \"has own property\" predicate."
+    },
+    {
+      "name": "https-proxy-agent",
+      "version": "5.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/https-proxy-agent@5.0.1/node_modules/https-proxy-agent",
+      "license": "MIT",
+      "author": "Nathan Rajlich",
+      "homepage": "https://github.com/TooTallNate/node-https-proxy-agent#readme",
+      "description": "An HTTP(s) proxy `http.Agent` implementation for HTTPS"
+    },
+    {
+      "name": "immer",
+      "version": "10.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/immer@10.1.1/node_modules/immer",
+      "license": "MIT",
+      "author": "Michel Weststrate",
+      "homepage": "https://github.com/immerjs/immer#readme",
+      "description": "Create your next immutable state by mutating the current one"
+    },
+    {
+      "name": "invariant",
+      "version": "2.2.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/invariant@2.2.4/node_modules/invariant",
+      "license": "MIT",
+      "author": "Andres Suarez",
+      "homepage": "https://github.com/zertosh/invariant#readme",
+      "description": "invariant"
+    },
+    {
+      "name": "is-binary-path",
+      "version": "2.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/is-binary-path@2.1.0/node_modules/is-binary-path",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/is-binary-path#readme",
+      "description": "Check if a file path is a binary file"
+    },
+    {
+      "name": "is-core-module",
+      "version": "2.13.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/is-core-module@2.13.1/node_modules/is-core-module",
+      "license": "MIT",
+      "author": "Jordan Harband",
+      "homepage": "https://github.com/inspect-js/is-core-module",
+      "description": "Is this specifier a node.js core module?"
+    },
+    {
+      "name": "is-extglob",
+      "version": "2.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/is-extglob@2.1.1/node_modules/is-extglob",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/jonschlinkert/is-extglob",
+      "description": "Returns true if a string has an extglob."
+    },
+    {
+      "name": "is-fullwidth-code-point",
+      "version": "3.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/is-fullwidth-code-point@3.0.0/node_modules/is-fullwidth-code-point",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/is-fullwidth-code-point#readme",
+      "description": "Check if the character represented by a given Unicode code point is fullwidth"
+    },
+    {
+      "name": "is-glob",
+      "version": "4.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/is-glob@4.0.3/node_modules/is-glob",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/micromatch/is-glob",
+      "description": "Returns `true` if the given string looks like a glob pattern or an extglob pattern. This makes it easy to create code that only uses external modules like node-glob when necessary, resulting in much faster code execution and initialization time, and a better user experience."
+    },
+    {
+      "name": "is-number",
+      "version": "7.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/is-number@7.0.0/node_modules/is-number",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/jonschlinkert/is-number",
+      "description": "Returns true if a number or string value is a finite number. Useful for regex matches, parsing, user input, etc."
+    },
+    {
+      "name": "jiti",
+      "version": "1.21.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/jiti@1.21.3/node_modules/jiti",
+      "license": "MIT",
+      "homepage": "https://github.com/unjs/jiti#readme",
+      "description": "Runtime typescript and ESM support for Node.js"
+    },
+    {
+      "name": "js-tokens",
+      "version": "4.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/js-tokens@4.0.0/node_modules/js-tokens",
+      "license": "MIT",
+      "author": "Simon Lydell",
+      "homepage": "https://github.com/lydell/js-tokens#readme",
+      "description": "A regex that tokenizes JavaScript."
+    },
+    {
+      "name": "jsesc",
+      "version": "2.5.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/jsesc@2.5.2/node_modules/jsesc",
+      "license": "MIT",
+      "author": "Mathias Bynens",
+      "homepage": "https://mths.be/jsesc",
+      "description": "Given some data, jsesc returns the shortest possible stringified & ASCII-safe representation of that data."
+    },
+    {
+      "name": "json5",
+      "version": "2.2.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/json5@2.2.3/node_modules/json5",
+      "license": "MIT",
+      "author": "Aseem Kishore",
+      "homepage": "http://json5.org/",
+      "description": "JSON for Humans"
+    },
+    {
+      "name": "lilconfig",
+      "version": "3.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/lilconfig@3.1.1/node_modules/lilconfig",
+      "license": "MIT",
+      "author": "antonk52",
+      "homepage": "https://github.com/antonk52/lilconfig#readme",
+      "description": "A zero-dependency alternative to cosmiconfig"
+    },
+    {
+      "name": "lines-and-columns",
+      "version": "1.2.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/lines-and-columns@1.2.4/node_modules/lines-and-columns",
+      "license": "MIT",
+      "author": "Brian Donovan",
+      "homepage": "https://github.com/eventualbuddha/lines-and-columns#readme",
+      "description": "Maps lines and columns to character offsets and back."
+    },
+    {
+      "name": "locate-path",
+      "version": "6.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/locate-path@6.0.0/node_modules/locate-path",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/locate-path#readme",
+      "description": "Get the first path that exists on disk of multiple paths"
+    },
+    {
+      "name": "loose-envify",
+      "version": "1.4.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/loose-envify@1.4.0/node_modules/loose-envify",
+      "license": "MIT",
+      "author": "Andres Suarez",
+      "homepage": "https://github.com/zertosh/loose-envify",
+      "description": "Fast (and loose) selective `process.env` replacer using js-tokens instead of an AST"
+    },
+    {
+      "name": "magic-string",
+      "version": "0.30.8",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/magic-string@0.30.8/node_modules/magic-string",
+      "license": "MIT",
+      "author": "Rich Harris",
+      "homepage": "https://github.com/rich-harris/magic-string#readme",
+      "description": "Modify strings, generate sourcemaps"
+    },
+    {
+      "name": "merge2",
+      "version": "1.4.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/merge2@1.4.1/node_modules/merge2",
+      "license": "MIT",
+      "homepage": "https://github.com/teambition/merge2",
+      "description": "Merge multiple streams into one stream in sequence or parallel."
+    },
+    {
+      "name": "micromatch",
+      "version": "4.0.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/micromatch@4.0.7/node_modules/micromatch",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/micromatch/micromatch",
+      "description": "Glob matching for javascript/node.js. A replacement and faster alternative to minimatch and multimatch."
+    },
+    {
+      "name": "ms",
+      "version": "2.1.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/ms@2.1.2/node_modules/ms",
+      "license": "MIT",
+      "homepage": "https://github.com/zeit/ms#readme",
+      "description": "Tiny millisecond conversion utility"
+    },
+    {
+      "name": "mz",
+      "version": "2.7.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/mz@2.7.0/node_modules/mz",
+      "license": "MIT",
+      "author": "Jonathan Ong",
+      "homepage": "https://github.com/normalize/mz#readme",
+      "description": "modernize node.js to current ECMAScript standards"
+    },
+    {
+      "name": "nanoid",
+      "version": "3.3.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/nanoid@3.3.7/node_modules/nanoid",
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/ai/nanoid#readme",
+      "description": "A tiny (116 bytes), secure URL-friendly unique string ID generator"
+    },
+    {
+      "name": "node-fetch",
+      "version": "2.7.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/node-fetch@2.7.0/node_modules/node-fetch",
+      "license": "MIT",
+      "author": "David Frank",
+      "homepage": "https://github.com/bitinn/node-fetch",
+      "description": "A light-weight module that brings window.fetch to node.js"
+    },
+    {
+      "name": "node-releases",
+      "version": "2.0.14",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/node-releases@2.0.14/node_modules/node-releases",
+      "license": "MIT",
+      "author": "Sergey Rubanov",
+      "homepage": "https://github.com/chicoxyzzy/node-releases#readme",
+      "description": "Node.js releases data"
+    },
+    {
+      "name": "normalize-path",
+      "version": "3.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/normalize-path@3.0.0/node_modules/normalize-path",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/jonschlinkert/normalize-path",
+      "description": "Normalize slashes in a file path to be posix/unix-like forward slashes. Also condenses repeat slashes to a single slash and removes and trailing slashes, unless disabled."
+    },
+    {
+      "name": "object-assign",
+      "version": "4.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/object-assign@4.1.1/node_modules/object-assign",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/object-assign#readme",
+      "description": "ES2015 `Object.assign()` ponyfill"
+    },
+    {
+      "name": "object-hash",
+      "version": "3.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/object-hash@3.0.0/node_modules/object-hash",
+      "license": "MIT",
+      "author": "Scott Puleo",
+      "homepage": "https://github.com/puleos/object-hash",
+      "description": "Generate hashes from javascript objects in node and the browser."
+    },
+    {
+      "name": "p-limit",
+      "version": "3.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/p-limit@3.1.0/node_modules/p-limit",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/p-limit#readme",
+      "description": "Run multiple promise-returning & async functions with limited concurrency"
+    },
+    {
+      "name": "p-locate",
+      "version": "5.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/p-locate@5.0.0/node_modules/p-locate",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/p-locate#readme",
+      "description": "Get the first fulfilled promise that satisfies the provided testing function"
+    },
+    {
+      "name": "path-exists",
+      "version": "4.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/path-exists@4.0.0/node_modules/path-exists",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/path-exists#readme",
+      "description": "Check if a path exists"
+    },
+    {
+      "name": "path-key",
+      "version": "3.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/path-key@3.1.1/node_modules/path-key",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/path-key#readme",
+      "description": "Get the PATH environment variable key cross-platform"
+    },
+    {
+      "name": "path-parse",
+      "version": "1.0.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/path-parse@1.0.7/node_modules/path-parse",
+      "license": "MIT",
+      "author": "Javier Blanco",
+      "homepage": "https://github.com/jbgutierrez/path-parse#readme",
+      "description": "Node.js path.parse() ponyfill"
+    },
+    {
+      "name": "picomatch",
+      "version": "2.3.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/picomatch@2.3.1/node_modules/picomatch",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/micromatch/picomatch",
+      "description": "Blazing fast and accurate glob matcher written in JavaScript, with no dependencies and full support for standard and extended Bash glob features, including braces, extglobs, POSIX brackets, and regular expressions."
+    },
+    {
+      "name": "pify",
+      "version": "2.3.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/pify@2.3.0/node_modules/pify",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/pify#readme",
+      "description": "Promisify a callback-style function"
+    },
+    {
+      "name": "pirates",
+      "version": "4.0.6",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/pirates@4.0.6/node_modules/pirates",
+      "license": "MIT",
+      "author": "Ari Porad",
+      "homepage": "https://github.com/danez/pirates#readme",
+      "description": "Properly hijack require, i.e., properly define require hooks and customizations"
+    },
+    {
+      "name": "postcss",
+      "version": "8.4.38",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/postcss@8.4.38/node_modules/postcss",
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://postcss.org/",
+      "description": "Tool for transforming styles with JS plugins"
+    },
+    {
+      "name": "postcss-import",
+      "version": "15.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/postcss-import@15.1.0_postcss@8.4.38/node_modules/postcss-import",
+      "license": "MIT",
+      "author": "Maxime Thirouin",
+      "homepage": "https://github.com/postcss/postcss-import#readme",
+      "description": "PostCSS plugin to import CSS files"
+    },
+    {
+      "name": "postcss-js",
+      "version": "4.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/postcss-js@4.0.1_postcss@8.4.38/node_modules/postcss-js",
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/postcss/postcss-js#readme",
+      "description": "PostCSS for CSS-in-JS and styles in JS objects"
+    },
+    {
+      "name": "postcss-load-config",
+      "version": "4.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/postcss-load-config@4.0.2_postcss@8.4.38/node_modules/postcss-load-config",
+      "license": "MIT",
+      "author": "Michael Ciniawky",
+      "homepage": "https://github.com/postcss/postcss-load-config#readme",
+      "description": "Autoload Config for PostCSS"
+    },
+    {
+      "name": "postcss-nested",
+      "version": "6.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/postcss-nested@6.0.1_postcss@8.4.38/node_modules/postcss-nested",
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/postcss/postcss-nested#readme",
+      "description": "PostCSS plugin to unwrap nested rules like how Sass does it"
+    },
+    {
+      "name": "postcss-selector-parser",
+      "version": "6.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/postcss-selector-parser@6.1.0/node_modules/postcss-selector-parser",
+      "license": "MIT",
+      "homepage": "https://github.com/postcss/postcss-selector-parser"
+    },
+    {
+      "name": "postcss-value-parser",
+      "version": "4.2.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/postcss-value-parser@4.2.0/node_modules/postcss-value-parser",
+      "license": "MIT",
+      "author": "Bogdan Chadkin",
+      "homepage": "https://github.com/TrySound/postcss-value-parser",
+      "description": "Transforms css values and at-rule params into the tree"
+    },
+    {
+      "name": "progress",
+      "version": "2.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/progress@2.0.3/node_modules/progress",
+      "license": "MIT",
+      "author": "TJ Holowaychuk",
+      "homepage": "https://github.com/visionmedia/node-progress#readme",
+      "description": "Flexible ascii progress bar"
+    },
+    {
+      "name": "proxy-from-env",
+      "version": "1.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/proxy-from-env@1.1.0/node_modules/proxy-from-env",
+      "license": "MIT",
+      "author": "Rob Wu",
+      "homepage": "https://github.com/Rob--W/proxy-from-env#readme",
+      "description": "Offers getProxyForUrl to get the proxy URL for a URL, respecting the *_PROXY (e.g. HTTP_PROXY) and NO_PROXY environment variables."
+    },
+    {
+      "name": "queue-microtask",
+      "version": "1.2.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/queue-microtask@1.2.3/node_modules/queue-microtask",
+      "license": "MIT",
+      "author": "Feross Aboukhadijeh",
+      "homepage": "https://github.com/feross/queue-microtask",
+      "description": "fast, tiny `queueMicrotask` shim for modern engines"
+    },
+    {
+      "name": "react",
+      "version": "18.3.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react@18.3.1/node_modules/react",
+      "license": "MIT",
+      "homepage": "https://reactjs.org/",
+      "description": "React is a JavaScript library for building user interfaces."
+    },
+    {
+      "name": "react-dom",
+      "version": "18.3.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom",
+      "license": "MIT",
+      "homepage": "https://reactjs.org/",
+      "description": "React package for working with the DOM."
+    },
+    {
+      "name": "react-is",
+      "version": "16.13.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react-is@16.13.1/node_modules/react-is",
+      "license": "MIT",
+      "homepage": "https://reactjs.org/",
+      "description": "Brand checking of React Elements."
+    },
+    {
+      "name": "react-remove-scroll",
+      "version": "2.5.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react-remove-scroll@2.5.5_@types+react@18.3.3_react@18.3.1/node_modules/react-remove-scroll",
+      "license": "MIT",
+      "author": "Anton Korzunov",
+      "homepage": "https://github.com/theKashey/react-remove-scroll#readme",
+      "description": "Disables scroll outside of `children` node."
+    },
+    {
+      "name": "react-remove-scroll-bar",
+      "version": "2.3.6",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react-remove-scroll-bar@2.3.6_@types+react@18.3.3_react@18.3.1/node_modules/react-remove-scroll-bar",
+      "license": "MIT",
+      "author": "Anton Korzunov",
+      "homepage": "https://github.com/theKashey/react-remove-scroll-bar#readme",
+      "description": "Removes body scroll without content _shake_"
+    },
+    {
+      "name": "react-router",
+      "version": "6.23.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react-router@6.23.1_react@18.3.1/node_modules/react-router",
+      "license": "MIT",
+      "author": "Remix Software",
+      "homepage": "https://github.com/remix-run/react-router#readme",
+      "description": "Declarative routing for React"
+    },
+    {
+      "name": "react-router-dom",
+      "version": "6.23.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react-router-dom@6.23.1_react-dom@18.3.1_react@18.3.1/node_modules/react-router-dom",
+      "license": "MIT",
+      "author": "Remix Software",
+      "homepage": "https://github.com/remix-run/react-router#readme",
+      "description": "Declarative routing for React web applications"
+    },
+    {
+      "name": "react-style-singleton",
+      "version": "2.2.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/react-style-singleton@2.2.1_@types+react@18.3.3_react@18.3.1/node_modules/react-style-singleton",
+      "license": "MIT",
+      "author": "Anton Korzunov",
+      "homepage": "https://github.com/theKashey/react-style-singleton#readme",
+      "description": "Just create a single stylesheet..."
+    },
+    {
+      "name": "read-cache",
+      "version": "1.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/read-cache@1.0.0/node_modules/read-cache",
+      "license": "MIT",
+      "author": "Bogdan Chadkin",
+      "homepage": "https://github.com/TrySound/read-cache#readme",
+      "description": "Reads and caches the entire contents of a file until it is modified"
+    },
+    {
+      "name": "readdirp",
+      "version": "3.6.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/readdirp@3.6.0/node_modules/readdirp",
+      "license": "MIT",
+      "author": "Thorsten Lorenz",
+      "homepage": "https://github.com/paulmillr/readdirp",
+      "description": "Recursive version of fs.readdir with streaming API."
+    },
+    {
+      "name": "regenerator-runtime",
+      "version": "0.14.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/regenerator-runtime@0.14.1/node_modules/regenerator-runtime",
+      "license": "MIT",
+      "author": "Ben Newman",
+      "homepage": "https://github.com/facebook/regenerator/tree/main#readme",
+      "description": "Runtime for Regenerator-compiled generator and async functions."
+    },
+    {
+      "name": "resolve",
+      "version": "1.22.8",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/resolve@1.22.8/node_modules/resolve",
+      "license": "MIT",
+      "author": "James Halliday",
+      "homepage": "https://github.com/browserify/resolve#readme",
+      "description": "resolve like require.resolve() on behalf of files asynchronously and synchronously"
+    },
+    {
+      "name": "reusify",
+      "version": "1.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/reusify@1.0.4/node_modules/reusify",
+      "license": "MIT",
+      "author": "Matteo Collina",
+      "homepage": "https://github.com/mcollina/reusify#readme",
+      "description": "Reuse objects and functions with style"
+    },
+    {
+      "name": "run-parallel",
+      "version": "1.2.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/run-parallel@1.2.0/node_modules/run-parallel",
+      "license": "MIT",
+      "author": "Feross Aboukhadijeh",
+      "homepage": "https://github.com/feross/run-parallel",
+      "description": "Run an array of functions in parallel"
+    },
+    {
+      "name": "scheduler",
+      "version": "0.23.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/scheduler@0.23.2/node_modules/scheduler",
+      "license": "MIT",
+      "homepage": "https://reactjs.org/",
+      "description": "Cooperative scheduler for the browser environment."
+    },
+    {
+      "name": "shebang-command",
+      "version": "2.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/shebang-command@2.0.0/node_modules/shebang-command",
+      "license": "MIT",
+      "author": "Kevin Mårtensson",
+      "homepage": "https://github.com/kevva/shebang-command#readme",
+      "description": "Get the command from a shebang"
+    },
+    {
+      "name": "shebang-regex",
+      "version": "3.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/shebang-regex@3.0.0/node_modules/shebang-regex",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/shebang-regex#readme",
+      "description": "Regular expression for matching a shebang line"
+    },
+    {
+      "name": "string-width",
+      "version": "4.2.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/string-width@4.2.3/node_modules/string-width",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/string-width#readme",
+      "description": "Get the visual width of a string - the number of columns required to display it"
+    },
+    {
+      "name": "strip-ansi",
+      "version": "6.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/strip-ansi@6.0.1/node_modules/strip-ansi",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/strip-ansi#readme",
+      "description": "Strip ANSI escape codes from a string"
+    },
+    {
+      "name": "sucrase",
+      "version": "3.35.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/sucrase@3.35.0/node_modules/sucrase",
+      "license": "MIT",
+      "author": "Alan Pierce",
+      "homepage": "https://github.com/alangpierce/sucrase#readme",
+      "description": "Super-fast alternative to Babel for when you can target modern JS runtimes"
+    },
+    {
+      "name": "supports-color",
+      "version": "5.5.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/supports-color@5.5.0/node_modules/supports-color",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/supports-color#readme",
+      "description": "Detect whether a terminal supports color"
+    },
+    {
+      "name": "supports-preserve-symlinks-flag",
+      "version": "1.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/supports-preserve-symlinks-flag@1.0.0/node_modules/supports-preserve-symlinks-flag",
+      "license": "MIT",
+      "author": "Jordan Harband",
+      "homepage": "https://github.com/inspect-js/node-supports-preserve-symlinks-flag#readme",
+      "description": "Determine if the current node version supports the `--preserve-symlinks` flag."
+    },
+    {
+      "name": "tailwind-merge",
+      "version": "2.3.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/tailwind-merge@2.3.0/node_modules/tailwind-merge",
+      "license": "MIT",
+      "author": "Dany Castillo",
+      "homepage": "https://github.com/dcastil/tailwind-merge",
+      "description": "Merge Tailwind CSS classes without style conflicts"
+    },
+    {
+      "name": "tailwindcss",
+      "version": "3.4.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/tailwindcss@3.4.4/node_modules/tailwindcss",
+      "license": "MIT",
+      "homepage": "https://tailwindcss.com",
+      "description": "A utility-first CSS framework for rapidly building custom user interfaces."
+    },
+    {
+      "name": "tailwindcss-animate",
+      "version": "1.0.7",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/tailwindcss-animate@1.0.7_tailwindcss@3.4.4/node_modules/tailwindcss-animate",
+      "license": "MIT",
+      "author": "Jamie Kyle",
+      "description": "A Tailwind CSS plugin for creating beautiful animations."
+    },
+    {
+      "name": "thenify",
+      "version": "3.3.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/thenify@3.3.1/node_modules/thenify",
+      "license": "MIT",
+      "author": "Jonathan Ong",
+      "homepage": "https://github.com/thenables/thenify#readme",
+      "description": "Promisify a callback-based function"
+    },
+    {
+      "name": "thenify-all",
+      "version": "1.6.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/thenify-all@1.6.0/node_modules/thenify-all",
+      "license": "MIT",
+      "author": "Jonathan Ong",
+      "homepage": "https://github.com/thenables/thenify-all#readme",
+      "description": "Promisifies all the selected functions in an object"
+    },
+    {
+      "name": "tiny-invariant",
+      "version": "1.3.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/tiny-invariant@1.3.3/node_modules/tiny-invariant",
+      "license": "MIT",
+      "author": "Alex Reardon",
+      "homepage": "https://github.com/alexreardon/tiny-invariant#readme",
+      "description": "A tiny invariant function"
+    },
+    {
+      "name": "tiny-warning",
+      "version": "1.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/tiny-warning@1.0.3/node_modules/tiny-warning",
+      "license": "MIT",
+      "author": "Alex Reardon",
+      "homepage": "https://github.com/alexreardon/tiny-warning#readme",
+      "description": "A tiny warning function"
+    },
+    {
+      "name": "to-fast-properties",
+      "version": "2.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/to-fast-properties@2.0.0/node_modules/to-fast-properties",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/to-fast-properties#readme",
+      "description": "Force V8 to use fast properties for an object"
+    },
+    {
+      "name": "to-regex-range",
+      "version": "5.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/to-regex-range@5.0.1/node_modules/to-regex-range",
+      "license": "MIT",
+      "author": "Jon Schlinkert",
+      "homepage": "https://github.com/micromatch/to-regex-range",
+      "description": "Pass two numbers, get a regex-compatible source string for matching ranges. Validated against more than 2.78 million test assertions."
+    },
+    {
+      "name": "tr46",
+      "version": "0.0.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/tr46@0.0.3/node_modules/tr46",
+      "license": "MIT",
+      "author": "Sebastian Mayr",
+      "homepage": "https://github.com/Sebmaster/tr46.js#readme",
+      "description": "An implementation of the Unicode TR46 spec"
+    },
+    {
+      "name": "unplugin",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/unplugin@1.0.1/node_modules/unplugin",
+      "license": "MIT",
+      "homepage": "https://github.com/unjs/unplugin#readme",
+      "description": "Unified plugin system for build tools"
+    },
+    {
+      "name": "update-browserslist-db",
+      "version": "1.0.16",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/update-browserslist-db@1.0.16_browserslist@4.23.0/node_modules/update-browserslist-db",
+      "license": "MIT",
+      "author": "Andrey Sitnik",
+      "homepage": "https://github.com/browserslist/update-db#readme",
+      "description": "CLI tool to update caniuse-lite to refresh target browsers from Browserslist config"
+    },
+    {
+      "name": "use-callback-ref",
+      "version": "1.3.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/use-callback-ref@1.3.2_@types+react@18.3.3_react@18.3.1/node_modules/use-callback-ref",
+      "license": "MIT",
+      "author": "theKashey",
+      "homepage": "https://github.com/theKashey/use-callback-ref#readme",
+      "description": "The same useRef, but with callback"
+    },
+    {
+      "name": "use-sidecar",
+      "version": "1.1.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/use-sidecar@1.1.2_@types+react@18.3.3_react@18.3.1/node_modules/use-sidecar",
+      "license": "MIT",
+      "author": "theKashey",
+      "homepage": "https://github.com/theKashey/use-sidecar",
+      "description": "Sidecar code splitting utils"
+    },
+    {
+      "name": "use-sync-external-store",
+      "version": "1.2.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/use-sync-external-store@1.2.2_react@18.3.1/node_modules/use-sync-external-store",
+      "license": "MIT",
+      "homepage": "https://github.com/facebook/react#readme",
+      "description": "Backwards compatible shim for React's useSyncExternalStore. Works with any React that supports hooks."
+    },
+    {
+      "name": "util-deprecate",
+      "version": "1.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/util-deprecate@1.0.2/node_modules/util-deprecate",
+      "license": "MIT",
+      "author": "Nathan Rajlich",
+      "homepage": "https://github.com/TooTallNate/util-deprecate",
+      "description": "The Node.js `util.deprecate()` function with browser support"
+    },
+    {
+      "name": "uuid",
+      "version": "9.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/uuid@9.0.1/node_modules/uuid",
+      "license": "MIT",
+      "homepage": "https://github.com/uuidjs/uuid#readme",
+      "description": "RFC4122 (v1, v4, and v5) UUIDs"
+    },
+    {
+      "name": "webpack-sources",
+      "version": "3.2.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/webpack-sources@3.2.3/node_modules/webpack-sources",
+      "license": "MIT",
+      "author": "Tobias Koppers @sokra",
+      "homepage": "https://github.com/webpack/webpack-sources#readme",
+      "description": "Source code handling classes for webpack"
+    },
+    {
+      "name": "webpack-virtual-modules",
+      "version": "0.5.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/webpack-virtual-modules@0.5.0/node_modules/webpack-virtual-modules",
+      "license": "MIT",
+      "author": "SysGears INC",
+      "homepage": "https://github.com/sysgears/webpack-virtual-modules#readme",
+      "description": "Webpack Virtual Modules"
+    },
+    {
+      "name": "whatwg-url",
+      "version": "5.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/whatwg-url@5.0.0/node_modules/whatwg-url",
+      "license": "MIT",
+      "author": "Sebastian Mayr",
+      "homepage": "https://github.com/jsdom/whatwg-url#readme",
+      "description": "An implementation of the WHATWG URL Standard's URL API and parsing machinery"
+    },
+    {
+      "name": "wrap-ansi",
+      "version": "7.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/wrap-ansi@7.0.0/node_modules/wrap-ansi",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/chalk/wrap-ansi#readme",
+      "description": "Wordwrap a string with ANSI escape codes"
+    },
+    {
+      "name": "yocto-queue",
+      "version": "0.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/yocto-queue@0.1.0/node_modules/yocto-queue",
+      "license": "MIT",
+      "author": "Sindre Sorhus",
+      "homepage": "https://github.com/sindresorhus/yocto-queue#readme",
+      "description": "Tiny queue data structure"
+    },
+    {
+      "name": "zustand",
+      "version": "4.5.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/zustand@4.5.2_@types+react@18.3.3_immer@10.1.1_react@18.3.1/node_modules/zustand",
+      "license": "MIT",
+      "author": "Paul Henschel",
+      "homepage": "https://github.com/pmndrs/zustand",
+      "description": "🐻 Bear necessities for state management in React"
+    }
+  ],
+  "Apache-2.0": [
+    {
+      "name": "@ampproject/remapping",
+      "version": "2.3.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@ampproject+remapping@2.3.0/node_modules/@ampproject/remapping",
+      "license": "Apache-2.0",
+      "author": "Justin Ridgewell",
+      "homepage": "https://github.com/ampproject/remapping#readme",
+      "description": "Remap sequential sourcemaps through transformations to point at the original source code"
+    },
+    {
+      "name": "@gisatcz/cross-package-react-context",
+      "version": "0.2.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@gisatcz+cross-package-react-context@0.2.0_react@18.3.1/node_modules/@gisatcz/cross-package-react-context",
+      "license": "Apache-2.0",
+      "homepage": "https://github.com/gisat-panther/cross-package-react-context",
+      "description": "Singleton React context manager for use across packages"
+    },
+    {
+      "name": "class-variance-authority",
+      "version": "0.7.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/class-variance-authority@0.7.0/node_modules/class-variance-authority",
+      "license": "Apache-2.0",
+      "author": "Joe Bell",
+      "homepage": "https://github.com/joe-bell/cva#readme",
+      "description": "Class Variance Authority 🧬"
+    },
+    {
+      "name": "didyoumean",
+      "version": "1.2.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/didyoumean@1.2.2/node_modules/didyoumean",
+      "license": "Apache-2.0",
+      "author": "Dave Porter",
+      "homepage": "https://github.com/dcporter/didyoumean.js",
+      "description": "Match human-quality input to potential matches by edit distance."
+    },
+    {
+      "name": "ts-interface-checker",
+      "version": "0.1.13",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/ts-interface-checker@0.1.13/node_modules/ts-interface-checker",
+      "license": "Apache-2.0",
+      "author": "Dmitry S, Grist Labs",
+      "homepage": "https://github.com/gristlabs/ts-interface-checker#readme",
+      "description": "Runtime library to validate data against TypeScript interfaces"
+    }
+  ],
+  "ISC": [
+    {
+      "name": "@isaacs/cliui",
+      "version": "8.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@isaacs+cliui@8.0.2/node_modules/@isaacs/cliui",
+      "license": "ISC",
+      "author": "Ben Coe",
+      "homepage": "https://github.com/yargs/cliui#readme",
+      "description": "easily create complex multi-column command-line-interfaces"
+    },
+    {
+      "name": "anymatch",
+      "version": "3.1.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/anymatch@3.1.3/node_modules/anymatch",
+      "license": "ISC",
+      "author": "Elan Shanker",
+      "homepage": "https://github.com/micromatch/anymatch",
+      "description": "Matches strings against configurable strings, globs, regular expressions, and/or functions"
+    },
+    {
+      "name": "electron-to-chromium",
+      "version": "1.4.796",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/electron-to-chromium@1.4.796/node_modules/electron-to-chromium",
+      "license": "ISC",
+      "author": "Kilian Valkhof",
+      "homepage": "https://github.com/kilian/electron-to-chromium#readme",
+      "description": "Provides a list of electron-to-chromium version mappings"
+    },
+    {
+      "name": "fastq",
+      "version": "1.17.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/fastq@1.17.1/node_modules/fastq",
+      "license": "ISC",
+      "author": "Matteo Collina",
+      "homepage": "https://github.com/mcollina/fastq#readme",
+      "description": "Fast, in memory work queue"
+    },
+    {
+      "name": "foreground-child",
+      "version": "3.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/foreground-child@3.1.1/node_modules/foreground-child",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/tapjs/foreground-child#readme",
+      "description": "Run a child as if it's the foreground process. Give it stdio. Exit when it exits."
+    },
+    {
+      "name": "fs.realpath",
+      "version": "1.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/fs.realpath@1.0.0/node_modules/fs.realpath",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/fs.realpath#readme",
+      "description": "Use node's fs.realpath, but fall back to the JS implementation if the native one fails"
+    },
+    {
+      "name": "glob",
+      "version": "10.4.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/glob@10.4.1/node_modules/glob",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/node-glob#readme",
+      "description": "the most correct and second fastest glob implementation in JavaScript"
+    },
+    {
+      "name": "glob-parent",
+      "version": "6.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/glob-parent@6.0.2/node_modules/glob-parent",
+      "license": "ISC",
+      "author": "Gulp Team",
+      "homepage": "https://github.com/gulpjs/glob-parent#readme",
+      "description": "Extract the non-magic parent path from a glob string."
+    },
+    {
+      "name": "isexe",
+      "version": "2.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/isexe@2.0.0/node_modules/isexe",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/isexe#readme",
+      "description": "Minimal module to check if a file is executable."
+    },
+    {
+      "name": "lru-cache",
+      "version": "10.2.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/lru-cache@10.2.2/node_modules/lru-cache",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/node-lru-cache#readme",
+      "description": "A cache object that deletes the least-recently-used items."
+    },
+    {
+      "name": "lucide-react",
+      "version": "0.292.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/lucide-react@0.292.0_react@18.3.1/node_modules/lucide-react",
+      "license": "ISC",
+      "author": "Eric Fennis",
+      "homepage": "https://lucide.dev",
+      "description": "A Lucide icon library package for React applications"
+    },
+    {
+      "name": "minimatch",
+      "version": "9.0.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/minimatch@9.0.4/node_modules/minimatch",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/minimatch#readme",
+      "description": "a glob matcher in javascript"
+    },
+    {
+      "name": "minipass",
+      "version": "7.1.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/minipass@7.1.2/node_modules/minipass",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/minipass#readme",
+      "description": "minimal implementation of a PassThrough stream"
+    },
+    {
+      "name": "picocolors",
+      "version": "1.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/picocolors@1.0.1/node_modules/picocolors",
+      "license": "ISC",
+      "author": "Alexey Raspopov",
+      "homepage": "https://github.com/alexeyraspopov/picocolors#readme",
+      "description": "The tiniest and the fastest library for terminal output formatting with ANSI colors"
+    },
+    {
+      "name": "semver",
+      "version": "6.3.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/semver@6.3.1/node_modules/semver",
+      "license": "ISC",
+      "author": "GitHub Inc.",
+      "homepage": "https://github.com/npm/node-semver#readme",
+      "description": "The semantic version parser used by npm."
+    },
+    {
+      "name": "signal-exit",
+      "version": "4.1.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/signal-exit@4.1.0/node_modules/signal-exit",
+      "license": "ISC",
+      "author": "Ben Coe",
+      "homepage": "https://github.com/tapjs/signal-exit#readme",
+      "description": "when you want to fire an event no matter how a process exits."
+    },
+    {
+      "name": "which",
+      "version": "2.0.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/which@2.0.2/node_modules/which",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/node-which#readme",
+      "description": "Like which(1) unix command. Find the first instance of an executable in the PATH."
+    },
+    {
+      "name": "yallist",
+      "version": "3.1.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/yallist@3.1.1/node_modules/yallist",
+      "license": "ISC",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/yallist#readme",
+      "description": "Yet Another Linked List"
+    },
+    {
+      "name": "yaml",
+      "version": "2.4.4",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/yaml@2.4.4/node_modules/yaml",
+      "license": "ISC",
+      "author": "Eemeli Aro",
+      "homepage": "https://eemeli.org/yaml/",
+      "description": "JavaScript parser and stringifier for YAML"
+    }
+  ],
+  "BSD-3-Clause": [
+    {
+      "name": "@sentry/cli",
+      "version": "2.32.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+cli@2.32.1/node_modules/@sentry/cli",
+      "license": "BSD-3-Clause",
+      "author": "Sentry",
+      "homepage": "https://docs.sentry.io/hosted/learn/cli/",
+      "description": "A command line utility to work with Sentry. https://docs.sentry.io/hosted/learn/cli/"
+    },
+    {
+      "name": "@sentry/cli-darwin",
+      "version": "2.32.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@sentry+cli-darwin@2.32.1/node_modules/@sentry/cli-darwin",
+      "license": "BSD-3-Clause",
+      "homepage": "https://github.com/getsentry/sentry-cli#readme",
+      "description": "The darwin distribution of the Sentry CLI binary."
+    },
+    {
+      "name": "hoist-non-react-statics",
+      "version": "3.3.2",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/hoist-non-react-statics@3.3.2/node_modules/hoist-non-react-statics",
+      "license": "BSD-3-Clause",
+      "author": "Michael Ridgway",
+      "homepage": "https://github.com/mridgway/hoist-non-react-statics#readme",
+      "description": "Copies non-react specific statics from a child component to a parent component"
+    },
+    {
+      "name": "source-map-js",
+      "version": "1.2.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/source-map-js@1.2.0/node_modules/source-map-js",
+      "license": "BSD-3-Clause",
+      "author": "Valentin 7rulnik Semirulnik",
+      "homepage": "https://github.com/7rulnik/source-map-js",
+      "description": "Generates and consumes source maps"
+    }
+  ],
+  "Apache-2.0 OR MIT": [
+    {
+      "name": "@tauri-apps/api",
+      "version": "1.5.6",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/@tauri-apps+api@1.5.6/node_modules/@tauri-apps/api",
+      "license": "Apache-2.0 OR MIT",
+      "homepage": "https://github.com/tauri-apps/tauri#readme",
+      "description": "Tauri API definitions"
+    }
+  ],
+  "CC-BY-4.0": [
+    {
+      "name": "caniuse-lite",
+      "version": "1.0.30001629",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/caniuse-lite@1.0.30001629/node_modules/caniuse-lite",
+      "license": "CC-BY-4.0",
+      "author": "Ben Briggs",
+      "homepage": "https://github.com/browserslist/caniuse-lite#readme",
+      "description": "A smaller version of caniuse-db, with only the essentials!"
+    }
+  ],
+  "BSD-2-Clause": [
+    {
+      "name": "dotenv",
+      "version": "16.4.5",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/dotenv@16.4.5/node_modules/dotenv",
+      "license": "BSD-2-Clause",
+      "homepage": "https://github.com/motdotla/dotenv#readme",
+      "description": "Loads environment variables from .env file"
+    },
+    {
+      "name": "webidl-conversions",
+      "version": "3.0.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/webidl-conversions@3.0.1/node_modules/webidl-conversions",
+      "license": "BSD-2-Clause",
+      "author": "Domenic Denicola",
+      "homepage": "https://github.com/jsdom/webidl-conversions#readme",
+      "description": "Implements the WebIDL algorithms for converting to and from JavaScript values"
+    }
+  ],
+  "BlueOak-1.0.0": [
+    {
+      "name": "jackspeak",
+      "version": "3.4.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/jackspeak@3.4.0/node_modules/jackspeak",
+      "license": "BlueOak-1.0.0",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/jackspeak#readme",
+      "description": "A very strict and proper argument parser."
+    },
+    {
+      "name": "path-scurry",
+      "version": "1.11.1",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/path-scurry@1.11.1/node_modules/path-scurry",
+      "license": "BlueOak-1.0.0",
+      "author": "Isaac Z. Schlueter",
+      "homepage": "https://github.com/isaacs/path-scurry#readme",
+      "description": "walk paths fast and efficiently"
+    }
+  ],
+  "MIT or APACHE-2.0": [
+    {
+      "name": "tauri-plugin-websocket-api",
+      "version": "0.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/github.com+tauri-apps+tauri-plugin-websocket@b8e7d6180d6aa6d262c91616b07f464e42fa88ea/node_modules/tauri-plugin-websocket-api",
+      "license": "MIT or APACHE-2.0"
+    },
+    {
+      "name": "tauri-plugin-window-state-api",
+      "version": "0.0.0",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/github.com+tauri-apps+tauri-plugin-window-state@83324932be7d2bf0cc68202bacf5427d9270dcbd/node_modules/tauri-plugin-window-state-api",
+      "license": "MIT or APACHE-2.0",
+      "description": "Save window positions and sizes and restore them when the app is reopened."
+    }
+  ],
+  "0BSD": [
+    {
+      "name": "tslib",
+      "version": "2.6.3",
+      "path": "/Users/j-p/dev/overlayed/node_modules/.pnpm/tslib@2.6.3/node_modules/tslib",
+      "license": "0BSD",
+      "author": "Microsoft Corp.",
+      "homepage": "https://www.typescriptlang.org/",
+      "description": "Runtime library for TypeScript helper functions"
+    }
+  ]
+}
