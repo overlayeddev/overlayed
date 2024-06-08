@@ -1,4 +1,4 @@
-import Config, { type OverlayedConfig, type OverlayedConfigKey } from "@/config";
+import Config, { DEFAULT_OVERLAYED_CONFIG, type OverlayedConfig, type OverlayedConfigKey } from "@/config";
 import { listen } from "@tauri-apps/api/event";
 import { useEffect, useState } from "react";
 
@@ -7,13 +7,17 @@ export const useConfigValue = <T extends OverlayedConfigKey>(
 ): {
   value: OverlayedConfig[T];
 } => {
-  const [value, setValue] = useState<OverlayedConfig>();
+  const [value, setValue] = useState<OverlayedConfig>(DEFAULT_OVERLAYED_CONFIG);
 
   useEffect(() => {
-
-    const init = () =>{
-      Config.get(key).then(setValue)
-    }
+    const init = () => {
+      Config.get<T>(key).then(val =>
+        setValue(oldVal => ({
+          ...oldVal,
+          [key]: val,
+        }))
+      );
+    };
 
     init();
 

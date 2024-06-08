@@ -1,5 +1,4 @@
 import { writeFile, readTextFile, createDir } from "@tauri-apps/api/fs";
-import { useEffect, useState } from "react";
 import { appConfigDir } from "@tauri-apps/api/path";
 import * as Sentry from "@sentry/react";
 
