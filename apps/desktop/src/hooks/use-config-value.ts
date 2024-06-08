@@ -14,7 +14,7 @@ export const useConfigValue = <T extends OverlayedConfigKey>(
 
   useEffect(() => {
     const init = () => {
-      Config.get<T>(key).then(setValue)
+      Config.get<T>(key).then(setValue);
     };
 
     init();

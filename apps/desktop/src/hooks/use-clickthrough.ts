@@ -7,7 +7,7 @@ export const useClickthrough = () => {
   const [clickthrough, setClickthrough] = useState(false);
   useEffect(() => {
     // sub if it changes from outside of tauri
-    const unlisten = listen<boolean>("toggle_clickthrough", async (event) => {
+    const unlisten = listen<boolean>("toggle_clickthrough", async event => {
       setClickthrough(event.payload);
       await Config.set("clickthrough", event.payload);
     });

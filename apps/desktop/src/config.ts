@@ -69,7 +69,6 @@ export class Config {
 
       // fuck it persist it
       this.save();
-
     } catch (e: unknown) {
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();

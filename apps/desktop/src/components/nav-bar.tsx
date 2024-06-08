@@ -108,7 +108,7 @@ export const NavBar = ({
             <button title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
               <IconComponent
                 size={20}
-                onClick={async() => {
+                onClick={async () => {
                   const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
                   setCurrentAlignment(newAlignment);
                   setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
