@@ -14,7 +14,13 @@ export default defineConfig(async () => ({
       project: "overlayed-desktop-production",
     }),
   ],
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "esnext",
+    },
+  },
   build: {
+    target: "esnext",
     sourcemap: true,
   },
   clearScreen: false,

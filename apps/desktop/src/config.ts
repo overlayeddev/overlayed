@@ -70,7 +70,6 @@ export class Config {
       // fuck it persist it
       this.save();
 
-      console.log("config loaded");
     } catch (e: unknown) {
       this.config = DEFAULT_OVERLAYED_CONFIG;
       this.save();
