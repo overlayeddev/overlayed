@@ -14,14 +14,37 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
   // TODO: use tw merge so this looks better i guess
 
   function renderCheeseStringAvatar() {
-    if (selfDeafened || deafened) {
-      return <HeadphonesOff className={deafened ? "fill-red-600" : "fill-gray-400"} />;
+    let icon = null;
+
+    if (selfMuted) {
+      icon = <MicOff className={muted ? "fill-red-600" : "fill-gray-300"} />;
     }
 
-    if (selfMuted || muted) {
-      return <MicOff className={muted ? "fill-red-600" : "fill-gray-400"} />;
+    if (selfDeafened) {
+      icon = <HeadphonesOff className={deafened ? "fill-red-600" : "fill-gray-300"} />;
     }
+
+    if (muted) {
+      icon = <MicOff className="fill-red-600" />;
+    }
+
+    if (deafened) {
+      icon = <HeadphonesOff className="fill-red-600" />;
+    }
+
+    const anyState = selfMuted || selfDeafened || muted || deafened;
+
+    return (
+      <div
+        className={`absolute left-[12px] bottom-[-8px] pr-[4px] py-[2px] min-w-[24px] h-[24px] ${anyState ? "bg-black/40" : "bg-transparent"} rounded-full ${
+          alignDirection == "center" ? "flex" : "md:hidden"
+        }`}
+      >
+        {icon}
+      </div>
+    );
   }
+
   return (
     <div
       className={`flex gap-2 py-1 p-2 justify-start items-center ${
@@ -42,13 +65,7 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
         />
 
         {/* This is cheese string mode */}
-        <div
-          className={`absolute left-[10px] bottom-[-4px] min-w-[24px] h-[24px] bg-black rounded-full ${
-            alignDirection == "center" ? "grid place-content-center" : "md:hidden"
-          }`}
-        >
-          <span className="ml-[-3px]">{renderCheeseStringAvatar()}</span>
-        </div>
+        {renderCheeseStringAvatar()}
       </div>
 
       {/* This is the normal list */}
