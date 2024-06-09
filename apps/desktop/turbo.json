@@ -1,0 +1,40 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": [
+    "//"
+  ],
+  "tasks": {
+    "generate:commit-hash": {},
+    "build": {
+      "dependsOn": [
+        "generate:commit-hash",
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "build:tauri": {
+      "dependsOn": [
+        "generate:commit-hash"
+      ]
+    },
+    "start:canary": {
+      "dependsOn": [
+        "generate:commit-hash"
+      ]
+    },
+    "build:canary": {
+      "dependsOn": [
+        "generate:commit-hash"
+      ]
+    },
+    "start": {
+      "dependsOn": [
+        "generate:commit-hash"
+      ],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
