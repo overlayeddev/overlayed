@@ -20,7 +20,7 @@ export const contributors = [
         "received_events_url": "https://api.github.com/users/Hacksore/received_events",
         "type": "User",
         "site_admin": false,
-        "contributions": 624
+        "contributions": 698
     },
     {
         "login": "maxdemaio",
@@ -86,6 +86,27 @@ export const contributors = [
         "contributions": 3
     },
     {
+        "login": "Kampouse",
+        "id": 41765025,
+        "node_id": "MDQ6VXNlcjQxNzY1MDI1",
+        "avatar_url": "https://avatars.githubusercontent.com/u/41765025?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/Kampouse",
+        "html_url": "https://github.com/Kampouse",
+        "followers_url": "https://api.github.com/users/Kampouse/followers",
+        "following_url": "https://api.github.com/users/Kampouse/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Kampouse/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/Kampouse/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Kampouse/subscriptions",
+        "organizations_url": "https://api.github.com/users/Kampouse/orgs",
+        "repos_url": "https://api.github.com/users/Kampouse/repos",
+        "events_url": "https://api.github.com/users/Kampouse/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/Kampouse/received_events",
+        "type": "User",
+        "site_admin": false,
+        "contributions": 2
+    },
+    {
         "login": "MVAodhan",
         "id": 69143973,
         "node_id": "MDQ6VXNlcjY5MTQzOTcz",
@@ -144,27 +165,6 @@ export const contributors = [
         "repos_url": "https://api.github.com/users/mrnossiom/repos",
         "events_url": "https://api.github.com/users/mrnossiom/events{/privacy}",
         "received_events_url": "https://api.github.com/users/mrnossiom/received_events",
-        "type": "User",
-        "site_admin": false,
-        "contributions": 1
-    },
-    {
-        "login": "rishi-raj-jain",
-        "id": 46300090,
-        "node_id": "MDQ6VXNlcjQ2MzAwMDkw",
-        "avatar_url": "https://avatars.githubusercontent.com/u/46300090?v=4",
-        "gravatar_id": "",
-        "url": "https://api.github.com/users/rishi-raj-jain",
-        "html_url": "https://github.com/rishi-raj-jain",
-        "followers_url": "https://api.github.com/users/rishi-raj-jain/followers",
-        "following_url": "https://api.github.com/users/rishi-raj-jain/following{/other_user}",
-        "gists_url": "https://api.github.com/users/rishi-raj-jain/gists{/gist_id}",
-        "starred_url": "https://api.github.com/users/rishi-raj-jain/starred{/owner}{/repo}",
-        "subscriptions_url": "https://api.github.com/users/rishi-raj-jain/subscriptions",
-        "organizations_url": "https://api.github.com/users/rishi-raj-jain/orgs",
-        "repos_url": "https://api.github.com/users/rishi-raj-jain/repos",
-        "events_url": "https://api.github.com/users/rishi-raj-jain/events{/privacy}",
-        "received_events_url": "https://api.github.com/users/rishi-raj-jain/received_events",
         "type": "User",
         "site_admin": false,
         "contributions": 1
