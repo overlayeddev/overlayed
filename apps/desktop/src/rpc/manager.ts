@@ -313,7 +313,7 @@ class SocketManager {
         username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
         os: await type(),
-        version: this.isCanary ? this.version : canaryVersion,
+        version: this.isCanary ? canaryVersion : this.version,
       });
 
       // try to find the user
