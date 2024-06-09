@@ -7,12 +7,7 @@ import sitemap from "@astrojs/sitemap";
 
 import proxyMiddleware from "./plugins/proxy-middleware.mjs";
 
-const integrations = [
-  sitemap(),
-  react(),
-  tailwind(),
-  mdx(),
-];
+const integrations = [sitemap(), react(), tailwind(), mdx()];
 
 if (process.env.NODE_ENV !== "production") {
   integrations.push(proxyMiddleware(["/stars", "/latest", "/canary"]));
