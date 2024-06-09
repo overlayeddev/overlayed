@@ -109,8 +109,6 @@ class SocketManager {
     this.version = await getVersion();
     this.isCanary = (await getName()).toLowerCase().includes("canary");
 
-    console.log(this.isCanary, this.version)
-
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
     try {
       this.socket = await WebSocket.connect(connectionUrl, {
