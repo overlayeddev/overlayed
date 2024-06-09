@@ -12,7 +12,6 @@ const integrations = [
   react(),
   tailwind(),
   mdx(),
-  (await import("astro-compress")).default(),
 ];
 
 if (process.env.NODE_ENV !== "production") {

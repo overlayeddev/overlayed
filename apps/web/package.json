@@ -29,7 +29,6 @@
     "@astrojs/check": "^0.7.0",
     "@astrojs/react": "^3.5.0",
     "@types/react": "^18.2.64",
-    "astro-compress": "^2.2.27",
     "eslint-plugin-astro": "^1.2.0",
     "http-proxy-middleware": "^2.0.6",
     "lint": "workspace:*",
