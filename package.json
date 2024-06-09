@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "start": "turbo start",
+    "desktop": "pnpm turbo run start --filter=desktop",
     "build": "turbo run build",
     "build:tauri": "turbo run build:tauri",
     "build:canary": "turbo run build:canary",
