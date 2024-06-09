@@ -13,15 +13,15 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
 
   // TODO: use tw merge so this looks better i guess
 
-  function renderCheeseStringAvatar() {
+  function renderCheeseMicIcon() {
     let icon = null;
 
     if (selfMuted) {
-      icon = <MicOff className={muted ? "fill-red-600" : "fill-gray-300"} />;
+      icon = <MicOff className={muted ? "fill-red-600" : "fill-neutral-400"} />;
     }
 
     if (selfDeafened) {
-      icon = <HeadphonesOff className={deafened ? "fill-red-600" : "fill-gray-300"} />;
+      icon = <HeadphonesOff className={deafened ? "fill-red-600" : "fill-neutral-400"} />;
     }
 
     if (muted) {
@@ -36,7 +36,7 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
 
     return (
       <div
-        className={`absolute left-[12px] bottom-[-8px] pr-[4px] py-[2px] min-w-[24px] h-[24px] ${anyState ? "bg-black/40" : "bg-transparent"} rounded-full ${
+        className={`absolute left-[12px] bottom-[-8px] pr-[4px] py-[2px] min-w-[24px] h-[24px] ${anyState ? "bg-black/80" : "bg-transparent"} rounded-full ${
           alignDirection == "center" ? "flex" : "md:hidden"
         }`}
       >
@@ -65,7 +65,7 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
         />
 
         {/* This is cheese string mode */}
-        {renderCheeseStringAvatar()}
+        {renderCheeseMicIcon()}
       </div>
 
       {/* This is the normal list */}
