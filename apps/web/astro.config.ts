@@ -4,11 +4,10 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import compress from "astro-compress";
 
 import proxyMiddleware from "./plugins/proxy-middleware.mjs";
 
-const integrations = [sitemap(), react(), tailwind(), mdx(), compress()];
+const integrations = [sitemap(), react(), tailwind(), mdx()];
 
 if (process.env.NODE_ENV !== "production") {
   integrations.push(proxyMiddleware(["/stars", "/latest", "/canary"]));
