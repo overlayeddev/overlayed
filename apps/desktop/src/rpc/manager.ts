@@ -107,7 +107,9 @@ class SocketManager {
 
     this._navigate = navigate;
     this.version = await getVersion();
-    this.isCanary = (await getName()).includes("canary");
+    this.isCanary = (await getName()).toLowerCase().includes("canary");
+
+    console.log(this.isCanary, this.version)
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
     try {
@@ -305,15 +307,13 @@ class SocketManager {
       // track success metric
       track(MetricNames.DiscordAuthed, 1);
 
-      const canaryVersion = (await getName()).includes("canary") ? this.version : `canary (${commitHash})`;
-
       // track user session anonymously for sensitive bits
       trackEvent(MetricNames.DiscordUser, {
         id: await hash(payload.data.user.id),
         username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
         os: await type(),
-        version: this.isCanary ? canaryVersion : this.version,
+        version: this.isCanary ? `canary (${commitHash})` : this.version,
       });
 
       // try to find the user
