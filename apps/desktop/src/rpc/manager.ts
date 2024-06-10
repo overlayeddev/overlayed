@@ -305,6 +305,7 @@ class SocketManager {
       track(MetricNames.DiscordAuthed, 1);
 
       // track user session anonymously for sensitive bits
+      // TODO: we should allSettled these promises?
       trackEvent(MetricNames.DiscordUser, {
         id: await hash(payload.data.user.id),
         username: await hash(payload.data.user.username),
