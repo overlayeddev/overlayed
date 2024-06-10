@@ -4,20 +4,13 @@
   "tasks": {
     "generate:commit-hash": {},
     "build": {
-      "dependsOn": ["generate:commit-hash", "^build"],
+      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "build:tauri": {
-      "dependsOn": ["generate:commit-hash"]
-    },
-    "start:canary": {
-      "dependsOn": ["generate:commit-hash"]
-    },
-    "build:canary": {
-      "dependsOn": ["generate:commit-hash"]
-    },
+    "build:tauri": {},
+    "start:canary": {},
+    "build:canary": {},
     "start": {
-      "dependsOn": ["generate:commit-hash"],
       "cache": false,
       "persistent": true
     }

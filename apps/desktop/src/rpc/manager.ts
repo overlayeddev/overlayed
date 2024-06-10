@@ -16,7 +16,6 @@ import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
 import { getVersion, getName } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
-import { commitHash } from "@/__generated__/commit-hash";
 
 interface TokenResponse {
   access_token: string;
@@ -311,7 +310,7 @@ class SocketManager {
         username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
         os: await type(),
-        version: this.isCanary ? `canary (${commitHash})` : this.version,
+        version: this.isCanary ? "canary" : this.version,
       });
 
       // try to find the user
