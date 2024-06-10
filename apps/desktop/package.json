@@ -9,6 +9,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "build:canary": " tauri build --config 'src-tauri/tauri.conf.canary.json'",
+    "generate:commit-hash": "node scripts/generate-commit-hash.js",
     "lint": "eslint",
     "clean": "rm -rf dist .turbo node_modules",
     "check:format": "prettier --check 'src/**/*.{ts,js,tsx,jsx}'",

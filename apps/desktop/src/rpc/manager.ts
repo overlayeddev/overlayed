@@ -14,7 +14,8 @@ import { MetricNames, track, trackEvent } from "@/metrics";
 import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
-import { getVersion } from "@tauri-apps/api/app";
+import { getVersion, getName } from "@tauri-apps/api/app";
+import { hash } from "@/utils/crypto";
 
 interface TokenResponse {
   access_token: string;
@@ -89,6 +90,7 @@ class SocketManager {
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
   public version: string | undefined;
+  public isCanary = false;
 
   private navigate(url: string) {
     if (window.location.hash.includes("#settings")) return;
@@ -104,6 +106,7 @@ class SocketManager {
 
     this._navigate = navigate;
     this.version = await getVersion();
+    this.isCanary = (await getName()).toLowerCase().includes("canary");
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
     try {
@@ -301,13 +304,14 @@ class SocketManager {
       // track success metric
       track(MetricNames.DiscordAuthed, 1);
 
-      // track user login
+      // track user session anonymously for sensitive bits
+      // TODO: we should allSettled these promises?
       trackEvent(MetricNames.DiscordUser, {
-        id: payload.data.user.id,
-        username: payload.data.user.username,
-        version: this.version,
+        id: await hash(payload.data.user.id),
+        username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
         os: await type(),
+        version: this.isCanary ? "canary" : this.version,
       });
 
       // try to find the user

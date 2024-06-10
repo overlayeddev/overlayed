@@ -11,11 +11,11 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
     globalUsername: payload.user.global_name,
     avatarHash: payload.user.avatar,
     avatarDecorationData: payload.user.avatar_decoration_data,
-    muted: payload.mute,
+    muted: payload.voice_state.mute,
     deafened: payload.voice_state.deaf, // Probably only bots can deafen themselves
     selfDeafened: payload.voice_state.self_deaf,
     selfMuted: payload.voice_state.self_mute,
-    suppress: payload.voice_state.suppress,
+    suppressed: payload.voice_state.suppress,
     talking: false,
     id: payload.user.id,
     volume: payload.volume,
