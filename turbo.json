@@ -3,9 +3,17 @@
   "globalDependencies": ["**/.env.*local"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["gen","^build"],
       "outputs": ["dist/**", ".vercel/output/**"]
     },
+    "gen" :   {
+      "dependsOn": ["^gen"],
+      "outputs": ["./apps/web/licenses.json"]
+    },
+
+
+
+
     "lint": {},
     "clean": {
       "cache": false
@@ -18,3 +26,8 @@
     }
   }
 }
+
+
+
+
+
