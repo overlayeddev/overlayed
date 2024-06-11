@@ -4,6 +4,12 @@ import Footer from "../../components/footer.astro";
 
 import canaryOgImage from "../../assets/blog/installing-overlayed-canary.png";
 import { Download } from "../../components/react/download";
+
+interface Frontmatter {}
+
+const [canary] = await Astro.glob<Frontmatter>(
+  "../../content/canary/index.mdx",
+);
 ---
 
 <style>
@@ -32,12 +38,15 @@ import { Download } from "../../components/react/download";
           <p
             class="max-w-[900px] leading-[3rem] text-center text-zinc-400 font-bold text-[2.5rem]"
           >
-            Overlayed Canary is a pre-release version of Overlayed that is
-            updated more frequently.
+            Canary is updated more frequently which may be unstable.
           </p>
 
           <div class="pt-8">
             <Download client:load canary />
+          </div>
+
+          <div class="px-4 prose prose-invert text-left mx-auto pt-28">
+            <canary.Content />
           </div>
         </div>
       </div>
