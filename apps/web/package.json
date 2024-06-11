@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "start": "astro dev",
-    "gen": "pnpm licenses --filter=desktop --prod list --json >  ./src/__generated__/licences.json",
+    "gen": "pnpm licenses --filter=desktop --prod list --json >  ./licences.json",
     "build": "astro check && astro build",
     "lint": "eslint",
     "check:format": "prettier --check \"**/*.{astro,ts,js}\"",

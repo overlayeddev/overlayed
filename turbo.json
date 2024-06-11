@@ -8,7 +8,7 @@
     },
     "gen": {
       "dependsOn": ["^gen"],
-      "outputs": ["./apps/web/src/__generated__/licenses.json"]
+      "outputs": ["./apps/web/licenses.json"]
     },
 
     "lint": {},
