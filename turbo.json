@@ -6,7 +6,6 @@
   "tasks": {
     "build": {
       "dependsOn": [
-        "gen",
         "^build"
       ],
       "outputs": [
