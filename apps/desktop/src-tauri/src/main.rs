@@ -27,9 +27,12 @@ use tauri::{App, Window};
 pub struct Pinned(AtomicBool);
 
 #[cfg(target_os = "macos")]
-fn apply_macos_specifics(_app: &mut App, window: &Window) {
+fn apply_macos_specifics(app: &mut App, window: &Window) {
   window.set_visisble_on_all_workspaces(true);
   window.set_transparent_titlebar(true, true);
+
+  // allow to show in fullscreen apps
+  app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 }
 
 fn main() {
