@@ -1,2 +1,3 @@
 .astro
-licences.json
+**/licences.json
+.vercel
