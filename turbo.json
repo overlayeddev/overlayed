@@ -1,16 +1,27 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
   "tasks": {
     "build": {
-      "dependsOn": ["gen", "^build"],
-      "outputs": ["dist/**", ".vercel/output/**"]
+      "dependsOn": [
+        "gen",
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".vercel/output/**"
+      ]
     },
     "gen": {
-      "dependsOn": ["^gen"],
-      "outputs": ["./apps/web/licenses.json"]
+      "dependsOn": [
+        "^gen"
+      ],
+      "outputs": [
+        "./apps/web/__generated__/licenses.json"
+      ]
     },
-
     "lint": {},
     "clean": {
       "cache": false
