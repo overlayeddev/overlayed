@@ -32,6 +32,7 @@ fn apply_macos_specifics(app: &mut App, window: &Window) {
   window.set_transparent_titlebar(true, true);
 
   // allow to show in fullscreen apps
+  // FIXME: this is bad because ti will omit the app icon from CMD+tab 😞
   app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 }
 
