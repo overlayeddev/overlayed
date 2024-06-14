@@ -5,9 +5,7 @@ import Footer from "../../components/footer.astro";
 import canaryOgImage from "../../assets/blog/installing-overlayed-canary.png";
 import { Download } from "../../components/react/download";
 
-interface Frontmatter {}
-
-const [canary] = await Astro.glob<Frontmatter>(
+const [canary] = await Astro.glob(
   "../../content/canary/index.mdx",
 );
 ---

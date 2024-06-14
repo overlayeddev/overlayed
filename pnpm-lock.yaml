@@ -246,8 +246,8 @@ importers:
         specifier: ^18.2.64
         version: 18.3.3
       eslint-plugin-astro:
-        specifier: ^1.2.0
-        version: 1.2.0(eslint@9.4.0)(typescript@5.1.6)
+        specifier: ^1.2.2
+        version: 1.2.2(eslint@9.4.0)(typescript@5.1.6)
       http-proxy-middleware:
         specifier: ^2.0.6
         version: 2.0.6
@@ -3650,8 +3650,8 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
 
-  eslint-plugin-astro@1.2.0:
-    resolution: {integrity: sha512-Z2b/7a9EUNu8PWch6/fUKXTCj10hrbdVsR1CmUgke5nfrJuej+uUnL5z5hd9/IIWxLdSbk5Fowf/nyfbmhRmDQ==}
+  eslint-plugin-astro@1.2.2:
+    resolution: {integrity: sha512-3UUWo/gwk/YhurYpFKgLJswV33kR9zhtzXk+u2g3WE5Px07wDtWSR3PoyPadHERA4g/9TCCGjsimU/TZyUKxow==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: '>=8.57.0'
@@ -10523,7 +10523,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-astro@1.2.0(eslint@9.4.0)(typescript@5.1.6):
+  eslint-plugin-astro@1.2.2(eslint@9.4.0)(typescript@5.1.6):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.4.0)
       '@jridgewell/sourcemap-codec': 1.4.15
