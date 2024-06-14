@@ -1,7 +1,7 @@
 [package]
 name = "overlayed"
 version = "0.0.0"
-description = "A Tauri App"
+description = "Voice chat overlay for Discord"
 authors = ["you"]
 license = ""
 repository = ""
