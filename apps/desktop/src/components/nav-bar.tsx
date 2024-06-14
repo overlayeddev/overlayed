@@ -70,8 +70,7 @@ export const NavBar = ({
 
   return (
     <div
-      data-tauri-drag-region
-      className={`${opacity} cursor-default rounded-t-lg font-bold select-none bg-white dark:bg-zinc-900 pr-3 pl-3 p-2`}
+      className={`${opacity} cursor-move rounded-t-lg font-bold select-none bg-white dark:bg-zinc-900 pr-3 pl-3 p-2`}
     >
       <div data-tauri-drag-region className="flex justify-between">
         <div className="flex items-center">
