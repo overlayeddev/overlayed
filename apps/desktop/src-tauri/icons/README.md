@@ -6,9 +6,9 @@ It's best to place the icon somewhere on the FS and run this and it will generat
 # make sure you're in the apps/desktop/src-tauri folder
 
 # normal
-cargo tauri icon ./icon.png --output icons/normal  
+cargo tauri icon ./icon.png --output icons/normal
 
-# canary 
+# canary
 cargo tauri icon ./canary.png --output icons/canary
 
 ```

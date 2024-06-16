@@ -5,7 +5,7 @@
     "start:canary": "turbo run start:canary",
     "desktop": "pnpm turbo run start --filter=desktop",
     "build": "turbo run build",
-    "build:tauri": "turbo run build:tauri",
+    "build:desktop": "turbo run build:desktop",
     "build:canary": "turbo run build:canary",
     "check:format": "turbo run check:format",
     "clean": "turbo run clean && rm -rf node_modules .turbo",

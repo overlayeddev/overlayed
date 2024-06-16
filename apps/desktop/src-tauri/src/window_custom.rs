@@ -17,7 +17,6 @@ pub trait WindowExt {
   fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
   #[cfg(target_os = "macos")]
   fn set_visisble_on_all_workspaces(&self, enabled: bool);
-  fn navigate(&self, url: &str);
   fn set_document_title(&self, url: &str);
 }
 
@@ -76,25 +75,6 @@ impl<R: Runtime> WindowExt for Window<R> {
       } else {
         cocoa::base::NO
       });
-    }
-  }
-
-  fn navigate(&self, url: &str) {
-    // if in dev mode
-    #[cfg(debug_assertions)]
-    {
-      let str = format!("window.location.href = 'http://localhost:1420/#{:}'", url);
-      self
-        .eval(&str)
-        .unwrap();
-    }
-
-    #[cfg(not(debug_assertions))]
-    {
-      let str = format!("window.location.href = 'tauri://localhost#{:?}'", url);
-      self
-        .eval(&str)
-        .unwrap();
     }
   }
 

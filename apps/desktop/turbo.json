@@ -7,7 +7,7 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "build:tauri": {},
+    "build:desktop": {},
     "start:canary": {},
     "build:canary": {},
     "start": {

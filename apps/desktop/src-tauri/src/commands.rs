@@ -99,8 +99,8 @@ fn _set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthro
   );
 }
 
-// BUG: there is a bug if you have an inverted menubar it will be dark and we still load the wrong
-// icon
+// BUG: there is a bug if you have an inverted menubar it will be dark and we still load the wrong icon
+// TODO: investigate if this is easy to do with tauri alone
 fn update_tray_icon(tray: SystemTrayHandle, theme: ThemeType, clickthrough: bool) {
   let icon = if theme == ThemeType::Dark {
     if clickthrough {

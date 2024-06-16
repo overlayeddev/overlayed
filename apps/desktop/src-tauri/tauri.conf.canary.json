@@ -8,11 +8,7 @@
       "active": true,
       "targets": "all",
       "identifier": "com.hacksore.canary.overlayed",
-      "icon": [
-        "icons/canary/icon.icns",
-        "icons/canary/icon.ico",
-        "icons/canary/icon.png"
-      ]
+      "icon": ["icons/canary/icon.icns", "icons/canary/icon.ico", "icons/canary/icon.png"]
     }
   }
 }

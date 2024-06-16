@@ -30,7 +30,7 @@ pnpm start --filter=desktop
 
 ### 4. Building the latest version locally
 ```
-pnpm build:tauri
+pnpm build:desktop
 ```
 
 ### 5. Building the canary version locally

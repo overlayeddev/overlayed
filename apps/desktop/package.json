@@ -14,7 +14,7 @@
     "clean": "rm -rf dist .turbo node_modules",
     "check:format": "prettier --check 'src/**/*.{ts,js,tsx,jsx}'",
     "format": "prettier --write .",
-    "build:tauri": "tauri build",
+    "build:desktop": "tauri build",
     "preview": "vite preview",
     "tauri": "tauri"
   },
