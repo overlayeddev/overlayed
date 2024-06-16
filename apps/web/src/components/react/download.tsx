@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import type { PlatformDownload } from "types";
 import DownloadButton from "./download-button.js";
 import { API_HOST } from "../../constants.js";
+import { getRelativeTime } from "../../time-utils.js";
+
 
 export const Platforms = {
   linux: "Linux",
@@ -12,11 +14,11 @@ export const Platforms = {
 
 export const Download = ({ canary = true }: { canary?: boolean }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [platformDownloads, setPlatformDownloads] = useState<{
+  const [platformDownloads, setPlatformDownloads] = useState < {
     downloads: PlatformDownload[];
     latestVersion: string;
     updated?: string;
-  }>({
+  } > ({
     downloads: [],
     latestVersion: "",
   });
@@ -34,6 +36,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
 
   const commitSha = platformDownloads.latestVersion.substring(0, 7);
   const shortCommitSha = commitSha.substring(0, 7);
+  const formattedTime = getRelativeTime(platformDownloads.updated || new Date());
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -51,6 +54,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
                   />
                 ))}
             </div>
+            {canary && <p className="text-sm pt-2 font-bold">Loading...</p>}
           </>
         ) : (
           <div className="text-center">
@@ -72,9 +76,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
               ))}
             </div>
             {canary && (
-              <p className="text-sm pt-2 font-bold">
-                Last update: {platformDownloads.updated}
-              </p>
+              <p className="text-sm pt-2 font-bold">Last update {formattedTime}</p>
             )}
           </div>
         )}

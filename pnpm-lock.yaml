@@ -229,6 +229,9 @@ importers:
       clsx:
         specifier: ^2.1.0
         version: 2.1.1
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
       tailwind-merge:
         specifier: ^2.3.0
         version: 2.3.0

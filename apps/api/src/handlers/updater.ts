@@ -191,6 +191,8 @@ app.post("/upload-canary-artifacts", async (c) => {
 	return c.body(
 		JSON.stringify({
 			uploaded,
+			updated: new Date().toISOString(),
+			latestVersion: successfulRun.head_sha,
 		}),
 		200,
 		{
