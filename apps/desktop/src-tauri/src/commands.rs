@@ -104,15 +104,15 @@ fn _set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthro
 fn update_tray_icon(tray: SystemTrayHandle, theme: ThemeType, clickthrough: bool) {
   let icon = if theme == ThemeType::Dark {
     if clickthrough {
-      tauri::Icon::Raw(include_bytes!("../icons/tray-icon-pinned.png").to_vec())
+      tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned.png").to_vec())
     } else {
-      tauri::Icon::Raw(include_bytes!("../icons/tray-icon.png").to_vec())
+      tauri::Icon::Raw(include_bytes!("../icons/tray/icon.png").to_vec())
     }
   } else {
     if clickthrough {
-      tauri::Icon::Raw(include_bytes!("../icons/tray-icon-pinned-dark.png").to_vec())
+      tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned-dark.png").to_vec())
     } else {
-      tauri::Icon::Raw(include_bytes!("../icons/tray-icon-dark.png").to_vec())
+      tauri::Icon::Raw(include_bytes!("../icons/tray/icon-dark.png").to_vec())
     }
   };
 
