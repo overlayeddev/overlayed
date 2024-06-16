@@ -23,10 +23,10 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
     latestVersion: "",
   });
 
-  const apiPath = canary ? "canary" : "latest";
+  const buildType = canary ? "canary" : "stable";
 
   useEffect(() => {
-    fetch(`${API_HOST}/${apiPath}`)
+    fetch(`${API_HOST}/latest/${buildType}`)
       .then((res) => res.json())
       .then((res) => {
         setPlatformDownloads(res);
@@ -82,7 +82,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
         )}
         {!canary && (
           <p className="text-sm pt-3 font-bold">
-            <a href="/download/canary">Looking for Canary?</a>
+            <a href="/canary">Looking for Canary?</a>
           </p>
         )}
       </div>

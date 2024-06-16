@@ -36,7 +36,7 @@ export const SettingsView = ({
         </TabsList>
         {canary && (
           <div className="h-[32px] bg-yellow-400 font-semibold text-black flex items-center justify-center">
-            <a target="_blank" href="https://overlayed.dev/download/canary#about">
+            <a target="_blank" href="https://overlayed.dev/canary#about">
               <p>The canary build may be unstable (click to learn more)</p>
             </a>
           </div>

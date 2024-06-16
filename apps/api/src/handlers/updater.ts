@@ -22,7 +22,7 @@ app.get("/stars", async (c) => {
 	});
 });
 
-app.get("/latest", async (c) => {
+app.get("/latest/stable", async (c) => {
 	const response = await getPlatformDownloads({
 		authToken: c.env.GITHUB_TOKEN,
 	});
@@ -52,7 +52,7 @@ app.get("/latest", async (c) => {
 	);
 });
 
-app.get("/canary", async (c) => {
+app.get("/latest/canary", async (c) => {
 	const files = await c.env.BUCKET.list({
 		prefix: "canary/",
 	});
