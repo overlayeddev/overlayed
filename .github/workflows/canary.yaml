@@ -123,4 +123,4 @@ jobs:
     steps:
     - name: Upload to r2
       run: |
-        curl -vvv -d '{ secret: "${{ secrets.CANARY_UPLOAD_SECRET }}" }' https://api.overlayed.dev/upload-canary-artifacts 
+        curl -vvv -d '{ "secret": "${{ secrets.CANARY_UPLOAD_SECRET }}" }' https://api.overlayed.dev/upload-canary-artifacts 
