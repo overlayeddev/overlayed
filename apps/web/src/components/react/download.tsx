@@ -32,12 +32,15 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
       });
   }, []);
 
+  const commitSha = platformDownloads.latestVersion.substring(0, 7);
+  const shortCommitSha = commitSha.substring(0, 7);
+
   return (
     <div className="relative w-full overflow-hidden">
       <div className="flex flex-col items-center">
         {isLoading ? (
           <>
-            <h2 className="text-2xl pb-8">Loading...</h2>
+            <h2 className="text-2xl pb-2">Loading...</h2>
             <div className="flex gap-2 sm:gap-6">
               {Array(3)
                 .fill("")
@@ -45,26 +48,34 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
                   <div
                     key={`skeleton-loader-${i}`}
                     className="w-28 h-28 bg-slate-800 rounded-lg animate-pulse"
-                  ></div>
+                  />
                 ))}
             </div>
           </>
         ) : (
           <div className="text-center">
             <h2 className="text-2xl pb-2">
-              Download ({platformDownloads.latestVersion.substring(0, 7)})
+              Download (
+              <a
+                className="hover:underline"
+                target="_blank"
+                href={`https://github.com/Hacksore/overlayed/commit/${commitSha}`}
+              >
+                {shortCommitSha}
+              </a>
+              )
             </h2>
             {/* if canary show last update */}
-            {canary && (
-              <p className="text-sm pb-4 font-bold">
-                Last update: {platformDownloads.updated}
-              </p>
-            )}
             <div className="flex gap-2 sm:gap-6">
               {platformDownloads.downloads.map((item) => (
                 <DownloadButton key={item.platform} platform={item} />
               ))}
             </div>
+            {canary && (
+              <p className="text-sm pt-2 font-bold">
+                Last update: {platformDownloads.updated}
+              </p>
+            )}
           </div>
         )}
         {!canary && (

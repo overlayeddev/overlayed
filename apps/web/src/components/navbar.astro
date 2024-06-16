@@ -140,6 +140,7 @@ import Link from "../components/link.astro";
   <div class="hidden md:flex justify-center gap-4">
     <Link to="/" title="Home">Home</Link>
     <Link to="/about" title="About">About</Link>
+    <Link to="/download/canary" title="Canary">Canary</Link>
     <Link to="/discord" title="Discord">Discord</Link>
     <Link to="/blog" title="Blog">Blog</Link>
   </div>
@@ -201,40 +202,71 @@ import Link from "../components/link.astro";
     <!--Note: after clicking, we should transition the mobile-nav-view away -->
     <Link to="/" title="Home">Home</Link>
     <Link to="/about" title="About">About</Link>
+    <Link to="/download/canary" title="Canary">Canary</Link>
     <Link to="/discord" title="Discord">Discord</Link>
     <Link to="/blog" title="Blog">Blog</Link>
+
+    <!-- add the social links -->
+    <div class="flex gap-4 items-center justify-center">
+      <a
+        aria-label="discord"
+        target="_blank"
+        rel="noreferrer"
+        href={DISCORD_INVITE_LINK}
+      >
+        <DiscordIcon />
+      </a>
+
+      <a
+        aria-label="discord"
+        target="_blank"
+        rel="noreferrer"
+        href="https://github.com/Hacksore/overlayed"
+      >
+        <GithubIcon />
+      </a>
+
+      <a
+        aria-label="discord"
+        target="_blank"
+        rel="noreferrer"
+        href="https://x.com/OverlayedDev"
+      >
+        <TwitterIcon />
+      </a>
+    </div>
   </div>
+
+  <script>
+    const menuButton = document.getElementById("mobile-menu-button");
+    const mobileNavView = document.getElementById("mobile-nav-view");
+    const mobileNavItems = document.getElementById("mobile-nav-items-selector");
+
+    if (menuButton && mobileNavView && mobileNavItems) {
+      menuButton.addEventListener("click", function () {
+        if (menuButton.ariaExpanded === "false") {
+          // get rid of bug if you go into mobile, and then resize to desktop
+          menuButton.classList.add("keep");
+          mobileNavView.classList.remove("slide-lr-animation");
+          mobileNavView.classList.add("slide-rl-animation");
+          mobileNavItems.classList.remove("mobile-nav-items-noshow");
+          mobileNavItems.classList.add("mobile-nav-items-show");
+          menuButton.classList.add("rotate");
+          menuButton.ariaExpanded = "true";
+          setTimeout(() => {
+            document.body.style.overflow = "hidden"; // prevent scrolling near end of animation
+          }, 220);
+        } else {
+          menuButton.classList.remove("keep");
+          mobileNavView.classList.remove("slide-rl-animation");
+          mobileNavView.classList.add("slide-lr-animation");
+          mobileNavItems.classList.remove("mobile-nav-items-show");
+          mobileNavItems.classList.add("mobile-nav-items-noshow");
+          document.body.style.overflow = "auto"; // allow scrolling
+          menuButton.classList.remove("rotate");
+          menuButton.ariaExpanded = "false";
+        }
+      });
+    }
+  </script>
 </div>
-
-<script>
-  const menuButton = document.getElementById("mobile-menu-button");
-  const mobileNavView = document.getElementById("mobile-nav-view");
-  const mobileNavItems = document.getElementById("mobile-nav-items-selector");
-
-  if (menuButton && mobileNavView && mobileNavItems) {
-    menuButton.addEventListener("click", function () {
-      if (menuButton.ariaExpanded === "false") {
-        // get rid of bug if you go into mobile, and then resize to desktop
-        menuButton.classList.add("keep");
-        mobileNavView.classList.remove("slide-lr-animation");
-        mobileNavView.classList.add("slide-rl-animation");
-        mobileNavItems.classList.remove("mobile-nav-items-noshow");
-        mobileNavItems.classList.add("mobile-nav-items-show");
-        menuButton.classList.add("rotate");
-        menuButton.ariaExpanded = "true";
-        setTimeout(() => {
-          document.body.style.overflow = "hidden"; // prevent scrolling near end of animation
-        }, 220);
-      } else {
-        menuButton.classList.remove("keep");
-        mobileNavView.classList.remove("slide-rl-animation");
-        mobileNavView.classList.add("slide-lr-animation");
-        mobileNavItems.classList.remove("mobile-nav-items-show");
-        mobileNavItems.classList.add("mobile-nav-items-noshow");
-        document.body.style.overflow = "auto"; // allow scrolling
-        menuButton.classList.remove("rotate");
-        menuButton.ariaExpanded = "false";
-      }
-    });
-  }
-</script>
