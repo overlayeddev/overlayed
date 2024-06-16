@@ -13,7 +13,9 @@
   "tauri": {
     "updater": {
       "active": true,
-      "endpoints": ["https://update.overlayed.dev/{{target}}/{{arch}}/{{current_version}}"],
+      "endpoints": [
+        "https://update.overlayed.dev/{{target}}/{{arch}}/{{current_version}}"
+      ],
       "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM5MDVDNEVFQTc2QzJBNDYKUldSR0tteW43c1FGeVhzUm9vNEJKUkFyUXhSS2lrZWRuV1p1VWx5Tkg5bUhEWDZrOGprbGNnWkQK"
     },
@@ -36,7 +38,11 @@
         "open": ".*"
       },
       "fs": {
-        "scope": ["$APPCONFIG/**", "$CONFIG/**", "$APPDATA/**"],
+        "scope": [
+          "$APPCONFIG/**",
+          "$CONFIG/**",
+          "$APPDATA/**"
+        ],
         "readFile": true,
         "writeFile": true,
         "createDir": true,
@@ -68,7 +74,11 @@
       "active": true,
       "targets": "all",
       "identifier": "com.hacksore.overlayed",
-      "icon": ["icons/icon.icns", "icons/icon.ico", "icons/icon.png"]
+      "icon": [
+        "icons/normal/icon.icns",
+        "icons/normal/icon.ico",
+        "icons/normal/icon.png"
+      ]
     },
     "security": {
       "csp": null
