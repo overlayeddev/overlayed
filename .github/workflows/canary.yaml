@@ -43,7 +43,6 @@ jobs:
         run: pnpm check:format
       - name: Lint
         run: pnpm lint
-
   build-tauri:
     name: Build (${{ matrix.settings.os }})
     strategy:
@@ -118,9 +117,8 @@ jobs:
         with:
           name: "overlayed-canary-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
-
   upload:
-    needs: "builds-tauri"
+    needs: "build-tauri"
     runs-on: ubuntu-latest
     steps:
     - name: Upload to r2
