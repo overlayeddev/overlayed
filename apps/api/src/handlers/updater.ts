@@ -42,9 +42,6 @@ app.get("/latest/stable", async (c) => {
 			latestVersion: response.latestVersion,
 		},
 		200,
-		{
-			"Content-Type": "application/json",
-		},
 	);
 });
 
@@ -78,9 +75,6 @@ app.get("/latest/canary", async (c) => {
 			...latest,
 		},
 		200,
-		{
-			"Content-Type": "application/json",
-		},
 	);
 });
 
@@ -95,9 +89,6 @@ app.post("/upload-canary-artifacts", async (c) => {
 				error: "Invalid secret",
 			},
 			403,
-			{
-				"Content-Type": "application/json",
-			},
 		);
 	}
 
@@ -129,9 +120,6 @@ app.post("/upload-canary-artifacts", async (c) => {
 				error: "No artifacts found",
 			},
 			500,
-			{
-				"Content-Type": "application/json",
-			},
 		);
 	}
 
@@ -191,9 +179,6 @@ app.post("/upload-canary-artifacts", async (c) => {
 			latestVersion: successfulRun.head_sha,
 		},
 		200,
-		{
-			"Content-Type": "application/json",
-		},
 	);
 });
 

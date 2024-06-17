@@ -17,9 +17,6 @@ app.get("/oauth/callback", async (c) => {
 				error: "No code provided",
 			},
 			400,
-			{
-				"Content-Type": "application/json",
-			},
 		);
 	}
 
@@ -47,9 +44,6 @@ app.post("/token", async (c) => {
 				error: "No code provided",
 			},
 			400,
-			{
-				"Content-Type": "application/json",
-			},
 		);
 	}
 
@@ -62,13 +56,10 @@ app.post("/token", async (c) => {
 		// TODO: THIH find another way to do this
 		isProd(c.req.url),
 	);
-	const payload = await response.json();
 
-	return new Response(JSON.stringify(payload), {
-		headers: {
-			Accept: "application/json",
-		},
-	});
+	const payload: any = await response.json();
+
+	return c.json(payload);
 });
 
 export default app;
