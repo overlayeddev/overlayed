@@ -1,6 +1,7 @@
 import { Hono } from "hono/quick";
 import { getLatestVersions, getPlatformDownloads, getStars } from "../utils.js";
 import { Artifacts, WorkflowRuns } from "../types.js";
+import { GIT_REPO, GIT_USER } from "../constants.js";
 
 type Bindings = {
 	GITHUB_TOKEN: string;
@@ -93,7 +94,7 @@ app.post("/upload-canary-artifacts", async (c) => {
 	}
 
 	const canaryWorkflowRunsResponse = await fetch(
-		"https://api.github.com/repos/overlayeddev/overlayed/actions/workflows/canary.yaml/runs",
+		`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/actions/workflows/canary.yaml/runs`,
 		{
 			cf: {
 				cacheTtl: 300,

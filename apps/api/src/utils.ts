@@ -1,10 +1,8 @@
+import { GIT_REPO, GIT_USER } from "./constants.js";
 import { ReleaseResponse, RepoResponse } from "./types.js";
 
 // @ts-expect-error something is wrong with types here
 import { LatestVersion } from "types";
-
-const GIT_USER = "overlayeddev";
-const GIT_REPO = "overlayed";
 
 const filenameToPlatform = (filename: string) => {
 	if (filename.includes("msi")) {
