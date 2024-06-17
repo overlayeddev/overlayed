@@ -1,4 +1,4 @@
-import { GIT_REPO, GIT_USER } from "./constants.js";
+import { GITHUB_REPO, GITHUB_USER } from "./constants.js";
 import { ReleaseResponse, RepoResponse } from "./types.js";
 
 // @ts-expect-error something is wrong with types here
@@ -24,7 +24,7 @@ export async function getStars({
 	// fetch all releases from github
 	try {
 		const releases: RepoResponse = await fetch(
-			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}`,
+			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}`,
 			{
 				cf: {
 					cacheTtl: 300,
@@ -55,7 +55,7 @@ export async function getPlatformDownloads({
 	// fetch all releases from github
 	try {
 		const releases: ReleaseResponse = await fetch(
-			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
+			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`,
 			{
 				cf: {
 					cacheTtl: 300,
@@ -82,15 +82,18 @@ export async function getPlatformDownloads({
 		return null;
 	}
 }
-/*
-	 FIXME: THis has to be backwareds compatible with the old version
-	The best way is to prolly ship a new updater api and eventually deprecate the old one
-*/
-export async function getLatestVersions({ authToken }: { authToken: string }) {
+
+interface LatestVersionInput {
+	authToken: string;
+}
+
+export async function getLatestVersions({
+	authToken,
+}: LatestVersionInput) {
 	// fetch all releases from github
 	try {
 		const releases: ReleaseResponse = await fetch(
-			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
+			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`,
 			{
 				cf: {
 					cacheTtl: 300,
