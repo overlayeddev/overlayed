@@ -110,7 +110,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { script } = await import('./scripts/actions/patch-canary-version.js');
+            const path = require("path")
+            const { script } = await import(path.resolve('./scripts/actions/patch-canary-version.js'));
             await script({ github, context });
       - uses: tauri-apps/tauri-action@dev
         id: build_os
