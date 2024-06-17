@@ -55,7 +55,7 @@ export const SettingsView = ({
         <div className="absolute bottom-0 flex items-center w-full h-10 pl-4 text-gray-400 bg-zinc-800">
           <p>
             Found a bug? Please report them on the{" "}
-            <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/Hacksore/overlayed">
+            <a className="text-blue-400" target="_blank" rel="noreferrer" href="https://github.com/overlayeddev/overlayed">
               github repo
             </a>
           </p>

@@ -9,9 +9,6 @@ import { script as downloadDraftBins } from "./actions/download-draft-bins.js";
 // @ts-ignore
 import { script as createRelease } from "./actions/create-release.js";
 
-// @ts-ignore
-import { script as uploadBinsToR2 } from "./actions/upload-to-r2.js";
-
 const { GITHUB_TOKEN } = process.env;
 if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not found");
 
@@ -21,10 +18,7 @@ const args = process.argv.slice(2);
 // get first arg
 const [arg] = args;
 
-// sub args to the command
-const subArgs = args.slice(1);
-
-process.env.GITHUB_REPOSITORY = "Hacksore/overlayed";
+process.env.GITHUB_REPOSITORY = "overlayeddev/overlayed";
 
 // create context mock
 const github = getOctokit(GITHUB_TOKEN);
@@ -48,11 +42,6 @@ switch (arg) {
     break;
   case "upload":
     await uploadSignedBins({ github, context }, draftId);
-    break;
-  case "r2":
-    const [paths, os] = subArgs
-    console.log({ paths, os });
-    await uploadBinsToR2({ github, context }, paths, os);
     break;
   default:
     console.log("No script found, accepted answers are: create, download, upload, r2");

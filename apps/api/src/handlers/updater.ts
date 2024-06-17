@@ -16,8 +16,7 @@ app.get("/stars", async (c) => {
 		authToken: c.env.GITHUB_TOKEN,
 	});
 
-	return c.body(JSON.stringify(response), 200, {
-		"Content-Type": "application/json",
+	return c.json(response, 200, {
 		"Cache-Control": "max-age=300",
 	});
 });
@@ -28,15 +27,12 @@ app.get("/latest/stable", async (c) => {
 	});
 
 	if (!response) {
-		return c.body(
-			JSON.stringify({
+		return c.json(
+			{
 				downloads: [],
 				latestVersion: "",
-			}),
-			500,
-			{
-				"Content-Type": "application/json",
 			},
+			500,
 		);
 	}
 
@@ -106,7 +102,7 @@ app.post("/upload-canary-artifacts", async (c) => {
 	}
 
 	const canaryWorkflowRunsResponse = await fetch(
-		"https://api.github.com/repos/Hacksore/overlayed/actions/workflows/canary.yaml/runs",
+		"https://api.github.com/repos/overlayeddev/overlayed/actions/workflows/canary.yaml/runs",
 		{
 			cf: {
 				cacheTtl: 300,
@@ -202,7 +198,6 @@ app.post("/upload-canary-artifacts", async (c) => {
 });
 
 app.get("/:target/:arch/:currentVersion", async (c) => {
-	// TODO: updater metrics maybe?
 	const currentVersion = c.req.param("currentVersion");
 
 	try {
@@ -211,18 +206,18 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		});
 
 		if (currentVersion === latestVersion?.version) {
-			return c.body("", 204, {
-				"Content-Type": "application/json",
-			});
+			return c.json({}, 204);
 		}
 
-		return c.body(JSON.stringify(latestVersion), 200, {
-			"Content-Type": "application/json",
-		});
-	} catch (e) {
-		return c.body(JSON.stringify(e), 500, {
-			"Content-Type": "application/json",
-		});
+		return c.json(latestVersion);
+	} catch (e: any) {
+		console.error(e);
+		return c.json(
+			{
+				error: e.message,
+			},
+			500,
+		);
 	}
 });
 

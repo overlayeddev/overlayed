@@ -67,7 +67,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.hacksore.overlayed",
+      "identifier": "com.overlayed.app",
       "icon": ["icons/normal/icon.icns", "icons/normal/icon.ico", "icons/normal/icon.png"]
     },
     "security": {

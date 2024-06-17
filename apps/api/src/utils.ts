@@ -3,7 +3,7 @@ import { ReleaseResponse, RepoResponse } from "./types.js";
 // @ts-expect-error something is wrong with types here
 import { LatestVersion } from "types";
 
-const GIT_USER = "Hacksore";
+const GIT_USER = "overlayeddev";
 const GIT_REPO = "overlayed";
 
 const filenameToPlatform = (filename: string) => {
@@ -84,7 +84,10 @@ export async function getPlatformDownloads({
 		return null;
 	}
 }
-
+/*
+	 FIXME: THis has to be backwareds compatible with the old version
+	The best way is to prolly ship a new updater api and eventually deprecate the old one
+*/
 export async function getLatestVersions({ authToken }: { authToken: string }) {
 	// fetch all releases from github
 	try {
