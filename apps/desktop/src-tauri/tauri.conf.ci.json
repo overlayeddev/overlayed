@@ -7,7 +7,7 @@
     "bundle": {
       "active": false,
       "targets": "all",
-      "identifier": "com.hacksore.ci.overlayed"
+      "identifier": "com.overlayed.ci.app"
     }
   }
 }

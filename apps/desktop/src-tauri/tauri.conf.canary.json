@@ -7,7 +7,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.hacksore.canary.overlayed",
+      "identifier": "com.overlayed.canary.app",
       "icon": ["icons/canary/icon.icns", "icons/canary/icon.ico", "icons/canary/icon.png"]
     }
   }

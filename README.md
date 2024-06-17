@@ -1,5 +1,7 @@
 # Overlayed
+
 <p align="center">
+<!-- TODO: need to fix this -->
   <img src="https://github.com/Hacksore/overlayed/assets/996134/62f03539-3f5f-4638-9362-e403f74ab537" height="128" />
 </p>
 
@@ -12,12 +14,16 @@
 
 A modern, open-source, and free voice chat overlay for Discord that supports Mac, Linux, and Windows!
 
-### Installation 
+### Installation
+
 #### Homebrew
+
 ```
 brew install overlayed
 ```
+
 #### Guides for all Platforms
+
 https://overlayed.dev/blog/installation-guide
 
 ### Contributing

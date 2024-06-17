@@ -52,7 +52,7 @@ export const script = async ({ context, github }, id) => {
       console.log(`Downloading ${filename}`);
       // download the file to the binaries folder
       downloadFile(
-        `https://api.github.com/repos/Hacksore/overlayed/releases/assets/${asset.id}`,
+        `https://api.github.com/repos/overlayeddev/overlayed/releases/assets/${asset.id}`,
         `./${BINARIES_DIR}/${filename}`,
       );
     }

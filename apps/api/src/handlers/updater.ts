@@ -1,6 +1,7 @@
 import { Hono } from "hono/quick";
 import { getLatestVersions, getPlatformDownloads, getStars } from "../utils.js";
 import { Artifacts, WorkflowRuns } from "../types.js";
+import { GITHUB_REPO, GITHUB_USER } from "../constants.js";
 
 type Bindings = {
 	GITHUB_TOKEN: string;
@@ -16,8 +17,7 @@ app.get("/stars", async (c) => {
 		authToken: c.env.GITHUB_TOKEN,
 	});
 
-	return c.body(JSON.stringify(response), 200, {
-		"Content-Type": "application/json",
+	return c.json(response, 200, {
 		"Cache-Control": "max-age=300",
 	});
 });
@@ -28,27 +28,21 @@ app.get("/latest/stable", async (c) => {
 	});
 
 	if (!response) {
-		return c.body(
-			JSON.stringify({
+		return c.json(
+			{
 				downloads: [],
 				latestVersion: "",
-			}),
-			500,
-			{
-				"Content-Type": "application/json",
 			},
+			500,
 		);
 	}
 
-	return c.body(
-		JSON.stringify({
+	return c.json(
+		{
 			downloads: response.versions,
 			latestVersion: response.latestVersion,
-		}),
-		200,
-		{
-			"Content-Type": "application/json",
 		},
+		200,
 	);
 });
 
@@ -76,15 +70,12 @@ app.get("/latest/canary", async (c) => {
 		})
 		.filter((file) => file.name !== "canary/latest.json");
 
-	return c.body(
-		JSON.stringify({
+	return c.json(
+		{
 			downloads,
 			...latest,
-		}),
-		200,
-		{
-			"Content-Type": "application/json",
 		},
+		200,
 	);
 });
 
@@ -94,19 +85,16 @@ app.post("/upload-canary-artifacts", async (c) => {
 	const { secret } = (await c.req.json()) as { secret: string };
 
 	if (secret !== c.env.CANARY_UPLOAD_SECRET) {
-		return c.body(
-			JSON.stringify({
-				error: "Invalid secret",
-			}),
-			403,
+		return c.json(
 			{
-				"Content-Type": "application/json",
+				error: "Invalid secret",
 			},
+			403,
 		);
 	}
 
 	const canaryWorkflowRunsResponse = await fetch(
-		"https://api.github.com/repos/Hacksore/overlayed/actions/workflows/canary.yaml/runs",
+		`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/actions/workflows/canary.yaml/runs`,
 		{
 			cf: {
 				cacheTtl: 300,
@@ -128,14 +116,11 @@ app.post("/upload-canary-artifacts", async (c) => {
 	);
 
 	if (!successfulRun?.artifacts_url) {
-		return c.body(
-			JSON.stringify({
-				error: "No artifacts found",
-			}),
-			500,
+		return c.json(
 			{
-				"Content-Type": "application/json",
+				error: "No artifacts found",
 			},
+			500,
 		);
 	}
 
@@ -188,21 +173,17 @@ app.post("/upload-canary-artifacts", async (c) => {
 
 	console.log("uploaded manifest", uploaded);
 
-	return c.body(
-		JSON.stringify({
+	return c.json(
+		{
 			uploaded,
 			updated: new Date().toISOString(),
 			latestVersion: successfulRun.head_sha,
-		}),
-		200,
-		{
-			"Content-Type": "application/json",
 		},
+		200,
 	);
 });
 
 app.get("/:target/:arch/:currentVersion", async (c) => {
-	// TODO: updater metrics maybe?
 	const currentVersion = c.req.param("currentVersion");
 
 	try {
@@ -211,18 +192,19 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		});
 
 		if (currentVersion === latestVersion?.version) {
-			return c.body("", 204, {
-				"Content-Type": "application/json",
-			});
+			return c.json({}, 204);
 		}
 
-		return c.body(JSON.stringify(latestVersion), 200, {
-			"Content-Type": "application/json",
-		});
-	} catch (e) {
-		return c.body(JSON.stringify(e), 500, {
-			"Content-Type": "application/json",
-		});
+		return c.json(latestVersion);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (e: any) {
+		console.error(e);
+		return c.json(
+			{
+				error: e.message,
+			},
+			500,
+		);
 	}
 });
 

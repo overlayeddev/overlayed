@@ -63,7 +63,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
               <a
                 className="hover:underline"
                 target="_blank"
-                href={`https://github.com/Hacksore/overlayed/commit/${commitSha}`}
+                href={`https://github.com/overlayeddev/overlayed/commit/${commitSha}`}
               >
                 {shortCommitSha}
               </a>

@@ -10,7 +10,9 @@ import proxyMiddleware from "./plugins/proxy-middleware.mjs";
 const integrations = [sitemap(), react(), tailwind(), mdx()];
 
 if (process.env.NODE_ENV !== "production") {
-  integrations.push(proxyMiddleware(["/stars", "/latest/canary", "/latest/stable"]));
+  integrations.push(
+    proxyMiddleware(["/stars", "/latest/canary", "/latest/stable"]),
+  );
 }
 
 // https://astro.build/config

@@ -12,14 +12,11 @@ app.get("/oauth/callback", async (c) => {
 	const code = c.req.query("code");
 
 	if (!code) {
-		return c.body(
-			JSON.stringify({
-				error: "No code provided",
-			}),
-			400,
+		return c.json(
 			{
-				"Content-Type": "application/json",
+				error: "No code provided",
 			},
+			400,
 		);
 	}
 
@@ -32,27 +29,23 @@ app.get("/oauth/callback", async (c) => {
 		// TODO: THIH find another way to do this
 		isProd(c.req.url),
 	);
-	const payload = await response.json();
 
-	return c.body(JSON.stringify(payload), {
-		headers: {
-			Accept: "application/json",
-		},
-	});
+	// TODO: fix types
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const payload: any = await response.json();
+
+	return c.json(payload);
 });
 
 // allow our app to request a token
 app.post("/token", async (c) => {
 	const body = (await c.req.json()) as { code: string };
 	if (!body.code) {
-		return c.body(
-			JSON.stringify({
-				error: "No code provided",
-			}),
-			400,
+		return c.json(
 			{
-				"Content-Type": "application/json",
+				error: "No code provided",
 			},
+			400,
 		);
 	}
 
@@ -65,13 +58,12 @@ app.post("/token", async (c) => {
 		// TODO: THIH find another way to do this
 		isProd(c.req.url),
 	);
-	const payload = await response.json();
 
-	return new Response(JSON.stringify(payload), {
-		headers: {
-			Accept: "application/json",
-		},
-	});
+	// TODO: fix types
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const payload: any = await response.json();
+
+	return c.json(payload);
 });
 
 export default app;

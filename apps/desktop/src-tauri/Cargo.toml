@@ -2,9 +2,9 @@
 name = "overlayed"
 version = "0.0.0"
 description = "Voice chat overlay for Discord"
-authors = ['Sean "Hacksore" Boult']
+authors = ["Team Overlayed"]
 license = "AGPL-3.0"
-repository = "https://github.com/Hacksore/overlayed"
+repository = "https://github.com/overlayeddev/overlayed"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

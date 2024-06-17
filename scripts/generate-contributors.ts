@@ -17,7 +17,7 @@ async function getOcto() {
 
   // get paginated contributors
   const res = await octokit.paginate(octokit.rest.repos.listContributors, {
-    owner: "Hacksore",
+    owner: "overlayeddev",
     repo: "overlayed",
     per_page: 100,
   });

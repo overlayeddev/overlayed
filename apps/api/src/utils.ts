@@ -1,10 +1,8 @@
+import { GITHUB_REPO, GITHUB_USER } from "./constants.js";
 import { ReleaseResponse, RepoResponse } from "./types.js";
 
 // @ts-expect-error something is wrong with types here
 import { LatestVersion } from "types";
-
-const GIT_USER = "Hacksore";
-const GIT_REPO = "overlayed";
 
 const filenameToPlatform = (filename: string) => {
 	if (filename.includes("msi")) {
@@ -26,7 +24,7 @@ export async function getStars({
 	// fetch all releases from github
 	try {
 		const releases: RepoResponse = await fetch(
-			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}`,
+			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}`,
 			{
 				cf: {
 					cacheTtl: 300,
@@ -57,7 +55,7 @@ export async function getPlatformDownloads({
 	// fetch all releases from github
 	try {
 		const releases: ReleaseResponse = await fetch(
-			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
+			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`,
 			{
 				cf: {
 					cacheTtl: 300,
@@ -85,11 +83,15 @@ export async function getPlatformDownloads({
 	}
 }
 
-export async function getLatestVersions({ authToken }: { authToken: string }) {
+interface LatestVersionInput {
+	authToken: string;
+}
+
+export async function getLatestVersions({ authToken }: LatestVersionInput) {
 	// fetch all releases from github
 	try {
 		const releases: ReleaseResponse = await fetch(
-			`https://api.github.com/repos/${GIT_USER}/${GIT_REPO}/releases/latest`,
+			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`,
 			{
 				cf: {
 					cacheTtl: 300,
