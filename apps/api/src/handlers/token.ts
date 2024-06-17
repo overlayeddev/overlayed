@@ -12,10 +12,10 @@ app.get("/oauth/callback", async (c) => {
 	const code = c.req.query("code");
 
 	if (!code) {
-		return c.body(
-			JSON.stringify({
+		return c.json(
+			{
 				error: "No code provided",
-			}),
+			},
 			400,
 			{
 				"Content-Type": "application/json",
@@ -32,23 +32,20 @@ app.get("/oauth/callback", async (c) => {
 		// TODO: THIH find another way to do this
 		isProd(c.req.url),
 	);
-	const payload = await response.json();
 
-	return c.body(JSON.stringify(payload), {
-		headers: {
-			Accept: "application/json",
-		},
-	});
+	const payload: any = await response.json();
+
+	return c.json(payload);
 });
 
 // allow our app to request a token
 app.post("/token", async (c) => {
 	const body = (await c.req.json()) as { code: string };
 	if (!body.code) {
-		return c.body(
-			JSON.stringify({
+		return c.json(
+			{
 				error: "No code provided",
-			}),
+			},
 			400,
 			{
 				"Content-Type": "application/json",

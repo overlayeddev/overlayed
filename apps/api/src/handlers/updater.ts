@@ -36,11 +36,11 @@ app.get("/latest/stable", async (c) => {
 		);
 	}
 
-	return c.body(
-		JSON.stringify({
+	return c.json(
+		{
 			downloads: response.versions,
 			latestVersion: response.latestVersion,
-		}),
+		},
 		200,
 		{
 			"Content-Type": "application/json",
@@ -72,11 +72,11 @@ app.get("/latest/canary", async (c) => {
 		})
 		.filter((file) => file.name !== "canary/latest.json");
 
-	return c.body(
-		JSON.stringify({
+	return c.json(
+		{
 			downloads,
 			...latest,
-		}),
+		},
 		200,
 		{
 			"Content-Type": "application/json",
@@ -90,10 +90,10 @@ app.post("/upload-canary-artifacts", async (c) => {
 	const { secret } = (await c.req.json()) as { secret: string };
 
 	if (secret !== c.env.CANARY_UPLOAD_SECRET) {
-		return c.body(
-			JSON.stringify({
+		return c.json(
+			{
 				error: "Invalid secret",
-			}),
+			},
 			403,
 			{
 				"Content-Type": "application/json",
@@ -124,10 +124,10 @@ app.post("/upload-canary-artifacts", async (c) => {
 	);
 
 	if (!successfulRun?.artifacts_url) {
-		return c.body(
-			JSON.stringify({
+		return c.json(
+			{
 				error: "No artifacts found",
-			}),
+			},
 			500,
 			{
 				"Content-Type": "application/json",
@@ -184,12 +184,12 @@ app.post("/upload-canary-artifacts", async (c) => {
 
 	console.log("uploaded manifest", uploaded);
 
-	return c.body(
-		JSON.stringify({
+	return c.json(
+		{
 			uploaded,
 			updated: new Date().toISOString(),
 			latestVersion: successfulRun.head_sha,
-		}),
+		},
 		200,
 		{
 			"Content-Type": "application/json",
