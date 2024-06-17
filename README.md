@@ -1,8 +1,7 @@
 # Overlayed
 
 <p align="center">
-<!-- TODO: need to fix this -->
-  <img src="https://github.com/Hacksore/overlayed/assets/996134/62f03539-3f5f-4638-9362-e403f74ab537" height="128" />
+  <img src="https://github.com/overlayeddev/overlayed/assets/996134/b152c100-d06d-41d2-a795-32ea619fd1b5" height="128" />
 </p>
 
 <a href="https://discord.gg/eXmeNkVjye" target="_parent">
