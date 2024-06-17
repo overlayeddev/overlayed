@@ -8,6 +8,8 @@ import { script as uploadSignedBins } from "./actions/upload-signed-bins.js";
 import { script as downloadDraftBins } from "./actions/download-draft-bins.js";
 // @ts-ignore
 import { script as createRelease } from "./actions/create-release.js";
+// @ts-ignore
+import { script as patchCanaryVersion } from "./actions/patch-canary-version.js";
 
 const { GITHUB_TOKEN } = process.env;
 if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not found");
@@ -42,6 +44,9 @@ switch (arg) {
     break;
   case "upload":
     await uploadSignedBins({ github, context }, draftId);
+    break;
+  case "canary":
+    await patchCanaryVersion({ github, context });
     break;
   default:
     console.log("No script found, accepted answers are: create, download, upload, r2");
