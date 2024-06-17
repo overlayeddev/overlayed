@@ -151,7 +151,7 @@ jobs:
       # - name: Create a nsis.zip and msi.zip
       #   run: |
       #     # create a signature of the binaries with tauri signer, this does not mutate the original bin
-      #     cargo tauri signer sign --password "" --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" binaries/signed/*.msi 
+      #     cargo tauri signer sign --password "" --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" binaries/signed/*.msi
       #     cargo tauri signer sign --password "" --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" binaries/signed/*.exe
       #
       #     # zip the binaries using the name "Overlayed" and the version from the package.json
