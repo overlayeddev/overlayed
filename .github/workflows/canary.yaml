@@ -100,8 +100,16 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-      - name: install frontend dependencies
+      - name: Install dependencies
         run: pnpm install
+      - name: Patch canary version
+        working-directory: apps/desktop
+        run: |
+          # get the commit sha
+          commit_sha=$(git rev-parse HEAD | cut -c1-7)
+          # use jq to patch the canary version with the latest sha
+          tmp_file=$(mktemp)
+          jq --arg commit_sha "$commit_sha" '.package.version = "0.0.0-canary." + $commit_sha' src-tauri/tauri.conf.canary.json > "$tmp_file" && mv "$tmp_file" src-tauri/tauri.conf.canary.json
       - uses: tauri-apps/tauri-action@dev
         id: build_os
         with:
