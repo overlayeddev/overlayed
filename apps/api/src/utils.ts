@@ -87,9 +87,7 @@ interface LatestVersionInput {
 	authToken: string;
 }
 
-export async function getLatestVersions({
-	authToken,
-}: LatestVersionInput) {
+export async function getLatestVersions({ authToken }: LatestVersionInput) {
 	// fetch all releases from github
 	try {
 		const releases: ReleaseResponse = await fetch(
