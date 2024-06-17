@@ -196,6 +196,7 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		}
 
 		return c.json(latestVersion);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} catch (e: any) {
 		console.error(e);
 		return c.json(

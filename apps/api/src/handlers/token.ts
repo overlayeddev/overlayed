@@ -30,6 +30,8 @@ app.get("/oauth/callback", async (c) => {
 		isProd(c.req.url),
 	);
 
+	// TODO: fix types
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const payload: any = await response.json();
 
 	return c.json(payload);
@@ -57,6 +59,8 @@ app.post("/token", async (c) => {
 		isProd(c.req.url),
 	);
 
+	// TODO: fix types
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const payload: any = await response.json();
 
 	return c.json(payload);
