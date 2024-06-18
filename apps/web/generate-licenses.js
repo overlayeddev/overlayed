@@ -15,7 +15,7 @@ const dir = path.resolve(path.join(__dirname, "../../"));
 console.log(__dirname);
 const licenseOutput = execSync(
   `pnpm licenses --filter=desktop --prod list --json`,
-  { stdio: "inherit", shell:true},
+  { stdio: "inherit", shell: true },
 );
 
 console.log(licenseOutput.toString());
