@@ -28,6 +28,8 @@ try {
     licenseOutput,
   );
 
+  console.log(licenseOutput);
+
   console.log("🥳 Licenses generated successfully!");
 } catch (error) {
   console.error("Failed to generate licenses:", error);

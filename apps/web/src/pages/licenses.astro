@@ -18,7 +18,6 @@ type LicenseList = {
 };
 
 const data = input as unknown as LicenseList;
-console.log(data);
 const content = Object.keys(data).map((key) => {
   return {
     license: key,
