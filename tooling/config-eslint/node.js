@@ -1,11 +1,17 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
+import globals from "globals";
 
 const config = tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     ignores: ["node_modules/", "dist/"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
   },
   {
     rules: {

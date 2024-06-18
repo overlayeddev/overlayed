@@ -8,6 +8,7 @@
     "build:desktop": "turbo run build:desktop",
     "build:canary": "turbo run build:canary",
     "check:format": "turbo run check:format",
+    "generate:licenses": "turbo run generate:licenses",
     "clean": "turbo run clean && rm -rf node_modules .turbo",
     "lint": "turbo run lint",
     "format": "turbo run format",

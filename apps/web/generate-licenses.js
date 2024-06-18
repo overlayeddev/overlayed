@@ -1,26 +1,34 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execSync } from "child_process";
-console.log("Generating licenses...");
+console.log("Attempting to generate licenses...");
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+try {
+  const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-// create the __generated__ directory
-fs.mkdirSync(path.join("src", "__generated__"), {
-  recursive: true,
-});
+  console.log("creating __generated__ directory if not exists...");
+  // create the __generated__ directory
+  fs.mkdirSync(path.join("src", "__generated__"), {
+    recursive: true,
+  });
 
-// run the command to generate the licenses
-console.log(__dirname);
-const licenseOutput = execSync(
-  `pnpm licenses --filter=desktop --prod list --json`,
-  { encoding: 'utf-8' }
-);
+  console.log(
+    "Running command to generate licenses: pnpm licenses --filter=desktop --prod list --json",
+  );
+  // run the command to generate the licenses
+  const licenseOutput = execSync(
+    "pnpm licenses --filter=desktop --prod list --json",
+    { encoding: "utf-8" },
+  );
 
-console.log(licenseOutput);
+  console.log("writing all the license information to licenses.json file...");
+  // write the string to the licenses.json file
+  fs.writeFileSync(
+    path.join(__dirname, "src", "__generated__", "licenses.json"),
+    licenseOutput,
+  );
 
-// write the string to the licenses.json file
-fs.writeFileSync(
-  path.join(__dirname, "src", "__generated__", "licenses.json"),
-  licenseOutput
-);
+  console.log("🥳 Licenses generated successfully!");
+} catch (error) {
+  console.error("Failed to generate licenses:", error);
+}
