@@ -1,4 +1,6 @@
-# Why is Canary Unstable?
+import { GITHUB_URL, DISCORD_INVITE_LINK } from "../../constants.ts";
+
+<a href="#about" id="about" class="text-4xl no-underline">Why is Canary Unstable?</a>
 
 ## 1. Frequent Code Changes
 - **Continuous Integration**: Canary builds often integrate the latest code changes frequently, which can introduce new bugs and instability.
@@ -12,3 +14,12 @@
 - **Unstable Dependencies**: Canary builds may depend on the latest versions of external libraries or services, which can themselves be unstable.
 - **Dependency Conflicts**: Rapid updates can lead to conflicts or issues with dependencies that are not yet resolved.
 
+<div
+  class="bg-blue-900 border border-blue-500 text-white mt-14 px-4"
+  role="alert"
+>
+  <p class="font-bold h-3">🐛 If you find a bug</p>
+  <p class="text-sm">
+    Please report issues on <a target="_blank" href={GITHUB_URL}>Github</a> or in the <a target="_blank" href={DISCORD_INVITE_LINK}>Discord</a>  server so it can be patched ❤️
+  </p>
+</div>
