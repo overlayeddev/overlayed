@@ -11,11 +11,16 @@ fs.mkdirSync(path.join("src", "__generated__"), {
 });
 
 // run the command to generate the licenses
-const dir = path.resolve(path.join(__dirname, "../../"));
 console.log(__dirname);
 const licenseOutput = execSync(
   `pnpm licenses --filter=desktop --prod list --json`,
-  { stdio: "inherit", shell: true },
+  { encoding: 'utf-8' }
 );
 
-console.log(licenseOutput.toString());
+console.log(licenseOutput);
+
+// write the string to the licenses.json file
+fs.writeFileSync(
+  path.join(__dirname, "src", "__generated__", "licenses.json"),
+  licenseOutput
+);
