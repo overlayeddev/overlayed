@@ -6,7 +6,7 @@
   "tasks": {
     "build": {
       "dependsOn": [
-        "gen",
+        "generate:licenses",
         "^build"
       ],
       "outputs": [
@@ -14,9 +14,9 @@
         ".vercel/output/**"
       ]
     },
-    "gen": {
+    "generate:licenses": {
       "dependsOn": [
-        "^gen"
+        "^generate:licenses"
       ],
       "outputs": [
         "./apps/web/__generated__/licenses.json"
