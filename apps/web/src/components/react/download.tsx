@@ -5,7 +5,6 @@ import DownloadButton from "./download-button.js";
 import { API_HOST } from "../../constants.js";
 import { getRelativeTime } from "../../time-utils.js";
 
-
 export const Platforms = {
   linux: "Linux",
   windows: "Windows",
@@ -14,11 +13,12 @@ export const Platforms = {
 
 export const Download = ({ canary = true }: { canary?: boolean }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [platformDownloads, setPlatformDownloads] = useState < {
+  const [formattedTime, setFormattedTime] = useState("");
+  const [platformDownloads, setPlatformDownloads] = useState<{
     downloads: PlatformDownload[];
     latestVersion: string;
     updated?: string;
-  } > ({
+  }>({
     downloads: [],
     latestVersion: "",
   });
@@ -34,9 +34,21 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
       });
   }, []);
 
+  // Allow it to keep time updated based on the second
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setFormattedTime(
+        getRelativeTime(platformDownloads.updated || new Date()),
+      );
+    }, 1000);
+
+    setFormattedTime(getRelativeTime(platformDownloads.updated || new Date()));
+
+    return () => clearInterval(timerId);
+  }, [platformDownloads.updated]);
+
   const commitSha = platformDownloads.latestVersion.substring(0, 7);
   const shortCommitSha = commitSha.substring(0, 7);
-  const formattedTime = getRelativeTime(platformDownloads.updated || new Date());
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -76,7 +88,9 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
               ))}
             </div>
             {canary && (
-              <p className="text-sm pt-2 font-bold">Last update {formattedTime}</p>
+              <p className="text-sm pt-2 font-bold">
+                Last update {formattedTime}
+              </p>
             )}
           </div>
         )}
