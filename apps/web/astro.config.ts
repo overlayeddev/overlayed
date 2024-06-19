@@ -1,5 +1,4 @@
 import { defineConfig } from "astro/config";
-import vercel from "@astrojs/vercel/static";
 import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
@@ -23,9 +22,4 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
   },
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-  }),
 });
