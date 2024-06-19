@@ -3,7 +3,7 @@ import path from "node:path";
 import { execSync } from "child_process";
 console.log("Attempting to generate licenses...");
 
-// i might give up
+// i might give up this is too much and i dont even know what im doing
 try {
   // root monorepo dir
   const __dirname = path.dirname(new URL(import.meta.url).pathname);
