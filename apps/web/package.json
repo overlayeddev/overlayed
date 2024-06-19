@@ -4,10 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "start": "astro dev",
+    "generate:licenses": "node generate-licenses.js",
     "build": "astro check && astro build",
     "lint": "eslint",
     "check:format": "prettier --check \"**/*.{astro,ts,js}\"",
-    "clean": "rm -rf dist .turbo node_modules .vercel .astro",
+    "clean": "rm -rf dist .turbo node_modules .vercel .astro src/__generated__",
     "format": "prettier --write \"**/*.{astro,ts,js}\"",
     "preview": "astro preview",
     "astro": "astro"
