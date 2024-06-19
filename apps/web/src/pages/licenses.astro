@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/footer.astro";
+import blogOgImage from "../assets/blog/overlayed-blog.png";
+import input from "../__generated__/licenses.json";
+
+type License = {
+  name: string;
+  version: string;
+  path: string;
+  license: string;
+  author: string;
+  homepage: string;
+  description: string;
+};
+type LicenseList = {
+  [key: string]: Array<License>;
+};
+
+const data = input as unknown as LicenseList;
+const content = Object.keys(data).map((key) => {
+  return {
+    license: key,
+    element: data[key],
+  };
+});
+// pnpm licenses --filter=desktop --prod list > licences.json
+---
+
+<Layout
+  title="Overlayed - licenses"
+  description="List of all dependencies and licenses used in the project."
+  ogImage={blogOgImage.src}
+>
+  <main class="mx-auto px-8 pt-28">
+    <h1 class="pl-6 text-4xl">Licenses</h1>
+    {
+      content.map((element) => (
+        <div class="p-5">
+          <h1 class="pl-5 text-lg font-bold ">{element.license}</h1>
+
+          <ul class="p-3 ">
+            {element.element.map((license) => (
+              <li class="p-5 border border-zinc-800 rouded-s">
+                <h3>{license.name}</h3>
+                <p>Version: {license.version}</p>
+                {license.author && <p>Author: {license.author}</p>}
+                <p>
+                  Homepage:{" "}
+                  <a class="underline" href={license.homepage}>
+                    {license.homepage}
+                  </a>
+                </p>
+                <p>Description: {license.description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </main>
+
+  <Footer />
+</Layout>
