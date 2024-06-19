@@ -24,7 +24,7 @@ try {
     { encoding: "utf-8" },
   );
 
-  const parsedLicensesMap = JSON.parse(licenseOutput);
+  const parsedLicensesMap = JSON.parse(licenseOutput || "{}");
   console.log(Object.keys(parsedLicensesMap));
 
   console.log("Writing all the license information to licenses.json file...");
