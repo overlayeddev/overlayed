@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["generate:licenses", "^build"],
-      "outputs": [".vercel/output/**"]
+      "outputs": ["dist/**", ".vercel/output/**"]
     },
     "generate:licenses": {
       "dependsOn": ["^generate:licenses"],
