@@ -1,21 +1,24 @@
 import { Artifacts, Bindings, WorkflowRuns } from "../types.js";
 import { GITHUB_REPO, GITHUB_USER } from "../constants.js";
 import { Hono } from "hono/quick";
+import { WorkflowRunEvent } from "@octokit/webhooks-types";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// TODO: error handle this
+// TODO: impl hmac validation
 app.post("/upload-canary-artifacts", async (c) => {
-	// check if they send the secret
-	const { secret } = (await c.req.json()) as { secret: string };
+	const body = (await c.req.json()) as WorkflowRunEvent;
 
-	if (secret !== c.env.CANARY_UPLOAD_SECRET) {
-		return c.json(
-			{
-				error: "Invalid secret",
-			},
-			403,
-		);
+	const isCanaryJob = body.workflow.name === "Canary";
+	const isSuccesfulRun =
+		body.action !== "completed" && body.workflow_run.conclusion === "success";
+
+	if (!isSuccesfulRun || !isCanaryJob) {
+		return c.json({
+			messge: "either the run was not successful or it was not a canary job",
+			job: body.workflow.name,
+			conclusion: body.workflow_run.conclusion,
+		});
 	}
 
 	const canaryWorkflowRunsResponse = await fetch(

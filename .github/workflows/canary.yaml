@@ -129,20 +129,3 @@ jobs:
         with:
           name: "overlayed-canary-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
-  upload:
-    name: Upload to R2
-    needs: "build-tauri"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download canary artifacts
-        uses: actions/download-artifact@v4
-        with:
-          pattern: "overlayed-canary-*"
-      - name: list artifacts
-        run: |
-          ls -hal
-      - name: Post to worker
-        run: |
-          echo "figure this out"
-          # use curl to post a file 
-          # curl -vvv -d '{ "secret": "${{ secrets.CANARY_UPLOAD_SECRET }}" }' https://api.overlayed.dev/upload-canary-artifacts

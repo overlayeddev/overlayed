@@ -15,6 +15,7 @@
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20240512.0",
 		"@octokit/types": "^12.6.0",
+		"@octokit/webhooks-types": "^7.5.1",
 		"lint": "workspace:*",
 		"tsconfig": "workspace:*",
 		"types": "workspace:*",

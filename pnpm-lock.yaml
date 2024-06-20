@@ -63,6 +63,9 @@ importers:
       '@octokit/types':
         specifier: ^12.6.0
         version: 12.6.0
+      '@octokit/webhooks-types':
+        specifier: ^7.5.1
+        version: 7.5.1
       lint:
         specifier: workspace:*
         version: link:../../tooling/config-eslint
@@ -1588,6 +1591,9 @@ packages:
 
   '@octokit/webhooks-types@7.4.0':
     resolution: {integrity: sha512-FE2V+QZ2UYlh+9wWd5BPLNXG+J/XUD/PPq0ovS+nCcGX4+3qVbi3jYOmCTW48hg9SBBLtInx9+o7fFt4H5iP0Q==}
+
+  '@octokit/webhooks-types@7.5.1':
+    resolution: {integrity: sha512-1dozxWEP8lKGbtEu7HkRbK1F/nIPuJXNfT0gd96y6d3LcHZTtRtlf8xz3nicSJfesADxJyDh+mWBOsdLkqgzYw==}
 
   '@octokit/webhooks@12.2.0':
     resolution: {integrity: sha512-CyuLJ0/P7bKZ+kIYw+fnkeVdhUzNuDKgNSI7pU/m7Nod0T7kP+s4s2f0pNmG9HL8/RZN1S0ZWTDll3VTMrFLAw==}
@@ -7975,6 +7981,8 @@ snapshots:
   '@octokit/webhooks-methods@4.1.0': {}
 
   '@octokit/webhooks-types@7.4.0': {}
+
+  '@octokit/webhooks-types@7.5.1': {}
 
   '@octokit/webhooks@12.2.0':
     dependencies:
