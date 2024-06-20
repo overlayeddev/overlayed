@@ -13,19 +13,21 @@ app.post("/upload-canary-artifacts", async (c) => {
 	});
 
 	const isProduction = isProd(c.req.url);
-	const bodyAsString = await c.req.text();
 	const body = (await c.req.json()) as WorkflowRunEvent;
+	const bodyAsString = JSON.stringify(body);
 
 	const signature = c.req.header("x-hub-signature-256") || "";
 
-	// NOTE: this is hard to test locally we might wanna disable this dev mode
-	if (!(await webhooks.verify(bodyAsString, signature)) && isProduction) {
-		return c.json({ error: "Unauthorized" });
-	}
-
 	const isCanaryJob = body.workflow.name === "Canary";
 	const isSuccesfulRun =
-		body.action !== "completed" && body.workflow_run.conclusion === "success";
+		body.action === "completed" && body.workflow_run.conclusion === "success";
+
+	// only enable this is production!
+	if (isProduction) {
+		if (!(await webhooks.verify(bodyAsString, signature))) {
+			return c.json({ error: "Unauthorized" });
+		}
+	}
 
 	if (!isSuccesfulRun || !isCanaryJob) {
 		return c.json({

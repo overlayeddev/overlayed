@@ -65,9 +65,7 @@
       "site_admin": false
     },
     "run_attempt": 1,
-    "referenced_workflows": [
-
-    ],
+    "referenced_workflows": [],
     "run_started_at": "2024-06-20T00:48:08Z",
     "triggering_actor": {
       "login": "Hacksore",
@@ -372,9 +370,7 @@
     "open_issues": 9,
     "watchers": 195,
     "default_branch": "main",
-    "custom_properties": {
-
-    }
+    "custom_properties": {}
   },
   "organization": {
     "login": "overlayeddev",
