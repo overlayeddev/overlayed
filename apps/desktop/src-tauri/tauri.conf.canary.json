@@ -1,12 +1,12 @@
 {
   "package": {
-    "productName": "Overlayed-Canary",
+    "productName": "Overlayed Canary",
     "version": "0.0.0"
   },
   "tauri": {
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": ["appimage", "nsis", "dmg"],
       "identifier": "com.overlayed.canary.app",
       "icon": ["icons/canary/icon.icns", "icons/canary/icon.ico", "icons/canary/icon.png"]
     }
