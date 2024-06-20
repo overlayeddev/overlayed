@@ -23,3 +23,11 @@ export interface LatestVersion {
 		};
 	}[];
 }
+
+export type Bindings = {
+	GITHUB_TOKEN: string;
+	CANARY_UPLOAD_SECRET: string;
+	BUCKET: R2Bucket;
+	CLIENT_ID: string;
+	CLIENT_SECRET: string;
+};
