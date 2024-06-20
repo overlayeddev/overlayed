@@ -6,7 +6,7 @@
   "tauri": {
     "bundle": {
       "active": true,
-      "targets": ["appimage", "nsis", "app", "dmg"],
+      "targets": ["appimage", "nsis", "dmg"],
       "identifier": "com.overlayed.canary.app",
       "icon": ["icons/canary/icon.icns", "icons/canary/icon.ico", "icons/canary/icon.png"]
     }
