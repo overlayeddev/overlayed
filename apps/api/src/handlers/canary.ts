@@ -2,12 +2,26 @@ import { Artifacts, Bindings, WorkflowRuns } from "../types.js";
 import { GITHUB_REPO, GITHUB_USER } from "../constants.js";
 import { Hono } from "hono/quick";
 import { WorkflowRunEvent } from "@octokit/webhooks-types";
+import { Webhooks } from "@octokit/webhooks";
+import { isProd } from "../utils.js";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-// TODO: impl hmac validation
 app.post("/upload-canary-artifacts", async (c) => {
+	const webhooks = new Webhooks({
+		secret: c.env.CANARY_UPLOAD_SECRET,
+	});
+
+	const isProduction = isProd(c.req.url);
+	const bodyAsString = await c.req.text();
 	const body = (await c.req.json()) as WorkflowRunEvent;
+
+	const signature = c.req.header("x-hub-signature-256") || "";
+
+	// NOTE: this is hard to test locally we might wanna disable this dev mode
+	if (!(await webhooks.verify(bodyAsString, signature)) && isProduction) {
+		return c.json({ error: "Unauthorized" });
+	}
 
 	const isCanaryJob = body.workflow.name === "Canary";
 	const isSuccesfulRun =
