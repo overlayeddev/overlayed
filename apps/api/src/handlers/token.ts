@@ -1,10 +1,6 @@
 import { Hono } from "hono/quick";
 import { fetchAuthToken, isProd } from "../utils.js";
-
-type Bindings = {
-	CLIENT_ID: string;
-	CLIENT_SECRET: string;
-};
+import { Bindings } from "../types.js";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
