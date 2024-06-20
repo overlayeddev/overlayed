@@ -14,7 +14,7 @@ import { MetricNames, track, trackEvent } from "@/metrics";
 import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
-import { getVersion, getName } from "@tauri-apps/api/app";
+import { getVersion } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
 
 interface TokenResponse {
@@ -90,7 +90,6 @@ class SocketManager {
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
   public version: string | undefined;
-  public isCanary = false;
 
   private navigate(url: string) {
     if (window.location.hash.includes("#settings")) return;
@@ -106,7 +105,6 @@ class SocketManager {
 
     this._navigate = navigate;
     this.version = await getVersion();
-    this.isCanary = (await getName()).toLowerCase().includes("canary");
 
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
     try {
@@ -311,7 +309,7 @@ class SocketManager {
         username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
         os: await type(),
-        version: this.isCanary ? "canary" : this.version,
+        version: this.version,
       });
 
       // try to find the user
