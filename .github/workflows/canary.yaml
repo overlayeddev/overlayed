@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - main
+      - chore/fix-canary-upload
   schedule:
     - cron: 0 0 * * *
 
@@ -58,16 +59,16 @@ jobs:
             toolchain: aarch64-apple-darwin,x86_64-apple-darwin
             bundles: app,dmg
             os: mac
-          - host: windows-latest
-            target: x86_64-pc-windows-msvc
-            toolchain: x86_64-pc-windows-msvc
-            bundles: nsis
-            os: windows
-          - host: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            toolchain: x86_64-unknown-linux-gnu
-            bundles: deb,appimage
-            os: linux
+          # - host: windows-latest
+          #   target: x86_64-pc-windows-msvc
+          #   toolchain: x86_64-pc-windows-msvc
+          #   bundles: nsis
+          #   os: windows
+          # - host: ubuntu-latest
+          #   target: x86_64-unknown-linux-gnu
+          #   toolchain: x86_64-unknown-linux-gnu
+          #   bundles: deb,appimage
+          #   os: linux
 
     runs-on: ${{ matrix.settings.host }}
     steps:
@@ -129,9 +130,19 @@ jobs:
           name: "overlayed-canary-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
   upload:
+    name: Upload to R2
     needs: "build-tauri"
     runs-on: ubuntu-latest
     steps:
-      - name: Upload to r2
+      - name: Download canary artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "overlayed-canary-"
+      - name: list artifacts
         run: |
-          curl -vvv -d '{ "secret": "${{ secrets.CANARY_UPLOAD_SECRET }}" }' https://api.overlayed.dev/upload-canary-artifacts
+          ls -hal
+      - name: Post to worker
+        run: |
+          echo "figure this out"
+          # use curl to post a file 
+          # curl -vvv -d '{ "secret": "${{ secrets.CANARY_UPLOAD_SECRET }}" }' https://api.overlayed.dev/upload-canary-artifacts
