@@ -7,14 +7,11 @@ const { src } = Astro.props;
 ---
 
 <style>
-.video {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-}
+  .video {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
 </style>
 
-<iframe
-  class="video"
-  id="ytplayer"
-  src={src}
-  frameborder="0"></iframe>
+<iframe class="video" id="ytplayer" allowfullscreen src={src} frameborder="0">
+</iframe>
