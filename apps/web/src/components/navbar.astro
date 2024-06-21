@@ -32,6 +32,7 @@ import Link from "../components/link.astro";
     position: relative;
     display: block;
   }
+
   .hamburger-lines::after {
     top: -7px;
     position: absolute;
@@ -40,7 +41,7 @@ import Link from "../components/link.astro";
     transform-origin: 1.3px center;
     display: block;
     width: 1.25rem;
-    height: 2px;
+    height: 3px;
     transition: transform 0.1s ease-in-out;
   }
 
@@ -50,7 +51,7 @@ import Link from "../components/link.astro";
     left: 0;
     content: "";
     transform-origin: 1.3px center;
-    height: 2px;
+    height: 3px;
     width: 1.25rem;
     transition: transform 0.1s ease-in-out;
   }
@@ -177,7 +178,7 @@ import Link from "../components/link.astro";
     <!--mobile menu -->
     <button
       id="mobile-menu-button"
-      class="md:hidden w-10 h-10 grid items-center"
+      class="md:hidden justify-end w-10 h-10 grid items-center"
       type="button"
       aria-label="Open navigation"
       aria-controls="main-navigation"
@@ -185,7 +186,7 @@ import Link from "../components/link.astro";
     >
       <!--match icon color with others (from layout)-->
       <span
-        class="hamburger-lines w-5 h-[2px] bg-gray-200 before:bg-gray-200 after:bg-gray-200"
+        class="hamburger-lines w-5 h-[3px] bg-gray-200 before:bg-gray-200 after:bg-gray-200"
       ></span>
     </button>
   </div>
