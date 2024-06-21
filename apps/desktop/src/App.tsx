@@ -6,7 +6,7 @@ import { ChannelView } from "./views/channel";
 import { SettingsView } from "./views/settings";
 import { ErrorView } from "./views/error";
 import { NavBar } from "./components/nav-bar";
-import { useClickthrough } from "./hooks/use-clickthrough";
+import { usePin } from "./hooks/use-pin";
 import { useAlign } from "./hooks/use-align";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useUpdate } from "./hooks/use-update";
@@ -26,17 +26,17 @@ function App() {
   const { isAvailable, error, status } = useUpdate();
   const { visible } = useAppStore();
 
-  const { clickthrough } = useClickthrough();
+  const { pin } = usePin();
   const { horizontal, setHorizontalDirection } = useAlign();
 
   const visibleClass = visible ? "opacity-100" : "opacity-0";
 
   return (
     <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
-      {!clickthrough && (
+      {!pin && (
         <NavBar
           isUpdateAvailable={isAvailable}
-          clickthrough={clickthrough}
+          pin={pin}
           alignDirection={horizontal}
           setAlignDirection={setHorizontalDirection}
         />

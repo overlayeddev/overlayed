@@ -2,7 +2,7 @@ pub const MAIN_WINDOW_NAME: &str = "main";
 pub const SETTINGS_WINDOW_NAME: &str = "settings";
 
 /// for the tray events
-pub const TRAY_TOGGLE_CLICKTHROUGH: &str = "toggle_clickthrough";
+pub const TRAY_TOGGLE_PIN: &str = "toggle_pin";
 pub const TRAY_SHOW_APP: &str = "show_app";
 pub const TRAY_RELOAD: &str = "reload";
 pub const TRAY_SETTINGS: &str = "show_settings";
