@@ -1,3 +1,5 @@
+use std::{ops::Deref, sync::atomic::AtomicBool};
+
 use tauri::{Manager, State, SystemTrayHandle, Window};
 
 use crate::{constants::*, Pinned};
@@ -48,17 +50,24 @@ pub fn set_pin(window: Window, pin: State<Pinned>, value: bool) {
   _set_pin(value, &window, pin);
 }
 
+impl Deref for Pinned {
+  type Target = AtomicBool;
+
+  fn deref(&self) -> &Self::Target {
+    &self.0
+  }
+}
+
 fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
-  pinned
-    .0
-    .store(value, std::sync::atomic::Ordering::Relaxed);
+  // @d0nutptr cooked here 
+  pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
   // let the client know
   window.emit(TRAY_TOGGLE_PIN, value).unwrap();
 
   // invert the label for the tray
   let tray_handle = window.app_handle().tray_handle();
-  let enable_or_disable = if value { "Pin" } else { "Unpin" };
+  let enable_or_disable = if value { "Unpin" } else { "Pin" };
   tray_handle
     .get_item(TRAY_TOGGLE_PIN)
     .set_title(format!("{}", enable_or_disable));
@@ -74,10 +83,7 @@ fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
   window.set_ignore_cursor_events(value);
 
   // update the tray icon
-  update_tray_icon(
-    window.app_handle().tray_handle(),
-    value,
-  );
+  update_tray_icon(window.app_handle().tray_handle(), value);
 }
 
 fn update_tray_icon(tray: SystemTrayHandle, pinned: bool) {
@@ -89,5 +95,4 @@ fn update_tray_icon(tray: SystemTrayHandle, pinned: bool) {
   }
 
   tray.set_icon(icon);
-
 }

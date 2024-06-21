@@ -11,7 +11,7 @@ pub fn create_tray_items() -> SystemTray {
     SystemTrayMenu::new()
       .add_item(CustomMenuItem::new(
         TRAY_TOGGLE_PIN,
-        "Enable Pin",
+        "Pin",
       ))
       .add_item(CustomMenuItem::new(TRAY_SHOW_APP, "Show Overlayed"))
       .add_item(CustomMenuItem::new(TRAY_RELOAD, "Reload App"))
