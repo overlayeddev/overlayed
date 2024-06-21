@@ -3,7 +3,7 @@ use tauri::{
 };
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
-use crate::{commands::toggle_pin, constants::*, Pin};
+use crate::{commands::toggle_pin, constants::*, Pinned};
 
 pub fn create_tray_items() -> SystemTray {
   // System tray configuration
@@ -36,7 +36,7 @@ pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
       TRAY_TOGGLE_PIN => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
-        toggle_pin(window, app.state::<Pin>())
+        toggle_pin(window, app.state::<Pinned>())
       }
       TRAY_SHOW_APP => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();

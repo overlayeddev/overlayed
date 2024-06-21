@@ -1,6 +1,6 @@
 use tauri::{Manager, State, SystemTrayHandle, Window};
 
-use crate::{constants::*, Clickthrough};
+use crate::{constants::*, Pinned};
 
 #[tauri::command]
 pub fn open_settings(window: Window, update: bool) {
@@ -26,7 +26,7 @@ pub fn close_settings(window: Window) {
 }
 
 #[tauri::command]
-pub fn get_pin(storage: State<Pin>) -> bool {
+pub fn get_pin(storage: State<Pinned>) -> bool {
   storage.0.load(std::sync::atomic::Ordering::Relaxed)
 }
 
@@ -36,20 +36,20 @@ pub fn open_devtools(window: Window) {
 }
 
 #[tauri::command]
-pub fn toggle_pin(window: Window, pin: State<Pin>) {
+pub fn toggle_pin(window: Window, pin: State<Pinned>) {
   let app = window.app_handle();
-  let value = !get_pin(app.state::<Pin>());
+  let value = !get_pin(app.state::<Pinned>());
 
   _set_pin(value, &window, pin);
 }
 
 #[tauri::command]
-pub fn set_pin(window: Window, pin: State<Pin>, value: bool) {
+pub fn set_pin(window: Window, pin: State<Pinned>, value: bool) {
   _set_pin(value, &window, pin);
 }
 
-fn _set_pin(value: bool, window: &Window, pin: State<Pin>) {
-  pin
+fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
+  pinned
     .0
     .store(value, std::sync::atomic::Ordering::Relaxed);
 
@@ -58,10 +58,10 @@ fn _set_pin(value: bool, window: &Window, pin: State<Pin>) {
 
   // invert the label for the tray
   let tray_handle = window.app_handle().tray_handle();
-  let enable_or_disable = if value { "Disable" } else { "Enable" };
+  let enable_or_disable = if value { "Pin" } else { "Unpin" };
   tray_handle
     .get_item(TRAY_TOGGLE_PIN)
-    .set_title(format!("{} Pin", enable_or_disable));
+    .set_title(format!("{}", enable_or_disable));
 
   #[cfg(target_os = "macos")]
   window.with_webview(move |webview| {
@@ -80,9 +80,9 @@ fn _set_pin(value: bool, window: &Window, pin: State<Pin>) {
   );
 }
 
-fn update_tray_icon(tray: SystemTrayHandle, clickthrough: bool) {
+fn update_tray_icon(tray: SystemTrayHandle, pinned: bool) {
   let icon;
-  if clickthrough {
+  if pinned {
     icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned.png").to_vec());
   } else {
     icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon.png").to_vec());
