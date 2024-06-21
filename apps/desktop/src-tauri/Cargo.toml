@@ -44,7 +44,6 @@ tokio = { version = "1", features = [
 tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
-dark-light = "1.0.0"
 
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]

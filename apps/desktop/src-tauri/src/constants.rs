@@ -12,9 +12,3 @@ pub const TRAY_QUIT: &str = "quit";
 
 /// random events
 pub const SHOW_UPDATE_MODAL: &str = "show_update_modal";
-
-#[derive(PartialEq, Copy, Clone, Debug)]
-pub enum ThemeType {
-  Light,
-  Dark,
-}
