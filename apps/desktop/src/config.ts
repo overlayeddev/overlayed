@@ -9,7 +9,7 @@ export type DirectionTB = "top" | "bottom";
 // NOTE: how can i handle versions updates where i add new keys
 // NOTE: this looks cool https://github.com/harshkhandeparkar/tauri-settings/issues
 export interface OverlayedConfig {
-  clickthrough: boolean;
+  pin: boolean;
   horizontal: DirectionLR;
   vertical: DirectionTB;
   telemetry: boolean;
@@ -20,7 +20,7 @@ export interface OverlayedConfig {
 export type OverlayedConfigKey = keyof OverlayedConfig;
 
 export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
-  clickthrough: false,
+  pin: false,
   horizontal: "right",
   // TODO: vertical alignment? i.e., if aligned to bottom, then the navbar should be at the bottom (and corner radius changes appropriately)
   vertical: "bottom",

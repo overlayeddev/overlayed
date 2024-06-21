@@ -24,7 +24,7 @@ use window_custom::WindowExt;
 #[cfg(target_os = "macos")]
 use tauri::{App, Window};
 
-pub struct Clickthrough(AtomicBool);
+pub struct Pin(AtomicBool);
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(_app: &mut App, window: &Window) {
@@ -45,7 +45,7 @@ fn main() {
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }))
-    .manage(Clickthrough(AtomicBool::new(false)))
+    .manage(Pin(AtomicBool::new(false)))
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
       let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
@@ -82,9 +82,9 @@ fn main() {
     // Handle system tray events
     .on_system_tray_event(|app, event| handle_tray_events(app, event))
     .invoke_handler(generate_handler![
-      toggle_clickthrough,
-      get_clickthrough,
-      set_clickthrough,
+      toggle_pin,
+      get_pin,
+      set_pin,
       open_devtools,
       close_settings,
       open_settings

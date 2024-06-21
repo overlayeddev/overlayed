@@ -31,7 +31,7 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 
 export interface AppState {
   visible: boolean;
-  clickThrough: boolean;
+  pin: boolean;
   me: OverlayedUser | null;
   currentChannel: CurrentChannel | null;
   users: Record<string, OverlayedUser>;
@@ -40,7 +40,7 @@ export interface AppState {
 
 export interface AppActions {
   setAppVisible: (value: boolean) => void;
-  setClickThrough: (enbabled: boolean) => void;
+  setPin: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: VoiceStateUser[]) => void;
   updateUser: (user: VoiceStateUser) => void;
@@ -95,7 +95,7 @@ export const useAppStore = create<AppState & AppActions>()(
     visible: true,
     me: null,
     discordErrors: new Set(),
-    clickThrough: false,
+    pin: false,
     currentChannel: null,
     users: {},
     setAppVisible: value =>
@@ -136,9 +136,9 @@ export const useAppStore = create<AppState & AppActions>()(
       set(state => {
         state.currentChannel = channel;
       }),
-    setClickThrough: (enabled: boolean) =>
+    setPin: (enabled: boolean) =>
       set(state => {
-        state.clickThrough = enabled;
+        state.pin = enabled;
       }),
     pushError: error =>
       set(state => {

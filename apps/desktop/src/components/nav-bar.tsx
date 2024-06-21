@@ -45,12 +45,12 @@ const horizontalAlignments: Alignment[] = [
 ];
 
 export const NavBar = ({
-  clickthrough,
+  pin,
   alignDirection,
   setAlignDirection,
   isUpdateAvailable,
 }: {
-  clickthrough: boolean;
+  pin: boolean;
   alignDirection: DirectionLR;
   setAlignDirection: React.Dispatch<React.SetStateAction<DirectionLR>>;
   isUpdateAvailable: boolean;
@@ -60,7 +60,7 @@ export const NavBar = ({
   const { currentChannel } = useAppStore();
   const [currentAlignment, setCurrentAlignment] = useState(mapping[alignDirection]);
 
-  const opacity = clickthrough && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
+  const opacity = pin && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
   const IconComponent = horizontalAlignments[currentAlignment]?.icon || ArrowLeftToLine;
   const showUpdateButton = location.pathname !== "/settings" && isUpdateAvailable;
 
@@ -115,12 +115,12 @@ export const NavBar = ({
                 }}
               />
             </button>
-            <button title="Enable clickthrough">
+            <button title="Enable pin">
               <Pin
                 size={20}
                 onClick={async () => {
-                  invoke("toggle_clickthrough");
-                  await Config.set("clickthrough", !clickthrough);
+                  invoke("toggle_pin");
+                  await Config.set("pin", !pin);
                   navigate("/channel");
                 }}
               />

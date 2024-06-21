@@ -26,7 +26,7 @@ pub fn close_settings(window: Window) {
 }
 
 #[tauri::command]
-pub fn get_clickthrough(storage: State<Clickthrough>) -> bool {
+pub fn get_pin(storage: State<Pin>) -> bool {
   storage.0.load(std::sync::atomic::Ordering::Relaxed)
 }
 
@@ -36,32 +36,32 @@ pub fn open_devtools(window: Window) {
 }
 
 #[tauri::command]
-pub fn toggle_clickthrough(window: Window, clickthrough: State<Clickthrough>) {
+pub fn toggle_pin(window: Window, pin: State<Pin>) {
   let app = window.app_handle();
-  let value = !get_clickthrough(app.state::<Clickthrough>());
+  let value = !get_pin(app.state::<Pin>());
 
-  _set_clickthrough(value, &window, clickthrough);
+  _set_pin(value, &window, pin);
 }
 
 #[tauri::command]
-pub fn set_clickthrough(window: Window, clickthrough: State<Clickthrough>, value: bool) {
-  _set_clickthrough(value, &window, clickthrough);
+pub fn set_pin(window: Window, pin: State<Pin>, value: bool) {
+  _set_pin(value, &window, pin);
 }
 
-fn _set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthrough>) {
-  clickthrough
+fn _set_pin(value: bool, window: &Window, pin: State<Pin>) {
+  pin
     .0
     .store(value, std::sync::atomic::Ordering::Relaxed);
 
   // let the client know
-  window.emit(TRAY_TOGGLE_CLICKTHROUGH, value).unwrap();
+  window.emit(TRAY_TOGGLE_PIN, value).unwrap();
 
   // invert the label for the tray
   let tray_handle = window.app_handle().tray_handle();
   let enable_or_disable = if value { "Disable" } else { "Enable" };
   tray_handle
-    .get_item(TRAY_TOGGLE_CLICKTHROUGH)
-    .set_title(format!("{} Clickthrough", enable_or_disable));
+    .get_item(TRAY_TOGGLE_PIN)
+    .set_title(format!("{} Pin", enable_or_disable));
 
   #[cfg(target_os = "macos")]
   window.with_webview(move |webview| {

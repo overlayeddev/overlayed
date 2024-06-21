@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api";
 
 // TODO: make these configurable?
 const HIDE_TOGGLE_KEYBIND = "Command+Shift+G";
-const TOGGLE_CLICKTHROUGH_KEYBIND = "Command+Shift+H";
+const TOGGLE_PIN_KEYBIND = "Command+Shift+H";
 
 // BUG: this is happening on the settings page!!!
 // TODO: this might need some rework to be better
@@ -31,12 +31,12 @@ export const useKeybinds = () => {
 
   useEffect(() => {
     const registerKeybind = async () => {
-      if (await isRegistered(TOGGLE_CLICKTHROUGH_KEYBIND)) {
-        await unregister(TOGGLE_CLICKTHROUGH_KEYBIND);
+      if (await isRegistered(TOGGLE_PIN_KEYBIND)) {
+        await unregister(TOGGLE_PIN_KEYBIND);
       }
 
-      await register(TOGGLE_CLICKTHROUGH_KEYBIND, () => {
-        invoke("toggle_clickthrough");
+      await register(TOGGLE_PIN_KEYBIND, () => {
+        invoke("toggle_pin");
       });
     };
 

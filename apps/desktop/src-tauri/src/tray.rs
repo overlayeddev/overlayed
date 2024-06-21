@@ -3,15 +3,15 @@ use tauri::{
 };
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
-use crate::{commands::toggle_clickthrough, constants::*, Clickthrough};
+use crate::{commands::toggle_pin, constants::*, Pin};
 
 pub fn create_tray_items() -> SystemTray {
   // System tray configuration
   let tray = SystemTray::new().with_menu(
     SystemTrayMenu::new()
       .add_item(CustomMenuItem::new(
-        TRAY_TOGGLE_CLICKTHROUGH,
-        "Enable Clickthrough",
+        TRAY_TOGGLE_PIN,
+        "Enable Pin",
       ))
       .add_item(CustomMenuItem::new(TRAY_SHOW_APP, "Show Overlayed"))
       .add_item(CustomMenuItem::new(TRAY_RELOAD, "Reload App"))
@@ -33,10 +33,10 @@ pub fn create_tray_items() -> SystemTray {
 pub fn handle_tray_events(app: &AppHandle, event: SystemTrayEvent) {
   match event {
     SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-      TRAY_TOGGLE_CLICKTHROUGH => {
+      TRAY_TOGGLE_PIN => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
-        toggle_clickthrough(window, app.state::<Clickthrough>())
+        toggle_pin(window, app.state::<Pin>())
       }
       TRAY_SHOW_APP => {
         let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
