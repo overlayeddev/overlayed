@@ -58,7 +58,7 @@ export const Developer = () => {
 const canaryVersionToCommit = (version: string) => {
   const split = version.split("-");
   if (split.length > 1 && split[1]) {
-    const [,commitSha] = split[1].split(".");
+    const [, commitSha] = split[1].split(".");
 
     return commitSha;
   }
@@ -123,7 +123,7 @@ export const AppInfo = () => {
 export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [user, setUser] = useState < VoiceUser | null > (null);
+  const [user, setUser] = useState<VoiceUser | null>(null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
 
   // pull out the user data from localStorage
