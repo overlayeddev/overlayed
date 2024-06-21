@@ -43,8 +43,8 @@ export const Developer = () => {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => {
-              shell.open(platformInfo.configDir);
+            onClick={async () => {
+              await shell.open(platformInfo.configDir);
             }}
           >
             Open Config Dir

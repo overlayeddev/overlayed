@@ -29,6 +29,8 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   showOnlyTalkingUsers: false,
 };
 
+const CONFIG_FILE_NAME = "config.json";
+
 export class Config {
   private config: OverlayedConfig = DEFAULT_OVERLAYED_CONFIG;
   private configPath: string = "";
@@ -40,9 +42,9 @@ export class Config {
   load = async () => {
     if (this.loaded) return;
 
-    this.configPath = (await appConfigDir()) + "config.json";
+    this.configPath = await appConfigDir();
     try {
-      const config = await readTextFile(this.configPath);
+      const config = await readTextFile(this.configPath + "/" + CONFIG_FILE_NAME);
       this.config = JSON.parse(config);
 
       // get the new keys that don't exist in the config and merge them in
@@ -98,9 +100,9 @@ export class Config {
   }
 
   async save() {
-    // crate the config dir if it's not there
+    // create the config dir if it's not there
     try {
-      await createDir(await appConfigDir(), {
+      await createDir(this.configPath, {
         recursive: true,
       });
     } catch (err: unknown) {
@@ -108,7 +110,7 @@ export class Config {
     }
 
     await writeFile({
-      path: this.configPath,
+      path: this.configPath + CONFIG_FILE_NAME,
       contents: JSON.stringify(this.config, null, 2),
     });
   }

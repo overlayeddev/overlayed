@@ -67,7 +67,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.overlayed.app",
+      "identifier": "com.overlayed.dev",
       "icon": ["icons/normal/icon.icns", "icons/normal/icon.ico", "icons/normal/icon.png"]
     },
     "security": {

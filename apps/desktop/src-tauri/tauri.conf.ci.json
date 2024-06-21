@@ -7,7 +7,7 @@
     "bundle": {
       "active": false,
       "targets": "all",
-      "identifier": "com.overlayed.ci.app"
+      "identifier": "com.overlayed.ci.dev"
     }
   }
 }

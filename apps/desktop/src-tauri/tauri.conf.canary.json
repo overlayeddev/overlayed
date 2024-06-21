@@ -7,7 +7,7 @@
     "bundle": {
       "active": true,
       "targets": ["appimage", "nsis", "dmg"],
-      "identifier": "com.overlayed.canary.app",
+      "identifier": "com.overlayed.canary.dev",
       "icon": ["icons/canary/icon.icns", "icons/canary/icon.ico", "icons/canary/icon.png"]
     }
   }
