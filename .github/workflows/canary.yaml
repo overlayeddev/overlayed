@@ -56,7 +56,7 @@ jobs:
           - host: macos-latest
             target: universal-apple-darwin
             toolchain: aarch64-apple-darwin,x86_64-apple-darwin
-            bundles: app,dmg
+            bundles: dmg
             os: mac
           - host: windows-latest
             target: x86_64-pc-windows-msvc
