@@ -196,6 +196,11 @@ class SocketManager {
       // if its my user clear the channel
       if (payload.data.user.id === this.store.me?.id) {
         this.store.clearUsers();
+
+        // we left the channel so we need to unsub for events
+        if (this.store.currentChannel) {
+          this.channelEvents(RPCCommand.UNSUBSCRIBE, this.store.currentChannel.id);
+        }
       }
 
       this.store.removeUser(payload.data.user.id);
