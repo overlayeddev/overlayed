@@ -54,9 +54,25 @@ export const Developer = () => {
     </>
   );
 };
+
+const canaryVersionToCommit = (version: string) => {
+  const split = version.split("-");
+  if (split.length > 1 && split[1]) {
+    const [,commitSha] = split[1].split(".");
+
+    return commitSha;
+  }
+
+  return null;
+};
+
 export const AppInfo = () => {
   const platformInfo = usePlatformInfo();
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
+
+  const urlForVersion = platformInfo.canary
+    ? `https://github.com/overlayeddev/overlayed/commit/${canaryVersionToCommit(platformInfo.appVersion)}`
+    : `https://github.com/overlayeddev/overlayed/releases/tag/v${platformInfo.appVersion}`;
 
   return (
     <div>
@@ -93,7 +109,10 @@ export const AppInfo = () => {
         <span className="text-sm">/</span>
         <div>
           <p className="text-sm">
-            <strong>App</strong> {platformInfo.appVersion}
+            <strong>App</strong>{" "}
+            <a target="_blank" rel="noreferrer" href={urlForVersion}>
+              {platformInfo.appVersion}
+            </a>
           </p>
         </div>
       </div>
@@ -104,7 +123,7 @@ export const AppInfo = () => {
 export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [user, setUser] = useState<VoiceUser | null>(null);
+  const [user, setUser] = useState < VoiceUser | null > (null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
 
   // pull out the user data from localStorage
@@ -132,6 +151,7 @@ export const Account = () => {
       window.removeEventListener("storage", onStorageChange);
     };
   }, []);
+
   const avatarUrl = `https://cdn.discordapp.com/avatars/${user?.id}/${user?.avatar}.png`;
   return (
     <div>
