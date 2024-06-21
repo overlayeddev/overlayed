@@ -11,13 +11,11 @@ import { useAlign } from "./hooks/use-align";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useUpdate } from "./hooks/use-update";
 import { useAppStore } from "./store";
-import { useThemeSync } from "./hooks/use-theme-sync";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 
 function App() {
   useSocket();
-  useThemeSync();
   useDisableWebFeatures();
 
   useEffect(() => {

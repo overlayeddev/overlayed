@@ -15,7 +15,7 @@ mod window_custom;
 
 use crate::commands::*;
 use constants::*;
-use std::sync::{atomic::AtomicBool, Mutex};
+use std::sync::atomic::AtomicBool;
 use tauri::{generate_handler, Manager};
 use tauri_plugin_window_state::StateFlags;
 use tray::{create_tray_items, handle_tray_events};
@@ -25,12 +25,6 @@ use window_custom::WindowExt;
 use tauri::{App, Window};
 
 pub struct Clickthrough(AtomicBool);
-
-// play with a struct with interior mutability
-#[derive(Debug)]
-pub struct Storage {
-  theme: Mutex<ThemeType>,
-}
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(_app: &mut App, window: &Window) {
@@ -49,12 +43,9 @@ fn main() {
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-        println!("{}, {argv:?}, {cwd}", app.package_info().name);
+      println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }))
     .manage(Clickthrough(AtomicBool::new(false)))
-    .manage(Storage {
-      theme: Mutex::new(ThemeType::Dark),
-    })
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
       let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
@@ -84,16 +75,6 @@ fn main() {
         settings.open_devtools();
       }
 
-      let mode = dark_light::detect();
-      let mode_string = match mode {
-        dark_light::Mode::Dark => "dark",
-        dark_light::Mode::Light => "light",
-        _ => "dark",
-      };
-
-      // sync the theme
-      sync_theme(window, app.state::<Storage>(), mode_string.to_string());
-
       Ok(())
     })
     // Add the system tray
@@ -104,7 +85,6 @@ fn main() {
       toggle_clickthrough,
       get_clickthrough,
       set_clickthrough,
-      sync_theme,
       open_devtools,
       close_settings,
       open_settings

@@ -19,7 +19,7 @@
     },
     "systemTray": {
       "iconPath": "icons/tray/icon.png",
-      "iconAsTemplate": false
+      "iconAsTemplate": true 
     },
     "allowlist": {
       "os": {

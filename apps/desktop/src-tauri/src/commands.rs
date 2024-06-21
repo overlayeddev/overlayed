@@ -1,24 +1,6 @@
 use tauri::{Manager, State, SystemTrayHandle, Window};
 
-use crate::{constants::*, Clickthrough, Storage};
-
-#[tauri::command]
-pub fn sync_theme(window: Window, storage: State<Storage>, value: String) {
-  let mut theme = storage.theme.lock().unwrap();
-  match value.as_str() {
-    "light" => *theme = ThemeType::Light,
-    "dark" => *theme = ThemeType::Dark,
-    _ => {}
-  };
-
-  // update the tray icon
-  let app = window.app_handle();
-  let clickthrough = get_clickthrough(app.state::<Clickthrough>());
-  let tray_handle = app.tray_handle();
-  let theme = *theme;
-
-  update_tray_icon(tray_handle, theme, clickthrough);
-}
+use crate::{constants::*, Clickthrough};
 
 #[tauri::command]
 pub fn open_settings(window: Window, update: bool) {
@@ -94,27 +76,18 @@ fn _set_clickthrough(value: bool, window: &Window, clickthrough: State<Clickthro
   // update the tray icon
   update_tray_icon(
     window.app_handle().tray_handle(),
-    *window.app_handle().state::<Storage>().theme.lock().unwrap(),
     value,
   );
 }
 
-// BUG: there is a bug if you have an inverted menubar it will be dark and we still load the wrong icon
-// TODO: investigate if this is easy to do with tauri alone
-fn update_tray_icon(tray: SystemTrayHandle, theme: ThemeType, clickthrough: bool) {
-  let icon = if theme == ThemeType::Dark {
-    if clickthrough {
-      tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned.png").to_vec())
-    } else {
-      tauri::Icon::Raw(include_bytes!("../icons/tray/icon.png").to_vec())
-    }
+fn update_tray_icon(tray: SystemTrayHandle, clickthrough: bool) {
+  let icon;
+  if clickthrough {
+    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned.png").to_vec());
   } else {
-    if clickthrough {
-      tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned-dark.png").to_vec())
-    } else {
-      tauri::Icon::Raw(include_bytes!("../icons/tray/icon-dark.png").to_vec())
-    }
-  };
+    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon.png").to_vec());
+  }
 
-  tray.set_icon(icon).unwrap();
+  tray.set_icon(icon);
+
 }
