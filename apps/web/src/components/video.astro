@@ -6,4 +6,15 @@ export interface Props {
 const { src } = Astro.props;
 ---
 
-<video src={src} controls></video>
+<style>
+.video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+</style>
+
+<iframe
+  class="video"
+  id="ytplayer"
+  src={src}
+  frameborder="0"></iframe>
