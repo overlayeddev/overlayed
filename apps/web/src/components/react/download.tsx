@@ -94,11 +94,6 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
             )}
           </div>
         )}
-        {!canary && (
-          <p className="text-sm pt-3 font-bold">
-            <a href="/canary">Looking for Canary?</a>
-          </p>
-        )}
       </div>
     </div>
   );

@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/footer.astro";
+
+import discordOgImage from "../assets/blog/discord.png";
+import { DISCORD_INVITE_LINK } from "../constants";
+---
+
+<style>
+  /* TODO: move this to a shared layout?*/
+  .main-content {
+    margin: auto;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+  }
+</style>
+
+<Layout
+  title={"Overlayed - Discord"}
+  description="Join our Discord server to get help, report bugs, or just chat with the community."
+  ogImage={discordOgImage.src}
+>
+  <main class="main-content px-8 pt-28">
+    <section>
+      <div class="flex flex-col">
+        <div
+          class="flex m-auto gap-2 leading-[2.5rem] flex-col text-center items-center justify-center"
+        >
+          <img class="mb-24" src="/img/quakecon-2024.png" />
+          <p
+            class="text-zinc-400 font-bold text-[2.5rem]"
+          >
+            Hello gamers in the chat 👋
+          </p>
+        </div>
+
+        <!-- add info about the give away for a prize-->
+        <hr class="my-8 border-orange-900" />
+        <div
+          class="flex m-auto flex-col text-center items-center justify-center"
+        >
+          <p
+            class="max-w-[900px] leading-[3rem] text-center text-zinc-400 font-bold text-[2.5rem]"
+          >
+            More info coming soon!
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
