@@ -11,11 +11,11 @@
     "format": "prettier \"**/*.{ts,tsx,md,mdx,json}\" --check"
   },
   "dependencies": {
-    "@vercel/style-guide": "^4.0.2",
-    "eslint": "^9.3.0",
-    "eslint-config-turbo": "^1.13.3",
+    "@eslint/js": "^9.5.0",
+    "@typescript-eslint/parser": "^7.13.1",
+    "eslint": "^9.5.0",
+    "eslint-config-turbo": "^2.0.4",
     "tsconfig": "workspace:*",
-    "@eslint/js": "^9.3.0",
-    "typescript-eslint": "^8.0.0-alpha.14"
+    "typescript-eslint": "8.0.0-alpha.30"
   }
 }

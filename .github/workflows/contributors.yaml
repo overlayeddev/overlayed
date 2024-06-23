@@ -1,10 +1,8 @@
 name: Contributors
 
 on:
+  # make this manual as we don't need to run this every week!
   workflow_dispatch:
-  schedule:
-    # every week at Sunday
-    - cron: "0 0 * * 0"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -57,6 +55,7 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GH_TOKEN }}
+          committer: Sean Boult <996134+Hacksore@users.noreply.github.com>
           commit-message: "Update contributors"
           title: "🤖 Update contributors"
           branch: chore/update-contributors
