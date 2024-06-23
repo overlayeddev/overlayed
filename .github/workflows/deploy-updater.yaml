@@ -21,7 +21,7 @@ jobs:
       - uses: pnpm/action-setup@v3
         if: steps.changes.outputs.api == 'true' && ${{ github.event_name }}" != "workflow_dispatch"
         with:
-          version: 8
+          version: 9
       - name: Deploy
         if: steps.changes.outputs.api == 'true' && ${{ github.event_name }}" != "workflow_dispatch"
         uses: cloudflare/wrangler-action@v3
