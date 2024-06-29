@@ -1,55 +1,40 @@
-#[cfg(target_os = "macos")]
-use cocoa::appkit::{
-  NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior, NSWindowStyleMask,
-  NSWindowTitleVisibility,
-};
-
-#[cfg(target_os = "macos")]
-use cocoa::foundation::NSInteger;
-
-#[cfg(target_os = "macos")]
-use objc::runtime::YES;
-
-#[cfg(target_os = "macos")]
-use cocoa::base::id;
-
 use tauri::{Runtime, Window};
 
 #[cfg(target_os = "macos")]
-use objc::msg_send;
+mod window_custom_macos {
+  use cocoa::{
+    appkit::{
+      NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior,
+      NSWindowStyleMask, NSWindowTitleVisibility,
+    },
+    base::id,
+    foundation::NSInteger,
+  };
+  use objc::{msg_send, runtime::YES};
 
-pub trait WindowExt {
-  #[cfg(target_os = "macos")]
-  fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
-  #[cfg(target_os = "macos")]
-  fn set_visisble_on_all_workspaces(&self, enabled: bool);
-  fn set_document_title(&self, url: &str);
-}
+  pub trait WindowExtMacos {
+    fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
+    fn set_visisble_on_all_workspaces(&self, enabled: bool);
+  }
 
-impl<R: Runtime> WindowExt for Window<R> {
-  #[cfg(target_os = "macos")]
-  fn set_visisble_on_all_workspaces(&self, enabled: bool) {
-    {
+  impl<R: Runtime> WindowExtMacos for Window<R> {
+    unsafe fn set_visisble_on_all_workspaces(&self, enabled: bool) {
       const HIGHER_LEVEL_THAN_LEAGUE: NSInteger = 1001;
       let ns_win = self.ns_window().unwrap() as id;
 
-      unsafe {
-        if enabled {
-          ns_win.setLevel_(HIGHER_LEVEL_THAN_LEAGUE);
-          ns_win.setCollectionBehavior_(
-            NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces,
-          );
-        } else {
-          ns_win.setLevel_(((NSMainMenuWindowLevel - 1) as u64).try_into().unwrap());
-          ns_win
-            .setCollectionBehavior_(NSWindowCollectionBehavior::NSWindowCollectionBehaviorDefault);
-        }
+      if enabled {
+        ns_win.setLevel_(HIGHER_LEVEL_THAN_LEAGUE);
+        ns_win.setCollectionBehavior_(
+          NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces,
+        );
+      } else {
+        ns_win.setLevel_(((NSMainMenuWindowLevel - 1) as u64).try_into().unwrap());
+        ns_win
+          .setCollectionBehavior_(NSWindowCollectionBehavior::NSWindowCollectionBehaviorDefault);
       }
     }
-  }
-  #[cfg(target_os = "macos")]
-  fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
-    unsafe {
+
+    unsafe fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
       let id = self.ns_window().unwrap() as cocoa::base::id;
       NSWindow::setTitlebarAppearsTransparent_(id, cocoa::base::YES);
       let mut style_mask = id.styleMask();
@@ -85,19 +70,15 @@ impl<R: Runtime> WindowExt for Window<R> {
       });
     }
   }
+}
 
+pub trait WindowExt {
+  fn set_document_title(&self, url: &str);
+}
+
+impl<R: Runtime> WindowExt for Window<R> {
   fn set_document_title(&self, title: &str) {
-    // if in dev mode
-    #[cfg(debug_assertions)]
-    {
-      let str = format!("document.title = '{:}'", title);
-      self.eval(&str).unwrap();
-    }
-
-    #[cfg(not(debug_assertions))]
-    {
-      let str = format!("document.title = '{:}'", title);
-      self.eval(&str).unwrap();
-    }
+    let str = format!("document.title = '{:}'", title);
+    self.eval(&str).unwrap();
   }
 }
