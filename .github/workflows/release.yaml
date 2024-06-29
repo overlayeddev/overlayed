@@ -104,15 +104,6 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      # - name: setup node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 20
-      # - name: Install Rust stable
-      #   uses: dtolnay/rust-toolchain@stable
-      # - uses: Swatinem/rust-cache@v2
-      # - name: Install tauri cli
-      #   run: cargo install tauri-cli
       - name: Download draft binaries
         uses: actions/github-script@v7
         with:
@@ -146,27 +137,6 @@ jobs:
         run: |
           ls -hal binaries/signed
           sha1sum binaries/signed/*
-          # change the perms to 777
-          # chmod -R 777 binaries/signed
-      # - name: Create a nsis.zip and msi.zip
-      #   run: |
-      #     # create a signature of the binaries with tauri signer, this does not mutate the original bin
-      #     cargo tauri signer sign --password "" --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" binaries/signed/*.msi
-      #     cargo tauri signer sign --password "" --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" binaries/signed/*.exe
-      #
-      #     # zip the binaries using the name "Overlayed" and the version from the package.json
-      #     cd binaries/signed
-      #     zip -r "Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.msi.zip" *.msi
-      #     zip -r "Overlayed_${{ env.PACKAGE_VERSION }}_x64_en-US.nsis.zip" *.exe
-      #
-      #     # debug
-      #     ls -hal binaries/signed
-      #     # TODO: patch the release json to include the new sig files content for
-      #     # "windows-x86_64"
-      #   env:
-      #     TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
-      #     TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
-      #
       - name: Upload signed windows binaries
         uses: actions/github-script@v7
         with:
