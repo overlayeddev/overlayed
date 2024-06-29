@@ -1,9 +1,8 @@
 use std::{ops::Deref, sync::atomic::AtomicBool};
 
-use cocoa::appkit::NSApplicationActivationPolicy;
 use tauri::{Manager, State, SystemTrayHandle, Window};
 
-use crate::{constants::*, window_custom::set_activation_policy, Pinned};
+use crate::{constants::*, Pinned};
 
 #[tauri::command]
 pub fn open_settings(window: Window, update: bool) {
@@ -31,15 +30,6 @@ pub fn close_settings(window: Window) {
 #[tauri::command]
 pub fn get_pin(storage: State<Pinned>) -> bool {
   storage.0.load(std::sync::atomic::Ordering::Relaxed)
-}
-
-#[tauri::command]
-pub fn set_accessory_mode(state: bool) {
-  if state {
-    set_activation_policy(NSApplicationActivationPolicy::NSApplicationActivationPolicyAccessory);
-  } else {
-    set_activation_policy(NSApplicationActivationPolicy::NSApplicationActivationPolicyRegular);
-  }
 }
 
 #[tauri::command]
