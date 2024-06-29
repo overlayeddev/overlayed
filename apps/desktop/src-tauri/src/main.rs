@@ -51,6 +51,7 @@ fn main() {
       let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
 
       // the window should always be on top
+      #[cfg(not(target_os = "macos"))]
       window.set_always_on_top(true);
 
       // set the document title for the main window
