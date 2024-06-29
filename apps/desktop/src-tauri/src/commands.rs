@@ -59,7 +59,7 @@ impl Deref for Pinned {
 }
 
 fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
-  // @d0nutptr cooked here 
+  // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
   // let the client know

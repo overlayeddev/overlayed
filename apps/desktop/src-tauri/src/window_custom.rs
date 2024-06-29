@@ -83,17 +83,13 @@ impl<R: Runtime> WindowExt for Window<R> {
     #[cfg(debug_assertions)]
     {
       let str = format!("document.title = '{:}'", title);
-      self
-        .eval(&str)
-        .unwrap();
+      self.eval(&str).unwrap();
     }
 
     #[cfg(not(debug_assertions))]
     {
       let str = format!("document.title = '{:}'", title);
-      self
-        .eval(&str)
-        .unwrap();
+      self.eval(&str).unwrap();
     }
   }
 }

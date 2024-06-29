@@ -16,9 +16,9 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::atomic::AtomicBool;
-use tauri::{generate_handler, Manager};
+use tauri::{generate_handler, Manager, SystemTray};
 use tauri_plugin_window_state::StateFlags;
-use tray::{create_tray_items, handle_tray_events};
+use tray::Tray;
 use window_custom::WindowExt;
 
 #[cfg(target_os = "macos")]
@@ -75,12 +75,15 @@ fn main() {
         settings.open_devtools();
       }
 
+      // update the system tray
+      Tray::update_tray(&app.app_handle());
+
       Ok(())
     })
     // Add the system tray
-    .system_tray(create_tray_items())
+    .system_tray(SystemTray::new())
     // Handle system tray events
-    .on_system_tray_event(|app, event| handle_tray_events(app, event))
+    .on_system_tray_event(tray::Tray::handle_tray_events)
     .invoke_handler(generate_handler![
       toggle_pin,
       get_pin,
