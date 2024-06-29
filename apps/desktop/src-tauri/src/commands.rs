@@ -1,7 +1,7 @@
 use std::{ops::Deref, sync::atomic::AtomicBool};
 
 use cocoa::appkit::NSApplicationActivationPolicy;
-use tauri::{ActivationPolicy, Manager, State, SystemTrayHandle, Window};
+use tauri::{Manager, State, SystemTrayHandle, Window};
 
 use crate::{constants::*, window_custom::set_activation_policy, Pinned};
 
