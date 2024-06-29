@@ -127,7 +127,7 @@ importers:
         specifier: 0.0.1-beta.204
         version: 0.0.1-beta.204(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tauri-apps/api':
-        specifier: ^1.5.3
+        specifier: ^1.5.6
         version: 1.5.6
       class-variance-authority:
         specifier: ^0.7.0
@@ -173,7 +173,7 @@ importers:
         version: 4.5.2(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
     devDependencies:
       '@tauri-apps/cli':
-        specifier: ^1.5.11
+        specifier: ^1.5.14
         version: 1.5.14
       '@types/react':
         specifier: ^18.2.64

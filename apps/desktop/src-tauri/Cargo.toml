@@ -10,10 +10,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5", features = [] }
+tauri-build = { version = "1.5.2", features = [] }
 
 [dependencies]
-tauri = { version = "1.5", features = [
+tauri = { version = "1.6.8", features = [
   "fs-create-dir",
   "notification-all",
   "global-shortcut-all",
@@ -37,8 +37,8 @@ tauri = { version = "1.5", features = [
   "icon-png",
   "http-all",
 ] }
-serde = { version = "1.0", features = ["derive"] }
-tokio = { version = "1", features = [
+serde = { version = "1.0.203", features = ["derive"] }
+tokio = { version = "1.38.0", features = [
   "full",
 ] } # Required for asynchronous operations
 tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
