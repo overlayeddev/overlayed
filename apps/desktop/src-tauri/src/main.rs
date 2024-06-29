@@ -86,6 +86,7 @@ fn main() {
     .on_system_tray_event(tray::Tray::handle_tray_events)
     .invoke_handler(generate_handler![
       toggle_pin,
+      set_accessory_mode,
       get_pin,
       set_pin,
       open_devtools,

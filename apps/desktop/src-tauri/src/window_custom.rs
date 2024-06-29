@@ -12,6 +12,19 @@ use cocoa::base::id;
 
 use tauri::{Runtime, Window};
 
+use cocoa::appkit::{NSApplication, NSApplicationActivationPolicy};
+use cocoa::base::{nil, NO};
+use objc::{msg_send, sel, sel_impl};
+
+#[cfg(target_os = "macos")]
+pub fn set_activation_policy(policy: NSApplicationActivationPolicy) {
+  unsafe {
+    let app = NSApplication::sharedApplication(nil);
+    let _: () = msg_send![app, setActivationPolicy: policy];
+    app.activateIgnoringOtherApps_(NO);
+  }
+}
+
 pub trait WindowExt {
   #[cfg(target_os = "macos")]
   fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);

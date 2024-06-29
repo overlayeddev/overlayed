@@ -72,6 +72,15 @@ export const NavBar = ({
     <div
       className={`${opacity} cursor-move rounded-t-lg font-bold select-none bg-white dark:bg-zinc-900 pr-3 pl-3 p-2`}
     >
+      <button
+        onClick={() => {
+          invoke("set_accessory_mode", {
+            state: true,
+          });
+        }}
+      >
+        test
+      </button>
       <div data-tauri-drag-region className="flex justify-between">
         <div className="flex items-center">
           <img

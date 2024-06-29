@@ -1,8 +1,9 @@
 use std::{ops::Deref, sync::atomic::AtomicBool};
 
-use tauri::{Manager, State, SystemTrayHandle, ActivationPolicy, Window};
+use cocoa::appkit::NSApplicationActivationPolicy;
+use tauri::{ActivationPolicy, Manager, State, SystemTrayHandle, Window};
 
-use crate::{constants::*, Pinned};
+use crate::{constants::*, window_custom::set_activation_policy, Pinned};
 
 #[tauri::command]
 pub fn open_settings(window: Window, update: bool) {
@@ -32,28 +33,12 @@ pub fn get_pin(storage: State<Pinned>) -> bool {
   storage.0.load(std::sync::atomic::Ordering::Relaxed)
 }
 
-fn manually_set_activation_policy(policy: ActivationPolicy) {
-  use objc::{sel, sel_impl};
-  use tao::platform::macos::ActivationPolicy as TaoActivationPolicy;
-  let cls = objc::runtime::Class::get("NSApplication").unwrap();
-  let app: cocoa::base::id = unsafe { objc::msg_send![cls, sharedApplication] };
-  let policy: TaoActivationPolicy = match policy {
-    ActivationPolicy::Regular => TaoActivationPolicy::Regular,
-    ActivationPolicy::Accessory => TaoActivationPolicy::Accessory,
-    ActivationPolicy::Prohibited => TaoActivationPolicy::Prohibited,
-    _ => panic!("Unsupported activation policy"),
-  };
-
-  let policy: cocoa::appkit::NSApplicationActivationPolicy = policy.into();
-  unsafe { objc::msg_send![app, setActivationPolicy: policy] }
-}
-
 #[tauri::command]
 pub fn set_accessory_mode(state: bool) {
   if state {
-    manually_set_activation_policy(tauri::ActivationPolicy::Accessory);
+    set_activation_policy(NSApplicationActivationPolicy::NSApplicationActivationPolicyAccessory);
   } else {
-    manually_set_activation_policy(tauri::ActivationPolicy::Regular);
+    set_activation_policy(NSApplicationActivationPolicy::NSApplicationActivationPolicyRegular);
   }
 }
 
