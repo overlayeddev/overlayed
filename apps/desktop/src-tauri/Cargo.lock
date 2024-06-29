@@ -2472,7 +2472,6 @@ dependencies = [
  "cocoa 0.25.0",
  "objc",
  "serde",
- "tao",
  "tauri",
  "tauri-build",
  "tauri-plugin-single-instance",
