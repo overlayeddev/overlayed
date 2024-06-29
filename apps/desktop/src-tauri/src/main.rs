@@ -22,12 +22,12 @@ use tray::Tray;
 use window_custom::WindowExt;
 
 #[cfg(target_os = "macos")]
-use tauri::{App, Window};
+use tauri::Window;
 
 pub struct Pinned(AtomicBool);
 
 #[cfg(target_os = "macos")]
-fn apply_macos_specifics(_app: &mut App, window: &Window) {
+fn apply_macos_specifics(window: &Window) {
   window.set_visisble_on_all_workspaces(true);
   window.set_transparent_titlebar(true, true);
 }
@@ -51,6 +51,7 @@ fn main() {
       let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
 
       // the window should always be on top
+      #[cfg(not(target_os = "macos"))]
       window.set_always_on_top(true);
 
       // set the document title for the main window
@@ -66,7 +67,7 @@ fn main() {
 
       // add mac things
       #[cfg(target_os = "macos")]
-      apply_macos_specifics(app, &window);
+      apply_macos_specifics(&window);
 
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]

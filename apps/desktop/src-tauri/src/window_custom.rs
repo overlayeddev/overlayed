@@ -5,12 +5,18 @@ use cocoa::appkit::{
 };
 
 #[cfg(target_os = "macos")]
+use cocoa::foundation::NSInteger;
+
+#[cfg(target_os = "macos")]
 use objc::runtime::YES;
 
 #[cfg(target_os = "macos")]
 use cocoa::base::id;
 
 use tauri::{Runtime, Window};
+
+#[cfg(target_os = "macos")]
+use objc::msg_send;
 
 pub trait WindowExt {
   #[cfg(target_os = "macos")]
@@ -24,10 +30,12 @@ impl<R: Runtime> WindowExt for Window<R> {
   #[cfg(target_os = "macos")]
   fn set_visisble_on_all_workspaces(&self, enabled: bool) {
     {
+      const HIGHER_LEVEL_THAN_LEAGUE: NSInteger = 1001;
       let ns_win = self.ns_window().unwrap() as id;
+
       unsafe {
         if enabled {
-          ns_win.setLevel_(((NSMainMenuWindowLevel + 1) as u64).try_into().unwrap());
+          ns_win.setLevel_(HIGHER_LEVEL_THAN_LEAGUE);
           ns_win.setCollectionBehavior_(
             NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces,
           );
