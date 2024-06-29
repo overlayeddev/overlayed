@@ -15,18 +15,8 @@ use cocoa::base::id;
 
 use tauri::{Runtime, Window};
 
-use cocoa::appkit::{NSApplication, NSApplicationActivationPolicy};
-use cocoa::base::{nil, NO};
-use objc::{msg_send, sel, sel_impl};
-
 #[cfg(target_os = "macos")]
-pub fn set_activation_policy(policy: NSApplicationActivationPolicy) {
-  unsafe {
-    let app = NSApplication::sharedApplication(nil);
-    let _: () = msg_send![app, setActivationPolicy: policy];
-    app.activateIgnoringOtherApps_(NO);
-  }
-}
+use objc::msg_send;
 
 pub trait WindowExt {
   #[cfg(target_os = "macos")]
@@ -46,7 +36,6 @@ impl<R: Runtime> WindowExt for Window<R> {
       unsafe {
         if enabled {
           ns_win.setLevel_(HIGHER_LEVEL_THAN_LEAGUE);
-          println!("{}", ns_win.level());
           ns_win.setCollectionBehavior_(
             NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces,
           );
