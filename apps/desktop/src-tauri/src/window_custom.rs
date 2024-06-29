@@ -5,6 +5,9 @@ use cocoa::appkit::{
 };
 
 #[cfg(target_os = "macos")]
+use cocoa::foundation::NSInteger;
+
+#[cfg(target_os = "macos")]
 use objc::runtime::YES;
 
 #[cfg(target_os = "macos")]
@@ -33,26 +36,23 @@ pub trait WindowExt {
   fn set_document_title(&self, url: &str);
 }
 
+
 impl<R: Runtime> WindowExt for Window<R> {
   #[cfg(target_os = "macos")]
   fn set_visisble_on_all_workspaces(&self, enabled: bool) {
-    use cocoa::foundation::NSInteger;
-
     {
+       const HIGHER_LEVEL_THAN_LEAGUE: NSInteger = 1001;
       let ns_win = self.ns_window().unwrap() as id;
 
       unsafe {
         if enabled {
-
-          pub const kCGScreenSaverWindowLevelKey: NSInteger = 1001;
-          ns_win.setLevel_(kCGScreenSaverWindowLevelKey);
-          ns_win.makeKeyAndOrderFront_(nil);
+          ns_win.setLevel_(HIGHER_LEVEL_THAN_LEAGUE);
           println!("{}", ns_win.level());
           ns_win.setCollectionBehavior_(
             NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces,
           );
         } else {
-          ns_win.setLevel_(((9999999) as u64).try_into().unwrap());
+          ns_win.setLevel_(((NSMainMenuWindowLevel - 1) as u64).try_into().unwrap());
           ns_win
             .setCollectionBehavior_(NSWindowCollectionBehavior::NSWindowCollectionBehaviorDefault);
         }
