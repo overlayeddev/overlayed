@@ -55,6 +55,8 @@
         "all": true
       },
       "window": {
+        "unmaximize": true,
+        "maximize": true,
         "setSize": true,
         "setPosition": true,
         "startDragging": true,
