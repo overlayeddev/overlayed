@@ -36,12 +36,11 @@ pub trait WindowExt {
   fn set_document_title(&self, url: &str);
 }
 
-
 impl<R: Runtime> WindowExt for Window<R> {
   #[cfg(target_os = "macos")]
   fn set_visisble_on_all_workspaces(&self, enabled: bool) {
     {
-       const HIGHER_LEVEL_THAN_LEAGUE: NSInteger = 1001;
+      const HIGHER_LEVEL_THAN_LEAGUE: NSInteger = 1001;
       let ns_win = self.ns_window().unwrap() as id;
 
       unsafe {
