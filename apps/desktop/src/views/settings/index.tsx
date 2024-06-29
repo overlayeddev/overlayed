@@ -5,7 +5,7 @@ import { Account } from "./account";
 import { JoinHistory } from "./join-history";
 import { useState } from "react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import { SiTwitter, SiTwitch, SiDiscord, type IconType } from "@icons-pack/react-simple-icons";
+import { SiX, SiTwitch, SiDiscord, type IconType } from "@icons-pack/react-simple-icons";
 
 function Link({ icon: Icon, url }: { icon: IconType; url: string }) {
   return (
@@ -65,7 +65,7 @@ export const SettingsView = ({
             </a>
           </p>
           <div className="flex flex-grow pr-4 justify-end gap-3 ">
-            <Link icon={SiTwitter} url="https://x.com/OverlayedDev" />
+            <Link icon={SiX} url="https://x.com/OverlayedDev" />
             <Link icon={SiTwitch} url="https://twitch.tv/OverlayedDev" />
             <Link icon={SiDiscord} url="https://discord.gg/eXmeNkVjye" />
           </div>
