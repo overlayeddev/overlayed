@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef } from "react";
 import { Platforms } from "./download.js";
 import type { PlatformDownload } from "types";
-import { MacIcon, WindowsIcon, LinuxIcon } from "./icons/index.js";
+import { MacIcon, WindowsIcon, LinuxIcon } from "./icons";
 import { track } from "@vercel/analytics";
 
 type DownloadButtonParams = {

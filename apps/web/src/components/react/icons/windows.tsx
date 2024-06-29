@@ -1,4 +1,4 @@
-export default function ({ className }: { className?: string }) {
+function Windows({ className }: { className?: string }) {
   return (
     <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -8,3 +8,5 @@ export default function ({ className }: { className?: string }) {
     </svg>
   );
 }
+
+export { Windows };
