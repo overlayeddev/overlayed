@@ -1,6 +1,5 @@
 #[cfg(target_os = "macos")]
 pub mod macos {
-  use tauri::{Runtime, Window};
   use cocoa::{
     appkit::{
       NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior,
@@ -10,6 +9,7 @@ pub mod macos {
     foundation::NSInteger,
   };
   use objc::{msg_send, runtime::YES};
+  use tauri::{Runtime, Window};
 
   pub trait WindowExtMacos {
     fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
