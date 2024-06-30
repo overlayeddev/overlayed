@@ -37,6 +37,12 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            desktop:
+              - 'apps/desktop/**'
       - name: Install Rust stable
         if: steps.changes.outputs.desktop == 'true'
         uses: dtolnay/rust-toolchain@stable
@@ -47,6 +53,7 @@ jobs:
         with:
           workspaces: "apps/desktop/src-tauri/target"
       - name: Cargo format
+        if: steps.changes.outputs.desktop == 'true'
         run: cargo fmt --check
 
   build-tauri:
