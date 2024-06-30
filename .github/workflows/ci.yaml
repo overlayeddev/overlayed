@@ -33,6 +33,22 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+  cargo-fmt:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust stable
+        if: steps.changes.outputs.desktop == 'true'
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          target: "${{ matrix.settings.toolchain }}"
+      - uses: Swatinem/rust-cache@v2
+        if: steps.changes.outputs.desktop == 'true'
+        with:
+          workspaces: "apps/desktop/src-tauri/target"
+      - name: Cargo format
+        run: cargo fmt --check
+
   build-tauri:
     name: Build (${{ matrix.settings.os }})
     strategy:
