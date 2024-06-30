@@ -22,6 +22,9 @@ use tray::Tray;
 use window_custom::WindowExt;
 
 #[cfg(target_os = "macos")]
+use window_custom::macos::WindowExtMacos;
+
+#[cfg(target_os = "macos")]
 use tauri::Window;
 
 pub struct Pinned(AtomicBool);
