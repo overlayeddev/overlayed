@@ -1,6 +1,7 @@
 ---
 import { AstroFont } from "astro-font";
 import { SITE_IMAGE } from "../constants";
+import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
   title: string;
@@ -108,4 +109,6 @@ const activeCanonicalUrl = canonicalPath
       },
     ]}
   />
+
+  <ViewTransitions />
 </head>
