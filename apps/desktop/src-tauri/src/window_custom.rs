@@ -1,7 +1,7 @@
 use tauri::{Runtime, Window};
 
 #[cfg(target_os = "macos")]
-mod window_custom_macos {
+mod macos {
   use tauri::{Runtime, Window};
   use cocoa::{
     appkit::{
