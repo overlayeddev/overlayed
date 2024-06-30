@@ -2,6 +2,7 @@ use tauri::{Runtime, Window};
 
 #[cfg(target_os = "macos")]
 mod window_custom_macos {
+  use tauri::{Runtime, Window};
   use cocoa::{
     appkit::{
       NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior,
