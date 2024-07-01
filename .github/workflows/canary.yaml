@@ -47,8 +47,6 @@ jobs:
         run: pnpm lint
   build-tauri:
     name: Build (${{ matrix.settings.os }})
-    permissions:
-      actions: "write"
     strategy:
       fail-fast: false
       matrix:
@@ -74,18 +72,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.branch }}
-      - uses: dorny/paths-filter@v3
-        id: changes
-        with:
-          filters: |
-            desktop:
-              - 'apps/desktop/**'
-      - name: Detect desktop changes
-        run: |
-          gh run cancel ${{ github.run_id }}
-          gh run watch ${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Setup node
         uses: actions/setup-node@v4
         with:
