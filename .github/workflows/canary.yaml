@@ -47,6 +47,8 @@ jobs:
         run: pnpm lint
   build-tauri:
     name: Build (${{ matrix.settings.os }})
+    permissions:
+      actions: "write"
     strategy:
       fail-fast: false
       matrix:
