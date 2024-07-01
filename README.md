@@ -15,7 +15,13 @@ A modern, open-source, and free voice chat overlay for Discord that supports Mac
 
 ### Installation
 
-#### Homebrew
+#### Windows - Winget
+
+```
+winget install OverlayedDev.Overlayed
+```
+
+#### MacOS - Homebrew
 
 ```
 brew install overlayed
