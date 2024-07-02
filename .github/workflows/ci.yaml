@@ -55,6 +55,7 @@ jobs:
       - name: Cargo format
         if: steps.changes.outputs.desktop == 'true'
         run: cargo fmt --check
+        working-directory: apps/desktop/src-tauri
 
   build-tauri:
     name: Build (${{ matrix.settings.os }})
