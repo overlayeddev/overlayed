@@ -16,6 +16,7 @@ import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
 import { getVersion } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
+import { invoke } from "@tauri-apps/api";
 
 interface TokenResponse {
   access_token: string;
@@ -121,6 +122,8 @@ class SocketManager {
       console.log(e);
       this.isConnected = false;
       this.navigate("/error");
+
+      await this.unpin();
     }
 
     // subscribe to local storage events to see if we need to move the user to the auth page
@@ -161,6 +164,14 @@ class SocketManager {
     });
   }
 
+  // TODO: this could live as a generic util and not on this class if we ever need it elsewhere
+  private async unpin() {
+    // unpin the overlay if there is an error
+    return invoke("set_pin", {
+      value: false,
+    });
+  }
+
   /**
    * Message listener when we get message from discord
    * @param payload a JSON object of the parsed message
@@ -170,6 +181,8 @@ class SocketManager {
     // and not have to check the raw dawg string to see if something is wrong
     if (typeof event === "string" && (event as string).includes("Connection reset without closing handshake")) {
       this.navigate("/error");
+
+      await this.unpin();
     }
 
     // TODO: does this ever happen?
@@ -298,6 +311,7 @@ class SocketManager {
       }
 
       this.store.pushError(payload.data.message);
+
       // move to the error page
       this.navigate("/error");
 
