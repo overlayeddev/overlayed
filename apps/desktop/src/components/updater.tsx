@@ -54,11 +54,13 @@ export const Updater = ({
         </DialogTrigger>
         <DialogContent className="w-[80%]">
           <form
-            onSubmit={async () => {
-              // TODO:
-              console.log("installing update");
+            onSubmit={async e => {
+              e.preventDefault();
+              console.log("starting update...");
               try {
+                console.log("installing update...");
                 await installUpdate();
+                console.log("restarting app...");
                 await relaunch();
               } catch (e) {
                 console.error(e);
