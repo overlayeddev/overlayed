@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useSetWindowSize } from "../hooks/use-set-size";
 import { useAppStore } from "../store";
+import { exit } from "@tauri-apps/api/process";
 
 export const ErrorView = () => {
   useSetWindowSize({ width: 400, height: 600 });
@@ -26,10 +27,18 @@ export const ErrorView = () => {
           <p className="py-8">Please try restarting discord then try again</p>
         </div>
       )}
-      <div className="pt-8 text-2xl flex items-center justify-center">
+      <div className="pt-8 text-2xl flex flex-col gap-4 items-center justify-center">
         <Link to="/">
-          <Button>Login to Discord</Button>
+          <Button>Connect to Discord</Button>
         </Link>
+        <Button
+          variant="ghost"
+          onClick={async () => {
+            await exit();
+          }}
+        >
+          Quit Overlayed
+        </Button>
       </div>
     </div>
   );
