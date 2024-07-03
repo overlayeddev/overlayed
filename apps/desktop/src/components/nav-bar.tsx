@@ -119,7 +119,7 @@ export const NavBar = ({
               <Pin
                 size={20}
                 onClick={async () => {
-                  invoke("toggle_pin");
+                  await invoke("toggle_pin");
                   await Config.set("pin", !pin);
                   navigate("/channel");
                 }}
