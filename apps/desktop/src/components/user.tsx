@@ -2,11 +2,16 @@ import type { DirectionLR } from "@/config";
 import type { OverlayedUser } from "../types";
 import { HeadphonesOff } from "./icons/headphones-off";
 import { MicOff } from "./icons/mic-off";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirection: DirectionLR }) => {
   const { id, selfMuted, selfDeafened, talking, muted, deafened, avatarHash } = item;
+  const hasReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
-  const avatarUrl = avatarHash ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.jpg` : "/img/default.png";
+  const avatarExt = avatarHash.startsWith("a_") && !hasReducedMotion ? "gif" : "jpg";
+  const avatarUrl = avatarHash
+    ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.${avatarExt}`
+    : "/img/default.png";
 
   const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted || muted ? "text-zinc-400" : "";
