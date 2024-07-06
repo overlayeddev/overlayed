@@ -33,7 +33,7 @@ pub struct Pinned(AtomicBool);
 fn apply_macos_specifics(window: &Window) {
   window.set_transparent_titlebar(true, true);
 
-  window.set_float_panel();
+  window.set_float_panel(constants::HIGHER_LEVEL_THAN_LEAGUE);
 }
 
 fn main() {

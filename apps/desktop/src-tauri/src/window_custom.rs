@@ -1,7 +1,7 @@
 #[cfg(target_os = "macos")]
 pub mod macos {
   use cocoa::appkit::{
-    NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior, NSWindowStyleMask,
+    NSWindow, NSWindowButton, NSWindowCollectionBehavior, NSWindowStyleMask,
     NSWindowTitleVisibility,
   };
   use objc::{msg_send, runtime::YES};
@@ -10,7 +10,7 @@ pub mod macos {
 
   pub trait WindowExtMacos {
     fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
-    fn set_float_panel(&self);
+    fn set_float_panel(&self, level: i32);
   }
 
   impl<R: Runtime> WindowExtMacos for Window<R> {
@@ -52,10 +52,10 @@ pub mod macos {
       }
     }
 
-    fn set_float_panel(&self) {
+    fn set_float_panel(&self, level: i32) {
       let panel = self.to_panel().unwrap();
 
-      panel.set_level(NSMainMenuWindowLevel + 1);
+      panel.set_level(level);
 
       #[allow(non_upper_case_globals)]
       const NSWindowStyleMaskNonActivatingPanel: i32 = 1 << 7;
