@@ -89,9 +89,9 @@ fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
 fn update_tray_icon(tray: SystemTrayHandle, pinned: bool) {
   let icon;
   if pinned {
-    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned.png").to_vec());
+    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned.ico").to_vec());
   } else {
-    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon.png").to_vec());
+    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon.ico").to_vec());
   }
 
   tray.set_icon(icon);
