@@ -46,6 +46,7 @@ tokio = { version = "1.38.0", features = [
 tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v1" }
 anyhow = "1.0.86"
 
 # macos dependencies

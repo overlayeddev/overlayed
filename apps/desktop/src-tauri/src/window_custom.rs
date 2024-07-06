@@ -1,40 +1,19 @@
 #[cfg(target_os = "macos")]
 pub mod macos {
-  use cocoa::{
-    appkit::{
-      NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior,
-      NSWindowStyleMask, NSWindowTitleVisibility,
-    },
-    base::id,
-    foundation::NSInteger,
+  use cocoa::appkit::{
+    NSMainMenuWindowLevel, NSWindow, NSWindowButton, NSWindowCollectionBehavior, NSWindowStyleMask,
+    NSWindowTitleVisibility,
   };
   use objc::{msg_send, runtime::YES};
   use tauri::{Runtime, Window};
+  use tauri_nspanel::WindowExt;
 
   pub trait WindowExtMacos {
     fn set_transparent_titlebar(&self, title_transparent: bool, remove_toolbar: bool);
-    fn set_visisble_on_all_workspaces(&self, enabled: bool);
+    fn set_float_panel(&self);
   }
 
   impl<R: Runtime> WindowExtMacos for Window<R> {
-    fn set_visisble_on_all_workspaces(&self, enabled: bool) {
-      const HIGHER_LEVEL_THAN_LEAGUE: NSInteger = 1001;
-      unsafe {
-        let ns_win = self.ns_window().unwrap() as id;
-
-        if enabled {
-          ns_win.setLevel_(HIGHER_LEVEL_THAN_LEAGUE);
-          ns_win.setCollectionBehavior_(
-            NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces,
-          );
-        } else {
-          ns_win.setLevel_(((NSMainMenuWindowLevel - 1) as u64).try_into().unwrap());
-          ns_win
-            .setCollectionBehavior_(NSWindowCollectionBehavior::NSWindowCollectionBehaviorDefault);
-        }
-      }
-    }
-
     fn set_transparent_titlebar(&self, title_transparent: bool, remove_tool_bar: bool) {
       unsafe {
         let id = self.ns_window().unwrap() as cocoa::base::id;
@@ -71,6 +50,23 @@ pub mod macos {
           cocoa::base::NO
         });
       }
+    }
+
+    fn set_float_panel(&self) {
+      let panel = self.to_panel().unwrap();
+
+      panel.set_level(NSMainMenuWindowLevel + 1);
+
+      #[allow(non_upper_case_globals)]
+      const NSWindowStyleMaskNonActivatingPanel: i32 = 1 << 7;
+
+      panel.set_style_mask(NSWindowStyleMaskNonActivatingPanel);
+
+      panel.set_collection_behaviour(
+        NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces
+          | NSWindowCollectionBehavior::NSWindowCollectionBehaviorStationary
+          | NSWindowCollectionBehavior::NSWindowCollectionBehaviorFullScreenAuxiliary,
+      );
     }
   }
 }
