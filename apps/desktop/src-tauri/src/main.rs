@@ -31,8 +31,9 @@ pub struct Pinned(AtomicBool);
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(window: &Window) {
-  window.set_visisble_on_all_workspaces(true);
   window.set_transparent_titlebar(true, true);
+
+  window.set_float_panel(constants::HIGHER_LEVEL_THAN_LEAGUE);
 }
 
 fn main() {
@@ -41,13 +42,21 @@ fn main() {
   flags.remove(StateFlags::VISIBLE);
 
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
-  let app = tauri::Builder::default()
+
+  let mut app = tauri::Builder::default()
     // TODO: this should work on windows
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
-    }))
+    }));
+
+  #[cfg(target_os = "macos")]
+  {
+    app = app.plugin(tauri_nspanel::init());
+  }
+
+  app = app
     .manage(Pinned(AtomicBool::new(false)))
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
@@ -95,24 +104,25 @@ fn main() {
       open_devtools,
       close_settings,
       open_settings
-    ])
-    .build(tauri::generate_context!())
-    .expect("An error occured while running the app!");
+    ]);
 
-  app.run(|app, event| match event {
-    tauri::RunEvent::WindowEvent {
-      label,
-      event: win_event,
-      ..
-    } => match win_event {
-      // NOTE: prevent destroying the window
-      tauri::WindowEvent::CloseRequested { api, .. } => {
-        let win = app.get_window(label.as_str()).unwrap();
-        win.hide().unwrap();
-        api.prevent_close();
-      }
+  app
+    .build(tauri::generate_context!())
+    .expect("An error occured while running the app!")
+    .run(|app, event| match event {
+      tauri::RunEvent::WindowEvent {
+        label,
+        event: win_event,
+        ..
+      } => match win_event {
+        // NOTE: prevent destroying the window
+        tauri::WindowEvent::CloseRequested { api, .. } => {
+          let win = app.get_window(label.as_str()).unwrap();
+          win.hide().unwrap();
+          api.prevent_close();
+        }
+        _ => {}
+      },
       _ => {}
-    },
-    _ => {}
-  })
+    });
 }

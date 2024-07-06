@@ -2474,6 +2474,7 @@ dependencies = [
  "serde",
  "tauri",
  "tauri-build",
+ "tauri-nspanel",
  "tauri-plugin-single-instance",
  "tauri-plugin-websocket",
  "tauri-plugin-window-state",
@@ -3818,6 +3819,22 @@ dependencies = [
  "syn 1.0.109",
  "tauri-codegen",
  "tauri-utils",
+]
+
+[[package]]
+name = "tauri-nspanel"
+version = "0.0.0"
+source = "git+https://github.com/ahkohd/tauri-nspanel?branch=v1#9bf268429c8b0bebff0f5e63a18ab51b90c728de"
+dependencies = [
+ "bitflags 2.6.0",
+ "block",
+ "cocoa 0.25.0",
+ "core-foundation",
+ "core-graphics 0.23.2",
+ "objc",
+ "objc-foundation",
+ "objc_id",
+ "tauri",
 ]
 
 [[package]]
