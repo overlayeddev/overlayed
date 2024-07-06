@@ -18,7 +18,7 @@
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM5MDVDNEVFQTc2QzJBNDYKUldSR0tteW43c1FGeVhzUm9vNEJKUkFyUXhSS2lrZWRuV1p1VWx5Tkg5bUhEWDZrOGprbGNnWkQK"
     },
     "systemTray": {
-      "iconPath": "icons/tray/icon.png",
+      "iconPath": "icons/tray/icon.ico",
       "iconAsTemplate": true
     },
     "allowlist": {
