@@ -67,7 +67,6 @@ pub mod macos {
 
       panel.set_collection_behaviour(
         NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces
-          | NSWindowCollectionBehavior::NSWindowCollectionBehaviorStationary
           | NSWindowCollectionBehavior::NSWindowCollectionBehaviorFullScreenAuxiliary,
       );
     }
