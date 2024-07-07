@@ -60,7 +60,10 @@ pub mod macos {
       #[allow(non_upper_case_globals)]
       const NSWindowStyleMaskNonActivatingPanel: i32 = 1 << 7;
 
-      panel.set_style_mask(NSWindowStyleMaskNonActivatingPanel);
+      #[allow(non_upper_case_globals)]
+      const NSResizableWindowMask: i32 = 1 << 3;
+
+      panel.set_style_mask(NSWindowStyleMaskNonActivatingPanel + NSResizableWindowMask);
 
       panel.set_collection_behaviour(
         NSWindowCollectionBehavior::NSWindowCollectionBehaviorCanJoinAllSpaces
