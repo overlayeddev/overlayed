@@ -82,6 +82,7 @@
         "resizable": true,
         "transparent": true,
         "decorations": false,
+        "label": "main",
         "title": "Overlayed - Main",
         "width": 420,
         "height": 600,
