@@ -40,6 +40,7 @@ router.post("/", async (request, env) => {
 		request,
 		env,
 	);
+
 	if (!isValid || !interaction) {
 		return new Response("Bad request signature.", { status: 401 });
 	}
@@ -75,6 +76,7 @@ async function verifyDiscordRequest(request: any, env: any) {
 		signature &&
 		timestamp &&
 		(await verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY));
+
 	if (!isValidRequest) {
 		return { isValid: false };
 	}
