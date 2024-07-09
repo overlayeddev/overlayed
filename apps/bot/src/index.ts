@@ -5,23 +5,23 @@
 
 import { AutoRouter } from "itty-router";
 import {
-  InteractionResponseType,
-  InteractionType,
-  verifyKey,
+	InteractionResponseType,
+	InteractionType,
+	verifyKey,
 } from "discord-interactions";
 import { FEEDBACK, INSTALL, UNINSTALL } from "./commands.js";
 
 class JsonResponse extends Response {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(body: any, init?: any) {
-    const jsonBody = JSON.stringify(body);
-    init = init || {
-      headers: {
-        "content-type": "application/json;charset=UTF-8",
-      },
-    };
-    super(jsonBody, init);
-  }
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	constructor(body: any, init?: any) {
+		const jsonBody = JSON.stringify(body);
+		init = init || {
+			headers: {
+				"content-type": "application/json;charset=UTF-8",
+			},
+		};
+		super(jsonBody, init);
+	}
 }
 
 const router = AutoRouter();
@@ -30,7 +30,7 @@ const router = AutoRouter();
  * A simple :wave: hello page to verify the worker is working.
  */
 router.get("/", (request, env) => {
-  return new Response(`👋 ${env.DISCORD_APPLICATION_ID}`);
+	return new Response(`👋 ${env.DISCORD_APPLICATION_ID}`);
 });
 
 /**
@@ -39,85 +39,86 @@ router.get("/", (request, env) => {
  * https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object
  */
 router.post("/", async (request, env) => {
-  const { isValid, interaction } = await server.verifyDiscordRequest(
-    request,
-    env,
-  );
+	const { isValid, interaction } = await server.verifyDiscordRequest(
+		request,
+		env,
+	);
 
-  if (!isValid || !interaction) {
-    return new Response("Bad request signature.", { status: 401 });
-  }
+	if (!isValid || !interaction) {
+		return new Response("Bad request signature.", { status: 401 });
+	}
 
-  if (interaction.type === InteractionType.PING) {
-    // The `PING` message is used during the initial webhook handshake, and is
-    // required to configure the webhook in the developer portal.
-    return new JsonResponse({
-      type: InteractionResponseType.PONG,
-    });
-  }
+	if (interaction.type === InteractionType.PING) {
+		// The `PING` message is used during the initial webhook handshake, and is
+		// required to configure the webhook in the developer portal.
+		return new JsonResponse({
+			type: InteractionResponseType.PONG,
+		});
+	}
 
-  if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-    // Most user commands will come as `APPLICATION_COMMAND`.
-    if (interaction.data.name.toLowerCase() === INSTALL.name.toLowerCase()) {
-      return new JsonResponse({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content:
-            "Install the desktop client by visiting https://overlayed.dev",
-        },
-      });
-    }
-    if (interaction.data.name.toLowerCase() === UNINSTALL.name.toLowerCase()) {
-      return new JsonResponse({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: "We do not support uninstalling the desktop client. :wink:",
-        },
-      });
-    }
-    if (interaction.data.name.toLowerCase() === FEEDBACK.name.toLowerCase()) {
-      return new JsonResponse({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: "Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
-        },
-      });
-    }
+	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+		// Most user commands will come as `APPLICATION_COMMAND`.
+		if (interaction.data.name.toLowerCase() === INSTALL.name.toLowerCase()) {
+			return new JsonResponse({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content:
+						"Install the desktop client by visiting https://overlayed.dev",
+				},
+			});
+		}
+		if (interaction.data.name.toLowerCase() === UNINSTALL.name.toLowerCase()) {
+			return new JsonResponse({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content: "We do not support uninstalling the desktop client. :wink:",
+				},
+			});
+		}
+		if (interaction.data.name.toLowerCase() === FEEDBACK.name.toLowerCase()) {
+			return new JsonResponse({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content:
+						"Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
+				},
+			});
+		}
 
-    return new JsonResponse({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: "Sorry, I don't know that command.",
-      },
-    });
-  }
+		return new JsonResponse({
+			type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+			data: {
+				content: "Sorry, I don't know that command.",
+			},
+		});
+	}
 
-  console.error("Unknown Type");
-  return new JsonResponse({ error: "Unknown Type" }, { status: 400 });
+	console.error("Unknown Type");
+	return new JsonResponse({ error: "Unknown Type" }, { status: 400 });
 });
 
 router.all("*", () => new Response("Not Found.", { status: 404 }));
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function verifyDiscordRequest(request: any, env: any) {
-  const signature = request.headers.get("x-signature-ed25519");
-  const timestamp = request.headers.get("x-signature-timestamp");
-  const body = await request.text();
-  const isValidRequest =
-    signature &&
-    timestamp &&
-    (await verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY));
+	const signature = request.headers.get("x-signature-ed25519");
+	const timestamp = request.headers.get("x-signature-timestamp");
+	const body = await request.text();
+	const isValidRequest =
+		signature &&
+		timestamp &&
+		(await verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY));
 
-  if (!isValidRequest) {
-    return { isValid: false };
-  }
+	if (!isValidRequest) {
+		return { isValid: false };
+	}
 
-  return { interaction: JSON.parse(body), isValid: true };
+	return { interaction: JSON.parse(body), isValid: true };
 }
 
 const server = {
-  verifyDiscordRequest,
-  fetch: router.fetch,
+	verifyDiscordRequest,
+	fetch: router.fetch,
 };
 
 export default server;
