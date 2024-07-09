@@ -22,6 +22,7 @@ const underlineClass = underline
   : "";
 ---
 
+<!-- prettier-ignore -->
 <a
   class={cn(
     `underline-offset-4 ${underlineClass} hover:text-gray-300 ease-in-out duration-300 transition-all`,
@@ -30,6 +31,4 @@ const underlineClass = underline
   title={title}
   href={to}
   target={target}
->
-  <slot />
-</a>
+><slot /></a>
