@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 
 import discordOgImage from "../assets/blog/discord.png";
-import { DISCORD_INVITE_LINK } from "../constants";
+import Link from "../components/link.astro";
 ---
 
 <style>
@@ -22,25 +22,29 @@ import { DISCORD_INVITE_LINK } from "../constants";
 >
   <main class="main-content px-8 pt-28">
     <section>
-      <div class="flex flex-col">
+      <div class="flex flex-col text-center">
         <div
-          class="flex m-auto gap-2 leading-[2.5rem] flex-col text-center items-center justify-center"
+          class="flex m-auto gap-2 flex-col text-[2.5rem] items-center justify-center"
         >
-          <img class="mb-24" src="/img/quakecon-2024.png" />
-          <p class="text-zinc-400 font-bold text-[2.5rem]">
-            Hello gamers in the chat 👋
+          <img class="mb-8" src="/img/quakecon-logo.png" />
+          <p class="mb-12 font-bold text-[4rem]">👋 Gamers in the chat 🕹️</p>
+          <p class="text-zinc-400 font-bold">
+            Overlayed gives you a movable overlay for Discord voice chat.
           </p>
-        </div>
+          <p class="text-zinc-400 font-bold">
+            See the <Link to="/about" title="about page" underline>
+              about page
+            </Link> to learn more.
+          </p>
 
-        <!-- add info about the give away for a prize-->
-        <hr class="my-8 border-orange-900" />
-        <div
-          class="flex m-auto flex-col text-center items-center justify-center"
-        >
-          <p
-            class="max-w-[900px] leading-[3rem] text-center text-zinc-400 font-bold text-[2.5rem]"
-          >
-            More info coming soon!
+          <p class="text-zinc-400 mt-12 font-bold">
+            🎁 Don't forget to join the <Link
+              to="/discord"
+              title="Discord server"
+              underline
+            >
+              Discord
+            </Link> to learn about the giveaway!
           </p>
         </div>
       </div>
