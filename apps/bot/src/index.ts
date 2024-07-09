@@ -9,7 +9,7 @@ import {
 	InteractionType,
 	verifyKey,
 } from "discord-interactions";
-import { INSTALL } from "./commands.js";
+import { FEEDBACK, INSTALL } from "./commands.js";
 
 class JsonResponse extends Response {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,6 +64,15 @@ router.post("/", async (request, env) => {
 				data: {
 					content:
 						"Install the desktop client by visiting https://overlayed.dev",
+				},
+			});
+		}
+		if (interaction.data.name.toLowerCase() === FEEDBACK.name.toLowerCase()) {
+			return new JsonResponse({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content:
+						"Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
 				},
 			});
 		}
