@@ -9,7 +9,7 @@ import {
   InteractionType,
   verifyKey,
 } from "discord-interactions";
-import { INSTALL, UNINSTALL } from "./commands.js";
+import { FEEDBACK, INSTALL, UNINSTALL } from "./commands.js";
 
 class JsonResponse extends Response {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,6 +72,14 @@ router.post("/", async (request, env) => {
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: "We do not support uninstalling the desktop client. :wink:",
+        },
+      });
+    }
+    if (interaction.data.name.toLowerCase() === FEEDBACK.name.toLowerCase()) {
+      return new JsonResponse({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
         },
       });
     }
