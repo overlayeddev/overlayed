@@ -8,7 +8,7 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
   const { id, selfMuted, selfDeafened, talking, muted, deafened, avatarHash } = item;
   const hasReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
-  const avatarExt = avatarHash.startsWith("a_") && !hasReducedMotion ? "gif" : "jpg";
+  const avatarExt = avatarHash.startsWith("a_") && !hasReducedMotion && talking ? "gif" : "jpg";
   const avatarUrl = avatarHash
     ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.${avatarExt}`
     : "/img/default.png";
