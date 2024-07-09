@@ -1,3 +1,4 @@
+// NOTE: this is from https://github.com/discord/cloudflare-sample-app/tree/main
 /**
  * The core server that runs on a Cloudflare worker.
  */
@@ -8,8 +9,10 @@ import {
 	InteractionType,
 	verifyKey,
 } from "discord-interactions";
+import { INSTALL } from "./commands.js";
 
 class JsonResponse extends Response {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	constructor(body: any, init?: any) {
 		const jsonBody = JSON.stringify(body);
 		init = init || {
@@ -55,10 +58,20 @@ router.post("/", async (request, env) => {
 
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
 		// Most user commands will come as `APPLICATION_COMMAND`.
+		if (interaction.data.name.toLowerCase() === INSTALL.name.toLowerCase()) {
+			return new JsonResponse({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content:
+						"Install the desktop client by visiting https://overlayed.dev",
+				},
+			});
+		}
+
 		return new JsonResponse({
 			type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 			data: {
-				content: "hi",
+				content: "Sorry, I don't know that command.",
 			},
 		});
 	}
@@ -66,8 +79,10 @@ router.post("/", async (request, env) => {
 	console.error("Unknown Type");
 	return new JsonResponse({ error: "Unknown Type" }, { status: 400 });
 });
+
 router.all("*", () => new Response("Not Found.", { status: 404 }));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function verifyDiscordRequest(request: any, env: any) {
 	const signature = request.headers.get("x-signature-ed25519");
 	const timestamp = request.headers.get("x-signature-timestamp");

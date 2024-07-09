@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import process from "node:process";
-import { HELLO_WORLD } from "./commands.js";
+import { INSTALL } from "./commands.js";
 
 /**
  * This file is meant to be run from the command line, and is not used by the
@@ -34,7 +34,7 @@ const response = await fetch(url, {
 		Authorization: `Bot ${token}`,
 	},
 	method: "PUT",
-	body: JSON.stringify([HELLO_WORLD]),
+	body: JSON.stringify([INSTALL]),
 });
 
 if (response.ok) {
