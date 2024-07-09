@@ -82,6 +82,34 @@ importers:
         specifier: ^3.57.1
         version: 3.60.0(@cloudflare/workers-types@4.20240605.0)
 
+  apps/bot:
+    dependencies:
+      discord-interactions:
+        specifier: ^4.0.0
+        version: 4.0.0
+      itty-router:
+        specifier: ^5.0.17
+        version: 5.0.17
+    devDependencies:
+      '@cloudflare/workers-types':
+        specifier: ^4.20240512.0
+        version: 4.20240605.0
+      lint:
+        specifier: workspace:*
+        version: link:../../tooling/config-eslint
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../tooling/config-typescript
+      tsx:
+        specifier: ^4.7.1
+        version: 4.14.1
+      types:
+        specifier: workspace:*
+        version: link:../../packages/types
+      wrangler:
+        specifier: ^3.57.1
+        version: 3.60.0(@cloudflare/workers-types@4.20240605.0)
+
   apps/desktop:
     dependencies:
       '@axiomhq/js':
@@ -161,10 +189,10 @@ importers:
         version: 1.0.7(tailwindcss@3.4.4)
       tauri-plugin-websocket-api:
         specifier: github:tauri-apps/tauri-plugin-websocket#v1
-        version: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/b8e7d6180d6aa6d262c91616b07f464e42fa88ea
+        version: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026
       tauri-plugin-window-state-api:
         specifier: github:tauri-apps/tauri-plugin-window-state#v1
-        version: https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/83324932be7d2bf0cc68202bacf5427d9270dcbd
+        version: https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/1abc39dce68e3da8377230b83b7792cd4c86c50a
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -2591,6 +2619,10 @@ packages:
     resolution: {integrity: sha512-LH5ToovAHnDVe5Qa9f/+jW28I6DeMhos8bNDtBOmmnaDpPmJmYLyHdeDblAWWWYc7KKRDg9/66vMuKyq0WIeFA==}
     engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
 
+  '@tauri-apps/api@1.6.0':
+    resolution: {integrity: sha512-rqI++FWClU5I2UBp4HXFvl+sBWkdigBkxnpJDQUWttNyG7IZP4FwQGhTNL5EOw0vI8i6eSAJ5frLqO7n7jbJdg==}
+    engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+
   '@tauri-apps/cli-darwin-arm64@1.5.14':
     resolution: {integrity: sha512-lxoSOp3KKSqzHJa7iT32dukPGMlfsTuja1xXSgwR8o/fqzpYJY7FY/3ZxesP8HR66FcK+vtqa//HNqeOQ0mHkA==}
     engines: {node: '>= 10'}
@@ -3326,6 +3358,10 @@ packages:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
 
+  discord-interactions@4.0.0:
+    resolution: {integrity: sha512-27HSJ379W9E4T6Or+efQRGnekJ6g8kYokSFtK5HKc/3ObC+83O+vxdg2trStD/2XPIHVPMNVIoZAeK9s/EL8Yg==}
+    engines: {node: '>=18.4.0'}
+
   dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
 
@@ -3908,6 +3944,9 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  itty-router@5.0.17:
+    resolution: {integrity: sha512-ZHnPI0OOyTTLuNp2FdciejYaK4Wl3ZV3O0yEm8njOGggh/k/ek3BL7X2I5YsCOfc5vLhIJgj3Z4pUtLs6k9Ucg==}
 
   jackspeak@3.4.0:
     resolution: {integrity: sha512-JVYhQnN59LVPFCEcVa2C3CrEKYacvjRfqIQl+h8oi91aLYQVWRYbxjPcv1bUiUy/kLmQaANrYfNMCO3kuEDHfw==}
@@ -5114,12 +5153,12 @@ packages:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
 
-  tauri-plugin-websocket-api@https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/b8e7d6180d6aa6d262c91616b07f464e42fa88ea:
-    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/b8e7d6180d6aa6d262c91616b07f464e42fa88ea}
+  tauri-plugin-websocket-api@https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026}
     version: 0.0.0
 
-  tauri-plugin-window-state-api@https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/83324932be7d2bf0cc68202bacf5427d9270dcbd:
-    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/83324932be7d2bf0cc68202bacf5427d9270dcbd}
+  tauri-plugin-window-state-api@https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/1abc39dce68e3da8377230b83b7792cd4c86c50a:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/1abc39dce68e3da8377230b83b7792cd4c86c50a}
     version: 0.0.0
 
   terser@5.31.1:
@@ -5580,6 +5619,7 @@ packages:
   wrangler@3.60.0:
     resolution: {integrity: sha512-8lW4E7VAhCVXy7AV7Vom2BsyjekIt15Aa8jnBLsfE2CxalzWQzx49BK25hOYhjHQT4GqBXeoNOZ43FrMQ+SUUA==}
     engines: {node: '>=16.17.0'}
+    deprecated: bug affecting usage of `wrangler pages deploy` with > 1000 assets in wrangler@3.60.0, fixed in wrangler@3.60.1
     hasBin: true
     peerDependencies:
       '@cloudflare/workers-types': ^4.20240605.0
@@ -8467,6 +8507,8 @@ snapshots:
 
   '@tauri-apps/api@1.5.6': {}
 
+  '@tauri-apps/api@1.6.0': {}
+
   '@tauri-apps/cli-darwin-arm64@1.5.14':
     optional: true
 
@@ -9297,6 +9339,8 @@ snapshots:
     dependencies:
       path-type: 4.0.0
 
+  discord-interactions@4.0.0: {}
+
   dlv@1.1.3: {}
 
   dotenv@16.0.3: {}
@@ -10051,6 +10095,8 @@ snapshots:
       is-inside-container: 1.0.0
 
   isexe@2.0.0: {}
+
+  itty-router@5.0.17: {}
 
   jackspeak@3.4.0:
     dependencies:
@@ -11555,13 +11601,13 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
-  tauri-plugin-websocket-api@https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/b8e7d6180d6aa6d262c91616b07f464e42fa88ea:
+  tauri-plugin-websocket-api@https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026:
     dependencies:
-      '@tauri-apps/api': 1.5.6
+      '@tauri-apps/api': 1.6.0
 
-  tauri-plugin-window-state-api@https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/83324932be7d2bf0cc68202bacf5427d9270dcbd:
+  tauri-plugin-window-state-api@https://codeload.github.com/tauri-apps/tauri-plugin-window-state/tar.gz/1abc39dce68e3da8377230b83b7792cd4c86c50a:
     dependencies:
-      '@tauri-apps/api': 1.5.6
+      '@tauri-apps/api': 1.6.0
 
   terser@5.31.1:
     dependencies:

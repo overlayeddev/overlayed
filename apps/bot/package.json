@@ -1,0 +1,28 @@
+{
+	"name": "bot",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"build": "wrangler deploy --dry-run --outdir=dist",
+		"lint": "eslint",
+		"check:format": "prettier --check \"**/*.{ts,js,md}\"",
+		"clean": "rm -rf dist .turbo node_modules",
+		"register": "node --import tsx/esm ./src/register.ts",
+		"format": "prettier --write .",
+		"start": "wrangler dev --remote --port 8787"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240512.0",
+		"lint": "workspace:*",
+		"tsconfig": "workspace:*",
+		"tsx": "^4.7.1",
+		"types": "workspace:*",
+		"wrangler": "^3.57.1"
+	},
+	"dependencies": {
+		"discord-interactions": "^4.0.0",
+		"itty-router": "^5.0.17"
+	}
+}
