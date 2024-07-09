@@ -1,9 +1,4 @@
-name = "updater"
+name = "overlayed-bot"
 main = "src/index.ts"
 compatibility_date = "2023-11-21"
 workers_dev = true
-
-[[r2_buckets]]
-binding = "BUCKET"
-bucket_name = "overlayed-artifacts"
-preview_bucket_name = "overlayed-artifacts"
