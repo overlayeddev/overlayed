@@ -22,7 +22,13 @@ jobs:
         if: steps.changes.outputs.api == 'true' && ${{ github.event_name }}" != "workflow_dispatch"
         with:
           version: 9
-      - name: Deploy
+      - name: Deploy commands
+        run: pnpm register
+        working-directory: apps/bot
+        env:
+          DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }} 
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }} 
+      - name: Deploy worker
         if: steps.changes.outputs.api == 'true' && ${{ github.event_name }}" != "workflow_dispatch"
         uses: cloudflare/wrangler-action@v3
         with:
