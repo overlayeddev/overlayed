@@ -1,5 +1,4 @@
 // NOTE: this is from https://github.com/discord/cloudflare-sample-app/tree/main
-
 import { Context, Hono } from "hono";
 import {
 	InteractionResponseType,
@@ -27,8 +26,6 @@ app.post("/", async (c) => {
 	}
 
 	if (interaction.type === InteractionType.PING) {
-		// The `PING` message is used during the initial webhook handshake, and is
-		// required to configure the webhook in the developer portal.
 		return c.json({
 			type: InteractionResponseType.PONG,
 		});
