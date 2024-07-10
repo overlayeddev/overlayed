@@ -87,9 +87,9 @@ importers:
       discord-interactions:
         specifier: ^4.0.0
         version: 4.0.0
-      itty-router:
-        specifier: ^5.0.17
-        version: 5.0.17
+      hono:
+        specifier: ^4.0.10
+        version: 4.4.4
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20240512.0
@@ -3944,9 +3944,6 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-
-  itty-router@5.0.17:
-    resolution: {integrity: sha512-ZHnPI0OOyTTLuNp2FdciejYaK4Wl3ZV3O0yEm8njOGggh/k/ek3BL7X2I5YsCOfc5vLhIJgj3Z4pUtLs6k9Ucg==}
 
   jackspeak@3.4.0:
     resolution: {integrity: sha512-JVYhQnN59LVPFCEcVa2C3CrEKYacvjRfqIQl+h8oi91aLYQVWRYbxjPcv1bUiUy/kLmQaANrYfNMCO3kuEDHfw==}
@@ -10095,8 +10092,6 @@ snapshots:
       is-inside-container: 1.0.0
 
   isexe@2.0.0: {}
-
-  itty-router@5.0.17: {}
 
   jackspeak@3.4.0:
     dependencies:
