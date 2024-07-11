@@ -4,7 +4,7 @@ export const Event = {
 
 /**
  * discrod wrorete a bad api dog, we got voice AND TEXT CHANNELS?
- * 
+ *
  * {@link https://discord.com/developers/docs/resources/channel#channel-object-channel-types}
  */
 export const CHANNEL_TYPES = {
