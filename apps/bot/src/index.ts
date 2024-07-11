@@ -54,7 +54,7 @@ app.post("/", async (c) => {
 					content:
 						"Overlayed is a desktop app that shows who is in your Discord voice channel and their voice status (speaking, deafened, muted). It features a movable overlay you can pin anywhere!" +
 						"\n" +
-						"https://discord.hacksore.com/appdir/pres/slide1.png",
+						"https://x.com/OverlayedDev/status/1811448633377673374",
 				},
 			});
 		}
