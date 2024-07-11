@@ -1,3 +1,5 @@
+import type { CHANNEL_TYPES } from "@/constants";
+
 /** This is the custom object we use for our state */
 export interface OverlayedUser {
   /**
@@ -86,6 +88,10 @@ export interface OverlayedUser {
 export interface CurrentChannel {
   id: string;
   name: string;
+  /**
+   * @property {ChannelType} type - current channel type {@link https://discord.com/developers/docs/resources/channel#channel-object-channel-types}
+   */
+  type: ChannelType;
 }
 
 export interface VoiceStateData {
@@ -149,3 +155,5 @@ export interface JoinHistoryLogUser extends OverlayedUser {
   event: "join" | "leave";
   timestamp: number;
 }
+
+export type ChannelType = (typeof CHANNEL_TYPES)[keyof typeof CHANNEL_TYPES];
