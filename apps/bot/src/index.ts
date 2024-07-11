@@ -1,7 +1,7 @@
 // NOTE: this is from https://github.com/discord/cloudflare-sample-app/tree/main
 import { Hono } from "hono";
 import { InteractionResponseType, InteractionType } from "discord-interactions";
-import { FEEDBACK, INSTALL } from "./commands.js";
+import { FEEDBACK, INFO, INSTALL } from "./commands.js";
 import { Bindings } from "./types.js";
 import { verifyDiscordRequest } from "./utils.js";
 
@@ -43,6 +43,18 @@ app.post("/", async (c) => {
 				data: {
 					content:
 						"Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
+				},
+			});
+		}
+
+		if (command === INFO.name.toLowerCase()) {
+			return c.json({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content:
+						"Overlayed is a desktop app that shows who is in your Discord voice channel and their voice status (speaking, deafened, muted). It features a movable overlay you can pin anywhere!" +
+						"\n" +
+						"https://discord.hacksore.com/appdir/pres/slide1.png",
 				},
 			});
 		}

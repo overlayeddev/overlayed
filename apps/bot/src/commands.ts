@@ -16,3 +16,10 @@ export const FEEDBACK = defineCommand({
 	integration_types: [USER_INSTALL, GUILD_INSTALL],
 	contexts: [0, 1, 2],
 });
+
+export const INFO = defineCommand({
+	name: "info",
+	description: "Overlayed app iformation",
+	integration_types: [USER_INSTALL, GUILD_INSTALL],
+	contexts: [0, 1, 2],
+});
