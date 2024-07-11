@@ -1,16 +1,9 @@
 // NOTE: this is from https://github.com/discord/cloudflare-sample-app/tree/main
-import { Context, Hono } from "hono";
-import {
-	InteractionResponseType,
-	InteractionType,
-	verifyKey,
-} from "discord-interactions";
+import { Hono } from "hono";
+import { InteractionResponseType, InteractionType } from "discord-interactions";
 import { FEEDBACK, INSTALL } from "./commands.js";
-
-type Bindings = {
-	DISCORD_APPLICATION_ID: string;
-	DISCORD_PUBLIC_KEY: string;
-};
+import { Bindings } from "./types.js";
+import { verifyDiscordRequest } from "./utils.js";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -32,8 +25,9 @@ app.post("/", async (c) => {
 	}
 
 	if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-		// Most user commands will come as `APPLICATION_COMMAND`.
-		if (interaction.data.name.toLowerCase() === INSTALL.name.toLowerCase()) {
+		const command = interaction.data.name.toLowerCase();
+
+		if (command === INSTALL.name.toLowerCase()) {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
@@ -42,7 +36,8 @@ app.post("/", async (c) => {
 				},
 			});
 		}
-		if (interaction.data.name.toLowerCase() === FEEDBACK.name.toLowerCase()) {
+
+		if (command === FEEDBACK.name.toLowerCase()) {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
@@ -65,27 +60,6 @@ app.post("/", async (c) => {
 });
 
 app.all("*", () => new Response("Not Found.", { status: 404 }));
-
-type Request = Context<{
-	Bindings: Bindings;
-}>;
-
-async function verifyDiscordRequest(c: Request) {
-	const signature = c.req.header("x-signature-ed25519");
-	const timestamp = c.req.header("x-signature-timestamp");
-	const body = await c.req.text();
-
-	const isValidRequest =
-		signature &&
-		timestamp &&
-		(await verifyKey(body, signature, timestamp, c.env.DISCORD_PUBLIC_KEY));
-
-	if (!isValidRequest) {
-		return { isValid: false };
-	}
-
-	return { interaction: JSON.parse(body), isValid: true };
-}
 
 const server = {
 	verifyDiscordRequest,
