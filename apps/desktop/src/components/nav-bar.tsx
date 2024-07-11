@@ -9,11 +9,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import React from "react";
+import React, { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
 import Config, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
+import { CHANNEL_TYPES } from "@/constants";
 const mapping = {
   left: 0,
   center: 1,
@@ -58,6 +59,8 @@ export const NavBar = ({
   const location = useLocation();
   const navigate = useNavigate();
   const { currentChannel } = useAppStore();
+
+  const [channelName, setChannelName] = useState<string>();
   const [currentAlignment, setCurrentAlignment] = useState(mapping[alignDirection]);
 
   const opacity = pin && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
@@ -67,6 +70,14 @@ export const NavBar = ({
   const routesToShowOn = ["/channel", "/error", "/"];
   const { canary } = usePlatformInfo();
   if (!routesToShowOn.includes(location.pathname)) return null;
+
+  useEffect(() => {
+    if (!!currentChannel && ([CHANNEL_TYPES.DM, CHANNEL_TYPES.GROUP_DM] as number[]).includes(currentChannel.type)) {
+      setChannelName("Private call");
+    } else {
+      setChannelName(currentChannel?.name);
+    }
+  }, [location.pathname, currentChannel]);
 
   return (
     <div
@@ -81,9 +92,9 @@ export const NavBar = ({
             className="w-8 h-8 mr-2"
           />
 
-          {location.pathname === "/channel" ? (
+          {channelName ? (
             <div data-tauri-drag-region className="hidden md:inline">
-              {currentChannel?.name}
+              {channelName}
             </div>
           ) : (
             <div data-tauri-drag-region>Overlayed</div>
