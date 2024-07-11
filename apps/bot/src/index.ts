@@ -51,10 +51,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content:
-						"Overlayed is a desktop app that shows who is in your Discord voice channel and their voice status (speaking, deafened, muted). It features a movable overlay you can pin anywhere!" +
-						"\n" +
-						"https://x.com/OverlayedDev/status/1811448633377673374",
+					content: "https://x.com/OverlayedDev/status/1811448633377673374",
 				},
 			});
 		}
