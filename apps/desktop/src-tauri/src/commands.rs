@@ -6,7 +6,9 @@ use crate::{constants::*, Pinned};
 
 #[tauri::command]
 pub fn zoom_window(window: tauri::Window, scale_factor: f64) {
-  let window = window.get_window(MAIN_WINDOW_NAME).expect("can't find the main window");
+  let window = window
+    .get_window(MAIN_WINDOW_NAME)
+    .expect("can't find the main window");
   let _ = window.with_webview(move |webview| {
     #[cfg(target_os = "linux")]
     {
