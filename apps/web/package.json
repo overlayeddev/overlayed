@@ -6,9 +6,9 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "lint": "eslint",
-    "check:format": "prettier --check \"**/*.{astro,ts,js}\"",
+    "check:format": "prettier --check \"**/*.{astro,ts,js,mjs}\"",
     "clean": "rm -rf dist .turbo node_modules .vercel .astro",
-    "format": "prettier --write \"**/*.{astro,ts,js}\"",
+    "format": "prettier --write \"**/*.{astro,ts,js,mjs}\"",
     "preview": "astro preview",
     "astro": "astro"
   },

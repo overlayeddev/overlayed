@@ -2,8 +2,8 @@
 import { createProxyMiddleware } from "http-proxy-middleware";
 
 export default (paths) => {
-  const filter = function(pathname) {
-    return paths.includes(pathname)
+  const filter = function (pathname) {
+    return paths.includes(pathname);
   };
 
   const apiProxy = createProxyMiddleware(filter, {

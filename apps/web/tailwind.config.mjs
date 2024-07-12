@@ -25,7 +25,7 @@ export default {
       },
       animation: {
         "background-shine": "background-shine 2s linear infinite",
-      }
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],
