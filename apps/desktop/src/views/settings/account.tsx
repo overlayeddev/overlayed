@@ -126,7 +126,7 @@ export const Account = () => {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [user, setUser] = useState<VoiceUser | null>(null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
-  const [zoom, setZoom] = useState(50);
+  const [zoom, setZoom] = useState(1);
 
   // pull out the user data from localStorage
   useEffect(() => {
@@ -272,10 +272,11 @@ export const Account = () => {
         Zoom
         <Slider
           onValueChange={async ([val]) => {
-            setZoom(val || 0);
+            setZoom(val as number);
+            console.log(val);
             await invoke("zoom_window", { scaleFactor: zoom });
           }}
-          defaultValue={[0.4]}
+          defaultValue={[1.0]}
           min={0.4}
           max={1.5}
           step={0.1}
