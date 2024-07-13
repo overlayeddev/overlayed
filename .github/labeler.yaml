@@ -12,3 +12,8 @@ desktop:
 updater:
   - changed-files:
       - any-glob-to-any-file: apps/updater/**
+
+# Add updater label if they changed updater code
+bot:
+  - changed-files:
+      - any-glob-to-any-file: apps/bot/**
