@@ -31,8 +31,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content:
-						"Install the desktop client by visiting https://overlayed.dev",
+					content: "Install the desktop app by visiting https://overlayed.dev",
 				},
 			});
 		}
