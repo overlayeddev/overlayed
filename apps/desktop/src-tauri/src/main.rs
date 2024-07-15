@@ -37,14 +37,10 @@ fn apply_macos_specifics(window: &Window) {
 }
 
 fn main() {
-  let mut flags = StateFlags::all();
-  // NOTE: we don't care about the visible flag
-  flags.remove(StateFlags::VISIBLE);
-
+  let flags = StateFlags::POSITION | StateFlags::SIZE;
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
 
   let mut app = tauri::Builder::default()
-    // TODO: this should work on windows
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
