@@ -44,3 +44,7 @@ pub fn create_config(app: &AppHandle) {
   store.save();
   debug!("Config file created successfully");
 }
+
+// TODO: what i reallly want is a util method to allow me to do like
+// config.set(ConfigKey::Pin, json!(false))
+// config.get(ConfigKey::Pin)
