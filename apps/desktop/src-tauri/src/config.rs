@@ -1,9 +1,10 @@
+use log::debug;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use tauri::{AppHandle, Manager};
 use tauri_plugin_store::StoreBuilder;
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Copy, Clone)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum WindowLayout {
   Left,
@@ -27,6 +28,12 @@ pub fn create_config(app: &AppHandle) {
   let mut appdir = app.path_resolver().app_data_dir().unwrap();
   appdir.push("config_v2.json");
 
+  // if the file exists we don't want to overwrite it
+  if appdir.exists() {
+    debug!("Config file already exists, skipping creation");
+    return;
+  }
+
   let mut store = StoreBuilder::new(app.app_handle(), appdir).build();
   store.insert("pin".to_string(), json!(false));
   store.insert("placement".to_string(), json!(WindowLayout::Center));
@@ -35,5 +42,5 @@ pub fn create_config(app: &AppHandle) {
   store.insert("show_only_talking_users".to_string(), json!(true));
 
   store.save();
-  println!("ayo");
+  debug!("Config file created successfully");
 }
