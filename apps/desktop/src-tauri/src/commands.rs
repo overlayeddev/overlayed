@@ -1,5 +1,6 @@
 use std::{ops::Deref, sync::atomic::AtomicBool};
 
+use log::debug;
 use tauri::{Manager, State, SystemTrayHandle, Window};
 
 use crate::{constants::*, Pinned};
@@ -16,6 +17,8 @@ pub fn open_settings(window: Window, update: bool) {
       settings_windows.emit(SHOW_UPDATE_MODAL, ()).unwrap();
     }
   }
+
+  debug!("Ran open settings command");
 }
 
 #[tauri::command]
@@ -25,16 +28,22 @@ pub fn close_settings(window: Window) {
   if let Some(settings_windows) = settings_windows {
     settings_windows.hide();
   }
+
+  debug!("Ran close settings command");
 }
 
 #[tauri::command]
 pub fn get_pin(storage: State<Pinned>) -> bool {
-  storage.0.load(std::sync::atomic::Ordering::Relaxed)
+  let pinned = storage.0.load(std::sync::atomic::Ordering::Relaxed);
+  debug!("Ran get_pinned command");
+
+  return pinned;
 }
 
 #[tauri::command]
 pub fn open_devtools(window: Window) {
   window.open_devtools();
+  debug!("Ran open_devtools command");
 }
 
 #[tauri::command]
@@ -43,13 +52,16 @@ pub fn toggle_pin(window: Window, pin: State<Pinned>) {
   let value = !get_pin(app.state::<Pinned>());
 
   _set_pin(value, &window, pin);
+  debug!("Ran toggle_pin command");
 }
 
 #[tauri::command]
 pub fn set_pin(window: Window, pin: State<Pinned>, value: bool) {
   _set_pin(value, &window, pin);
+  debug!("Ran set_pin command");
 }
 
+// @d0nutptr cooked here to make it more concise to access the AtomicBool
 impl Deref for Pinned {
   type Target = AtomicBool;
 
@@ -59,7 +71,6 @@ impl Deref for Pinned {
 }
 
 fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
-  // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
   // let the client know
@@ -94,5 +105,7 @@ fn update_tray_icon(tray: SystemTrayHandle, pinned: bool) {
     icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon.ico").to_vec());
   }
 
+  let icon_state = if pinned { "pinned" } else { "unpinned" };
   tray.set_icon(icon);
+  debug!("Updated the tray icon state to {}", icon_state);
 }
