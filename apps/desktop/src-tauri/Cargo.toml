@@ -44,7 +44,10 @@ tokio = { version = "1.38.0", features = [
 tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tauri-plugin-window-state = { git = "https://github.com/Hacksore/plugins-workspace", branch = "v1" }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-plugin-log = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 anyhow = "1.0.86"
+log = "0.4.22"
 
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]
