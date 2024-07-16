@@ -16,8 +16,12 @@ mod window_custom;
 
 use crate::commands::*;
 use constants::*;
+use log::LevelFilter;
+use log::{debug, info};
+use std::str::FromStr;
 use std::sync::atomic::AtomicBool;
 use tauri::{generate_handler, LogicalSize, Manager, SystemTray};
+use tauri_plugin_log::LogTarget;
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
 use window_custom::WindowExt;
@@ -42,6 +46,7 @@ fn apply_macos_specifics(window: &Window) {
   use tauri_nspanel::ManagerExt;
 
   window.remove_shadow();
+  debug!("Removed window shadow");
 
   window.set_float_panel(constants::OVERLAYED_NORMAL_LEVEL);
 
@@ -71,9 +76,21 @@ fn main() {
   let flags = StateFlags::POSITION | StateFlags::SIZE;
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
 
+  let log_level = std::env::var("LOG_LEVEL")
+    .ok()
+    .and_then(|thing| LevelFilter::from_str(thing.as_str()).ok())
+    .unwrap_or(LevelFilter::Info);
+
   let mut app = tauri::Builder::default()
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
+    .plugin(
+      tauri_plugin_log::Builder::default()
+        .targets([LogTarget::LogDir])
+        .level(log_level)
+        .build(),
+    )
+    .plugin(tauri_plugin_store::Builder::default().build())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
@@ -86,6 +103,7 @@ fn main() {
   app = app
     .manage(Pinned(AtomicBool::new(false)))
     .setup(|app| {
+      debug!("Starting the setup hook");
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
       let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
 
@@ -124,6 +142,7 @@ fn main() {
         height: SETTINGS_WINDOW_HEIGHT,
       });
 
+      info!("Started app");
       Ok(())
     })
     // Add the system tray
