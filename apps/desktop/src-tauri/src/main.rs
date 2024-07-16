@@ -10,11 +10,13 @@ extern crate objc;
 
 mod app_handle;
 mod commands;
+mod config;
 mod constants;
 mod tray;
 mod window_custom;
 
 use crate::commands::*;
+use config::create_config;
 use constants::*;
 use log::LevelFilter;
 use log::{debug, info};
@@ -135,6 +137,10 @@ fn main() {
 
       // update the system tray
       Tray::update_tray(&app.app_handle());
+      debug!("Updated the tray/taskbar menu");
+
+      // we should call this to create the config file
+      create_config(&app.app_handle());
 
       // NOTE: always force settings window to be a certain size
       settings.set_size(LogicalSize {
