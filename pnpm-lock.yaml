@@ -187,6 +187,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.4)
+      tauri-plugin-log:
+        specifier: github:tauri-apps/tauri-plugin-log#v1
+        version: tauri-plugin-log-api@https://codeload.github.com/tauri-apps/tauri-plugin-log/tar.gz/2bb26e22f7f7b4f164bad02f0ae4085796f77fff
       tauri-plugin-websocket-api:
         specifier: github:tauri-apps/tauri-plugin-websocket#v1
         version: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026
@@ -5186,6 +5189,10 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+
+  tauri-plugin-log-api@https://codeload.github.com/tauri-apps/tauri-plugin-log/tar.gz/2bb26e22f7f7b4f164bad02f0ae4085796f77fff:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-log/tar.gz/2bb26e22f7f7b4f164bad02f0ae4085796f77fff}
+    version: 0.0.0
 
   tauri-plugin-websocket-api@https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026:
     resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026}
@@ -11656,6 +11663,10 @@ snapshots:
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0
+
+  tauri-plugin-log-api@https://codeload.github.com/tauri-apps/tauri-plugin-log/tar.gz/2bb26e22f7f7b4f164bad02f0ae4085796f77fff:
+    dependencies:
+      '@tauri-apps/api': 1.6.0
 
   tauri-plugin-websocket-api@https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/c23ba8b03953e459fd9a56ea6113b12461b78026:
     dependencies:
