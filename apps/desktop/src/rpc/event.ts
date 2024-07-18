@@ -2,6 +2,7 @@ export enum RPCEvent {
   /** non-subscription event sent immediately after connecting, contains server information */
   READY = "READY",
   /** non-subscription event sent when there is an error, including command responses */
+
   ERROR = "ERROR",
   /** sent when a user in a subscribed voice channel speaks */
   SPEAKING_START = "SPEAKING_START",

@@ -17,6 +17,7 @@ import type { VoiceUser } from "@/types";
 import { getVersion } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
 import { invoke } from "@tauri-apps/api";
+import { error, info, debug } from "tauri-plugin-log";
 
 interface TokenResponse {
   access_token: string;
@@ -101,7 +102,7 @@ class SocketManager {
    * Setup the websocket connection and listen for messages
    */
   async init(navigate: NavigateFunction) {
-    console.log("Init web socket manager");
+    info("[WEBSOCKET] Init manager");
     this.disconnect();
 
     this._navigate = navigate;
@@ -135,6 +136,7 @@ class SocketManager {
   }
 
   public disconnect() {
+    debug("[WEBSOCKET] Disconnecting socket");
     this.socket?.disconnect();
     this.isConnected = false;
   }
@@ -180,6 +182,7 @@ class SocketManager {
     // TODO: this has to be a bug in the upstream lib, we should get a proper code
     // and not have to check the raw dawg string to see if something is wrong
     if (typeof event === "string" && (event as string).includes("Connection reset without closing handshake")) {
+      error("[WEBSOCKET] Connection reset without closing handshake");
       this.navigate("/error");
 
       await this.unpin();
@@ -199,8 +202,10 @@ class SocketManager {
       const acessToken = this.userdataStore.accessToken;
 
       if (acessToken) {
+        debug("[WEBSOCKET] Found access token and attempting to login with it");
         this.login(acessToken);
       } else {
+        debug("[WEBSOCKET] No access token found attempting to login");
         this.authenticate();
       }
     }
@@ -274,17 +279,26 @@ class SocketManager {
 
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
+      debug("[WEBSOCKET] Got valid code back from discord, fetching access token...");
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${API_URL}/token`, {
-        method: "POST",
-        body: Body.json({ code }),
-      });
 
-      // we need send the token to discord
-      this.userdataStore.setAccessToken(res.data.access_token);
+      try {
+        const res = await fetch<TokenResponse>(`${API_URL}/token`, {
+          method: "POST",
+          body: Body.json({ code }),
+        });
 
-      // login with the token
-      this.login(res.data.access_token);
+        debug("[WEBSOCKET] Obtained access token api, attempting to login with it...");
+
+        // we need send the token to discord
+        this.userdataStore.setAccessToken(res.data.access_token);
+
+        // login with the token
+        this.login(res.data.access_token);
+      } catch (e) {
+        error(`[WEBSOCKET] Error fetching token: ${JSON.stringify(e)}`);
+        this.navigate("/error");
+      }
     }
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
@@ -300,9 +314,9 @@ class SocketManager {
       }
     }
 
-    // console.log(payload);
-    // we are ready to do things cause we are fully authed
+    // we hit an auth error with discord
     if (payload.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
+      error(`[WEBSOCKET] Error authenticating with discord: ${JSON.stringify(payload.data)}`);
       // they have a token from the old client id
       if (payload.data.code === RPCErrors.INVALID_CLIENTID) {
         this.userdataStore.removeAccessToken();
@@ -321,6 +335,7 @@ class SocketManager {
       // track error metric
       track(Metric.DiscordAuthed, 0);
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
+      info("[WEBSOCKET] Logged into discord successfully");
       // track success metric
       track(Metric.DiscordAuthed, 1);
 
@@ -360,6 +375,7 @@ class SocketManager {
 
     // when we move channels we get a new list of users
     if (payload.cmd === RPCCommand.GET_CHANNEL) {
+      debug("[WEBSOCKET] Requesting channel for user");
       this.requestUserChannel();
     }
   }
@@ -417,12 +433,12 @@ export const useSocket = () => {
       return;
     }
 
+    // if the socket is already initialized return
     if (socketRef.current) {
-      console.log("Socket already initialized");
       return;
     }
 
-    console.log("Initializing websocket...");
+    info("[WEBSOCKET] Initializing websocket...");
     const socketManager = new SocketManager();
     socketManager.init(navigate);
 

@@ -46,6 +46,7 @@
     "tailwindcss-animate": "^1.0.7",
     "tauri-plugin-websocket-api": "github:tauri-apps/tauri-plugin-websocket#v1",
     "tauri-plugin-window-state-api": "github:tauri-apps/tauri-plugin-window-state#v1",
+    "tauri-plugin-log": "github:tauri-apps/tauri-plugin-log#v1",
     "uuid": "^9.0.1",
     "zustand": "^4.5.2"
   },
