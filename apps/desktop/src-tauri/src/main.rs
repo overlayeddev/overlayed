@@ -10,6 +10,7 @@ extern crate objc;
 
 mod commands;
 mod constants;
+mod io;
 mod tray;
 mod window_custom;
 
@@ -56,7 +57,10 @@ fn main() {
     .manage(Pinned(AtomicBool::new(false)))
     .setup(|app| {
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
+
       let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
+
+      window.set_inactive_on_mouse_hover();
 
       // the window should always be on top
       #[cfg(not(target_os = "macos"))]
@@ -86,6 +90,10 @@ fn main() {
 
       // update the system tray
       Tray::update_tray(&app.app_handle());
+
+      use io::ManagerExt;
+
+      iohook!(app.handle(), io::listen_for_mouse_events);
 
       Ok(())
     })

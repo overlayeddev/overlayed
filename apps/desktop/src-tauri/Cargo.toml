@@ -40,6 +40,7 @@ tauri = { version = "1.6.8", features = [
   "http-all",
 ] }
 serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.120"
 tokio = { version = "1.38.0", features = [
   "full",
 ] } # Required for asynchronous operations
@@ -47,6 +48,7 @@ tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspac
 tauri-plugin-window-state = { git = "https://github.com/Hacksore/plugins-workspace", branch = "v1" }
 tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 anyhow = "1.0.86"
+rdev = "0.5.3"
 
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]
