@@ -55,6 +55,16 @@ app.post("/", async (c) => {
 			});
 		}
 
+		if (command === INFO.name.toLowerCase()) {
+			return c.json({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content:
+						"Install the canary desktop app by visiting https://overlayed.dev/canary",
+				},
+			});
+		}
+
 		return c.json({
 			type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 			data: {

@@ -23,3 +23,10 @@ export const INFO = defineCommand({
 	integration_types: [USER_INSTALL, GUILD_INSTALL],
 	contexts: [0, 1, 2],
 });
+
+export const CANARY = defineCommand({
+	name: "canary",
+	description: "Overlayed canary app information",
+	integration_types: [USER_INSTALL, GUILD_INSTALL],
+	contexts: [0, 1, 2],
+});
