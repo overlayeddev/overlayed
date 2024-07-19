@@ -2,6 +2,7 @@ import type { DirectionLR } from "@/config";
 import { User } from "../components/user";
 import { useAppStore } from "../store";
 import { useConfigValue } from "@/hooks/use-config-value";
+import { useIntersectEvent } from "@/hooks/use-intersect";
 
 export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR }) => {
   const { users, me } = useAppStore();
@@ -10,6 +11,15 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
 
   const allUsers = Object.entries(users);
   const userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking || item.id === me?.id) : allUsers;
+
+  useIntersectEvent(
+    () => {
+      document.body.style.opacity = "0.2";
+    },
+    () => {
+      document.body.style.opacity = "1.0";
+    }
+  );
 
   return (
     <div>

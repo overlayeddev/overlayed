@@ -44,6 +44,8 @@ pub mod macos {
   }
 }
 
+use std::{collections::HashMap, sync::Mutex};
+
 use tauri::{Manager, Runtime, Window};
 
 use crate::{get_pin, Pinned};
@@ -61,6 +63,10 @@ impl<R: Runtime> WindowExt for Window<R> {
   }
 
   fn set_inactive_on_mouse_hover(&self) {
+    struct IntersectsState(pub Mutex<HashMap<String, bool>>);
+
+    self.manage(IntersectsState(Mutex::new(HashMap::new())));
+
     let window = self.clone();
 
     self.listen_global("mouse-move", move |event| {
@@ -93,14 +99,32 @@ impl<R: Runtime> WindowExt for Window<R> {
           && y <= window_y + window_height
       };
 
-      let is_visible = window.is_visible().unwrap();
+      let window_label = window.label().to_string();
 
-      if intersects && is_visible {
-        window.hide().unwrap();
+      let mut state = window.state::<IntersectsState>().0.lock().unwrap().clone();
+
+      let is_hover = *state.get(&window_label).unwrap_or(&false);
+
+      if intersects && !is_hover {
+        state.insert(window_label.clone(), true);
+
+        *window.state::<IntersectsState>().0.lock().unwrap() = state;
+
+        window.set_ignore_cursor_events(true);
+
+        window.emit("intersect-start", ()).unwrap();
+
+        return;
       }
 
-      if !intersects && !is_visible {
-        window.show().unwrap();
+      if is_hover && !intersects {
+        state.insert(window_label, false);
+
+        *window.state::<IntersectsState>().0.lock().unwrap() = state;
+
+        window.set_ignore_cursor_events(false);
+
+        window.emit("intersect-end", ()).unwrap();
       }
     });
   }
