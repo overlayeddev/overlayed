@@ -1,7 +1,7 @@
 // NOTE: this is from https://github.com/discord/cloudflare-sample-app/tree/main
 import { Hono } from "hono";
 import { InteractionResponseType, InteractionType } from "discord-interactions";
-import { FEEDBACK, INFO, INSTALL } from "./commands.js";
+import { CANARY, FEEDBACK, INFO, INSTALL } from "./commands.js";
 import { Bindings } from "./types.js";
 import { verifyDiscordRequest } from "./utils.js";
 
@@ -55,7 +55,7 @@ app.post("/", async (c) => {
 			});
 		}
 
-		if (command === INFO.name.toLowerCase()) {
+		if (command === CANARY.name.toLowerCase()) {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
