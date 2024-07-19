@@ -31,7 +31,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content: "Install the desktop app by visiting https://overlayed.dev",
+					content: "<:overlayed:1263836954789806154> Install the desktop app by visiting https://overlayed.dev",
 				},
 			});
 		}
@@ -41,7 +41,7 @@ app.post("/", async (c) => {
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
 					content:
-						"Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
+						"<:overlayed:1263836954789806154> Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
 				},
 			});
 		}
@@ -50,7 +50,8 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content: "https://x.com/OverlayedDev/status/1811448633377673374",
+					content:
+						"<:overlayed:1263836954789806154> https://x.com/OverlayedDev/status/1811448633377673374",
 				},
 			});
 		}
@@ -60,7 +61,7 @@ app.post("/", async (c) => {
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
 					content:
-						"Install the canary desktop app by visiting https://overlayed.dev/canary",
+						"<:overlayed:1263836954789806154> Install the canary desktop app by visiting https://overlayed.dev/canary",
 				},
 			});
 		}
