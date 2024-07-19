@@ -31,7 +31,8 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content: "<:overlayed:1263836954789806154> Install the desktop app by visiting https://overlayed.dev",
+					content:
+						"<:overlayed:1263836954789806154> Install the desktop app by visiting https://overlayed.dev",
 				},
 			});
 		}
