@@ -67,6 +67,9 @@
       }
     },
     "bundle": {
+      "macOS": {
+        "providerShortName": "Sean Boult"
+      },
       "active": true,
       "targets": "all",
       "identifier": "com.overlayed.dev",
