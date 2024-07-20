@@ -10,7 +10,7 @@ import type { AppActions, AppState } from "../store";
 import { useNavigate, type NavigateFunction, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
-import { MetricNames, track, trackEvent } from "@/metrics";
+import { Metric, track, trackEvent } from "@/metrics";
 import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
@@ -267,6 +267,9 @@ class SocketManager {
           },
         });
       }
+
+      // track user joining a channel
+      track(Metric.ChannelJoin, 1);
     }
 
     // we got a token back from discord let's fetch an access token
@@ -316,14 +319,14 @@ class SocketManager {
       this.navigate("/error");
 
       // track error metric
-      track(MetricNames.DiscordAuthed, 0);
+      track(Metric.DiscordAuthed, 0);
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // track success metric
-      track(MetricNames.DiscordAuthed, 1);
+      track(Metric.DiscordAuthed, 1);
 
       // track user session anonymously for sensitive bits
       // TODO: we should allSettled these promises?
-      trackEvent(MetricNames.DiscordUser, {
+      trackEvent(Metric.DiscordUser, {
         id: await hash(payload.data.user.id),
         username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
