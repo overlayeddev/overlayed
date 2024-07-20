@@ -89,7 +89,7 @@
 }
 
 ul {
-  list-style: inside;
+  list-style-type: circle;
 }
 
 .nice-scroll::-webkit-scrollbar {
