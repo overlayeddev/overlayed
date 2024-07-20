@@ -32,6 +32,7 @@ jobs:
             return await script({ github, context });
 
   build-tauri:
+    name: Build (${{ matrix.settings.os }})
     needs: create-release
     permissions:
       contents: write
@@ -92,6 +93,7 @@ jobs:
           TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
+          VITE_SENTRY_AUTH_TOKEN: "${{ secrets.VITE_SENTRY_AUTH_TOKEN }}"
         with:
           projectPath: "${{ env.APP_DIR }}"
           releaseId: ${{ needs.create-release.outputs.release_id }}
