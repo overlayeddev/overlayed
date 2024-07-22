@@ -4,7 +4,7 @@ runtime: org.gnome.Platform
 runtime-version: "46"
 sdk: org.gnome.Sdk
 
-rename-icon: overlayed
+rename-icon: Overlayed
 command: overlayed
 finish-args:
   - --socket=wayland
@@ -15,7 +15,7 @@ finish-args:
   - --talk-name=org.freedesktop.Notifications
 
 modules:
-  # - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
+  - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
 
   - name: webkit2gtk-4.0
     sources:
@@ -73,12 +73,12 @@ modules:
 
       - |
         desktop-file-edit \
-          --set-name="Overlayed App" \
-          --set-comment="Overlayed's game launcher" \
+          --set-name="Overlayed" \
+          --set-comment="Overlayed's desktop application" \
           --set-icon="$FLATPAK_ID" \
           --set-key="StartupNotify" --set-value="true" \
-          --set-key="Categories" --set-value="Game;ActionGame;AdventureGame;Simulation;" \
-          --set-key="Keywords" --set-value="game;minecraft;mc;" \
+          --set-key="Categories" --set-value="Game;" \
+          --set-key="Keywords" --set-value="discord;overlay;" \
           --set-key="StartupWMClass" --set-value="Overlayed" \
           squashfs-root/usr/share/applications/overlayed.desktop
 
@@ -86,7 +86,7 @@ modules:
       - cp -r squashfs-root/usr/share/icons /app/share/icons
       - install -Dm755 squashfs-root/usr/bin/overlayed /app/bin/overlayed
       - install -Dm644 squashfs-root/usr/share/applications/overlayed.desktop /app/share/applications/dev.overlayed.Overlayed.desktop
-      - install -Dm644 dev.overlayed.Overlayed.metainfo.xml /app/share/metainfo/dev.overlayed.OverlayedApp.metainfo.xml
+      - install -Dm644 dev.overlayed.Overlayed.metainfo.xml /app/share/metainfo/dev.overlayed.Overlayed.metainfo.xml
 
     sources:
       - type: file
