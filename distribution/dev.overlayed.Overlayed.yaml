@@ -26,7 +26,7 @@ modules:
         url: https://dotat.at/prog/unifdef/unifdef-2.12.tar.xz
         sha256: 43ce0f02ecdcdc723b2475575563ddb192e988c886d368260bc0a63aee3ac400
     cleanup:
-      - '*'
+      - "*"
   # NOTE: native deps
   # https://github.com/tauri-apps/tauri-docs/blob/v1/docs/guides/building/cross-platform.md?plain=1#L113
   # - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
@@ -43,10 +43,11 @@ modules:
     buildsystem: cmake-ninja
     config-opts:
       - -DPORT=GTK
-      - -DCMAKE_BUILD_TYPE=Release
       - -DENABLE_DOCUMENTATION=OFF
-      - -DENABLE_GAMEPAD=OFF
-      - -DUSE_SOUP2=OFF
+      - -DENABLE_WEBDRIVER=OFF
+      - -DUSE_GTK4=OFF
+      - -DUSE_LIBBACKTRACE=OFF
+      - -DUSE_SOUP2=ON
   - name: overlayed
     buildsystem: simple
     build-commands:
