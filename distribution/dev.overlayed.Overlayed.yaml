@@ -46,7 +46,7 @@ modules:
       - -DCMAKE_BUILD_TYPE=Release
       - -DENABLE_DOCUMENTATION=OFF
       - -DENABLE_GAMEPAD=OFF
-      - -DUSE_SOUP2=ON
+      - -DUSE_SOUP2=OFF
   - name: overlayed
     buildsystem: simple
     build-commands:
