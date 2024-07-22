@@ -17,6 +17,7 @@ finish-args:
   - --device=dri
 
 modules:
+  - shared-modules/libsoup/libsoup-2.4.json
   - name: unifdef
     no-autogen: true
     make-install-args:
