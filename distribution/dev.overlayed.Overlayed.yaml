@@ -45,7 +45,7 @@ modules:
         path: dev.overlayed.Overlayed.metainfo.xml
 
       - type: file
-        url: https://github.dev.overlayeddev/overlayed/releases/download/v0.5.0/overlayed_0.5.0_amd64.AppImage
+        url: https://github.com/overlayeddev/overlayed/releases/download/v0.5.0/overlayed_0.5.0_amd64.AppImage
         dest-filename: Overlayed.AppImage
         sha256: bbcc773e89ba6cdbf4b3e91156b2702b2a82a91b5df7a8bbd2e274d5104a9725
         only-arches: [x86_64]
