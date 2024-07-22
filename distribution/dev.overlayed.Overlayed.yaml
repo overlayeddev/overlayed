@@ -15,11 +15,8 @@ finish-args:
   - --talk-name=org.freedesktop.Notifications
 
 modules:
-  # NOTE: idk what this is for yet
   - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
 
-  # NOTE: Native dep required by tauri?
-  # https://github.com/tauri-apps/tauri-docs/blob/v1/docs/guides/testing/webdriver/ci.md?plain=1#L37
   - name: webkit2gtk-4.0
     sources:
       - type: archive
@@ -42,6 +39,47 @@ modules:
       - -DUSE_GTK4=OFF
       - -DUSE_SOUP2=ON
       - -DENABLE_BUBBLEWRAP_SANDBOX=OFF
+    modules:
+      - shared-modules/libsoup/libsoup-2.4.json
+
+      - name: unifdef
+        no-autogen: true
+        make-install-args:
+          - prefix=${FLATPAK_DEST}
+        sources:
+          - type: archive
+            url: https://dotat.at/prog/unifdef/unifdef-2.12.tar.xz
+            sha256: 43ce0f02ecdcdc723b2475575563ddb192e988c886d368260bc0a63aee3ac400
+        cleanup:
+          - '*'
+
+      - name: libjxl
+        buildsystem: cmake
+        config-opts:
+          - -DCMAKE_BUILD_TYPE=Release
+          - -DBUILD_TESTING=OFF
+        sources:
+          - type: git
+            url: https://github.com/libjxl/libjxl.git
+            tag: v0.10.2
+            commit: e1489592a770b989303b0edc5cc1dc447bbe0515
+            disable-shallow-clone: true
+            x-checker-data:
+              type: git
+              tag-pattern: ^v([\d.]+)$
+
+  - name: libvips
+    cleanup:
+      - /*
+    sources:
+      - type: git
+        url: https://github.com/libvips/libvips
+        tag: v8.15.2
+        commit: f18403d7bf49b574a2a1c6887dbe9c696a5125fc
+        x-checker-data:
+          type: git
+          tag-pattern: ^v((?:\d+.)*\d+)$
+    buildsystem: meson
   - name: overlayed
     buildsystem: simple
     build-commands:
