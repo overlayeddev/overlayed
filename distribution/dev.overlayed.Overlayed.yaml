@@ -19,6 +19,7 @@ modules:
   - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
 
   # NOTE: Native dep required by tauri?
+  # https://github.com/tauri-apps/tauri-docs/blob/v1/docs/guides/testing/webdriver/ci.md?plain=1#L37
   - name: webkit2gtk-4.0
     sources:
       - type: archive
