@@ -40,7 +40,8 @@ modules:
       - -DUSE_SOUP2=ON
       - -DENABLE_BUBBLEWRAP_SANDBOX=OFF
     modules:
-      - shared-modules/libsoup/libsoup-2.4.json
+      # TODO: get this working
+      # - shared-modules/libsoup/libsoup-2.4.json
 
       - name: unifdef
         no-autogen: true
