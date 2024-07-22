@@ -17,6 +17,16 @@ finish-args:
   - --device=dri
 
 modules:
+  - name: unifdef
+    no-autogen: true
+    make-install-args:
+      - prefix=${FLATPAK_DEST}
+    sources:
+      - type: archive
+        url: https://dotat.at/prog/unifdef/unifdef-2.12.tar.xz
+        sha256: 43ce0f02ecdcdc723b2475575563ddb192e988c886d368260bc0a63aee3ac400
+    cleanup:
+      - '*'
   # NOTE: native deps
   # https://github.com/tauri-apps/tauri-docs/blob/v1/docs/guides/building/cross-platform.md?plain=1#L113
   # - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
