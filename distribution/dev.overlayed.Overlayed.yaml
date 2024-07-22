@@ -15,8 +15,10 @@ finish-args:
   - --talk-name=org.freedesktop.Notifications
 
 modules:
+  # NOTE: idk what this is for yet
   - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
 
+  # NOTE: Native dep required by tauri?
   - name: webkit2gtk-4.0
     sources:
       - type: archive
@@ -39,32 +41,6 @@ modules:
       - -DUSE_GTK4=OFF
       - -DUSE_SOUP2=ON
       - -DENABLE_BUBBLEWRAP_SANDBOX=OFF
-
-  - name: unifdef
-    no-autogen: true
-    make-install-args:
-      - prefix=${FLATPAK_DEST}
-    sources:
-      - type: archive
-        url: https://dotat.at/prog/unifdef/unifdef-2.12.tar.xz
-        sha256: 43ce0f02ecdcdc723b2475575563ddb192e988c886d368260bc0a63aee3ac400
-    cleanup:
-      - "*"
-
-  - name: libjxl
-    buildsystem: cmake
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DBUILD_TESTING=OFF
-    sources:
-      - type: git
-        url: https://github.com/libjxl/libjxl.git
-        tag: v0.10.2
-        commit: e1489592a770b989303b0edc5cc1dc447bbe0515
-        disable-shallow-clone: true
-        x-checker-data:
-          type: git
-          tag-pattern: ^v([\d.]+)$
   - name: overlayed
     buildsystem: simple
     build-commands:
