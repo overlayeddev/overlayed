@@ -1,4 +1,4 @@
-# use full info https://github.com/tauri-apps/tauri/discussions/4426
+# useful info for tauri v1 https://github.com/tauri-apps/tauri/discussions/4426
 
 id: dev.overlayed.Overlayed
 
@@ -9,14 +9,15 @@ sdk: org.gnome.Sdk
 rename-icon: Overlayed
 command: overlayed
 finish-args:
-  # NOTE: discord screen sharing does not work on wayland AFAIK, if that changes we can enable this
-  # https://github.com/flathub/com.discordapp.Discord/blob/master/com.discordapp.Discord.json
-  # - --socket=wayland
-  # NOTE: need to understand what the min set i need
+  - --socket=wayland
+  - --socket=fallback-x11
   - --socket=x11
   - --share=ipc
   - --share=network
   - --device=dri
+  - --filesystem=home
+  - --socket=pulseaudio
+  - --talk-name=org.freedesktop.Notifications
 
 modules:
   - shared-modules/libsoup/libsoup-2.4.json
@@ -45,12 +46,17 @@ modules:
           url-template: https://webkitgtk.org/releases/webkitgtk-$version.tar.xz
     buildsystem: cmake-ninja
     config-opts:
+      # NOTE: not sure flat webkit2gtk-4.0 flags tauri requires
       - -DPORT=GTK
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
       - -DENABLE_DOCUMENTATION=OFF
+      - -DENABLE_MINIBROWSER=OFF
       - -DENABLE_WEBDRIVER=OFF
-      - -DUSE_GTK4=OFF
+      - -DENABLE_GAMEPAD=OFF
       - -DUSE_LIBBACKTRACE=OFF
+      - -DUSE_GTK4=OFF
       - -DUSE_SOUP2=ON
+      - -DENABLE_BUBBLEWRAP_SANDBOX=OFF
   - name: overlayed
     buildsystem: simple
     build-commands:
@@ -79,11 +85,12 @@ modules:
         url: https://raw.githubusercontent.com/overlayeddev/overlayed/14a6d2c8b022f7d44de4a57350e8f30ff35ef7dc/distribution/dev.overlayed.Overlayed.metainfo.xml
         sha256: 35773ae27a47753852aac2ace795675cef222d5d9681e5cdd93d92b6d16831c5
 
-      # NOTE: we are skipping building from source as there is no direct pnpm support as of yet
-      # i saw this PR has some work to begin efforts on that https://github.com/flathub/flathub/pull/3876
+      # NOTE: skipping building from source as there is no direct pnpm support as of yet
+      # https://github.com/flathub/flathub/pull/3876
       # https://github.com/flatpak/flatpak-builder-tools/issues/383
       - type: file
         url: https://github.com/overlayeddev/overlayed/releases/download/v0.5.0/overlayed_0.5.0_amd64.AppImage
         dest-filename: Overlayed.AppImage
         sha256: bbcc773e89ba6cdbf4b3e91156b2702b2a82a91b5df7a8bbd2e274d5104a9725
+        # TODO: raise upstream but here to support arm build for linux
         only-arches: [x86_64]
