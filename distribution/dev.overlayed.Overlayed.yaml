@@ -1,3 +1,5 @@
+# use full info https://github.com/tauri-apps/tauri/discussions/4426
+
 id: dev.overlayed.Overlayed
 
 runtime: org.gnome.Platform
@@ -79,6 +81,7 @@ modules:
 
       # NOTE: we are skipping building from source as there is no direct pnpm support as of yet
       # i saw this PR has some work to begin efforts on that https://github.com/flathub/flathub/pull/3876
+      # https://github.com/flatpak/flatpak-builder-tools/issues/383
       - type: file
         url: https://github.com/overlayeddev/overlayed/releases/download/v0.5.0/overlayed_0.5.0_amd64.AppImage
         dest-filename: Overlayed.AppImage
