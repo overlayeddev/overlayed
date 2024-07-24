@@ -50,6 +50,10 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
   const commitSha = platformDownloads.latestVersion.substring(0, 7);
   const shortCommitSha = commitSha.substring(0, 7);
 
+  const downloadPath = canary
+    ? `/commits/${commitSha}`
+    : `/releases/tag/${commitSha}`;
+
   return (
     <div className="relative w-full overflow-hidden">
       <div className="flex flex-col items-center">
@@ -75,7 +79,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
               <a
                 className="hover:underline"
                 target="_blank"
-                href={`https://github.com/overlayeddev/overlayed/commit/${commitSha}`}
+                href={`https://github.com/overlayeddev/overlayed/${downloadPath}`}
               >
                 {shortCommitSha}
               </a>
