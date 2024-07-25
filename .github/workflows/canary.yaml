@@ -98,7 +98,7 @@ jobs:
         with:
           workspaces: "apps/desktop/src-tauri/target"
       - name: Install dependencies (ubuntu only)
-        if: matrix.settings.host == 'ubuntu-latest'
+        if: matrix.settings.host == 'ubuntu-20.04'
         run: |
           # https://tauri.app/v1/guides/building/linux/#limitations
           sudo apt-get update
