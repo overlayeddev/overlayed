@@ -100,8 +100,9 @@ jobs:
       - name: Install dependencies (ubuntu only)
         if: matrix.settings.host == 'ubuntu-latest'
         run: |
+          # https://tauri.app/v1/guides/building/linux/#limitations
           sudo apt-get update
-          sudo apt install libwebkit2gtk-4.0-dev \
+          sudo apt install \
             build-essential \
             curl \
             wget \
