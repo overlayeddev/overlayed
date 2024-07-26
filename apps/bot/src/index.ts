@@ -1,11 +1,14 @@
 // NOTE: this is from https://github.com/discord/cloudflare-sample-app/tree/main
 import { Hono } from "hono";
 import { InteractionResponseType, InteractionType } from "discord-interactions";
-import { CANARY, FEEDBACK, INFO, INSTALL } from "./commands.js";
+import { CANARY, FEEDBACK, INFO, INSTALL, SMART_SCREEN } from "./commands.js";
 import { Bindings } from "./types.js";
 import { verifyDiscordRequest } from "./utils.js";
 
 const app = new Hono<{ Bindings: Bindings }>();
+
+// https://discord.com/developers/applications/905987126099836938/emojis
+const LOGO_MOJI = "<:overlayed:1263836954789806154>";
 
 app.get("/", (c) => {
 	return new Response(`👋 ${c.env.DISCORD_APPLICATION_ID}`);
@@ -31,8 +34,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content:
-						"<:overlayed:1263836954789806154> Install the desktop app by visiting https://overlayed.dev",
+					content: `${LOGO_MOJI} Install the desktop app by visiting https://overlayed.dev`,
 				},
 			});
 		}
@@ -41,8 +43,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content:
-						"<:overlayed:1263836954789806154> Please send feedback to https://github.com/overlayeddev/overlayed/issues/new",
+					content: `${LOGO_MOJI} Please send feedback to https://github.com/overlayeddev/overlayed/issues/new`,
 				},
 			});
 		}
@@ -51,8 +52,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content:
-						"<:overlayed:1263836954789806154> https://x.com/OverlayedDev/status/1811448633377673374",
+					content: `${LOGO_MOJI} https://overlayed.dev/about`,
 				},
 			});
 		}
@@ -61,8 +61,16 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content:
-						"<:overlayed:1263836954789806154> Install the canary desktop app by visiting https://overlayed.dev/canary",
+					content: `${LOGO_MOJI} Install the canary desktop app by visiting https://overlayed.dev/canary`,
+				},
+			});
+		}
+
+		if (command === SMART_SCREEN.name.toLowerCase()) {
+			return c.json({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content: `${LOGO_MOJI} Learn more about Windows SmartScreen by visiting https://overlayed.dev/blog/windows-smartscreen-and-overlayed`,
 				},
 			});
 		}

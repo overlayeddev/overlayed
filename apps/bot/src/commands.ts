@@ -30,3 +30,10 @@ export const CANARY = defineCommand({
 	integration_types: [USER_INSTALL, GUILD_INSTALL],
 	contexts: [0, 1, 2],
 });
+
+export const SMART_SCREEN = defineCommand({
+	name: "smartscreen",
+	description: "Overlayed smartscreen information",
+	integration_types: [USER_INSTALL, GUILD_INSTALL],
+	contexts: [0, 1, 2],
+});
