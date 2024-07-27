@@ -61,6 +61,11 @@ modules:
       - mkdir -p /app/share/icons/hicolor/256x256/apps
       - mkdir -p /app/share/man/man1/
       - install -Dm755 usr/bin/* /app/bin
+      - install -Dm644 usr/share/icons/hicolor/128x128/apps/overlayed.png /app/share/icons/hicolor/128x128/apps/dev.overlayed.Overlayed.png
+      - install -Dm644 usr/share/icons/hicolor/32x32/apps/overlayed.png /app/share/icons/hicolor/32x32/apps/dev.overlayed.Overlayed.png
+      - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/overlayed.png /app/share/icons/hicolor/256x256/apps/dev.overlayed.Overlayed.png
+      - install -Dm644 usr/share/applications/overlayed.desktop /app/share/applications/dev.overlayed.Overlayed.desktop
+      - install -Dm644 usr/dev.overlayed.Overlayed.metainfo.xml /app/share/metainfo/com.overlayed.Desktop.metainfo.xml
 
     sources:
       - type: file
