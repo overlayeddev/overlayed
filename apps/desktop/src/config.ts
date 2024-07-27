@@ -15,6 +15,7 @@ export interface OverlayedConfig {
   telemetry: boolean;
   joinHistoryNotifications: boolean;
   showOnlyTalkingUsers: boolean;
+  showOwnUser: boolean;
 }
 
 export type OverlayedConfigKey = keyof OverlayedConfig;
@@ -27,6 +28,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   telemetry: true,
   joinHistoryNotifications: false,
   showOnlyTalkingUsers: false,
+  showOwnUser: false,
 };
 
 const CONFIG_FILE_NAME = "config.json";

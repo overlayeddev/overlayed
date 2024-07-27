@@ -7,9 +7,14 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
   const { users, me } = useAppStore();
 
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
+  const { value: showOwnUser } = useConfigValue("showOwnUser");
 
   const allUsers = Object.entries(users);
-  const userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking || item.id === me?.id) : allUsers;
+  let userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking) : allUsers;
+
+  if (!showOwnUser) {
+    userList = userList.filter(([, item]) => item.id !== me?.id);
+  }
 
   return (
     <div>
