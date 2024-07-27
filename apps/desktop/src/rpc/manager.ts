@@ -20,6 +20,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 interface TokenResponse {
   access_token: string;
+  refresh_token: string;
 }
 
 // create a thin wrapper around local storage to save and load an access token
@@ -28,12 +29,21 @@ class UserdataStore {
 
   private keys = {
     accessToken: "discord_access_token",
+    refreshToken: "discord_refresh_token",
     accessTokenExpiry: "discord_access_token_expiry",
     userData: "user_data",
   } as const;
 
   get accessToken() {
     return this.store.getItem(this.keys.accessToken);
+  }
+
+  get refreshToken() {
+    return this.store.getItem(this.keys.refreshToken);
+  }
+
+  setRefreshToken(token: string) {
+    this.store.setItem(this.keys.refreshToken, token);
   }
 
   setAccessToken(token: string) {
@@ -50,6 +60,7 @@ class UserdataStore {
 
   removeAccessToken() {
     this.store.removeItem(this.keys.accessToken);
+    this.store.removeItem(this.keys.refreshToken);
     this.store.removeItem(this.keys.accessTokenExpiry);
   }
 }
@@ -306,7 +317,8 @@ class SocketManager {
 
       const text: TokenResponse = await res.json();
       // we need send the token to discord
-      this.userdataStore.setAccessToken(text.access_token);
+      this.userdataStore.setAccessToken(res.data.access_token);
+      this.userdataStore.setRefreshToken(res.data.refresh_token);
 
       // login with the token
       this.login(text.access_token);
