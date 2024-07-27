@@ -52,7 +52,8 @@ app.post("/upload-canary-artifacts", async (c) => {
 	);
 
 	// all workflow runs for canary
-	const workflowRuns: WorkflowRuns = await canaryWorkflowRunsResponse.json();
+	const workflowRuns =
+		(await canaryWorkflowRunsResponse.json()) as WorkflowRuns;
 
 	// find the most recent successful run
 	const successfulRun = workflowRuns.workflow_runs.find(
@@ -68,19 +69,16 @@ app.post("/upload-canary-artifacts", async (c) => {
 		);
 	}
 
-	const uploadedArtifacts: Artifacts = await fetch(
-		successfulRun.artifacts_url,
-		{
-			cf: {
-				cacheTtl: 300,
-				cacheEverything: true,
-			},
-			headers: {
-				Authorization: `token ${c.env.GITHUB_TOKEN}`,
-				"User-Agent": "overlayed-updater v1",
-			},
+	const uploadedArtifacts = (await fetch(successfulRun.artifacts_url, {
+		cf: {
+			cacheTtl: 300,
+			cacheEverything: true,
 		},
-	).then((res) => res.json());
+		headers: {
+			Authorization: `token ${c.env.GITHUB_TOKEN}`,
+			"User-Agent": "overlayed-updater v1",
+		},
+	}).then((res) => res.json())) as Artifacts;
 
 	const uploaded = [];
 	// download all the files and upload them to r2
@@ -116,6 +114,17 @@ app.post("/upload-canary-artifacts", async (c) => {
 	);
 
 	console.log("uploaded manifest", uploaded);
+
+	// inform discord role that we have a new canary version
+	await fetch(c.env.CANARY_WEBHOOK_URL, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			content: `<@&1266782388168560952> New Overlayed Canary version uploaded: ${successfulRun.head_sha}`,
+		}),
+	});
 
 	return c.json(
 		{

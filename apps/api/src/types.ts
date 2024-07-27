@@ -30,4 +30,5 @@ export type Bindings = {
 	CLIENT_ID: string;
 	CLIENT_SECRET: string;
 	CANARY_UPLOAD_SECRET: string;
+	CANARY_WEBHOOK_URL: string;
 };
