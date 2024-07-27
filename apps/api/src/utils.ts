@@ -135,7 +135,14 @@ export async function getLatestVersions({ authToken }: LatestVersionInput) {
 	}
 }
 
-// auth stuffz
+/**
+ * Get a token from discord
+ *
+ * @param {string} code - the code from discord
+ * @param {any} env - the client/id and secret object
+ * @param {boolean} isProd - janky thing to determine if we are in prod
+ * @returns {any} - the response from discord
+ */
 export const fetchAuthToken = (
 	code: string,
 	env: {
@@ -153,6 +160,40 @@ export const fetchAuthToken = (
 	form.append("grant_type", "authorization_code");
 	form.append("redirect_uri", `${baseUrl}/oauth/callback`);
 	form.append("code", code);
+
+	return fetch("https://discord.com/api/oauth2/token", {
+		method: "POST",
+		body: form.toString(),
+		headers: {
+			"User-Agent": "overlayed-auth-api",
+			"Content-Type": "application/x-www-form-urlencoded",
+		},
+	});
+};
+
+/**
+ * Get a token from discord
+ *
+ * @param {string} refreshToken - the refreshToken from discord
+ * @param {any} env - the client/id and secret object
+ * @returns {any} - the response from discord
+ */
+export const refreshAuthToken = (
+	refreshToken: string,
+	env: {
+		CLIENT_ID: string;
+		CLIENT_SECRET: string;
+	},
+	// TODO: find a better way
+) => {
+	const form = new URLSearchParams();
+
+	form.append("client_id", env.CLIENT_ID);
+	form.append("client_secret", env.CLIENT_SECRET);
+	form.append("grant_type", "authorization_code");
+	form.append("refresh_token", refreshToken);
+
+	console.log("formdata:", form.toString());
 
 	return fetch("https://discord.com/api/oauth2/token", {
 		method: "POST",
