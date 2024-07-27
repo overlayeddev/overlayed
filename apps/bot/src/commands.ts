@@ -37,3 +37,10 @@ export const SMART_SCREEN = defineCommand({
 	integration_types: [USER_INSTALL, GUILD_INSTALL],
 	contexts: [0, 1, 2],
 });
+
+export const HELP = defineCommand({
+	name: "help",
+	description: "Overlayed app commands",
+	integration_types: [USER_INSTALL, GUILD_INSTALL],
+	contexts: [0, 1, 2],
+});

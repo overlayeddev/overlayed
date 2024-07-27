@@ -1,7 +1,14 @@
 // NOTE: this is from https://github.com/discord/cloudflare-sample-app/tree/main
 import { Hono } from "hono";
 import { InteractionResponseType, InteractionType } from "discord-interactions";
-import { CANARY, FEEDBACK, INFO, INSTALL, SMART_SCREEN } from "./commands.js";
+import {
+	CANARY,
+	FEEDBACK,
+	HELP,
+	INFO,
+	INSTALL,
+	SMART_SCREEN,
+} from "./commands.js";
 import { Bindings } from "./types.js";
 import { verifyDiscordRequest } from "./utils.js";
 
@@ -71,6 +78,25 @@ app.post("/", async (c) => {
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
 					content: `${LOGO_MOJI} Learn more about Windows SmartScreen by visiting https://overlayed.dev/blog/windows-smartscreen-and-overlayed`,
+				},
+			});
+		}
+
+		if (command === HELP.name.toLowerCase()) {
+			return c.json({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content: "overlayed app commands",
+					embeds: [
+						{
+							id: 652627557,
+							title: `${LOGO_MOJI} Overlayed App Commands`,
+							description:
+								"`/info` - Learn more about about Overlayed\n\n`/install` - Where to install Overlayed stable\n\n`/canary` - Where to install Overlayed canary\n\n`/feedback` - Where to report bugs and suggest ideas for Overlayed\n\n`/smartscreen` - Learn about why SmartScreen shows up on windows for Overlayed\n\n`/help` -  Show the commands available for Overlayed ",
+							color: 2326507,
+							fields: [],
+						},
+					],
 				},
 			});
 		}
