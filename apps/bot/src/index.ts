@@ -86,11 +86,11 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content: "overlayed app commands",
+					content: `${LOGO_MOJI} Overlayed App Commands`,
 					embeds: [
 						{
 							id: 652627557,
-							title: `${LOGO_MOJI} Overlayed App Commands`,
+							title: "",
 							description:
 								"`/info` - Learn more about about Overlayed\n\n`/install` - Where to install Overlayed stable\n\n`/canary` - Where to install Overlayed canary\n\n`/feedback` - Where to report bugs and suggest ideas for Overlayed\n\n`/smartscreen` - Learn about why SmartScreen shows up on windows for Overlayed\n\n`/help` -  Show the commands available for Overlayed ",
 							color: 2326507,
