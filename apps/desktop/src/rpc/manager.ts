@@ -13,57 +13,11 @@ import { RPCErrors } from "./errors";
 import { Metric, track, trackEvent } from "@/metrics";
 import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
-import type { VoiceUser } from "@/types";
 import { getVersion } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
-import { invoke } from "@tauri-apps/api/core";
-
-interface TokenResponse {
-  access_token: string;
-  refresh_token: string;
-}
-
-// create a thin wrapper around local storage to save and load an access token
-class UserdataStore {
-  private store = window.localStorage;
-
-  private keys = {
-    accessToken: "discord_access_token",
-    refreshToken: "discord_refresh_token",
-    accessTokenExpiry: "discord_access_token_expiry",
-    userData: "user_data",
-  } as const;
-
-  get accessToken() {
-    return this.store.getItem(this.keys.accessToken);
-  }
-
-  get refreshToken() {
-    return this.store.getItem(this.keys.refreshToken);
-  }
-
-  setRefreshToken(token: string) {
-    this.store.setItem(this.keys.refreshToken, token);
-  }
-
-  setAccessToken(token: string) {
-    this.store.setItem(this.keys.accessToken, token);
-  }
-
-  setAccessTokenExpiry(dateString: string) {
-    this.store.setItem(this.keys.accessTokenExpiry, dateString);
-  }
-
-  setUserdata(userdata: VoiceUser) {
-    this.store.setItem(this.keys.userData, JSON.stringify(userdata));
-  }
-
-  removeAccessToken() {
-    this.store.removeItem(this.keys.accessToken);
-    this.store.removeItem(this.keys.refreshToken);
-    this.store.removeItem(this.keys.accessTokenExpiry);
-  }
-}
+import { invoke } from "@tauri-apps/api";
+import { useTokenStore as TokenStore } from "@/token-store";
+import type { TokenResponse } from "@/types";
 
 /**
  * Collection of events that are needed to sub to for voice states
@@ -77,8 +31,13 @@ const SUBSCRIBABLE_EVENTS = [
 ];
 
 export const APP_ID = "905987126099836938";
+
+// TODO: make this configurable/enumerable
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
-const API_URL = "https://api.overlayed.dev";
+
+// const API_URL = "https://api.overlayed.dev";
+// NOTE: USED FOR TESTING LOCALLY
+const API_URL = "http://127.0.0.1:8787";
 
 interface DiscordPayload {
   cmd: `${RPCCommand}`;
@@ -98,7 +57,7 @@ class SocketManager {
   public socket: WebSocket | null = null;
   public currentChannelId = null;
   // TODO: move this so we can use it in settings too
-  public userdataStore: UserdataStore = new UserdataStore();
+  public userdataStore = TokenStore.getState();
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
   public version: string | undefined;
@@ -201,7 +160,7 @@ class SocketManager {
 
   /**
    * Message listener when we get message from discord
-   * @param payload a JSON object of the parsed message
+   * @param event a JSON object of the parsed message
    */
   private async onMessage(event: Message) {
     // TODO: this has to be a bug in the upstream lib, we should get a proper code
@@ -226,7 +185,7 @@ class SocketManager {
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
-      const acessToken = this.userdataStore.accessToken;
+      const acessToken = null; //this.userdataStore.accessToken;
 
       if (acessToken) {
         this.login(acessToken);
@@ -310,18 +269,26 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch(`${API_URL}/token`, {
+      const res = await fetch<TokenResponse>(`${API_URL}/v2/token`, {
         method: "POST",
         body: JSON.stringify({ code }),
       });
 
-      const text: TokenResponse = await res.json();
-      // we need send the token to discord
-      this.userdataStore.setAccessToken(res.data.access_token);
-      this.userdataStore.setRefreshToken(res.data.refresh_token);
+      const { authdata, userdata } = res.data;
+
+      console.log({
+        authdata,
+        userdata,
+      });
+
+      this.userdataStore.setAuth(userdata.id, {
+        accessToken: authdata.accessToken,
+        accessTokenExpiry: authdata.accessTokenExpiry,
+        refreshToken: authdata.refreshToken,
+      });
 
       // login with the token
-      this.login(text.access_token);
+      this.login(authdata.accessToken);
     }
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
@@ -342,12 +309,12 @@ class SocketManager {
     if (payload.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
       // they have a token from the old client id
       if (payload.data.code === RPCErrors.INVALID_CLIENTID) {
-        this.userdataStore.removeAccessToken();
+        if (this.store.me?.id) this.userdataStore.clear(this.store.me?.id);
       }
 
       // they have an invalid token
       if (payload.data.code === RPCErrors.INVALID_TOKEN) {
-        this.userdataStore.removeAccessToken();
+        if (this.store.me?.id) this.userdataStore.clear(this.store.me?.id);
       }
 
       this.store.pushError(payload.data.message);
@@ -383,8 +350,9 @@ class SocketManager {
       this.userdataStore.setAccessTokenExpiry(payload.data.expires);
       this.store.setMe(payload.data.user);
 
-      // store in localstorage that we have auth
-      this.userdataStore.setUserdata(payload.data.user);
+      // store in localstorage that we have auth info
+      // NOTE: this only containers info about the user, we need to have a way to store the session info
+      this.userdataStore.setUserdata(payload.data.user.id, payload.data.user);
 
       // move the view to /channel
       this.navigate("/channel");

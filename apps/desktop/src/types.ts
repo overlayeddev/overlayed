@@ -157,3 +157,34 @@ export interface JoinHistoryLogUser extends OverlayedUser {
 }
 
 export type ChannelType = (typeof CHANNEL_TYPES)[keyof typeof CHANNEL_TYPES];
+
+export interface DiscordProfile {
+  accent_color: number;
+  avatar: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  avatar_decoration_data: any;
+  banner: string;
+  banner_color: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  clan: any;
+  discriminator: string;
+  flags: number;
+  global_name: string;
+  id: string;
+  locale: string;
+  mfa_enabled: boolean;
+  premium_type: number;
+  public_flags: number;
+  username: string;
+}
+
+export interface TokenResponse {
+  authdata: Authdata;
+  userdata: DiscordProfile;
+}
+
+export interface Authdata {
+  accessToken: string;
+  accessTokenExpiry: string;
+  refreshToken: string;
+}
