@@ -8,6 +8,7 @@
 #[macro_use]
 extern crate objc;
 
+mod app_handle;
 mod commands;
 mod constants;
 mod tray;
@@ -22,7 +23,13 @@ use tray::Tray;
 use window_custom::WindowExt;
 
 #[cfg(target_os = "macos")]
+use app_handle::AppHandleExt;
+
+#[cfg(target_os = "macos")]
 use window_custom::macos::WindowExtMacos;
+
+#[cfg(target_os = "macos")]
+use system_notification::WorkspaceListener;
 
 #[cfg(target_os = "macos")]
 use tauri::Window;
@@ -31,9 +38,33 @@ pub struct Pinned(AtomicBool);
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(window: &Window) {
+  use tauri::{AppHandle, Wry};
+  use tauri_nspanel::ManagerExt;
+
   window.remove_shadow();
 
-  window.set_float_panel(constants::HIGHER_LEVEL_THAN_LEAGUE);
+  window.set_float_panel(constants::OVERLAYED_NORMAL_LEVEL);
+
+  let app_handle = window.app_handle();
+
+  app_handle.listen_workspace(
+    "NSWorkspaceDidActivateApplicationNotification",
+    |app_handle| {
+      let bundle_id = AppHandle::<Wry>::frontmost_application_bundle_id();
+
+      if let Some(bundle_id) = bundle_id {
+        let is_league_of_legends = bundle_id == "com.riotgames.leagueoflegends";
+
+        let panel = app_handle.get_panel("main").unwrap();
+
+        panel.set_level(if is_league_of_legends {
+          constants::HIGHER_LEVEL_THAN_LEAGUE
+        } else {
+          constants::OVERLAYED_NORMAL_LEVEL
+        });
+      }
+    },
+  );
 }
 
 fn main() {

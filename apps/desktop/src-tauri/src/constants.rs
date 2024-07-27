@@ -16,4 +16,6 @@ pub const SHOW_UPDATE_MODAL: &str = "show_update_modal";
 
 /// window levels
 // NOTE: league sets it's window to 1000 so we go one higher
-pub const HIGHER_LEVEL_THAN_LEAGUE: i32 = 1001;
+pub static HIGHER_LEVEL_THAN_LEAGUE: i32 = 1001;
+/// Float panel window level
+pub static OVERLAYED_NORMAL_LEVEL: i32 = 8;
