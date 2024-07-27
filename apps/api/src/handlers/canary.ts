@@ -122,7 +122,10 @@ app.post("/upload-canary-artifacts", async (c) => {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({
-			content: `<@&1266782388168560952> New Overlayed Canary version uploaded: ${successfulRun.head_sha}`,
+			content: `<@&1266782388168560952> New Overlayed Canary version uploaded [${successfulRun.head_sha}](<https://github.com/overlayeddev/overlayed/commit/${successfulRun.head_sha}>)
+
+You can download it on [overlayed.dev/canary](<https://overlayed.dev/canary>)
+`,
 		}),
 	});
 
