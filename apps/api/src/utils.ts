@@ -151,8 +151,6 @@ export const fetchAuthToken = (
 	form.append("redirect_uri", `${baseUrl}/oauth/callback`);
 	form.append("code", code);
 
-	console.log("formdata:", form.toString());
-
 	return fetch("https://discord.com/api/oauth2/token", {
 		method: "POST",
 		body: form.toString(),
@@ -185,8 +183,6 @@ export const refreshAuthToken = (
 	form.append("grant_type", "authorization_code");
 	form.append("refresh_token", refreshToken);
 
-	console.log("formdata:", form.toString());
-
 	return fetch("https://discord.com/api/oauth2/token", {
 		method: "POST",
 		body: form.toString(),
@@ -195,6 +191,22 @@ export const refreshAuthToken = (
 			"Content-Type": "application/x-www-form-urlencoded",
 		},
 	});
+};
+
+// TODO: make a shared type for this? so it's not all snaked cased
+/**
+ * get the users data from discord
+ * @returns {string} token - the access token
+ * @returns {any} - the response from discord
+ */
+export const getUserProfile = (accessToken: string) => {
+	return fetch("https://discord.com/api/v10/users/@me", {
+		method: "GET",
+		headers: {
+			"User-Agent": "overlayed-auth-api",
+			Authorization: `Bearer ${accessToken}`,
+		},
+	}).then((res) => res.json());
 };
 
 export function isProd(url: string) {
