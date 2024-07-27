@@ -70,7 +70,7 @@
       "active": true,
       "targets": "all",
       "identifier": "com.overlayed.dev",
-      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"]
+      "icon": ["icons/stable/32x32.png", "icons/stable/128x128.png", "icons/stable/128x128@2x.png", "icons/stable/icon.icns", "icons/stable/icon.ico"]
     },
     "security": {
       "csp": null
