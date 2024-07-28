@@ -8,7 +8,13 @@
       "active": true,
       "targets": ["appimage", "nsis", "dmg"],
       "identifier": "com.overlayed.canary.dev",
-      "icon": ["icons/canary/32x32.png", "icons/canary/128x128.png", "icons/canary/128x128@2x.png", "icons/canary/icon.icns", "icons/canary/icon.ico"]
+      "icon": [
+        "icons/canary/32x32.png",
+        "icons/canary/128x128.png",
+        "icons/canary/128x128@2x.png",
+        "icons/canary/icon.icns",
+        "icons/canary/icon.ico"
+      ]
     }
   }
 }

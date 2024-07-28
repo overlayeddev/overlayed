@@ -68,7 +68,13 @@
       "active": true,
       "targets": "all",
       "identifier": "com.overlayed.dev",
-      "icon": ["icons/stable/32x32.png", "icons/stable/128x128.png", "icons/stable/128x128@2x.png", "icons/stable/icon.icns", "icons/stable/icon.ico"]
+      "icon": [
+        "icons/stable/32x32.png",
+        "icons/stable/128x128.png",
+        "icons/stable/128x128@2x.png",
+        "icons/stable/icon.icns",
+        "icons/stable/icon.ico"
+      ]
     },
     "security": {
       "csp": null
