@@ -51,7 +51,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content: `${LOGO_MOJI} If you want to help out, please check out [Contributing](https://github.com/overlayeddev/overlayed/blob/main/CONTRIBUTING.md) to get started.`,
+					content: `${LOGO_MOJI} If you want to help out, please check out **[Contributing](https://github.com/overlayeddev/overlayed/blob/main/CONTRIBUTING.md)** to get started.`,
 				},
 			});
 		}
