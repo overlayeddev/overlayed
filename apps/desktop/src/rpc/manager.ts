@@ -63,6 +63,9 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.VOICE_STATE_CREATE,
   RPCEvent.VOICE_STATE_DELETE,
   RPCEvent.VOICE_STATE_UPDATE,
+  // NOTE: these dont work or im using them wrong?
+  // RPCEvent.SCREENSHARE_STATE_UPDATE,
+  // RPCEvent.VIDEO_STATE_UPDATE,
 ];
 
 export const APP_ID = "905987126099836938";
@@ -91,6 +94,8 @@ class SocketManager {
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
   public version: string | undefined;
+  // @ts-expect-error need better types
+  public soundBoardItemsResolver = Promise.withResolvers();
 
   private navigate(url: string) {
     if (window.location.hash.includes("#settings")) return;
@@ -151,7 +156,7 @@ class SocketManager {
     this.send({
       args: {
         client_id: APP_ID,
-        scopes: ["rpc", "identify"],
+        scopes: ["identify", "rpc", "rpc.voice.read", "rpc.video.read", "rpc.screenshare.read"],
       },
       cmd: RPCCommand.AUTHORIZE,
     });
@@ -239,6 +244,11 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
       this.store.updateUser(payload.data);
+    }
+    
+    if (payload.cmd === RPCCommand.GET_SOUNDBOARD_SOUNDS) {
+      // update the Promise
+      this.soundBoardItemsResolver.resolve(payload.data);
     }
 
     // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
@@ -376,12 +386,21 @@ class SocketManager {
     });
   }
 
+  /** Get the soundboard items */
+  public async getSoundBoardItems() {
+    await this.send({
+      cmd: RPCCommand.GET_SOUNDBOARD_SOUNDS,
+    });
+
+    return this.soundBoardItemsResolver.promise;
+  }
+
   /**
    * Send a message to discord
    * @param payload {DiscordPayload} the payload to send
    */
-  private send(payload: DiscordPayload) {
-    this.socket?.send(
+  public send(payload: DiscordPayload) {
+    return this.socket?.send(
       JSON.stringify({
         ...payload,
         nonce: uuid.v4(),

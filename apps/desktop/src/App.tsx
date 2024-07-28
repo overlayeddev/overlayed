@@ -13,9 +13,11 @@ import { useUpdate } from "./hooks/use-update";
 import { useAppStore } from "./store";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
+import { Button } from "./components/ui/button";
+import { RPCCommand } from "./rpc/command";
 
 function App() {
-  useSocket();
+  const socket = useSocket();
   useDisableWebFeatures();
 
   useEffect(() => {
@@ -42,6 +44,25 @@ function App() {
         />
       )}
 
+      <Button
+        onClick={async () => {
+
+          const allSounds = await socket?.getSoundBoardItems();
+          console.log({ allSounds })
+
+          // play ahh
+          socket?.send({
+            cmd: RPCCommand.PLAY_SOUNDBOARD_SOUND,
+            args: {
+              name: "cricket",
+              sound_id: "3",
+              guild_id: "DEFAULT",
+            },
+          });
+        }}
+      >
+        Test soundbard
+      </Button>
       <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />
