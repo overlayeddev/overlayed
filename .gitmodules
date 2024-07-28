@@ -1,3 +1,0 @@
-[submodule "distribution/shared-modules"]
-	path = distribution/shared-modules
-	url = https://github.com/flathub/shared-modules
