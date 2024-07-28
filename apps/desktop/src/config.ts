@@ -28,7 +28,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   telemetry: true,
   joinHistoryNotifications: false,
   showOnlyTalkingUsers: false,
-  showOwnUser: false,
+  showOwnUser: true,
 };
 
 const CONFIG_FILE_NAME = "config.json";
