@@ -46,9 +46,8 @@ function App() {
 
       <Button
         onClick={async () => {
-
           const allSounds = await socket?.getSoundBoardItems();
-          console.log({ allSounds })
+          console.log({ allSounds });
 
           // play ahh
           socket?.send({
