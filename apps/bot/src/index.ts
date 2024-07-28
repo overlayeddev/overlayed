@@ -2,12 +2,13 @@
 import { Hono } from "hono";
 import { InteractionResponseType, InteractionType } from "discord-interactions";
 import {
-	CANARY,
+	SMART_SCREEN,
+	CONTRIBUTING,
 	FEEDBACK,
+	INSTALL,
+	CANARY,
 	HELP,
 	INFO,
-	INSTALL,
-	SMART_SCREEN,
 } from "./commands.js";
 import { Bindings } from "./types.js";
 import { verifyDiscordRequest } from "./utils.js";
@@ -42,6 +43,15 @@ app.post("/", async (c) => {
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
 					content: `${LOGO_MOJI} Install the desktop app by visiting https://overlayed.dev`,
+				},
+			});
+		}
+
+		if (command === CONTRIBUTING.name.toLowerCase()) {
+			return c.json({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content: `${LOGO_MOJI} If you want to help out, please check out [Contributing](https://github.com/overlayeddev/overlayed/blob/main/CONTRIBUTING.md) to get started.`,
 				},
 			});
 		}
