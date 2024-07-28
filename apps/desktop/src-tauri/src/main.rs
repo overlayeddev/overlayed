@@ -53,7 +53,7 @@ fn apply_macos_specifics(window: &Window) {
       let bundle_id = AppHandle::<Wry>::frontmost_application_bundle_id();
 
       if let Some(bundle_id) = bundle_id {
-        let is_league_of_legends = bundle_id == "com.riotgames.leagueoflegends";
+        let is_league_of_legends = bundle_id == "com.riotgames.LeagueofLegends.GameClient";
 
         let panel = app_handle.get_panel("main").unwrap();
 
