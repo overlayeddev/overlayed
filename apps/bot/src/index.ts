@@ -51,7 +51,7 @@ app.post("/", async (c) => {
 			return c.json({
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
-					content: `${LOGO_MOJI} If you want to help out, please check out [Contributing](https://github.com/overlayeddev/overlayed/blob/main/CONTRIBUTING.md) to get started.`,
+					content: `${LOGO_MOJI} If you want to help out, please check out **[Contributing](https://github.com/overlayeddev/overlayed/blob/main/CONTRIBUTING.md)** to get started.`,
 				},
 			});
 		}
@@ -102,7 +102,7 @@ app.post("/", async (c) => {
 							id: 652627557,
 							title: "",
 							description:
-								"`/info` - Learn more about about Overlayed\n\n`/install` - Where to install Overlayed stable\n\n`/canary` - Where to install Overlayed canary\n\n`/feedback` - Where to report bugs and suggest ideas for Overlayed\n\n`/smartscreen` - Learn about why SmartScreen shows up on windows for Overlayed\n\n`/help` -  Show the commands available for Overlayed ",
+								"`/info` - Learn more about about Overlayed\n\n`/install` - Where to install Overlayed stable\n\n`/canary` - Where to install Overlayed canary\n\n`/feedback` - Where to report bugs and suggest ideas for Overlayed\n\n`/smartscreen` - Learn about why SmartScreen shows up on windows for Overlayed\n\n`/help` -  Show the commands available for Overlayed\n\n`/contributing` - Learn how to contribute to Overlayed",
 							color: 2326507,
 							fields: [],
 						},
