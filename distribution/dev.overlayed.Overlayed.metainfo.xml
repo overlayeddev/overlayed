@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>com.overlayed.Overlayed</id>
+  <id>dev.overlayed.Overlayed</id>
   <launchable type="desktop-id">com.overlayed.Overlayed.desktop</launchable>
   <name>Overlayed</name>
   <developer_name>Team Overlayed</developer_name>
