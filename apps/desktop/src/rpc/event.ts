@@ -21,6 +21,8 @@ export enum RPCEvent {
   VIDEO_STATE_UPDATE = "VIDEO_STATE_UPDATE",
   /** not quite sure */
   SCREENSHARE_STATE_UPDATE = "SCREENSHARE_STATE_UPDATE",
+  /** sent when the you get a message that tags your or a dm */
+  NOTIFICATION_CREATE = "NOTIFICATION_CREATE",
 }
 
 // TODO: move this somewhere

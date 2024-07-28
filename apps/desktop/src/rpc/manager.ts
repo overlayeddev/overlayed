@@ -63,9 +63,6 @@ const SUBSCRIBABLE_EVENTS = [
   RPCEvent.VOICE_STATE_CREATE,
   RPCEvent.VOICE_STATE_DELETE,
   RPCEvent.VOICE_STATE_UPDATE,
-  // NOTE: these dont work or im using them wrong?
-  // RPCEvent.SCREENSHARE_STATE_UPDATE,
-  // RPCEvent.VIDEO_STATE_UPDATE,
 ];
 
 export const APP_ID = "905987126099836938";
@@ -156,7 +153,20 @@ class SocketManager {
     this.send({
       args: {
         client_id: APP_ID,
-        scopes: ["identify", "rpc", "rpc.voice.read", "rpc.video.read", "rpc.screenshare.read", "guilds"],
+        scopes: [
+          "identify",
+          "rpc",
+          "guilds",
+          "rpc.notifications.read",
+          // TODO: how do you use other scopes
+          // "rpc.activities.write",
+          // "rpc.voice.read",
+          // "rpc.voice.write",
+          // "rpc.video.read",
+          // "rpc.video.write",
+          // "rpc.screenshare.read",
+          // "rpc.screenshare.write",
+        ],
       },
       cmd: RPCCommand.AUTHORIZE,
     });
@@ -198,6 +208,7 @@ class SocketManager {
     }
 
     const payload: DiscordPayload = JSON.parse(event.data);
+    console.log(payload);
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
@@ -348,10 +359,10 @@ class SocketManager {
       // try to find the user
       this.requestUserChannel();
 
-      // subscribe to get notified when the user changes channels
+      // sub to any otifs
       this.send({
         cmd: RPCCommand.SUBSCRIBE,
-        evt: RPCEvent.VOICE_CHANNEL_SELECT,
+        evt: RPCEvent.NOTIFICATION_CREATE,
       });
 
       this.userdataStore.setAccessTokenExpiry(payload.data.expires);
@@ -420,7 +431,6 @@ class SocketManager {
         cmd,
         args: { channel_id: channelId },
         evt: eventName,
-        nonce: uuid.v4(),
       })
     );
   }
