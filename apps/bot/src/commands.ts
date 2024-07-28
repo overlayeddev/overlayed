@@ -10,6 +10,13 @@ export const INSTALL = defineCommand({
 	contexts: [0, 1, 2],
 });
 
+export const CONTRIBUTING = defineCommand({
+	name: "contributing",
+	description: "How to contribute to the Overlayed app",
+	integration_types: [USER_INSTALL, GUILD_INSTALL],
+	contexts: [0, 1, 2],
+});
+
 export const FEEDBACK = defineCommand({
 	name: "feedback",
 	description: "Send feedback to the Overlayed team",
