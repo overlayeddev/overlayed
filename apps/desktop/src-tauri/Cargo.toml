@@ -14,8 +14,6 @@ tauri-build = { version = "1.5.2", features = [] }
 
 [dependencies]
 tauri = { version = "1.6.8", features = [
-  "window-maximize",
-  "window-unmaximize",
   "fs-create-dir",
   "notification-all",
   "global-shortcut-all",
