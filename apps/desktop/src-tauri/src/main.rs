@@ -55,7 +55,7 @@ fn apply_macos_specifics(window: &Window) {
       if let Some(bundle_id) = bundle_id {
         let is_league_of_legends = bundle_id == "com.riotgames.LeagueofLegends.GameClient";
 
-        let panel = app_handle.get_panel("main").unwrap();
+        let panel = app_handle.get_panel(MAIN_WINDOW_NAME).unwrap();
 
         panel.set_level(if is_league_of_legends {
           constants::HIGHER_LEVEL_THAN_LEAGUE
