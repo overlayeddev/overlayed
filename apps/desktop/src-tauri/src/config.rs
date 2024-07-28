@@ -14,12 +14,19 @@ pub enum WindowLayout {
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
+pub struct FeatureFlags {
+  hide_overlay_on_mouseover: bool,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct Config {
   pub pin: bool,
   pub placment: WindowLayout,
   pub telemetry: bool,
   pub join_history_notifications: bool,
   pub show_only_talking_users: bool,
+  pub feature_flags: FeatureFlags,
 }
 
 // create a helper function to seed the config with values
@@ -38,8 +45,9 @@ pub fn create_config(app: &AppHandle) {
   store.insert("pin".to_string(), json!(false));
   store.insert("placement".to_string(), json!(WindowLayout::Center));
   store.insert("telemetry".to_string(), json!(true));
-  store.insert("join_history_notifications".to_string(), json!(true));
-  store.insert("show_only_talking_users".to_string(), json!(true));
+  store.insert("joinHistoryNotifications".to_string(), json!(true));
+  store.insert("showOnlyTalkingUsers".to_string(), json!(true));
+  store.insert("featureFlags".to_string(), json!({}));
 
   store.save();
   debug!("Config file created successfully");
