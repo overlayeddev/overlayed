@@ -48,6 +48,8 @@ impl Tray {
         TRAY_TOGGLE_PIN => {
           let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
 
+          window.show().unwrap();
+
           toggle_pin(window, app.state::<Pinned>())
         }
         TRAY_SHOW_APP => {
