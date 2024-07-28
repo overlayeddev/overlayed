@@ -156,7 +156,7 @@ class SocketManager {
     this.send({
       args: {
         client_id: APP_ID,
-        scopes: ["identify", "rpc", "rpc.voice.read", "rpc.video.read", "rpc.screenshare.read"],
+        scopes: ["identify", "rpc", "rpc.voice.read", "rpc.video.read", "rpc.screenshare.read", "guilds"],
       },
       cmd: RPCCommand.AUTHORIZE,
     });
