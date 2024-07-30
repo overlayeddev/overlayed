@@ -51,7 +51,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
   const shortCommitSha = commitSha.substring(0, 7);
 
   const downloadPath = canary
-    ? `commit/${commitSha}`
+    ? `tree/${commitSha}`
     : `releases/tag/${commitSha}`;
 
   return (
