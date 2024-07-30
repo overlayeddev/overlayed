@@ -51,8 +51,8 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
   const shortCommitSha = commitSha.substring(0, 7);
 
   const downloadPath = canary
-    ? `/commits/${commitSha}`
-    : `/releases/tag/${commitSha}`;
+    ? `commit/${commitSha}`
+    : `releases/tag/${commitSha}`;
 
   return (
     <div className="relative w-full overflow-hidden">
