@@ -10,14 +10,20 @@ extern crate objc;
 
 mod app_handle;
 mod commands;
+mod config;
 mod constants;
 mod tray;
 mod window_custom;
 
 use crate::commands::*;
+use config::create_config;
 use constants::*;
+use log::LevelFilter;
+use log::{debug, info};
+use std::str::FromStr;
 use std::sync::atomic::AtomicBool;
 use tauri::{generate_handler, Manager, SystemTray};
+use tauri_plugin_log::LogTarget;
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
 use window_custom::WindowExt;
@@ -42,6 +48,7 @@ fn apply_macos_specifics(window: &Window) {
   use tauri_nspanel::ManagerExt;
 
   window.remove_shadow();
+  debug!("macOS - Removed window shadow");
 
   window.set_float_panel(constants::OVERLAYED_NORMAL_LEVEL);
 
@@ -71,9 +78,23 @@ fn main() {
   let flags = StateFlags::POSITION | StateFlags::SIZE;
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
 
+  let log_level = std::env::var("LOG_LEVEL")
+    .ok()
+    .and_then(|thing| LevelFilter::from_str(thing.as_str()).ok())
+    .unwrap_or(LevelFilter::Info);
+
+  info!("Log level set to: {:?}", log_level);
+
   let mut app = tauri::Builder::default()
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
+    .plugin(
+      tauri_plugin_log::Builder::default()
+        .targets([LogTarget::LogDir, LogTarget::Stdout, LogTarget::Stdout])
+        .level(log_level)
+        .build(),
+    )
+    .plugin(tauri_plugin_store::Builder::default().build())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
@@ -86,6 +107,7 @@ fn main() {
   app = app
     .manage(Pinned(AtomicBool::new(false)))
     .setup(|app| {
+      debug!("Starting the setup hook");
       let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
       let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
 
@@ -113,11 +135,17 @@ fn main() {
       {
         window.open_devtools();
         settings.open_devtools();
+        debug!("Opening devtools");
       }
 
       // update the system tray
       Tray::update_tray(&app.app_handle());
+      debug!("Updated the tray/taskbar");
 
+      // we should call this to create the config file
+      create_config(&app.app_handle());
+
+      info!("App setup completed successfully!");
       Ok(())
     })
     // Add the system tray
