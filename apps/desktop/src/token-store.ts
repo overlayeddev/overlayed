@@ -41,4 +41,4 @@ const storeInit: StateCreator<TokenState, [["zustand/persist", unknown], ["zusta
     }),
 });
 
-export const useTokenStore = create<TokenState & TokenActions>()(immer(persist(storeInit, { name: "token-store" })));
+export const useTokenStore = create<TokenState & TokenActions>()(immer(persist(storeInit, { nam : "token-store" })));
