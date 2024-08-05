@@ -10,7 +10,10 @@ const createMockedProxy = (filter) =>
     changeOrigin: true,
     onProxyReq: (proxyReq) => {
       // replace all slashes after the first one with dashes
-      const jsonPath = proxyReq.path.replace(/\//g, "-").replace(/^-/, "/");
+      const jsonPath = proxyReq.path
+        .replace(/\//g, "-")
+        .replace(/^-/, "/")
+        .substring(1);
       console.log(
         `[🌐 Mocked Proxy] Resolving ${proxyReq.path} to /mocks/${jsonPath}.json`,
       );
