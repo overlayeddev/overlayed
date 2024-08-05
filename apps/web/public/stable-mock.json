@@ -1,0 +1,20 @@
+{
+  "downloads": [
+    {
+      "name": "overlayed_0.5.0_amd64.AppImage",
+      "url": "https://github.com/overlayeddev/overlayed/releases/download/v0.5.0/overlayed_0.5.0_amd64.AppImage",
+      "platform": "linux"
+    },
+    {
+      "name": "Overlayed_0.5.0_universal.dmg",
+      "url": "https://github.com/overlayeddev/overlayed/releases/download/v0.5.0/Overlayed_0.5.0_universal.dmg",
+      "platform": "mac"
+    },
+    {
+      "name": "Overlayed_0.5.0_x64_en-US.msi",
+      "url": "https://github.com/overlayeddev/overlayed/releases/download/v0.5.0/Overlayed_0.5.0_x64_en-US.msi",
+      "platform": "windows"
+    }
+  ],
+  "latestVersion": "v0.5.0"
+}

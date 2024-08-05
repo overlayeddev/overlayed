@@ -28,6 +28,21 @@ From the root of the monorepo run
 pnpm start --filter=desktop
 ```
 
+### Running the Web & API 
+Since the API uses github API you'll need to create a `apps/web/.dev.vars` that has a `GITHUB_TOKEN` (github personal access toke).
+
+Then you'd run something like this to start both `api` and `web`.
+```
+pnpm start --filter=web --filter=api
+```
+
+If you want to use a mocked response you can run this command in the `apps/web` directory.
+
+```
+pnpm start:mocked
+
+```
+
 ### 4. Building the latest version locally
 ```
 pnpm build:desktop

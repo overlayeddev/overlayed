@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "start:mocked": "MOCKED=1 astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
     "lint": "eslint",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.7.0",
     "@astrojs/react": "^3.5.0",
+    "@types/node": "^20.14.2",
     "@types/react": "^18.2.64",
     "eslint-plugin-astro": "^1.2.2",
     "http-proxy-middleware": "^2.0.6",
