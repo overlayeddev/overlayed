@@ -17,7 +17,7 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use std::sync::atomic::AtomicBool;
-use tauri::{generate_handler, Manager, SystemTray};
+use tauri::{generate_handler, LogicalSize, Manager, SystemTray};
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
 use window_custom::WindowExt;
@@ -117,6 +117,12 @@ fn main() {
 
       // update the system tray
       Tray::update_tray(&app.app_handle());
+
+      // NOTE: always force settings window to be a certain size
+      settings.set_size(LogicalSize {
+        width: SETTINGS_WINDOW_WIDTH,
+        height: SETTINGS_WINDOW_HEIGHT,
+      });
 
       Ok(())
     })
