@@ -242,9 +242,7 @@ export const Account = () => {
               <form
                 onSubmit={async event => {
                   event.preventDefault();
-                  // FIXME: this is freezing the app if we use ALL or SIZE flags
-                  // so for now we only save the POSITION, what's strange is the rust side works with ALL 🤔
-                  await saveWindowState(StateFlags.POSITION);
+                  await saveWindowState(StateFlags.POSITION && StateFlags.SIZE);
                   await exit();
                 }}
               >
