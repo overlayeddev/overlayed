@@ -9,9 +9,12 @@ const createMockedProxy = (filter) =>
     target: "http://127.0.0.1:4321",
     changeOrigin: true,
     onProxyReq: (proxyReq) => {
-      if (proxyReq.path === "/latest/stable") {
-        proxyReq.path = "/stable-mock.json";
-      }
+      // replace all slashes after the first one with dashes
+      const jsonPath = proxyReq.path.replace(/\//g, "-").replace(/^-/, "/");
+      console.log(
+        `[🌐 Mocked Proxy] Resolving ${proxyReq.path} to /mocks/${jsonPath}.json`,
+      );
+      proxyReq.path = `/mocks/${jsonPath}.json`;
     },
   });
 
@@ -27,7 +30,7 @@ export default (paths) => {
     : createProxy((pathname) => shouldFilterReq(paths, pathname));
 
   console.log(
-    "[🤡 Mocked Proxy] Enabled, will resolve /latest/stable to /stable-mock.json",
+    "[🌐 Mocked Proxy] Enabled, will resolve /latest/stable to /stable-mock.json",
   );
 
   return {

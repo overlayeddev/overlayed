@@ -1,0 +1,21 @@
+{
+  "downloads": [
+    {
+      "name": "canary/overlayed-canary-linux",
+      "url": "https://artifacts.overlayed.dev/canary/overlayed-canary-linux",
+      "platform": "linux"
+    },
+    {
+      "name": "canary/overlayed-canary-mac",
+      "url": "https://artifacts.overlayed.dev/canary/overlayed-canary-mac",
+      "platform": "mac"
+    },
+    {
+      "name": "canary/overlayed-canary-windows",
+      "url": "https://artifacts.overlayed.dev/canary/overlayed-canary-windows",
+      "platform": "windows"
+    }
+  ],
+  "updated": "2024-08-05T13:09:14.065Z",
+  "latestVersion": "232a9f33aaea3fec7a7c9147305a7fae10df8a9e"
+}
