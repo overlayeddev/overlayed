@@ -1,41 +1,44 @@
-import { create } from "zustand";
+import { create, type StateCreator } from "zustand";
 import type { Authdata, OverlayedUser } from "./types";
 import { immer } from "zustand/middleware/immer";
+import { persist } from "zustand/middleware";
 
 export interface TokenState {
   users: Record<
     string,
     {
-      userdata: OverlayedUser | null;
-      authdata: Authdata | null;
+      userdata: OverlayedUser;
+      authdata: Authdata;
     }
-  > | null;
+  >;
 }
 
 export interface TokenActions {
   setUserdata: (id: string, userdata: OverlayedUser) => void;
   setAuth: (id: string, userdata: Authdata) => void;
-  clear: (id: string) => void;
 }
 
-export const useTokenStore = create<TokenState & TokenActions>()(
-  immer(set => ({
-    users: null,
-    setUserdata: (id, data) =>
-      set(state => {
-        state.users.userdata[id] = data;
-      }),
+const storeInit: StateCreator<TokenState, [["zustand/persist", unknown], ["zustand/immer", never]], [], TokenState> = (
+  set,
+  get
+) => ({
+  users: {},
+  setUserdata: (id, data) =>
+    set(state => {
+      console.log("setting userdata", id, data);
+      // @ts-ignore
+      state.users = {
+        ...state.users,
+        [id]: {
+          ...state.users[id],
+          userdata: data,
+        },
+      };
+    }),
+  setAuth: (id, data) =>
+    set(state => {
+      console.log("setting authdata", id, data);
+    }),
+});
 
-    setAuth: (id, data) =>
-      set(state => {
-        state.users.authdata[id] = data;
-      }),
-
-    clear: id =>
-      set(state => {
-        // clear both
-        state.users.userdata[id] = null;
-        state.users.authdata[id] = null;
-      }),
-  }))
-);
+export const useTokenStore = create<TokenState & TokenActions>()(immer(persist(storeInit, { name: "token-store" })));
