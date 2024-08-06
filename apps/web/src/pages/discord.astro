@@ -62,20 +62,23 @@ import { DISCORD_INVITE_LINK } from "../constants";
           <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"
           ></script>
           <script>
-            const embed = document.getElementById("embed");
-            const url = new URL(window.location.href);
-            const isQuakeconInUrl = url.searchParams.has("quakecon");
-            console.log({ isQuakeconInUrl, url });
+            window.addEventListener("message", (e) => {
+              if (typeof e?.data === "string") {
+                const payload = JSON.parse(e.data);
+                const embed = document.getElementById("embed");
+                const url = new URL(window.location.href);
+                const isQuakeconInUrl = url.searchParams.has("quakecon");
 
-            if (isQuakeconInUrl) {
-              setTimeout(() => {
-                // @ts-expect-error wtf
-                embed?.emit("navigate", {
-                  guild: "906349283358408704",
-                  channel: "1259843730375053363",
-                });
-              }, 100);
-            }
+                if (payload.event === "ready" && isQuakeconInUrl) {
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  embed?.emit("navigate", {
+                    guild: "906349283358408704",
+                    channel: "1259843730375053363",
+                  });
+                }
+              }
+            });
           </script>
         </div>
       </div>
