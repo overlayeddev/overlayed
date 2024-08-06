@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { OsTypes, osName } from "react-device-detect";
 
 import type { PlatformDownload } from "types";
 import DownloadButton from "./download-button.js";
@@ -54,6 +55,12 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
     ? `tree/${commitSha}`
     : `releases/tag/${commitSha}`;
 
+  let currentPlatformBtn = platformDownloads.downloads.find(
+    (download) => download.platform === osName.toLowerCase(),
+  );
+
+  if (!currentPlatformBtn) currentPlatformBtn = platformDownloads.downloads[0];
+
   return (
     <div className="relative w-full overflow-hidden">
       <div className="flex flex-col items-center">
@@ -61,7 +68,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
           <>
             <h2 className="text-2xl pb-2">Loading...</h2>
             <div className="flex gap-2 sm:gap-6">
-              {Array(3)
+              {Array(1)
                 .fill("")
                 .map((_, i) => (
                   <div
@@ -73,7 +80,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
             {canary && <p className="text-sm pt-2 font-bold">Loading...</p>}
           </>
         ) : (
-          <div className="text-center">
+          <>
             <h2 className="text-2xl pb-2">
               Download (
               <a
@@ -87,16 +94,17 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
             </h2>
             {/* if canary show last update */}
             <div className="flex gap-2 sm:gap-6">
-              {platformDownloads.downloads.map((item) => (
-                <DownloadButton key={item.platform} platform={item} />
-              ))}
+              <DownloadButton
+                key={currentPlatformBtn.platform}
+                platform={currentPlatformBtn}
+              />
             </div>
             {canary && (
               <p className="text-sm pt-2 font-bold">
                 Last update {formattedTime}
               </p>
             )}
-          </div>
+          </>
         )}
       </div>
     </div>
