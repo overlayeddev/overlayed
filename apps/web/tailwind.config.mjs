@@ -20,7 +20,7 @@ export default {
               backgroundColor: theme("colors.zinc.800"),
               borderRadius: "0.25rem",
               border: `1px solid ${theme("colors.zinc.700")}`,
-              padding: "4px 6px 4px 6px" 
+              padding: "4px 6px 4px 6px",
             },
           },
         },
