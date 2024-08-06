@@ -52,11 +52,31 @@ import { DISCORD_INVITE_LINK } from "../constants";
           <p class="mb-4 max-w-[900px] text-center font-bold text-[1.75rem]">
             Curious and wanna look around?
           </p>
-          <iframe
-            class="w-full"
-            src="https://e.widgetbot.io/channels/906349283358408704/913829657189687327"
-            allow="clipboard-write; fullscreen"
-            height="600"></iframe>
+          <widgetbot
+            server="906349283358408704"
+            channel="913829657189687327"
+            id="embed"
+            width="100%"
+            height="500"
+            shard="https://e.widgetbot.io"></widgetbot>
+          <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"
+          ></script>
+          <script>
+            const embed = document.getElementById("embed");
+            const url = new URL(window.location.href);
+            const isQuakeconInUrl = url.searchParams.has("quakecon");
+            console.log({ isQuakeconInUrl, url });
+
+            if (isQuakeconInUrl) {
+              setTimeout(() => {
+                // @ts-expect-error wtf
+                embed?.emit("navigate", {
+                  guild: "906349283358408704",
+                  channel: "1259843730375053363",
+                });
+              }, 100);
+            }
+          </script>
         </div>
       </div>
     </section>
