@@ -4,6 +4,7 @@ import Footer from "../components/footer.astro";
 
 import quakeconOgImage from "../assets/blog/quakecon.png";
 import Link from "../components/link.astro";
+import Video from "../components/video.astro";
 ---
 
 <style>
@@ -29,8 +30,13 @@ import Link from "../components/link.astro";
           <img class="mb-8" src="/img/quakecon-logo.png" />
           <p class="mb-12 font-bold text-[3.5rem]">👋 Gamers in the chat</p>
           <p class="text-zinc-400 font-bold">
-            <Link to="/about" title="about page" underline>Overlayed</Link> gives
-            you a movable overlay for Discord voice chat.
+            Overlayed gives you a movable overlay for Discord voice chat (<Link
+              to="/about"
+              title="Learn More about Overlayed"
+              underline
+            >
+              learn more
+            </Link>).
           </p>
 
           <p class="text-zinc-400 mt-12 font-bold">
@@ -42,6 +48,13 @@ import Link from "../components/link.astro";
               Discord server
             </Link> to enter in the giveaway!
           </p>
+
+          <p class="text-zinc-400 mt-12 mb-4 font-bold">🎥 Teaser Video</p>
+
+          <Video
+            class="w-full"
+            src="https://www.youtube.com/embed/fYUzuQni5S0"
+          />
         </div>
       </div>
     </section>
