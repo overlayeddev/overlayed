@@ -40,7 +40,7 @@ export default function DownloadButton({
           <Image />
         </div>
         <span className="platform-button-text text-sm font-bold z-30">
-          Download for {Platforms[platform.platform]}
+          Get for {Platforms[platform.platform]}
         </span>
       </a>
     </Button>
