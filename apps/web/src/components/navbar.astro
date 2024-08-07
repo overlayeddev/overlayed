@@ -129,7 +129,7 @@ import Link from "../components/link.astro";
 <nav
   class="grid grid-cols-3 navbar-blur text-white p-5 fixed z-[66] h-16 w-full !bg-[#13151a]/10 transition"
 >
-  <div class="flex gap-4 items-center">
+  <div class="flex">
     <a href="/" class="flex gap-4">
       <div>
         <OverlayedIcon />
@@ -144,41 +144,20 @@ import Link from "../components/link.astro";
     <Link to="/canary" title="Canary">Canary</Link>
     <Link to="/discord" title="Discord">Discord</Link>
     <Link to="/blog" title="Blog">Blog</Link>
+    <Link to="/quakecon2024" title="Blog" class="flex">
+      Quakecon <span
+        class="ml-2 mt-[2px] flex items-center bg-red-600 h-5 px-1 text-sm rounded-lg"
+        >new</span
+      >
+    </Link>
   </div>
   <!--spacer small screen-->
   <div class="flex md:hidden"></div>
-  <div class="hidden md:flex justify-end gap-4">
-    <a
-      aria-label="discord"
-      target="_blank"
-      rel="noreferrer"
-      href={DISCORD_INVITE_LINK}
-    >
-      <DiscordIcon />
-    </a>
-    <a
-      aria-label="github"
-      target="_blank"
-      rel="noreferrer"
-      href="https://github.com/overlayeddev/overlayed"
-    >
-      <GithubIcon />
-    </a>
-    <a
-      aria-label="twitter"
-      target="_blank"
-      rel="noreferrer"
-      href="https://x.com/OverlayedDev"
-    >
-      <TwitterIcon />
-    </a>
-  </div>
-
   <div class="flex justify-end">
     <!--mobile menu -->
     <button
       id="mobile-menu-button"
-      class="md:hidden justify-end w-10 h-10 grid items-center"
+      class="md:hidden pb-3 justify-end w-10 h-10 grid items-center"
       type="button"
       aria-label="Open navigation"
       aria-controls="main-navigation"
@@ -206,6 +185,7 @@ import Link from "../components/link.astro";
     <Link to="/canary" title="Canary">Canary</Link>
     <Link to="/discord" title="Discord">Discord</Link>
     <Link to="/blog" title="Blog">Blog</Link>
+    <Link to="/quakecon2024" title="Blog">Quakecon</Link>
 
     <!-- add the social links -->
     <div class="flex gap-4 items-center justify-center">

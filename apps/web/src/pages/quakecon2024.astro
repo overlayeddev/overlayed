@@ -4,6 +4,7 @@ import Footer from "../components/footer.astro";
 
 import quakeconOgImage from "../assets/blog/quakecon.png";
 import Link from "../components/link.astro";
+import Video from "../components/video.astro";
 ---
 
 <style>
@@ -24,24 +25,48 @@ import Link from "../components/link.astro";
     <section>
       <div class="flex flex-col text-center">
         <div
-          class="flex m-auto gap-2 flex-col text-[2.5rem] items-center justify-center"
+          class="flex m-auto gap-2 flex-col text-[2.0rem] items-center justify-center"
         >
-          <img class="mb-8" src="/img/quakecon-logo.png" />
+          <Link
+            target="_blank"
+            to="https://quakecon.bethesda.net/en/"
+            title="Learn about quakecon"
+          >
+            <img class="mb-8" src="/img/quakecon-logo.png" />
+          </Link>
           <p class="mb-12 font-bold text-[3.5rem]">👋 Gamers in the chat</p>
-          <p class="text-zinc-400 font-bold">
-            <Link to="/about" title="about page" underline>Overlayed</Link> gives
-            you a movable overlay for Discord voice chat.
+          <p class="text-zinc-400">
+            Overlayed gives you a movable overlay for Discord voice chat (<Link
+              to="/about"
+              title="Learn More about Overlayed"
+              underline
+            >
+              learn more
+            </Link>).
           </p>
 
-          <p class="text-zinc-400 mt-12 font-bold">
+          <p class="text-zinc-400 mt-12">
             💰 Don't forget to join the <Link
-              to="/discord"
+              to="/discord?quakecon"
               title="Discord server"
               underline
             >
               Discord server
             </Link> to enter in the giveaway!
           </p>
+
+          <p class="text-zinc-400 mt-12 mb-4">🎥 Teaser Video</p>
+
+          <Video
+            class="w-full"
+            src="https://www.youtube.com/embed/fYUzuQni5S0"
+          />
+          <a
+            href="/"
+            title="Download Overlayed"
+            class="bg-primary hover:bg-primary/80 text-white text-[1.75rem] sm:text-[2rem] flex items-center justify-center sm:h-[80px] h-20 font-bold py-2 px-12 rounded-2xl my-10"
+            >Download Now</a
+          >
         </div>
       </div>
     </section>
