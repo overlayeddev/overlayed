@@ -29,7 +29,33 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
     fetch(`${API_HOST}/latest/${buildType}`)
       .then((res) => res.json())
       .then((res) => {
-        setPlatformDownloads(res);
+        // console.log(res);
+
+        const userAgent = window?.navigator?.userAgent.toLowerCase();
+
+        if (userAgent.indexOf("win") !== -1) {
+          setPlatformDownloads({
+            downloads: [res.downloads[2]],
+            latestVersion: res.latestVersion,
+          });
+        } else if (userAgent.indexOf("mac") !== -1) {
+          setPlatformDownloads({
+            downloads: [res.downloads[1]],
+            latestVersion: res.latestVersion,
+          });
+        } else if (
+          userAgent.indexOf("linux") !== -1 &&
+          userAgent.indexOf("android") === -1
+        ) {
+          setPlatformDownloads({
+            downloads: [res.downloads[0]],
+            latestVersion: res.latestVersion,
+          });
+        } else {
+          // console.log("The user's operating system could not be determined");
+          setPlatformDownloads(res);
+        }
+        // document.writeln(userAgent);
         setIsLoading(false);
       });
   }, []);
@@ -61,7 +87,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
           <>
             <h2 className="text-2xl pb-2">Loading...</h2>
             <div className="flex gap-2 sm:gap-6">
-              {Array(3)
+              {Array(1)
                 .fill("")
                 .map((_, i) => (
                   <div
@@ -73,7 +99,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
             {canary && <p className="text-sm pt-2 font-bold">Loading...</p>}
           </>
         ) : (
-          <div className="text-center">
+          <>
             <h2 className="text-2xl pb-2">
               Download (
               <a
@@ -87,8 +113,8 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
             </h2>
             {/* if canary show last update */}
             <div className="flex gap-2 sm:gap-6">
-              {platformDownloads.downloads.map((item) => (
-                <DownloadButton key={item.platform} platform={item} />
+              {platformDownloads.downloads.map((platform) => (
+                <DownloadButton key={platform.platform} platform={platform} />
               ))}
             </div>
             {canary && (
@@ -96,7 +122,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
                 Last update {formattedTime}
               </p>
             )}
-          </div>
+          </>
         )}
       </div>
     </div>
