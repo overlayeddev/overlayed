@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { OsTypes, osName } from "react-device-detect";
 
 import type { PlatformDownload } from "types";
 import DownloadButton from "./download-button.js";
