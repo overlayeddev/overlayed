@@ -22,7 +22,7 @@ export default function DownloadButton({
 }: DownloadButtonParams) {
   const Image = PlatformIcons[platform.platform];
   return (
-    <Button size="sm" {...props}>
+    <Button {...props}>
       <a
         target="_blank"
         href={platform.url}
@@ -36,7 +36,7 @@ export default function DownloadButton({
           });
         }}
       >
-        <div className="size-5">
+        <div className="size-6">
           <Image />
         </div>
         <span className="platform-button-text font-bold z-30">
