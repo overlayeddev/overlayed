@@ -33,7 +33,7 @@ import Link from "./link.astro";
   </div>
   <div class="flex flex-col justify-center items-center">
     <div class="flex items-center justify-center gap-4 mb-4 text-lg">
-      <div class="hidden md:flex justify-end gap-4">
+      <div class="flex justify-end gap-4">
         <a
           aria-label="discord"
           target="_blank"
@@ -59,29 +59,11 @@ import Link from "./link.astro";
           <TwitterIcon />
         </a>
       </div>
-
-      <div class="flex justify-end">
-        <!--mobile menu -->
-        <button
-          id="mobile-menu-button"
-          class="md:hidden pb-3 justify-end w-10 h-10 grid items-center"
-          type="button"
-          aria-label="Open navigation"
-          aria-controls="main-navigation"
-          aria-expanded="false"
-        >
-          <!--match icon color with others (from layout)-->
-          <span
-            class="hamburger-lines w-5 h-[3px] bg-gray-200 before:bg-gray-200 after:bg-gray-200"
-          ></span>
-        </button>
-      </div>
     </div>
     <div class="flex items-center justify-center gap-4 text-[0.9rem]">
       <Link title="Privacy Policy" to="/privacy">Privacy</Link>
       <Link title="Terms of Service" to="/tos">Terms</Link>
       <Link title="About" to="/about">About</Link>
-      <Link title="Quakecon" to="/quakecon2024">Quakecon</Link>
       <Link title="Overlayed email" to="mailto:support@overlayed.dev">
         Contact
       </Link>
