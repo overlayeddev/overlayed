@@ -153,49 +153,6 @@ import Link from "../components/link.astro";
   </div>
   <!--spacer small screen-->
   <div class="flex md:hidden"></div>
-  <div class="hidden md:flex justify-end gap-4">
-    <a
-      aria-label="discord"
-      target="_blank"
-      rel="noreferrer"
-      href={DISCORD_INVITE_LINK}
-    >
-      <DiscordIcon />
-    </a>
-    <a
-      aria-label="github"
-      target="_blank"
-      rel="noreferrer"
-      href="https://github.com/overlayeddev/overlayed"
-    >
-      <GithubIcon />
-    </a>
-    <a
-      aria-label="twitter"
-      target="_blank"
-      rel="noreferrer"
-      href="https://x.com/OverlayedDev"
-    >
-      <TwitterIcon />
-    </a>
-  </div>
-
-  <div class="flex justify-end">
-    <!--mobile menu -->
-    <button
-      id="mobile-menu-button"
-      class="md:hidden pb-3 justify-end w-10 h-10 grid items-center"
-      type="button"
-      aria-label="Open navigation"
-      aria-controls="main-navigation"
-      aria-expanded="false"
-    >
-      <!--match icon color with others (from layout)-->
-      <span
-        class="hamburger-lines w-5 h-[3px] bg-gray-200 before:bg-gray-200 after:bg-gray-200"
-      ></span>
-    </button>
-  </div>
 </nav>
 
 <div
