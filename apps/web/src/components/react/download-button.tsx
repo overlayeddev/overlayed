@@ -3,6 +3,7 @@ import { Platforms } from "./download.js";
 import type { PlatformDownload } from "types";
 import { MacIcon, WindowsIcon, LinuxIcon } from "./icons";
 import { track } from "@vercel/analytics";
+import { Button } from "./button.jsx";
 
 type DownloadButtonParams = {
   platform: PlatformDownload;
@@ -21,14 +22,11 @@ export default function DownloadButton({
 }: DownloadButtonParams) {
   const Image = PlatformIcons[platform.platform];
   return (
-    <div
-      className="fill-white hover:fill-primary ease-in-out duration-300 transition-all flex flex-col items-center justify-center gap-2 p-4 bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105"
-      {...props}
-    >
+    <Button {...props}>
       <a
         target="_blank"
         href={platform.url}
-        className="flex flex-col items-center justify-center gap-2 h-20 w-20"
+        className="flex flex-row items-center justify-center gap-2"
         onClick={() => {
           const name = platform.name.includes("canary")
             ? "download-canary"
@@ -38,13 +36,13 @@ export default function DownloadButton({
           });
         }}
       >
-        <div className="w-10 h-10">
+        <div className="size-6">
           <Image />
         </div>
-        <span className="platform-button-text font-bold z-30">
-          {Platforms[platform.platform]}
+        <span className="platform-button-text text-sm font-bold z-30">
+          Get for {Platforms[platform.platform]}
         </span>
       </a>
-    </div>
+    </Button>
   );
 }

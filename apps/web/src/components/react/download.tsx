@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-
 import type { PlatformDownload } from "types";
 import DownloadButton from "./download-button.js";
 import { API_HOST } from "../../constants.js";
 import { getRelativeTime } from "../../time-utils.js";
+import { isMobile } from "react-device-detect";
+import { Button } from "./button.jsx";
+import { GithubIcon } from "../icons";
 
 export const Platforms = {
   linux: "Linux",
@@ -11,7 +13,13 @@ export const Platforms = {
   mac: "Mac",
 };
 
-export const Download = ({ canary = true }: { canary?: boolean }) => {
+export const Download = ({
+  canary = true,
+  renderVersionOnly = false,
+}: {
+  canary?: boolean;
+  renderVersionOnly?: boolean;
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [formattedTime, setFormattedTime] = useState("");
   const [platformDownloads, setPlatformDownloads] = useState<{
@@ -29,8 +37,6 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
     fetch(`${API_HOST}/latest/${buildType}`)
       .then((res) => res.json())
       .then((res) => {
-        // console.log(res);
-
         const userAgent = window?.navigator?.userAgent.toLowerCase();
 
         if (userAgent.indexOf("win") !== -1) {
@@ -52,15 +58,12 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
             latestVersion: res.latestVersion,
           });
         } else {
-          // console.log("The user's operating system could not be determined");
           setPlatformDownloads(res);
         }
-        // document.writeln(userAgent);
         setIsLoading(false);
       });
   }, []);
 
-  // Allow it to keep time updated based on the second
   useEffect(() => {
     const timerId = setInterval(() => {
       setFormattedTime(
@@ -80,48 +83,69 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
     ? `tree/${commitSha}`
     : `releases/tag/${commitSha}`;
 
+  const getCurrentPlatform = () => {
+    if (typeof window !== "undefined") {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+
+      if (
+        userAgent.indexOf("android") !== -1 ||
+        userAgent.indexOf("iphone") !== -1 ||
+        userAgent.indexOf("ipad") !== -1 ||
+        userAgent.indexOf("ipod") !== -1
+      ) {
+        return "";
+      } else {
+        const platform = window.navigator.platform.toLowerCase();
+        if (platform.indexOf("win") !== -1) {
+          return Platforms.windows;
+        } else if (platform.indexOf("mac") !== -1) {
+          return Platforms.mac;
+        } else if (platform.indexOf("linux") !== -1) {
+          return Platforms.linux;
+        } else {
+          return "Unknown";
+        }
+      }
+    } else {
+      return "Unknown";
+    }
+  };
+
+  if (renderVersionOnly) {
+    return (
+      <h2 className="text-xl text-slate-50/80">
+        <a
+          className="hover:underline"
+          target="_blank"
+          href={`https://github.com/overlayeddev/overlayed/${downloadPath}`}
+        >
+          {canary ? `Canary ${shortCommitSha}` : `Stable ${shortCommitSha}`}
+        </a>
+        <span>{isMobile ? null : " | " + getCurrentPlatform()}</span>
+      </h2>
+    );
+  }
+
   return (
     <div className="relative w-full overflow-hidden">
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center justify-center">
         {isLoading ? (
-          <>
-            <h2 className="text-2xl pb-2">Loading...</h2>
-            <div className="flex gap-2 sm:gap-6">
-              {Array(1)
-                .fill("")
-                .map((_, i) => (
-                  <div
-                    key={`skeleton-loader-${i}`}
-                    className="w-28 h-28 bg-slate-800 rounded-lg animate-pulse"
-                  />
-                ))}
-            </div>
-            {canary && <p className="text-sm pt-2 font-bold">Loading...</p>}
-          </>
+          <Button>Loading...</Button>
         ) : (
           <>
-            <h2 className="text-2xl pb-2">
-              Download (
-              <a
-                className="hover:underline"
-                target="_blank"
-                href={`https://github.com/overlayeddev/overlayed/${downloadPath}`}
-              >
-                {shortCommitSha}
-              </a>
-              )
-            </h2>
-            {/* if canary show last update */}
-            <div className="flex gap-2 sm:gap-6">
-              {platformDownloads.downloads.map((platform) => (
-                <DownloadButton key={platform.platform} platform={platform} />
-              ))}
-            </div>
+            {isMobile ? null : (
+              <div className="flex gap-2 sm:gap-6">
+                {platformDownloads.downloads.map((platform) => (
+                  <DownloadButton key={platform.platform} platform={platform} />
+                ))}
+              </div>
+            )}
             {canary && (
               <p className="text-sm pt-2 font-bold">
                 Last update {formattedTime}
               </p>
             )}
+            {renderVersionOnly}
           </>
         )}
       </div>
