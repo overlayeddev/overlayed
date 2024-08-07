@@ -6,13 +6,25 @@ export default {
       colors: {
         primary: "#5865F2",
       },
-      typography: {
+      typography: ({ theme }) => ({
         DEFAULT: {
           css: {
             maxWidth: "100ch", // add required value here
+            "code::before": {
+              content: '""',
+            },
+            "code::after": {
+              content: '""',
+            },
+            code: {
+              backgroundColor: theme("colors.zinc.800"),
+              borderRadius: "0.25rem",
+              border: `1px solid ${theme("colors.zinc.700")}`,
+              padding: "4px 6px 4px 6px",
+            },
           },
         },
-      },
+      }),
       keyframes: {
         "background-shine": {
           from: {

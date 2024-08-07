@@ -1,4 +1,6 @@
 ---
+import { DISCORD_INVITE_LINK } from "../constants";
+import { DiscordIcon, GithubIcon, TwitterIcon } from "./icons";
 import Link from "./link.astro";
 ---
 
@@ -31,24 +33,32 @@ import Link from "./link.astro";
   </div>
   <div class="flex flex-col justify-center items-center">
     <div class="flex items-center justify-center gap-4 mb-4 text-lg">
-      <Link title="Discord Server Link" target="_blank" to="/discord">
-        Discord
-      </Link>
-      <Link title="Blog" to="/blog">Blog</Link>
-      <Link
-        title="Source on Github"
-        target="_blank"
-        to="https://github.com/overlayeddev/overlayed"
-      >
-        Github
-      </Link>
-      <Link
-        title="Overlyed on Twitter"
-        target="_blank"
-        to="https://x.com/OverlayedDev"
-      >
-        Twitter
-      </Link>
+      <div class="flex justify-end gap-4">
+        <a
+          aria-label="discord"
+          target="_blank"
+          rel="noreferrer"
+          href={DISCORD_INVITE_LINK}
+        >
+          <DiscordIcon />
+        </a>
+        <a
+          aria-label="github"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/overlayeddev/overlayed"
+        >
+          <GithubIcon />
+        </a>
+        <a
+          aria-label="twitter"
+          target="_blank"
+          rel="noreferrer"
+          href="https://x.com/OverlayedDev"
+        >
+          <TwitterIcon />
+        </a>
+      </div>
     </div>
     <div class="flex items-center justify-center gap-4 text-[0.9rem]">
       <Link title="Privacy Policy" to="/privacy">Privacy</Link>
