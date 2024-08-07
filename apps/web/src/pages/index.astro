@@ -1,12 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/card.astro";
-import Link from "../components/link.astro";
 import Footer from "../components/footer.astro";
 import Hero from "../components/hero.astro";
 import Contributors from "../components/contributors.astro";
 import { Download } from "../components/react/download";
-import { Stars } from "../components/react/stars";
+import { Button } from "../components/react/button";
+import { GithubIcon } from "../components/icons";
 
 import user from "../img/users.png";
 import transparent from "../img/transparent.png";
@@ -46,17 +46,6 @@ import resources from "../img/resources.png";
 <Layout>
   <main class="pt-60">
     <Hero />
-
-    <div class="w-full flex justify-center items-center">
-      <Link
-        title="Star Overlayed on GitHub"
-        to="https://github.com/overlayeddev/overlayed"
-        target="_blank"
-        class="z-50"
-      >
-        <Stars client:load />
-      </Link>
-    </div>
     <div
       class="relative z-50 main-content pt-4 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-2"
     >
@@ -72,7 +61,16 @@ import resources from "../img/resources.png";
       <p class="text-center mb-10 text-zinc-400 text-3xl">
         See who's speaking in your Discord voice channel
       </p>
-      <Download client:load canary={false} />
+      <div class="grid grid-cols-2 gap-x-2">
+        <Download client:load canary={false} />
+        <Button size="sm">
+          <GithubIcon class="size-5" />
+          <span class="ml-2">Star on Github</span>
+        </Button>
+      </div>
+      <div class="mt-2 mx-auto">
+        <Download client:load canary={false} renderVersionOnly={true} />
+      </div>
       <div class="cards grid mt-12 md:grid-cols-2 w-full items-center gap-8">
         <Card
           name="User List"
