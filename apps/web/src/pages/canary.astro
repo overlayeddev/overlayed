@@ -45,6 +45,9 @@ const [canary] = await Astro.glob("../content/canary/index.mdx");
           <div class="pt-8">
             <Download client:load canary />
           </div>
+          <div class="mt-2 mx-auto">
+            <Download client:load canary={true} renderVersionOnly={true} />
+          </div>
 
           <div class="px-4 prose prose-invert text-left mx-auto pt-28">
             <canary.Content />
