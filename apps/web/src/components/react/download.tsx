@@ -30,7 +30,33 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
     fetch(`${API_HOST}/latest/${buildType}`)
       .then((res) => res.json())
       .then((res) => {
-        setPlatformDownloads(res);
+        // console.log(res);
+
+        const userAgent = window?.navigator?.userAgent.toLowerCase();
+
+        if (userAgent.indexOf("win") !== -1) {
+          setPlatformDownloads({
+            downloads: [res.downloads[2]],
+            latestVersion: res.latestVersion,
+          });
+        } else if (userAgent.indexOf("mac") !== -1) {
+          setPlatformDownloads({
+            downloads: [res.downloads[1]],
+            latestVersion: res.latestVersion,
+          });
+        } else if (
+          userAgent.indexOf("linux") !== -1 &&
+          userAgent.indexOf("android") === -1
+        ) {
+          setPlatformDownloads({
+            downloads: [res.downloads[0]],
+            latestVersion: res.latestVersion,
+          });
+        } else {
+          // console.log("The user's operating system could not be determined");
+          setPlatformDownloads(res);
+        }
+        // document.writeln(userAgent);
         setIsLoading(false);
       });
   }, []);
@@ -54,12 +80,6 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
   const downloadPath = canary
     ? `tree/${commitSha}`
     : `releases/tag/${commitSha}`;
-
-  let currentPlatformBtn = platformDownloads.downloads.find(
-    (download) => download.platform === osName.toLowerCase(),
-  );
-
-  if (!currentPlatformBtn) currentPlatformBtn = platformDownloads.downloads[0];
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -94,10 +114,9 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
             </h2>
             {/* if canary show last update */}
             <div className="flex gap-2 sm:gap-6">
-              <DownloadButton
-                key={currentPlatformBtn.platform}
-                platform={currentPlatformBtn}
-              />
+              {platformDownloads.downloads.map((platform) => (
+                <DownloadButton key={platform.platform} platform={platform} />
+              ))}
             </div>
             {canary && (
               <p className="text-sm pt-2 font-bold">
