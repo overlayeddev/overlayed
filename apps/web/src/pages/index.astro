@@ -1,12 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/card.astro";
-import Link from "../components/link.astro";
 import Footer from "../components/footer.astro";
 import Hero from "../components/hero.astro";
 import Contributors from "../components/contributors.astro";
 import { Download } from "../components/react/download";
+import { Button } from "../components/react/button";
 import { Stars } from "../components/react/stars";
+import Link from "../components/link.astro";
 
 import user from "../img/users.png";
 import transparent from "../img/transparent.png";
@@ -46,7 +47,6 @@ import resources from "../img/resources.png";
 <Layout>
   <main class="pt-60">
     <Hero />
-
     <div class="w-full flex justify-center items-center">
       <Link
         title="Star Overlayed on GitHub"
@@ -72,7 +72,20 @@ import resources from "../img/resources.png";
       <p class="text-center mb-10 text-zinc-400 text-3xl">
         See who's speaking in your Discord voice channel
       </p>
-      <Download client:load canary={false} />
+      <div class="flex flex-row items-center justify-center gap-x-2">
+        <Download client:load canary={false} />
+        <Button variant="outline">
+          <a
+            href="https://overlayed.dev/blog/installation-guide"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-base font-bold">Platfrom Support</a
+          >
+        </Button>
+      </div>
+      <div class="mt-2 mx-auto">
+        <Download client:load canary={false} renderVersionOnly={true} />
+      </div>
       <div class="cards grid mt-12 md:grid-cols-2 w-full items-center gap-8">
         <Card
           name="User List"
