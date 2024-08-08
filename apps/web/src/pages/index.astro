@@ -6,7 +6,8 @@ import Hero from "../components/hero.astro";
 import Contributors from "../components/contributors.astro";
 import { Download } from "../components/react/download";
 import { Button } from "../components/react/button";
-import { GithubIcon } from "../components/icons";
+import { Stars } from "../components/react/stars";
+import Link from "../components/link.astro";
 
 import user from "../img/users.png";
 import transparent from "../img/transparent.png";
@@ -46,6 +47,16 @@ import resources from "../img/resources.png";
 <Layout>
   <main class="pt-60">
     <Hero />
+    <div class="w-full flex justify-center items-center">
+      <Link
+        title="Star Overlayed on GitHub"
+        to="https://github.com/overlayeddev/overlayed"
+        target="_blank"
+        class="z-50"
+      >
+        <Stars client:load />
+      </Link>
+    </div>
     <div
       class="relative z-50 main-content pt-4 pb-4 px-4 min-h-screen w-full flex justify-center items-center flex-col gap-2"
     >
