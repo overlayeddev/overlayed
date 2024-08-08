@@ -83,34 +83,6 @@ export const Download = ({
     ? `tree/${commitSha}`
     : `releases/tag/${commitSha}`;
 
-  const getCurrentPlatform = () => {
-    if (typeof window !== "undefined") {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-
-      if (
-        userAgent.indexOf("android") !== -1 ||
-        userAgent.indexOf("iphone") !== -1 ||
-        userAgent.indexOf("ipad") !== -1 ||
-        userAgent.indexOf("ipod") !== -1
-      ) {
-        return "";
-      } else {
-        const platform = window.navigator.platform.toLowerCase();
-        if (platform.indexOf("win") !== -1) {
-          return Platforms.windows;
-        } else if (platform.indexOf("mac") !== -1) {
-          return Platforms.mac;
-        } else if (platform.indexOf("linux") !== -1) {
-          return Platforms.linux;
-        } else {
-          return "Unknown";
-        }
-      }
-    } else {
-      return "Unknown";
-    }
-  };
-
   if (renderVersionOnly) {
     return (
       <h2 className="text-xl text-slate-50/80">
@@ -121,7 +93,6 @@ export const Download = ({
         >
           {canary ? `Canary ${shortCommitSha}` : `Stable ${shortCommitSha}`}
         </a>
-        <span>{isMobile ? null : " | " + getCurrentPlatform()}</span>
       </h2>
     );
   }

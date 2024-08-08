@@ -39,8 +39,8 @@ export default function DownloadButton({
         <div className="size-6">
           <Image />
         </div>
-        <span className="platform-button-text text-sm font-bold z-30">
-          Get for {Platforms[platform.platform]}
+        <span className="platform-button-text text-base font-bold">
+          Get Overlayed for {Platforms[platform.platform]}
         </span>
       </a>
     </Button>
