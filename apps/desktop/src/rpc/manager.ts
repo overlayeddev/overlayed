@@ -91,6 +91,8 @@ class SocketManager {
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
   public version: string | undefined;
+  // @ts-expect-error need better types
+  public soundBoardItemsResolver = Promise.withResolvers();
 
   private navigate(url: string) {
     if (window.location.hash.includes("#settings")) return;
@@ -151,7 +153,20 @@ class SocketManager {
     this.send({
       args: {
         client_id: APP_ID,
-        scopes: ["rpc", "identify"],
+        scopes: [
+          "identify",
+          "rpc",
+          "guilds",
+          "rpc.notifications.read",
+          // TODO: how do you use other scopes
+          // "rpc.activities.write",
+          // "rpc.voice.read",
+          // "rpc.voice.write",
+          // "rpc.video.read",
+          // "rpc.video.write",
+          // "rpc.screenshare.read",
+          // "rpc.screenshare.write",
+        ],
       },
       cmd: RPCCommand.AUTHORIZE,
     });
@@ -193,6 +208,7 @@ class SocketManager {
     }
 
     const payload: DiscordPayload = JSON.parse(event.data);
+    console.log(payload);
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
@@ -239,6 +255,11 @@ class SocketManager {
 
     if (payload.evt === RPCEvent.VOICE_STATE_UPDATE) {
       this.store.updateUser(payload.data);
+    }
+
+    if (payload.cmd === RPCCommand.GET_SOUNDBOARD_SOUNDS) {
+      // update the Promise
+      this.soundBoardItemsResolver.resolve(payload.data);
     }
 
     // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
@@ -337,10 +358,10 @@ class SocketManager {
       // try to find the user
       this.requestUserChannel();
 
-      // subscribe to get notified when the user changes channels
+      // sub to any otifs
       this.send({
         cmd: RPCCommand.SUBSCRIBE,
-        evt: RPCEvent.VOICE_CHANNEL_SELECT,
+        evt: RPCEvent.NOTIFICATION_CREATE,
       });
 
       this.userdataStore.setAccessTokenExpiry(payload.data.expires);
@@ -375,12 +396,21 @@ class SocketManager {
     });
   }
 
+  /** Get the soundboard items */
+  public async getSoundBoardItems() {
+    await this.send({
+      cmd: RPCCommand.GET_SOUNDBOARD_SOUNDS,
+    });
+
+    return this.soundBoardItemsResolver.promise;
+  }
+
   /**
    * Send a message to discord
    * @param payload {DiscordPayload} the payload to send
    */
-  private send(payload: DiscordPayload) {
-    this.socket?.send(
+  public send(payload: DiscordPayload) {
+    return this.socket?.send(
       JSON.stringify({
         ...payload,
         nonce: uuid.v4(),
@@ -400,7 +430,6 @@ class SocketManager {
         cmd,
         args: { channel_id: channelId },
         evt: eventName,
-        nonce: uuid.v4(),
       })
     );
   }
