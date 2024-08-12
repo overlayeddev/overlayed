@@ -11,7 +11,8 @@ import {
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import React, { useEffect } from "react";
 import { invoke } from "@tauri-apps/api";
-import Config, { type DirectionLR } from "../config";
+import { Store } from "tauri-plugin-store-api";
+import { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
 import { CHANNEL_TYPES } from "@/constants";
@@ -27,6 +28,8 @@ interface Alignment {
   name: string;
   icon: LucideIcon;
 }
+
+const store = new Store("config.json");
 
 const horizontalAlignments: Alignment[] = [
   {
@@ -123,7 +126,7 @@ export const NavBar = ({
                   const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
                   setCurrentAlignment(newAlignment);
                   setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
-                  await Config.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
+                  await store.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
                 }}
               />
             </button>
@@ -132,7 +135,7 @@ export const NavBar = ({
                 size={20}
                 onClick={async () => {
                   await invoke("toggle_pin");
-                  await Config.set("pin", !pin);
+                  await store.set("pin", !pin);
                   // track if it gets pinned
                   track(Metric.Pin, 1);
                   navigate("/channel");
