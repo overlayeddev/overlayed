@@ -1,7 +1,9 @@
 use std::{ops::Deref, sync::atomic::AtomicBool};
 
 use log::debug;
+use serde_json::json;
 use tauri::{Manager, State, SystemTrayHandle, Window};
+use tauri_plugin_store::StoreBuilder;
 
 use crate::{constants::*, Pinned};
 
@@ -73,8 +75,14 @@ impl Deref for Pinned {
 fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
+  let app = window.app_handle();
+  let mut store = StoreBuilder::new(app.app_handle(), "config.json".parse().expect("can't create config.json")).build();
+
   // let the client know
   window.emit(TRAY_TOGGLE_PIN, value).unwrap();
+
+  // persist to disk
+  store.insert("pin".to_string(), json!(value));
 
   // invert the label for the tray
   let tray_handle = window.app_handle().tray_handle();
@@ -95,6 +103,9 @@ fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
 
   // update the tray icon
   update_tray_icon(window.app_handle().tray_handle(), value);
+
+  // flush to disk
+  store.save();
 }
 
 fn update_tray_icon(tray: SystemTrayHandle, pinned: bool) {
