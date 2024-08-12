@@ -33,7 +33,7 @@ pub struct Config {
 pub fn create_config(app: &AppHandle) {
   // create the store
   let mut appdir = app.path_resolver().app_data_dir().unwrap();
-  appdir.push("config_v2.json");
+  appdir.push("config.json");
 
   // if the file exists we don't want to overwrite it
   if appdir.exists() {

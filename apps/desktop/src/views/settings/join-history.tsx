@@ -11,15 +11,15 @@ import { requestPermission, sendNotification } from "@tauri-apps/api/notificatio
 import { Checkbox } from "@/components/ui/checkbox";
 import { Store } from "tauri-plugin-store-api";
 import type { JoinHistoryLogUser } from "@/types";
-import { useConfigValue } from "@/hooks/use-config-value";
 import { emit } from "@tauri-apps/api/event";
+import type { CheckedState } from "@radix-ui/react-checkbox";
 
 const MAX_LOG_LENGTH = 420;
 
 const store = new Store("config.json");
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
-  const { value: joinHistoryNotifications } = useConfigValue("joinHistoryNotifications");
+  const [joinHistoryNotificationsValue, setJoinHistoryNotificationsValue] = useState<CheckedState>(false);
 
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
@@ -52,12 +52,6 @@ export const JoinHistory = () => {
     });
   }, []);
 
-  // keep the notifications toggle in sync with the config
-  useEffect(() => {
-    // HACK: add a ref to avoid stale closure
-    notificationsEnabledRef.current = joinHistoryNotifications;
-  }, [joinHistoryNotifications]);
-
   const resetUserLog = () => {
     setUserLog([]);
   };
@@ -71,10 +65,14 @@ export const JoinHistory = () => {
         <div className="flex items-center">
           <Checkbox
             id="notification"
-            checked={joinHistoryNotifications}
-            onCheckedChange={async () => {
-              await store.set("joinHistoryNotifications", !joinHistoryNotifications);
-              await emit("config_update", await store.values());
+            checked={joinHistoryNotificationsValue}
+            onCheckedChange={async value => {
+              console.log(value);
+              setJoinHistoryNotificationsValue(value);
+              await store.set("joinHistoryNotifications", value);
+              // TODO: we just inform the config updated, we can fetch downstream?
+              await emit("config_update");
+              await store.save();
             }}
           />
           <label
