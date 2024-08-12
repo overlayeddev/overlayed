@@ -1,25 +1,27 @@
-import Config, { DEFAULT_OVERLAYED_CONFIG, type OverlayedConfig, type OverlayedConfigKey } from "@/config";
+import { Store } from "tauri-plugin-store-api";
 import { listen } from "@tauri-apps/api/event";
 import { useEffect, useState } from "react";
+import { DEFAULT_OVERLAYED_CONFIG } from "@/config";
 
+const store = new Store("config.json");
 /**
  * i want a single key from the config
  */
-export const useConfigValue = <T extends OverlayedConfigKey>(
-  key: T
+export const useConfigValue = (
+  key: any
 ): {
-  value: OverlayedConfig[T];
+  value: any;
 } => {
-  const [value, setValue] = useState<OverlayedConfig[T]>(DEFAULT_OVERLAYED_CONFIG[key]);
+  const [value, setValue] = useState(DEFAULT_OVERLAYED_CONFIG[key]);
 
   useEffect(() => {
     const init = () => {
-      Config.get<T>(key).then(setValue);
+      store.get(key).then(setValue);
     };
 
     init();
 
-    const listenFn = listen<OverlayedConfig>("config_update", event => {
+    const listenFn = listen("config_update", event => {
       const { payload } = event;
 
       // update the latest value

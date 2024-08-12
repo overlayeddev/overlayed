@@ -6,7 +6,7 @@ import { saveWindowState, StateFlags } from "tauri-plugin-window-state-api";
 import { shell } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import Config from "@/config";
+import { Store } from "tauri-plugin-store-api"
 
 import {
   Dialog,
@@ -25,6 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
 import { useConfigValue } from "@/hooks/use-config-value";
 
+const store = new Store("config.json");
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
   return (
@@ -82,9 +83,9 @@ export const AppInfo = () => {
           checked={showOnlyTalkingUsers}
           onCheckedChange={async () => {
             const newBool = !showOnlyTalkingUsers;
-            await Config.set("showOnlyTalkingUsers", newBool);
+            await store.set("showOnlyTalkingUsers", newBool);
 
-            await emit("config_update", await Config.getConfig());
+            await emit("config_update", await store.values());
           }}
         />
         <label

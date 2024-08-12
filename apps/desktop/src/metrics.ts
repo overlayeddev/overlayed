@@ -1,5 +1,7 @@
 import { axiom } from "@/axiom";
-import Config from "@/config";
+import { Store } from "tauri-plugin-store-api";
+
+const store = new Store("config.json");
 
 export const OVERLAYED_DATASET = "overlayed-prod";
 
@@ -18,12 +20,12 @@ export const Metric = {
 type MetricNamesValues = (typeof Metric)[keyof typeof Metric];
 
 // NOTE: allow opt-out of tracking from the settings UI
-const isTelemetryEnabled = () => {
-  return import.meta.env.VITE_AXIOM_TOKEN && Config.get("telemetry");
+const isTelemetryEnabled = async () => {
+  return import.meta.env.VITE_AXIOM_TOKEN && (await store.get<{ value: boolean }>("telemetry"))?.value;
 };
 
 // tell the user if they have telemetry disabled
-if (!(await Config.get("telemetry"))) {
+if (!(await store.get<{ value: boolean }>("telemetry"))?.value) {
   console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");
 } else {
   console.log("[TELEMETRY] Axiom telemetry is enabled!");
