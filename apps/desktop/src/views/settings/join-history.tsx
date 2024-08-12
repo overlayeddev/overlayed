@@ -12,14 +12,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Store } from "tauri-plugin-store-api";
 import type { JoinHistoryLogUser } from "@/types";
 import { emit } from "@tauri-apps/api/event";
-import type { CheckedState } from "@radix-ui/react-checkbox";
+import { useConfigValue } from "@/hooks/use-config-value";
 
 const MAX_LOG_LENGTH = 420;
 
 const store = new Store("config.json");
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
-  const [joinHistoryNotificationsValue, setJoinHistoryNotificationsValue] = useState<CheckedState>(false);
+  const { value: joinHistoryNotifications} = useConfigValue("joinHistoryNotifications");
 
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
@@ -65,13 +65,10 @@ export const JoinHistory = () => {
         <div className="flex items-center">
           <Checkbox
             id="notification"
-            checked={joinHistoryNotificationsValue}
-            onCheckedChange={async value => {
-              console.log(value);
-              setJoinHistoryNotificationsValue(value);
-              await store.set("joinHistoryNotifications", value);
-              // TODO: we just inform the config updated, we can fetch downstream?
-              await emit("config_update");
+            checked={joinHistoryNotifications}
+            onCheckedChange={async () => {
+              const newValue = !joinHistoryNotifications;
+              await store.set("joinHistoryNotifications", newValue);
               await store.save();
             }}
           />
