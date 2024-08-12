@@ -1,32 +1,32 @@
 import { Store } from "tauri-plugin-store-api";
-import { listen } from "@tauri-apps/api/event";
 import { useEffect, useState } from "react";
-import { DEFAULT_OVERLAYED_CONFIG } from "@/config";
+import { DEFAULT_OVERLAYED_CONFIG, type OverlayedConfig, type OverlayedConfigKey } from "@/config";
 
 const store = new Store("config.json");
 /**
- * i want a single key from the config
+ * Let's you get the config value from disk or default for a given key
+ * each rerender it should fetch the latest value from disk too
  */
-export const useConfigValue = (
-  key: any
+export const useConfigValue = <T extends OverlayedConfigKey>(
+  key: T
 ): {
-  value: any;
+  value: OverlayedConfig[T];
 } => {
-  const [value, setValue] = useState(DEFAULT_OVERLAYED_CONFIG[key]);
+  const [value, setValue] = useState<OverlayedConfig[T]>(DEFAULT_OVERLAYED_CONFIG[key]);
 
   useEffect(() => {
     const init = () => {
-      store.get(key).then(setValue);
+      store.get<{ value: T }>(key).then(res => {
+        if (res?.value) {
+          setValue(res.value);
+        }
+      });
     };
 
     init();
 
-    const listenFn = listen("config_update", event => {
-      const { payload } = event;
-
-      // update the latest value
-      // TODO: fix
-      setValue(payload[key]);
+    const listenFn = store.onKeyChange(key, value => {
+      setValue(value);
     });
 
     return () => {

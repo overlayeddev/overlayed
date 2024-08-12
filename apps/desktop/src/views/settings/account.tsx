@@ -6,7 +6,7 @@ import { saveWindowState, StateFlags } from "tauri-plugin-window-state-api";
 import { shell } from "@tauri-apps/api";
 import { invoke } from "@tauri-apps/api";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import { Store } from "tauri-plugin-store-api"
+import { Store } from "tauri-plugin-store-api";
 
 import {
   Dialog,
@@ -84,8 +84,7 @@ export const AppInfo = () => {
           onCheckedChange={async () => {
             const newBool = !showOnlyTalkingUsers;
             await store.set("showOnlyTalkingUsers", newBool);
-
-            await emit("config_update", await store.values());
+            await store.save();
           }}
         />
         <label
@@ -124,7 +123,7 @@ export const AppInfo = () => {
 export const Account = () => {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
-  const [user, setUser] = useState<VoiceUser | null>(null);
+  const [user, setUser] = useState < VoiceUser | null > (null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
 
   // pull out the user data from localStorage
