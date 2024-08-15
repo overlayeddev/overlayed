@@ -1,9 +1,5 @@
 import { Hono } from "hono/quick";
-import {
-	getLatestVersions,
-	getPlatformDownloads,
-	getStars,
-} from "../utils.js";
+import { getLatestVersions, getPlatformDownloads, getStars } from "../utils.js";
 import { Bindings } from "../types.js";
 
 const app = new Hono<{ Bindings: Bindings }>();

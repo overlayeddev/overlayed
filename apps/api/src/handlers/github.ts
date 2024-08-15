@@ -1,4 +1,4 @@
-import { Bindings, ReleaseResponse } from "../types.js";
+import { Bindings } from "../types.js";
 import { Hono } from "hono/quick";
 import { getLatestRelease } from "../utils.js";
 

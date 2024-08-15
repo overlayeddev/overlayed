@@ -22,7 +22,7 @@ export async function getLatestRelease(authToken: string) {
 	return releases;
 }
 
-const filenameToPlatform = (filename: string) => {
+export const filenameToPlatform = (filename: string) => {
 	if (filename.includes("msi")) {
 		return "windows";
 	}

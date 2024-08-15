@@ -2,7 +2,7 @@
 import { Hono } from "hono";
 import token from "./handlers/token.js";
 import updater from "./handlers/updater.js";
-import canary from "./handlers/canary.js";
+import webhook from "./handlers/webhook.js";
 import github from "./handlers/github.js";
 import { cors } from "hono/cors";
 
@@ -20,6 +20,6 @@ app.route("/", token);
 app.route("/", updater);
 
 // routes for canary
-app.route("/", canary);
+app.route("/", webhook);
 
 export default app;
