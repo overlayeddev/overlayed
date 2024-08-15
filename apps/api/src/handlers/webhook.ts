@@ -46,9 +46,7 @@ app.post("/webhook", async (c) => {
 			try {
 				return await uploadStableArtifacts({ c });
 			} catch (e) {
-
-
-	return c.json({ error: "Failed to upload stable artifact" });
+				return c.json({ error: "Failed to upload stable artifact" });
 			}
 		}
 
