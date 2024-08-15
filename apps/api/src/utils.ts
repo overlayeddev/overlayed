@@ -67,10 +67,8 @@ export async function getStars({
 
 export async function getPlatformDownloads({
 	authToken,
-	isProd,
 }: {
 	authToken: string;
-	isProd: boolean;
 }) {
 	// fetch all releases from github
 	try {
@@ -79,7 +77,7 @@ export async function getPlatformDownloads({
 		const versions = releases.assets
 			.map((asset) => ({
 				name: asset.name,
-				url: `${getApiUrl(isProd)}/download/${filenameToPlatform(asset.name)}`,
+				url: asset.browser_download_url,
 				platform: filenameToPlatform(asset.name),
 			}))
 			.filter((asset) => asset.name.match(/\.(dmg|msi|AppImage)$/));

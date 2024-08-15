@@ -3,7 +3,6 @@ import {
 	getLatestVersions,
 	getPlatformDownloads,
 	getStars,
-	isProd,
 } from "../utils.js";
 import { Bindings } from "../types.js";
 
@@ -23,7 +22,6 @@ app.get("/stars", async (c) => {
 app.get("/latest/stable", async (c) => {
 	const response = await getPlatformDownloads({
 		authToken: c.env.GITHUB_TOKEN,
-		isProd: isProd(c.req.url),
 	});
 
 	if (!response) {
