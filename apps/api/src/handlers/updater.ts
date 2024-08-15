@@ -1,6 +1,5 @@
 import { Hono } from "hono/quick";
 import {
-	getApiUrl,
 	getLatestVersions,
 	getPlatformDownloads,
 	getStars,
