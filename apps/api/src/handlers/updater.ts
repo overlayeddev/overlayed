@@ -46,12 +46,11 @@ app.get("/latest/stable", async (c) => {
 	);
 });
 
+// TODO: support local loading of canary artifacts somehow?
 app.get("/latest/canary", async (c) => {
 	const files = await c.env.BUCKET.list({
 		prefix: "canary/",
 	});
-
-	const prod = isProd(c.req.url);
 
 	// fetch the latest version form the bucket
 	const latestFile = await c.env.BUCKET.get("canary/latest.json");
@@ -66,7 +65,7 @@ app.get("/latest/canary", async (c) => {
 			const platform = file.key.split("/")[1].split("-")[2];
 			return {
 				name: file.key,
-				url: `${getApiUrl(prod)}/download/${platform}`,
+				url: `https://artifacts.overlayed.dev/${file.key}`,
 				platform,
 			};
 		})
