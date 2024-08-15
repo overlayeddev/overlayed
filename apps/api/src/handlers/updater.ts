@@ -1,5 +1,11 @@
 import { Hono } from "hono/quick";
-import { getLatestVersions, getPlatformDownloads, getStars } from "../utils.js";
+import {
+	getApiUrl,
+	getLatestVersions,
+	getPlatformDownloads,
+	getStars,
+	isProd,
+} from "../utils.js";
 import { Bindings } from "../types.js";
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -18,6 +24,7 @@ app.get("/stars", async (c) => {
 app.get("/latest/stable", async (c) => {
 	const response = await getPlatformDownloads({
 		authToken: c.env.GITHUB_TOKEN,
+		isProd: isProd(c.req.url),
 	});
 
 	if (!response) {
@@ -44,6 +51,8 @@ app.get("/latest/canary", async (c) => {
 		prefix: "canary/",
 	});
 
+	const prod = isProd(c.req.url);
+
 	// fetch the latest version form the bucket
 	const latestFile = await c.env.BUCKET.get("canary/latest.json");
 	const latest = (await latestFile?.json()) as {
@@ -57,7 +66,7 @@ app.get("/latest/canary", async (c) => {
 			const platform = file.key.split("/")[1].split("-")[2];
 			return {
 				name: file.key,
-				url: `https://artifacts.overlayed.dev/${file.key}`,
+				url: `${getApiUrl(prod)}/download/${platform}`,
 				platform,
 			};
 		})
