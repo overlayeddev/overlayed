@@ -1,8 +1,8 @@
 use log::debug;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use tauri::{AppHandle, Manager};
-use tauri_plugin_store::StoreBuilder;
+use tauri::{AppHandle, EventLoopMessage, Manager, Wry};
+use tauri_plugin_store::{Store, StoreBuilder};
 
 #[derive(Deserialize, Serialize, Debug, Copy, Clone)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -30,29 +30,29 @@ pub struct Config {
 }
 
 // create a helper function to seed the config with values
-pub fn create_config(app: &AppHandle) {
+pub fn create_or_get_config(app: &AppHandle) -> Store<Wry> {
   // create the store
   let mut appdir = app.path_resolver().app_data_dir().unwrap();
   appdir.push("config.json");
-
-  // if the file exists we don't want to overwrite it
-  if appdir.exists() {
-    debug!("Config file already exists, skipping creation");
-    return;
-  }
+  let config_exists = (appdir.clone()).exists();
 
   let mut store = StoreBuilder::new(app.app_handle(), appdir).build();
-  store.insert("pin".to_string(), json!(false));
-  store.insert("placement".to_string(), json!(WindowLayout::Center));
-  store.insert("telemetry".to_string(), json!(true));
-  store.insert("joinHistoryNotifications".to_string(), json!(true));
-  store.insert("showOnlyTalkingUsers".to_string(), json!(true));
-  store.insert("featureFlags".to_string(), json!({}));
 
-  store.save();
-  debug!("Config file created successfully");
+  // if the file exists we don't want to overwrite it
+  if config_exists {
+    debug!("Config file already exists, skipping creation");
+  } else {
+    store.insert("pin".to_string(), json!(false));
+    store.insert("placement".to_string(), json!(WindowLayout::Center));
+    store.insert("telemetry".to_string(), json!(true));
+    store.insert("joinHistoryNotifications".to_string(), json!(true));
+    store.insert("showOnlyTalkingUsers".to_string(), json!(true));
+    store.insert("featureFlags".to_string(), json!({}));
+
+    store.save();
+    debug!("Config file created successfully");
+  }
+
+  store
 }
 
-// TODO: what i reallly want is a util method to allow me to do like
-// config.set(ConfigKey::Pin, json!(false))
-// config.get(ConfigKey::Pin)

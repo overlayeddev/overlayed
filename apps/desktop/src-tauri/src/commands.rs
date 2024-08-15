@@ -5,7 +5,7 @@ use serde_json::json;
 use tauri::{Manager, State, SystemTrayHandle, Window};
 use tauri_plugin_store::StoreBuilder;
 
-use crate::{constants::*, Pinned};
+use crate::{constants::*, Pinned, StoreWrapper};
 
 #[tauri::command]
 pub fn open_settings(window: Window, update: bool) {
@@ -72,11 +72,10 @@ impl Deref for Pinned {
   }
 }
 
-fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>) {
+fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>, store: State<StoreWrapper>) {
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
   let app = window.app_handle();
-  let mut store = StoreBuilder::new(app.app_handle(), "config.json".parse().expect("can't create config.json")).build();
 
   // let the client know
   window.emit(TRAY_TOGGLE_PIN, value).unwrap();

@@ -16,13 +16,15 @@ mod tray;
 mod window_custom;
 
 use crate::commands::*;
-use config::create_config;
+use config::create_or_get_config;
 use constants::*;
 use log::LevelFilter;
 use log::{debug, info};
+use tauri_plugin_store::Store;
 use std::str::FromStr;
 use std::sync::atomic::AtomicBool;
-use tauri::{generate_handler, LogicalSize, Manager, SystemTray};
+use std::sync::Mutex;
+use tauri::{generate_handler, LogicalSize, Manager, SystemTray, Wry};
 use tauri_plugin_log::LogTarget;
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
@@ -41,6 +43,7 @@ use system_notification::WorkspaceListener;
 use tauri::Window;
 
 pub struct Pinned(AtomicBool);
+pub struct StoreWrapper(pub Mutex<Store<Wry>>);
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(window: &Window) {
@@ -143,7 +146,8 @@ fn main() {
       debug!("Updated the tray/taskbar");
 
       // we should call this to create the config file
-      create_config(&app.app_handle());
+      let config = create_or_get_config(&app.app_handle());
+      app.manage(StoreWrapper(Mutex::new(config)));
 
       // NOTE: always force settings window to be a certain size
       settings.set_size(LogicalSize {
