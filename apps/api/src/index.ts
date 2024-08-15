@@ -9,6 +9,10 @@ import { cors } from "hono/cors";
 const app = new Hono();
 app.use("*", cors());
 
+// NOTE: because this one has a route with /download/:platform/:version we need to to take precedence
+// routes for github downloads
+app.route("/", github);
+
 // routes for token stuff
 app.route("/", token);
 
@@ -17,8 +21,5 @@ app.route("/", updater);
 
 // routes for canary
 app.route("/", canary);
-
-// routes for github downloads
-app.route("/", github);
 
 export default app;

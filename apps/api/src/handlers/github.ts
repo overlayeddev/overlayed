@@ -14,8 +14,12 @@ type Platform = keyof typeof FILE_NAME_TO_PLATFORM;
 
 // TODO: we should cache thsee release objects in R2 like we do with canary
 // then we won't have to wait for the function to download it first!
-app.get("/download/:platform", async (c) => {
-	const { platform } = c.req.param() as { platform: Platform };
+// TODO: also support download versions in the future as well for not it's always @latest
+app.get("/download/:platform/:version", async (c) => {
+	const { platform } = c.req.param() as {
+		platform: Platform;
+	};
+
 	// get download from github
 	const latestRelease = await getLatestRelease(c.env.GITHUB_TOKEN);
 

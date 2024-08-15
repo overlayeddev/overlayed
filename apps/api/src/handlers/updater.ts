@@ -79,6 +79,7 @@ app.get("/latest/canary", async (c) => {
 	);
 });
 
+// NOTE: THIS SHOULD HAVE BEEN PREFIXED 😂
 app.get("/:target/:arch/:currentVersion", async (c) => {
 	const currentVersion = c.req.param("currentVersion");
 
