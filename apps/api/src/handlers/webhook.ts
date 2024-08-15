@@ -1,7 +1,7 @@
 import { Artifacts, Bindings, Request, WorkflowRuns } from "../types.js";
 import { GITHUB_REPO, GITHUB_USER } from "../constants.js";
 import { Hono } from "hono/quick";
-import { WorkflowRunEvent } from "@octokit/webhooks-types";
+import { ReleaseCreatedEvent, WorkflowRunEvent } from "@octokit/webhooks-types";
 import { Webhooks } from "@octokit/webhooks";
 import { filenameToPlatform, getLatestRelease, isProd } from "../utils.js";
 
@@ -13,46 +13,56 @@ app.post("/webhook", async (c) => {
 	});
 
 	const isProduction = isProd(c.req.url);
-	const body = (await c.req.json()) as WorkflowRunEvent;
+	const body = await c.req.json();
 	const bodyAsString = JSON.stringify(body);
 	const signature = c.req.header("x-hub-signature-256") || "";
-
-	const isSuccesfulRun =
-		body.action === "completed" && body.workflow_run.conclusion === "success";
 
 	// only enable this is production!
 	if (isProduction && !(await webhooks.verify(bodyAsString, signature))) {
 		return c.json({ error: "Unauthorized" });
 	}
 
-	if (!isSuccesfulRun) {
-		return c.json({ error: "Not a successful run" });
+	// if it's a workflow run use that type
+	if ("workflow_run" in body) {
+		console.log("handling workflow run event");
+		const payload = body as WorkflowRunEvent;
+		const isSuccesfulRun =
+			payload.action === "completed" &&
+			payload.workflow_run.conclusion === "success";
+
+		if (!isSuccesfulRun) {
+			return c.json({ error: "Not a successful run" });
+		}
+
+		if (payload.workflow.name === "Canary") {
+			return await uploadCanaryArtifact({ c });
+		}
 	}
 
-	console.log("Webhook received", body.workflow.name);
+	if ("release" in body) {
+		console.log("handling release event");
+		const payload = body as ReleaseCreatedEvent;
+		if (payload.action === "created") {
+			try {
+				return await uploadStableArtifacts({ c });
+			} catch (e) {
 
-	if (body.workflow.name === "Canary") {
-		return await uploadCanaryArtifact({ c });
-	}
 
-	if (body.workflow.name === "Create Release") {
-		return await uploadStableArtifact({ c, body });
+	return c.json({ error: "Failed to upload stable artifact" });
+			}
+		}
+
+		return c.json({ error: "Not a release create event" });
 	}
 
 	return c.json({ error: "Unable to handle webhook" });
 });
 
-// TODO: we need to make this only work on a new tag create
-async function uploadStableArtifact({
-	c,
-	body,
-}: {
-	c: Request;
-	body: WorkflowRunEvent;
-}) {
+async function uploadStableArtifacts({ c }: { c: Request }) {
 	const releases = await getLatestRelease(c.env.GITHUB_TOKEN);
-
 	const latesetVersion = releases.tag_name;
+
+	console.log("Latest version", latesetVersion);
 
 	const versions = releases.assets
 		.map((asset) => ({
@@ -64,11 +74,12 @@ async function uploadStableArtifact({
 
 	// upload all the files to r2 in the stable folder
 	for (const asset of versions) {
+		console.log(`Downloading ${asset.name}`, asset.url);
 		const fileData = await fetch(asset.url).then((res) => res.arrayBuffer());
 		await c.env.BUCKET.put(`stable/${latesetVersion}/${asset.name}`, fileData);
 	}
 
-	return c.json(versions);
+	return c.json({ success: true, updated: new Date().toISOString() });
 }
 
 async function uploadCanaryArtifact({ c }: { c: Request }) {
