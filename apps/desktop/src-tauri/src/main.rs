@@ -40,7 +40,7 @@ pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(window: &WebviewWindow) {
-  use tauri::{AppHandle, WebviewWindow, Wry};
+  use tauri::{AppHandle, Wry};
   use tauri_nspanel::ManagerExt;
 
   window.remove_shadow();
@@ -57,7 +57,7 @@ fn apply_macos_specifics(window: &WebviewWindow) {
       if let Some(bundle_id) = bundle_id {
         let is_league_of_legends = bundle_id == "com.riotgames.LeagueofLegends.GameClient";
 
-        let panel = app_handle.get_panel(MAIN_WINDOW_NAME).unwrap();
+        let panel = app_handle.get_webview_panel(MAIN_WINDOW_NAME).unwrap();
 
         panel.set_level(if is_league_of_legends {
           constants::HIGHER_LEVEL_THAN_LEAGUE
