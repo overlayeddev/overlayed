@@ -80,6 +80,7 @@ async function uploadStableArtifacts({ c }: { c: Request }) {
 	return c.json({ success: true, updated: new Date().toISOString() });
 }
 
+// TODO: https://developers.cloudflare.com/workers/runtime-apis/streams/
 async function uploadCanaryArtifact({ c }: { c: Request }) {
 	const canaryWorkflowRunsResponse = await fetch(
 		`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/actions/workflows/canary.yaml/runs`,
@@ -138,6 +139,8 @@ async function uploadCanaryArtifact({ c }: { c: Request }) {
 			redirect: "follow",
 		});
 
+		// NOTE: this issue forces us to do this
+		// https://github.com/cloudflare/workerd/issues/2223
 		if (signedUrlResponse.redirected) {
 			const fileData = await fetch(signedUrlResponse.url).then((res) =>
 				res.arrayBuffer(),
