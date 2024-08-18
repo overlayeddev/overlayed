@@ -2526,7 +2526,7 @@ name = "overlayed"
 version = "0.0.0"
 dependencies = [
  "anyhow",
- "cocoa 0.25.0",
+ "cocoa 0.26.0",
  "objc",
  "serde",
  "serde_json",

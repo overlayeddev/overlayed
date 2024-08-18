@@ -32,7 +32,7 @@ use window_custom::macos::WebviewWindowExtMacos;
 use system_notification::WorkspaceListener;
 
 #[cfg(target_os = "macos")]
-use tauri::Window;
+use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
 

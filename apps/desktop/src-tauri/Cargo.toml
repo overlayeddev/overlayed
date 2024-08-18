@@ -35,7 +35,7 @@ anyhow = "1.0.86"
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]
 objc = "0.2.7"
-cocoa = "0.25.0"
+cocoa = "0.26.0"
 tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v2" }
 system-notification = { git = "https://github.com/ahkohd/tauri-toolkit", branch = "v2" }
 
