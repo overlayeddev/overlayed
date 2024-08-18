@@ -124,7 +124,7 @@ fn main() {
       }
 
       // update the system tray
-      Tray::update_tray(&app.app_handle());
+      Tray::update_tray(app.app_handle());
 
       // NOTE: always force settings window to be a certain size
       settings.set_size(LogicalSize {
@@ -146,20 +146,16 @@ fn main() {
   app
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!")
-    .run(|app, event| match event {
-      tauri::RunEvent::WindowEvent {
+    .run(|app, event| {
+      if let tauri::RunEvent::WindowEvent {
         label,
-        event: win_event,
+        event: tauri::WindowEvent::CloseRequested { api, .. },
         ..
-      } => match win_event {
-        // NOTE: prevent destroying the window
-        tauri::WindowEvent::CloseRequested { api, .. } => {
-          let win = app.get_webview_window(label.as_str()).unwrap();
-          win.hide().unwrap();
-          api.prevent_close();
-        }
-        _ => {}
-      },
-      _ => {}
+      } = event
+      {
+        let win = app.get_webview_window(label.as_str()).unwrap();
+        win.hide().unwrap();
+        api.prevent_close();
+      }
     });
 }
