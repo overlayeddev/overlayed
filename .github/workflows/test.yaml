@@ -1,5 +1,5 @@
 
-name: "CI"
+name: "Testing"
 on:
   workflow_dispatch:
   push:
