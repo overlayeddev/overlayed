@@ -61,7 +61,7 @@ jobs:
             toolchain: x86_64-pc-windows-msvc
             bundles: nsis
             os: windows
-          - host: ubuntu-20.04
+          - host: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             toolchain: x86_64-unknown-linux-gnu
             bundles: deb,appimage
@@ -98,7 +98,7 @@ jobs:
         with:
           workspaces: "apps/desktop/src-tauri/target"
       - name: Install dependencies (ubuntu only)
-        if: matrix.settings.host == 'ubuntu-20.04'
+        if: matrix.settings.host == 'ubuntu-22.04'
         run: |
           # https://tauri.app/v1/guides/building/linux/#limitations
           sudo apt-get update
