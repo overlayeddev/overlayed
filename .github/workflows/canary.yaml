@@ -143,7 +143,7 @@ jobs:
           r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           r2-bucket: ${{ secrets.R2_BUCKET }}
           source-dir: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
-          destination-dir: canary-test/
+          destination-dir: canary-test/test.zip
           multipart-size: 100
           max-retries: 3
           multipart-concurrent: true
