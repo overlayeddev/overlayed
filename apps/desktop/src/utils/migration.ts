@@ -1,4 +1,4 @@
-import { BaseDirectory, createDir, exists, readTextFile, writeFile } from "@tauri-apps/api/fs";
+import { BaseDirectory, createDir, exists, readTextFile, writeFile } from "@tauri-apps/plugin-fs";
 
 export async function completeMigration(name: string) {
   try {

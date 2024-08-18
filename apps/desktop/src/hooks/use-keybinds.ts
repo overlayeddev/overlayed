@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { register, isRegistered, unregister } from "@tauri-apps/api/globalShortcut";
+import { register, isRegistered, unregister } from "@tauri-apps/plugin-global-shortcut";
 import { useAppStore } from "@/store";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 // TODO: make these configurable?
 const HIDE_TOGGLE_KEYBIND = "Command+Shift+G";

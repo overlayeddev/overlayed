@@ -1,7 +1,7 @@
 #[cfg(target_os = "macos")]
 pub mod macos {
   use cocoa::appkit::{NSWindow, NSWindowCollectionBehavior};
-  use tauri::{Runtime, Window};
+  use tauri::{Runtime, WebviewWindow};
   use tauri_nspanel::WindowExt;
 
   pub trait WindowExtMacos {
@@ -10,7 +10,7 @@ pub mod macos {
     fn set_float_panel(&self, level: i32);
   }
 
-  impl<R: Runtime> WindowExtMacos for Window<R> {
+  impl<R: Runtime> WindowExtMacos for WebviewWindow<R> {
     fn remove_shadow(&self) {
       unsafe {
         let id = self.ns_window().unwrap() as cocoa::base::id;
@@ -44,13 +44,13 @@ pub mod macos {
   }
 }
 
-use tauri::{Runtime, Window};
+use tauri::{Runtime, WebviewWindow};
 
 pub trait WindowExt {
   fn set_document_title(&self, url: &str);
 }
 
-impl<R: Runtime> WindowExt for Window<R> {
+impl<R: Runtime> WindowExt for WebviewWindow<R> {
   fn set_document_title(&self, title: &str) {
     let str = format!("document.title = '{:}'", title);
     self.eval(&str).unwrap();

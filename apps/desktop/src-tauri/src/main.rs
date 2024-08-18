@@ -16,8 +16,8 @@ mod window_custom;
 
 use crate::commands::*;
 use constants::*;
-use std::sync::atomic::AtomicBool;
-use tauri::{generate_handler, LogicalSize, Manager, SystemTray};
+use std::sync::{atomic::AtomicBool, Mutex};
+use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
 use window_custom::WindowExt;
@@ -35,6 +35,8 @@ use system_notification::WorkspaceListener;
 use tauri::Window;
 
 pub struct Pinned(AtomicBool);
+
+pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(window: &Window) {
@@ -72,8 +74,14 @@ fn main() {
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
 
   let mut app = tauri::Builder::default()
+    .plugin(tauri_plugin_updater::Builder::new().build())
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
+    .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_process::init())
+    .plugin(tauri_plugin_shell::init())
+    .plugin(tauri_plugin_os::init())
+    .plugin(tauri_plugin_http::init())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
@@ -86,8 +94,8 @@ fn main() {
   app = app
     .manage(Pinned(AtomicBool::new(false)))
     .setup(|app| {
-      let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
-      let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
+      let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
+      let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
 
       // the window should always be on top
       #[cfg(not(target_os = "macos"))]
@@ -126,10 +134,6 @@ fn main() {
 
       Ok(())
     })
-    // Add the system tray
-    .system_tray(SystemTray::new())
-    // Handle system tray events
-    .on_system_tray_event(tray::Tray::handle_tray_events)
     .invoke_handler(generate_handler![
       toggle_pin,
       get_pin,
@@ -150,7 +154,7 @@ fn main() {
       } => match win_event {
         // NOTE: prevent destroying the window
         tauri::WindowEvent::CloseRequested { api, .. } => {
-          let win = app.get_window(label.as_str()).unwrap();
+          let win = app.get_webview_window(label.as_str()).unwrap();
           win.hide().unwrap();
           api.prevent_close();
         }

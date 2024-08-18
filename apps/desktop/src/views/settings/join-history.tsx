@@ -7,7 +7,7 @@ import { listen } from "@tauri-apps/api/event";
 import type { UnlistenFn } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
-import { requestPermission, sendNotification } from "@tauri-apps/api/notification";
+import { requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 import { Checkbox } from "@/components/ui/checkbox";
 import Config from "@/config";
 import type { JoinHistoryLogUser } from "@/types";
