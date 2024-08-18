@@ -1,4 +1,7 @@
-use std::{ops::Deref, sync::{atomic::AtomicBool, Mutex}};
+use std::{
+  ops::Deref,
+  sync::{atomic::AtomicBool, Mutex},
+};
 
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 
@@ -13,7 +16,9 @@ pub fn open_settings(window: WebviewWindow, update: bool) {
     settings_windows.set_focus();
     if update {
       // emit to the settings window to show update
-      settings_windows.emit_to(SETTINGS_WINDOW_NAME, SHOW_UPDATE_MODAL, ()).unwrap();
+      settings_windows
+        .emit_to(SETTINGS_WINDOW_NAME, SHOW_UPDATE_MODAL, ())
+        .unwrap();
     }
   }
 }
@@ -76,7 +81,9 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // invert the label for the tray
   if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {
     let enable_or_disable = if value { "Unpin" } else { "Pin" };
-    toggle_pin_menu_item.as_menuitem_unchecked().set_text(enable_or_disable);
+    toggle_pin_menu_item
+      .as_menuitem_unchecked()
+      .set_text(enable_or_disable);
   }
 
   #[cfg(target_os = "macos")]

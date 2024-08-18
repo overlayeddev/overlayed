@@ -1,12 +1,18 @@
 use std::sync::Mutex;
 
-use tauri::{menu::{Menu, MenuBuilder, MenuEvent}, tray::TrayIconBuilder, AppHandle, LogicalSize, Manager, Wry};
+use tauri::{
+  menu::{Menu, MenuBuilder, MenuEvent},
+  tray::TrayIconBuilder,
+  AppHandle, LogicalSize, Manager, Wry,
+};
 
 use anyhow::Result;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{
-  commands, toggle_pin, Pinned, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED, SETTINGS_WINDOW_NAME, TRAY_OPEN_DEVTOOLS_MAIN, TRAY_OPEN_DEVTOOLS_SETTINGS, TRAY_QUIT, TRAY_RELOAD, TRAY_SETTINGS, TRAY_SHOW_APP, TRAY_TOGGLE_PIN
+  commands, toggle_pin, Pinned, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED, SETTINGS_WINDOW_NAME,
+  TRAY_OPEN_DEVTOOLS_MAIN, TRAY_OPEN_DEVTOOLS_SETTINGS, TRAY_QUIT, TRAY_RELOAD, TRAY_SETTINGS,
+  TRAY_SHOW_APP, TRAY_TOGGLE_PIN,
 };
 
 pub struct Tray;
@@ -18,18 +24,24 @@ impl Tray {
       .text(TRAY_TOGGLE_PIN, "Pin")
       .text(TRAY_SHOW_APP, "Show Overlayed")
       .text(TRAY_RELOAD, "Reload App")
-      .text(TRAY_OPEN_DEVTOOLS_MAIN,"Open Devtools (main window)")
-      .text(TRAY_OPEN_DEVTOOLS_SETTINGS, "Open Devtools (settings window)")
+      .text(TRAY_OPEN_DEVTOOLS_MAIN, "Open Devtools (main window)")
+      .text(
+        TRAY_OPEN_DEVTOOLS_SETTINGS,
+        "Open Devtools (settings window)",
+      )
       .text(TRAY_SETTINGS, "Settings")
       .separator()
-      .text(OVERLAYED,format!("Overlayed v{version}"))
+      .text(OVERLAYED, format!("Overlayed v{version}"))
       .text(TRAY_QUIT, "Quit")
       .build()
   }
 
   pub fn update_tray(app_handle: &AppHandle) -> Result<()> {
     let menu = Tray::create_tray_menu(app_handle)?;
-    let _ = TrayIconBuilder::with_id(OVERLAYED).menu(&menu).on_menu_event(Self::handle_menu_events).build(app_handle)?;
+    let _ = TrayIconBuilder::with_id(OVERLAYED)
+      .menu(&menu)
+      .on_menu_event(Self::handle_menu_events)
+      .build(app_handle)?;
     app_handle.manage(TrayMenu(Mutex::new(menu)));
     commands::update_tray_icon(app_handle, false);
     Ok(())
