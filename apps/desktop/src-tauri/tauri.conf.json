@@ -2,90 +2,40 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": true
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "Overlayed",
-    "version": "0.5.0"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/stable/32x32.png",
+      "icons/stable/128x128.png",
+      "icons/stable/128x128@2x.png",
+      "icons/stable/icon.icns",
+      "icons/stable/icon.ico"
+    ],
+    "createUpdaterArtifacts": "v1Compatible"
   },
-  "tauri": {
+  "productName": "Overlayed",
+  "version": "0.5.0",
+  "identifier": "com.overlayed.dev",
+  "plugins": {
     "updater": {
-      "active": true,
-      "endpoints": ["https://update.overlayed.dev/{{target}}/{{arch}}/{{current_version}}"],
-      "dialog": false,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM5MDVDNEVFQTc2QzJBNDYKUldSR0tteW43c1FGeVhzUm9vNEJKUkFyUXhSS2lrZWRuV1p1VWx5Tkg5bUhEWDZrOGprbGNnWkQK"
-    },
-    "systemTray": {
-      "iconPath": "icons/tray/icon.ico",
-      "iconAsTemplate": true
-    },
-    "allowlist": {
-      "os": {
-        "all": true
-      },
-      "notification": {
-        "all": true
-      },
-      "process": {
-        "relaunch": true,
-        "exit": true
-      },
-      "shell": {
-        "open": ".*"
-      },
-      "fs": {
-        "scope": ["$APPCONFIG/**", "$CONFIG/**", "$APPDATA/**"],
-        "readFile": true,
-        "writeFile": true,
-        "createDir": true,
-        "exists": true
-      },
-      "http": {
-        "all": true,
-        "request": true,
-        "scope": [
-          "https://api.overlayed.dev/token",
-          "https://api.axiom.co/v1/datasets/overlayed-prod/ingest",
-          "https://o4506462955503616.ingest.us.sentry.io/api/4507379579289600/envelope"
-        ]
-      },
-      "path": {
-        "all": true
-      },
-      "window": {
-        "setSize": true,
-        "setPosition": true,
-        "startDragging": true,
-        "setAlwaysOnTop": true
-      },
-      "globalShortcut": {
-        "all": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.overlayed.dev",
-      "icon": [
-        "icons/stable/32x32.png",
-        "icons/stable/128x128.png",
-        "icons/stable/128x128@2x.png",
-        "icons/stable/icon.icns",
-        "icons/stable/icon.ico"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM5MDVDNEVFQTc2QzJBNDYKUldSR0tteW43c1FGeVhzUm9vNEJKUkFyUXhSS2lrZWRuV1p1VWx5Tkg5bUhEWDZrOGprbGNnWkQK",
+      "endpoints": [
+        "https://update.overlayed.dev/{{target}}/{{arch}}/{{current_version}}"
       ]
-    },
-    "security": {
-      "csp": null
-    },
-    "macOSPrivateApi": true,
+    }
+  },
+  "app": {
     "windows": [
       {
         "fullscreen": false,
         "resizable": true,
         "transparent": true,
         "decorations": false,
+        "shadow": false,
         "label": "main",
         "title": "Overlayed - Main",
         "width": 420,
@@ -104,6 +54,11 @@
         "width": 600,
         "height": 400
       }
-    ]
+    ],
+    "withGlobalTauri": true,
+    "macOSPrivateApi": true,
+    "security": {
+      "csp": null
+    }
   }
 }

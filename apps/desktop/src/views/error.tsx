@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useSetWindowSize } from "../hooks/use-set-size";
 import { useAppStore } from "../store";
-import { exit } from "@tauri-apps/api/process";
+import { exit } from "@tauri-apps/plugin-process";
 
 export const ErrorView = () => {
   useSetWindowSize({ width: 400, height: 600 });

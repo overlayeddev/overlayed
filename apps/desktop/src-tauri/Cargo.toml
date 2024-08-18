@@ -10,48 +10,41 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5.2", features = [] }
+tauri-build = { version = "2.0.0-rc", features = [] }
 
 [dependencies]
-tauri = { version = "1.6.8", features = [
-  "fs-create-dir",
-  "notification-all",
-  "global-shortcut-all",
-  "process-relaunch",
-  "updater",
-  "process-exit",
-  "os-all",
-  "window-set-position",
-  "shell-open",
-  "path-all",
-  "fs-read-file",
-  "fs-exists",
-  "fs-write-file",
-  "system-tray",
-  "window-set-size",
-  "window-set-always-on-top",
-  "window-start-dragging",
+tauri = { version = "2.0.0-rc", features = [
   "macos-private-api",
-  "devtools",
-  "icon-ico",
-  "icon-png",
-  "http-all",
+  "devtools", "image-png", "image-ico", "tray-icon",
 ] }
 serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0"
 tokio = { version = "1.38.0", features = [
   "full",
 ] } # Required for asynchronous operations
-tauri-plugin-websocket = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
-tauri-plugin-window-state = { git = "https://github.com/Hacksore/plugins-workspace", branch = "v1" }
-tauri-plugin-single-instance = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-plugin-websocket = { version = "2.0.0-rc" }
+
+# NOTE: we are using a forked version because of this issue
+# https://github.com/tauri-apps/plugins-workspace/issues/1546
+tauri-plugin-window-state = { git = "https://github.com/Hacksore/plugins-workspace", branch = "v2" }
+
+tauri-plugin-single-instance = { version = "2.0.0-rc" }
+tauri-plugin-fs = "2.0.0-rc"
+tauri-plugin-process = "2.0.0-rc"
+tauri-plugin-shell = "2.0.0-rc"
+tauri-plugin-os = "2.0.0-rc"
+tauri-plugin-http = "2.0.0-rc"
 anyhow = "1.0.86"
 
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]
 objc = "0.2.7"
-cocoa = "0.25.0"
-tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v1" }
-system-notification = { git = "https://github.com/ahkohd/tauri-toolkit", branch = "v1" }
+cocoa = "0.26.0"
+tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v2" }
+system-notification = { git = "https://github.com/ahkohd/tauri-toolkit", branch = "v2" }
+
+[target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
+tauri-plugin-updater = "2.0.0-rc.1"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

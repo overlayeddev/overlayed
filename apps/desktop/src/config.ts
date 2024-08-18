@@ -1,5 +1,5 @@
-import { writeFile, readTextFile, createDir } from "@tauri-apps/api/fs";
-import { appConfigDir } from "@tauri-apps/api/path";
+import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { BaseDirectory } from "@tauri-apps/api/path";
 import * as Sentry from "@sentry/react";
 
 export type DirectionLR = "left" | "right" | "center";
@@ -35,7 +35,6 @@ const CONFIG_FILE_NAME = "config.json";
 
 export class Config {
   private config: OverlayedConfig = DEFAULT_OVERLAYED_CONFIG;
-  private configPath: string = "";
   private loaded = false;
   constructor() {
     this.load();
@@ -43,10 +42,8 @@ export class Config {
 
   load = async () => {
     if (this.loaded) return;
-
-    this.configPath = await appConfigDir();
     try {
-      const config = await readTextFile(this.configPath + "/" + CONFIG_FILE_NAME);
+      const config = await readTextFile(CONFIG_FILE_NAME, { baseDir: BaseDirectory.AppConfig });
       this.config = JSON.parse(config);
 
       // get the new keys that don't exist in the config and merge them in
@@ -102,18 +99,8 @@ export class Config {
   }
 
   async save() {
-    // create the config dir if it's not there
-    try {
-      await createDir(this.configPath, {
-        recursive: true,
-      });
-    } catch (err: unknown) {
-      // noop
-    }
-
-    await writeFile({
-      path: this.configPath + CONFIG_FILE_NAME,
-      contents: JSON.stringify(this.config, null, 2),
+    await writeTextFile(CONFIG_FILE_NAME, JSON.stringify(this.config, null, 2), {
+      baseDir: BaseDirectory.AppConfig,
     });
   }
 }
