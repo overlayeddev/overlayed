@@ -20,13 +20,13 @@ use std::sync::{atomic::AtomicBool, Mutex};
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
-use window_custom::WindowExt;
+use window_custom::WebviewWindowExt;
 
 #[cfg(target_os = "macos")]
 use app_handle::AppHandleExt;
 
 #[cfg(target_os = "macos")]
-use window_custom::macos::WindowExtMacos;
+use window_custom::macos::WebviewWindowExtMacos;
 
 #[cfg(target_os = "macos")]
 use system_notification::WorkspaceListener;
@@ -39,8 +39,8 @@ pub struct Pinned(AtomicBool);
 pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
-fn apply_macos_specifics(window: &Window) {
-  use tauri::{AppHandle, Wry};
+fn apply_macos_specifics(window: &WebviewWindow) {
+  use tauri::{AppHandle, WebviewWindow, Wry};
   use tauri_nspanel::ManagerExt;
 
   window.remove_shadow();
