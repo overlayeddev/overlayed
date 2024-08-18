@@ -1,10 +1,9 @@
-
 name: "Testing"
 on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - r2fun 
 
 jobs:
   quality:
@@ -16,6 +15,7 @@ jobs:
           node-version: 20
       - name: test file
         run: |
+          node -v
           echo "1" > test.txt
       - uses: ryand56/r2-upload-action@latest
         with:
