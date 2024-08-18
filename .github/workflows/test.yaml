@@ -10,6 +10,10 @@ jobs:
   quality:
     runs-on: "ubuntu-latest"
     steps:
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: test file
         run: |
           echo "1" > test.txt
