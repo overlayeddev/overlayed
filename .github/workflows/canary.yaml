@@ -138,7 +138,7 @@ jobs:
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
       - name: Create a zip of the release
         run: |
-          zip -r overlayed-${{ matrix.settings.os }}.zip apps/desktop/src-tauri/target/${{ matrix.setting.target }}/release/bundle/
+          zip -rv overlayed-${{ matrix.settings.os }}.zip apps/desktop/src-tauri/target/${{ matrix.settings.target }}/release/bundle/
       - uses: ryand56/r2-upload-action@latest
         with:
           r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
