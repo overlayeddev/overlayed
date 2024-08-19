@@ -50,9 +50,13 @@ switch (arg) {
   case "canary":
     await patchCanaryVersion({ github, context });
     break;
-  case "upload-r2":
-    await uploadBinsToR2({ github, context }, "assets");
+  case "upload-canary":
+    await uploadBinsToR2({ github, context }, "canary");
+    break;
+  case "upload-stable":
+    context.ref = "v0.5.0";
+    await uploadBinsToR2({ github, context }, "stable");
     break;
   default:
-    console.log("No script found, accepted answers are: create, download, upload, r2");
+    console.log("No script found, accepted answers are: create, download, upload, upload-stable, upload-canary");
 }
