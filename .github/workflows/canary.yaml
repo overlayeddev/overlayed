@@ -164,13 +164,6 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Install
         run: pnpm install --filter=overlayed-root
-      - name: Download All Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: assets
-          pattern: overlayed-canary-*
-          merge-multiple: true
-      - run: ls -R assets
       - name: Upload Canary Binary to R2
         uses: actions/github-script@v7
         with:

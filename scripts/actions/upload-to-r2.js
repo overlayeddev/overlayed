@@ -4,8 +4,27 @@ import path from "path";
 
 const { R2_BUCKET, R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY } = process.env;
 
-// TODO: expand this to support the stable version too
-export const script = async ({ context, assetDir }) => {
+/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+export const script = async ({ github, context }, assetDir) => {
+  const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    run_id: context.runId || "10445719576",
+  });
+
+  // download all the artifacts from the build
+  for (const artifact of artifacts.data.artifacts) {
+    console.log(`Downloading ${artifact.name}...`);
+    const { data } = await github.rest.actions.downloadArtifact({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      artifact_id: artifact.id,
+      archive_format: "zip",
+    });
+
+    fs.writeFileSync(path.join(assetDir, `${artifact.name}`), Buffer.from(data));
+  }
+
   console.log("Starting upload to R2...");
   const client = new S3Client({
     endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
@@ -23,7 +42,7 @@ export const script = async ({ context, assetDir }) => {
 
       const uploadBinsCommand = new PutObjectCommand({
         Bucket: R2_BUCKET,
-        Key: `canary/${file.replace(".zip", "")}`,
+        Key: `canary/${file}`,
         Body: fileStream,
       });
 

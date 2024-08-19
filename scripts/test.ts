@@ -51,7 +51,7 @@ switch (arg) {
     await patchCanaryVersion({ github, context });
     break;
   case "upload-r2":
-    await uploadBinsToR2({ context: { sha: "1212" }, assetDir: "assets" });
+    await uploadBinsToR2({ github, context }, "assets");
     break;
   default:
     console.log("No script found, accepted answers are: create, download, upload, r2");
