@@ -136,17 +136,45 @@ jobs:
         with:
           name: "overlayed-canary-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
-      - name: Create a zip of the release
-        run: |
-          zip -rv overlayed-${{ matrix.settings.os }}.zip apps/desktop/src-tauri/target/${{ matrix.settings.target }}/release/bundle/
-      - uses: ryand56/r2-upload-action@latest
+
+  upload-to-r2:
+    needs: build-tauri 
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
         with:
-          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
-          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
-          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          r2-bucket: ${{ secrets.R2_BUCKET }}
-          source-dir: overlayed-${{ matrix.settings.os }}.zip
-          destination-dir: canary-test/${{ matrix.settings.os }}.zip
-          multipart-size: 100
-          max-retries: 3
-          multipart-concurrent: true
+          ref: ${{ inputs.branch }}
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Install
+        run: pnpm install --filter=overlayed-root
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: assets
+          pattern: overlayed-canary-*
+          merge-multiple: true
+      - run: ls -R assets
+      - name: Upload Canary Binary to R2 
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const path = require("path");
+            const { script } = await import("file://" + path.resolve('./scripts/actions/upload-to-r2.js'));
+            await script({ context, assetDir: "assets" });
