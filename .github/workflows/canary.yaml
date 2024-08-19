@@ -170,7 +170,7 @@ jobs:
           script: |
             const path = require("path");
             const { script } = await import("file://" + path.resolve('./scripts/actions/upload-to-r2.js'));
-            await script({ context, assetDir: "assets" });
+            await script({ github, context }, "assets" );
         env:
           R2_BUCKET: ${{ secrets.R2_BUCKET }}
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
