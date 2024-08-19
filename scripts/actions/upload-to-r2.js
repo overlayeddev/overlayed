@@ -6,6 +6,9 @@ const { R2_BUCKET, R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY } = pro
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ github, context }, assetDir) => {
+  // make the artifact directory if it doesn't exist
+  fs.mkdirSync(assetDir, { recursive: true });
+  
   const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
     owner: context.repo.owner,
     repo: context.repo.repo,
