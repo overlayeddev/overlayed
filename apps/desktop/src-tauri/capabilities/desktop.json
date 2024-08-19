@@ -1,18 +1,8 @@
 {
   "identifier": "desktop-capability",
-  "windows": [
-    "main",
-    "settings"
-  ],
-  "webviews": [
-    "main",
-    "settings"
-  ],
-  "platforms": [
-    "macOS",
-    "windows",
-    "linux"
-  ],
+  "windows": ["main", "settings"],
+  "webviews": ["main", "settings"],
+  "platforms": ["macOS", "windows", "linux"],
   "permissions": [
     "core:default",
     "updater:default",
