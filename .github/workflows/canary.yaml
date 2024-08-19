@@ -138,7 +138,7 @@ jobs:
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
 
   upload-to-r2:
-    needs: build-tauri 
+    needs: build-tauri
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -171,10 +171,15 @@ jobs:
           pattern: overlayed-canary-*
           merge-multiple: true
       - run: ls -R assets
-      - name: Upload Canary Binary to R2 
+      - name: Upload Canary Binary to R2
         uses: actions/github-script@v7
         with:
           script: |
             const path = require("path");
             const { script } = await import("file://" + path.resolve('./scripts/actions/upload-to-r2.js'));
             await script({ context, assetDir: "assets" });
+        env:
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
