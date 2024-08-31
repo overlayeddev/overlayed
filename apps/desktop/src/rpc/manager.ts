@@ -156,9 +156,10 @@ class SocketManager {
         scopes: [
           "identify",
           "rpc",
-          "guilds",
-          "rpc.notifications.read",
-          // TODO: how do you use other scopes
+          // TODO: when we need soundboard we can enable these scopes
+          // "guilds",
+          // "rpc.notifications.read",
+          // TODO: how do you use other scopes 🤔
           // "rpc.activities.write",
           // "rpc.voice.read",
           // "rpc.voice.write",
