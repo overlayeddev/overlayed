@@ -38,6 +38,8 @@ tauri-plugin-log = "2.0.0-rc"
 tauri-plugin-store = "2.0.0-rc"
 anyhow = "1.0.86"
 
+log = "0.4.22"
+
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]
 objc = "0.2.7"

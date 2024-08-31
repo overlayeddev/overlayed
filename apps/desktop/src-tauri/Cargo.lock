@@ -2687,6 +2687,7 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "cocoa 0.26.0",
+ "log",
  "objc",
  "serde",
  "serde_json",
