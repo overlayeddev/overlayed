@@ -16,10 +16,9 @@ mod tray;
 mod window_custom;
 
 use crate::commands::*;
-// use config::create_or_get_config;
 use constants::*;
 use log::{info, debug};
-use tauri_plugin_log::{Target, TargetKind, LogLevel};
+use tauri_plugin_log::{Target, TargetKind};
 use tauri_plugin_store::Store;
 use std::sync::{atomic::AtomicBool, Mutex};
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};

@@ -4,11 +4,9 @@ use std::{
 };
 
 use log::debug;
-use serde_json::json;
-use tauri::{Manager, State, SystemTrayHandle, Window};
-use tauri_plugin_store::StoreBuilder;
+use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 
-use crate::{constants::*, Pinned, StoreWrapper};
+use crate::{constants::*, Pinned, TrayMenu};
 
 #[tauri::command]
 pub fn open_settings(window: WebviewWindow, update: bool) {
@@ -87,13 +85,11 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
-  let app = window.app_handle();
-
   // let the client know
-  window.emit(TRAY_TOGGLE_PIN, value).unwrap();
+  window.emit_to(SETTINGS_WINDOW_NAME, TRAY_TOGGLE_PIN, value).unwrap();
 
   // persist to disk
-  store.insert("pin".to_string(), json!(value));
+  // store.insert("pin".to_string(), json!(value));
 
   // invert the label for the tray
   if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {

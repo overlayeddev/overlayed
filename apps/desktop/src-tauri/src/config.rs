@@ -1,7 +1,7 @@
 use log::debug;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use tauri::{AppHandle, EventLoopMessage, Manager, Wry};
+use tauri::{AppHandle, Manager, Wry};
 use tauri_plugin_store::{Store, StoreBuilder};
 
 #[derive(Deserialize, Serialize, Debug, Copy, Clone)]
@@ -32,11 +32,11 @@ pub struct Config {
 // create a helper function to seed the config with values
 pub fn create_or_get_config(app: &AppHandle) -> Store<Wry> {
   // create the store
-  let mut appdir = app.path_resolver().app_data_dir().unwrap();
+  let mut appdir = app.path().app_data_dir().expect("failed to get app data dir");
   appdir.push("config.json");
   let config_exists = (appdir.clone()).exists();
 
-  let mut store = StoreBuilder::new(app.app_handle(), appdir).build();
+  let mut store = StoreBuilder::new("config_v2.json").build(app.app_handle().clone());
 
   // if the file exists we don't want to overwrite it
   if config_exists {
