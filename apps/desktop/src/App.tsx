@@ -43,25 +43,6 @@ function App() {
           setAlignDirection={setHorizontalDirection}
         />
       )}
-
-      <Button
-        onClick={async () => {
-          const allSounds = await socket?.getSoundBoardItems();
-          console.log({ allSounds });
-
-          // play ahh
-          socket?.send({
-            cmd: RPCCommand.PLAY_SOUNDBOARD_SOUND,
-            args: {
-              name: "cricket",
-              sound_id: "3",
-              guild_id: "DEFAULT",
-            },
-          });
-        }}
-      >
-        Test soundbard
-      </Button>
       <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />
