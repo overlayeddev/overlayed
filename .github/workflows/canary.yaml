@@ -61,7 +61,7 @@ jobs:
             toolchain: x86_64-pc-windows-msvc
             bundles: nsis
             os: windows
-          - host: ubuntu-20.04
+          - host: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             toolchain: x86_64-unknown-linux-gnu
             bundles: deb,appimage
@@ -98,7 +98,7 @@ jobs:
         with:
           workspaces: "apps/desktop/src-tauri/target"
       - name: Install dependencies (ubuntu only)
-        if: matrix.settings.host == 'ubuntu-20.04'
+        if: matrix.settings.host == 'ubuntu-22.04'
         run: |
           # https://tauri.app/v1/guides/building/linux/#limitations
           sudo apt-get update
@@ -110,7 +110,7 @@ jobs:
             libssl-dev \
             libgtk-3-dev \
             libayatana-appindicator3-dev \
-            libwebkit2gtk-4.0-dev \
+            libwebkit2gtk-4.1-dev \
             librsvg2-dev
       - name: Install dependencies
         run: pnpm install
@@ -128,11 +128,51 @@ jobs:
           args: --config "src-tauri/tauri.conf.canary.json" --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
-          TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
+          TAURI_SIGNING_PRIVATE_KEY: "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}"
+          TAURI_SIGNING_PUBLIC_KEY: "${{ secrets.TAURI_SIGNING_PUBLIC_KEY }}"
           VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
       - name: Upload canary ${{ matrix.setting.os }}
         uses: actions/upload-artifact@v4
         with:
           name: "overlayed-canary-${{ matrix.settings.os }}"
           path: "${{ join(fromJSON(steps.build_os.outputs.artifactPaths), '\n') }}"
+
+  upload-to-r2:
+    needs: build-tauri
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Install
+        run: pnpm install --filter=overlayed-root
+      - name: Upload Canary Binary to R2
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const path = require("path");
+            const { script } = await import("file://" + path.resolve('./scripts/actions/upload-to-r2.js'));
+            await script({ github, context }, "canary" );
+        env:
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}

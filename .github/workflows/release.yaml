@@ -75,7 +75,7 @@ jobs:
         if: matrix.settings.host == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
       - uses: pnpm/action-setup@v3
         with:
           version: 9
@@ -89,8 +89,8 @@ jobs:
           APPLE_SIGNING_IDENTITY: "${{ secrets.APPLE_SIGNING_IDENTITY }}"
           APPLE_CERTIFICATE: "${{ secrets.APPLE_CERTIFICATE }}"
           APPLE_CERTIFICATE_PASSWORD: "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}"
-          TAURI_PRIVATE_KEY: "${{ secrets.TAURI_PRIVATE_KEY }}"
-          TAURI_PUBLIC_KEY: "${{ secrets.TAURI_PUBLIC_KEY }}"
+          TAURI_SIGNING_PRIVATE_KEY: "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}"
+          TAURI_SIGNING_PUBLIC_KEY: "${{ secrets.TAURI_SIGNING_PUBLIC_KEY }}"
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
           VITE_SENTRY_AUTH_TOKEN: "${{ secrets.VITE_SENTRY_AUTH_TOKEN }}"

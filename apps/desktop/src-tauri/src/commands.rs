@@ -1,4 +1,7 @@
-use std::{ops::Deref, sync::atomic::AtomicBool};
+use std::{
+  ops::Deref,
+  sync::{atomic::AtomicBool, Mutex},
+};
 
 use log::debug;
 use serde_json::json;
@@ -8,15 +11,17 @@ use tauri_plugin_store::StoreBuilder;
 use crate::{constants::*, Pinned, StoreWrapper};
 
 #[tauri::command]
-pub fn open_settings(window: Window, update: bool) {
+pub fn open_settings(window: WebviewWindow, update: bool) {
   let app = window.app_handle();
-  let settings_windows = app.get_window(SETTINGS_WINDOW_NAME);
+  let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
     settings_windows.show();
     settings_windows.set_focus();
     if update {
       // emit to the settings window to show update
-      settings_windows.emit(SHOW_UPDATE_MODAL, ()).unwrap();
+      settings_windows
+        .emit_to(SETTINGS_WINDOW_NAME, SHOW_UPDATE_MODAL, ())
+        .unwrap();
     }
   }
 
@@ -24,9 +29,9 @@ pub fn open_settings(window: Window, update: bool) {
 }
 
 #[tauri::command]
-pub fn close_settings(window: Window) {
+pub fn close_settings(window: WebviewWindow) {
   let app = window.app_handle();
-  let settings_windows = app.get_window(SETTINGS_WINDOW_NAME);
+  let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
     settings_windows.hide();
   }
@@ -43,24 +48,22 @@ pub fn get_pin(storage: State<Pinned>) -> bool {
 }
 
 #[tauri::command]
-pub fn open_devtools(window: Window) {
+pub fn open_devtools(window: WebviewWindow) {
   window.open_devtools();
   debug!("Ran open_devtools command");
 }
 
 #[tauri::command]
-pub fn toggle_pin(window: Window, pin: State<Pinned>) {
+pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>) {
   let app = window.app_handle();
   let value = !get_pin(app.state::<Pinned>());
 
-  _set_pin(value, &window, pin);
-  debug!("Ran toggle_pin command");
+  _set_pin(value, &window, pin, menu);
 }
 
 #[tauri::command]
-pub fn set_pin(window: Window, pin: State<Pinned>, value: bool) {
-  _set_pin(value, &window, pin);
-  debug!("Ran set_pin command");
+pub fn set_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, value: bool) {
+  _set_pin(value, &window, pin, menu);
 }
 
 // @d0nutptr cooked here to make it more concise to access the AtomicBool
@@ -72,7 +75,16 @@ impl Deref for Pinned {
   }
 }
 
-fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>, store: State<StoreWrapper>) {
+impl Deref for TrayMenu {
+  type Target = Mutex<Menu<Wry>>;
+
+  fn deref(&self) -> &Self::Target {
+    &self.0
+  }
+}
+
+fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: State<TrayMenu>) {
+  // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
   let app = window.app_handle();
@@ -84,11 +96,12 @@ fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>, store: State<St
   store.insert("pin".to_string(), json!(value));
 
   // invert the label for the tray
-  let tray_handle = window.app_handle().tray_handle();
-  let enable_or_disable = if value { "Unpin" } else { "Pin" };
-  tray_handle
-    .get_item(TRAY_TOGGLE_PIN)
-    .set_title(format!("{}", enable_or_disable));
+  if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {
+    let enable_or_disable = if value { "Unpin" } else { "Pin" };
+    toggle_pin_menu_item
+      .as_menuitem_unchecked()
+      .set_text(enable_or_disable);
+  }
 
   #[cfg(target_os = "macos")]
   window.with_webview(move |webview| {
@@ -101,21 +114,19 @@ fn _set_pin(value: bool, window: &Window, pinned: State<Pinned>, store: State<St
   window.set_ignore_cursor_events(value);
 
   // update the tray icon
-  update_tray_icon(window.app_handle().tray_handle(), value);
-
-  // flush to disk
-  store.save();
+  update_tray_icon(window.app_handle(), value);
 }
 
-fn update_tray_icon(tray: SystemTrayHandle, pinned: bool) {
-  let icon;
-  if pinned {
-    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon-pinned.ico").to_vec());
+pub fn update_tray_icon(app: &AppHandle, pinned: bool) {
+  let icon_bytes = if pinned {
+    include_bytes!("../icons/tray/icon-pinned.ico").as_slice()
   } else {
-    icon = tauri::Icon::Raw(include_bytes!("../icons/tray/icon.ico").to_vec());
-  }
+    include_bytes!("../icons/tray/icon.ico").as_slice()
+  };
 
-  let icon_state = if pinned { "pinned" } else { "unpinned" };
-  tray.set_icon(icon);
-  debug!("Updated the tray icon state to {}", icon_state);
+  if let Some(tray) = app.tray_by_id(OVERLAYED) {
+    if let Ok(icon) = Image::from_bytes(icon_bytes) {
+      tray.set_icon(Some(icon));
+    }
+  }
 }

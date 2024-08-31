@@ -1,42 +1,87 @@
-import { Artifacts, Bindings, WorkflowRuns } from "../types.js";
+import { Artifacts, Bindings, Request, WorkflowRuns } from "../types.js";
 import { GITHUB_REPO, GITHUB_USER } from "../constants.js";
 import { Hono } from "hono/quick";
-import { WorkflowRunEvent } from "@octokit/webhooks-types";
+import { ReleaseCreatedEvent, WorkflowRunEvent } from "@octokit/webhooks-types";
 import { Webhooks } from "@octokit/webhooks";
-import { isProd } from "../utils.js";
+import { filenameToPlatform, getLatestRelease, isProd } from "../utils.js";
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.post("/upload-canary-artifacts", async (c) => {
+app.post("/webhook", async (c) => {
 	const webhooks = new Webhooks({
 		secret: c.env.CANARY_UPLOAD_SECRET,
 	});
 
 	const isProduction = isProd(c.req.url);
-	const body = (await c.req.json()) as WorkflowRunEvent;
+	const body = await c.req.json();
 	const bodyAsString = JSON.stringify(body);
-
 	const signature = c.req.header("x-hub-signature-256") || "";
 
-	const isCanaryJob = body.workflow.name === "Canary";
-	const isSuccesfulRun =
-		body.action === "completed" && body.workflow_run.conclusion === "success";
-
 	// only enable this is production!
-	if (isProduction) {
-		if (!(await webhooks.verify(bodyAsString, signature))) {
-			return c.json({ error: "Unauthorized" });
+	if (isProduction && !(await webhooks.verify(bodyAsString, signature))) {
+		return c.json({ error: "Unauthorized" });
+	}
+
+	// if it's a workflow run use that type
+	if ("workflow_run" in body) {
+		console.log("handling workflow run event");
+		const payload = body as WorkflowRunEvent;
+		const isSuccesfulRun =
+			payload.action === "completed" &&
+			payload.workflow_run.conclusion === "success";
+
+		if (!isSuccesfulRun) {
+			return c.json({ error: "Not a successful run" });
+		}
+
+		if (payload.workflow.name === "Canary") {
+			return await uploadCanaryArtifact({ c });
 		}
 	}
 
-	if (!isSuccesfulRun || !isCanaryJob) {
-		return c.json({
-			messge: "either the run was not successful or it was not a canary job",
-			job: body.workflow.name,
-			conclusion: body.workflow_run.conclusion,
-		});
+	if ("release" in body) {
+		console.log("handling release event");
+		const payload = body as ReleaseCreatedEvent;
+		if (payload.action === "created") {
+			try {
+				return await uploadStableArtifacts({ c });
+			} catch (e) {
+				return c.json({ error: "Failed to upload stable artifact" });
+			}
+		}
+
+		return c.json({ error: "Not a release create event" });
 	}
 
+	return c.json({ error: "Unable to handle webhook" });
+});
+
+async function uploadStableArtifacts({ c }: { c: Request }) {
+	const releases = await getLatestRelease(c.env.GITHUB_TOKEN);
+	const latesetVersion = releases.tag_name;
+
+	console.log("Latest version", latesetVersion);
+
+	const versions = releases.assets
+		.map((asset) => ({
+			name: asset.name,
+			url: asset.browser_download_url,
+			platform: filenameToPlatform(asset.name),
+		}))
+		.filter((asset) => asset.name.match(/\.(dmg|msi|AppImage)$/));
+
+	// upload all the files to r2 in the stable folder
+	for (const asset of versions) {
+		console.log(`Downloading ${asset.name}`, asset.url);
+		const fileData = await fetch(asset.url).then((res) => res.arrayBuffer());
+		await c.env.BUCKET.put(`stable/${latesetVersion}/${asset.name}`, fileData);
+	}
+
+	return c.json({ success: true, updated: new Date().toISOString() });
+}
+
+// TODO: https://developers.cloudflare.com/workers/runtime-apis/streams/
+async function uploadCanaryArtifact({ c }: { c: Request }) {
 	const canaryWorkflowRunsResponse = await fetch(
 		`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/actions/workflows/canary.yaml/runs`,
 		{
@@ -94,6 +139,8 @@ app.post("/upload-canary-artifacts", async (c) => {
 			redirect: "follow",
 		});
 
+		// NOTE: this issue forces us to do this
+		// https://github.com/cloudflare/workerd/issues/2223
 		if (signedUrlResponse.redirected) {
 			const fileData = await fetch(signedUrlResponse.url).then((res) =>
 				res.arrayBuffer(),
@@ -137,6 +184,6 @@ You can download it on [overlayed.dev/canary](<https://overlayed.dev/canary>)
 		},
 		200,
 	);
-});
+}
 
 export default app;

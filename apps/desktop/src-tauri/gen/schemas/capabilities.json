@@ -1,0 +1,33 @@
+{
+  "desktop-capability": {
+    "identifier": "desktop-capability",
+    "description": "",
+    "local": true,
+    "windows": ["main", "settings"],
+    "webviews": ["main", "settings"],
+    "permissions": [
+      "core:default",
+      "updater:default",
+      "fs:default",
+      { "identifier": "fs:allow-app-write", "allow": [{ "path": "$APPCONFIG/*" }] },
+      "core:window:allow-set-size",
+      "core:window:allow-start-dragging",
+      "process:default",
+      "core:tray:default",
+      "core:app:default",
+      "core:event:default",
+      "shell:default",
+      "websocket:default",
+      "window-state:default",
+      { "identifier": "http:default", "allow": [{ "url": "https://api.overlayed.dev" }] }
+    ],
+    "platforms": ["macOS", "windows", "linux"]
+  },
+  "migrated": {
+    "identifier": "migrated",
+    "description": "permissions that were migrated from v1",
+    "local": true,
+    "windows": ["main"],
+    "permissions": ["core:default"]
+  }
+}

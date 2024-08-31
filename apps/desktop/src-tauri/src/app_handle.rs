@@ -1,3 +1,4 @@
+#[cfg(target_os = "macos")]
 use tauri::{AppHandle, Runtime};
 
 #[cfg(target_os = "macos")]

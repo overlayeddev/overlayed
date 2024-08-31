@@ -1,10 +1,10 @@
 import { RPCCommand } from "./command";
-import { fetch, Body } from "@tauri-apps/api/http";
-import { type } from "@tauri-apps/api/os";
+import { fetch } from "@tauri-apps/plugin-http";
+import { type } from "@tauri-apps/plugin-os";
 import { RPCEvent } from "./event";
 import * as uuid from "uuid";
-import WebSocket from "tauri-plugin-websocket-api";
-import type { Message } from "tauri-plugin-websocket-api";
+import WebSocket from "@tauri-apps/plugin-websocket";
+import type { Message } from "@tauri-apps/plugin-websocket";
 import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
 import { useNavigate, type NavigateFunction, useLocation } from "react-router-dom";
@@ -16,8 +16,7 @@ import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
 import { getVersion } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
-import { invoke } from "@tauri-apps/api";
-import { error, info, debug } from "tauri-plugin-log";
+import { invoke } from "@tauri-apps/api/core";
 
 interface TokenResponse {
   access_token: string;
@@ -281,24 +280,17 @@ class SocketManager {
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       debug("[WEBSOCKET] Got valid code back from discord, fetching access token...");
       const { code } = payload.data;
+      const res = await fetch(`${API_URL}/token`, {
+        method: "POST",
+        body: JSON.stringify({ code }),
+      });
 
-      try {
-        const res = await fetch<TokenResponse>(`${API_URL}/token`, {
-          method: "POST",
-          body: Body.json({ code }),
-        });
+      const text: TokenResponse = await res.json();
+      // we need send the token to discord
+      this.userdataStore.setAccessToken(text.access_token);
 
-        debug("[WEBSOCKET] Obtained access token api, attempting to login with it...");
-
-        // we need send the token to discord
-        this.userdataStore.setAccessToken(res.data.access_token);
-
-        // login with the token
-        this.login(res.data.access_token);
-      } catch (e) {
-        error(`[WEBSOCKET] Error fetching token: ${JSON.stringify(e)}`);
-        this.navigate("/error");
-      }
+      // login with the token
+      this.login(text.access_token);
     }
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in

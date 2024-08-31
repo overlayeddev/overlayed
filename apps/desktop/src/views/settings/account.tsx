@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { exit } from "@tauri-apps/api/process";
+import { exit } from "@tauri-apps/plugin-process";
 import * as dateFns from "date-fns";
-import { saveWindowState, StateFlags } from "tauri-plugin-window-state-api";
+import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 
-import { shell } from "@tauri-apps/api";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import { Store } from "tauri-plugin-store-api";
 
@@ -24,6 +23,7 @@ import { emit } from "@tauri-apps/api/event";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
 import { useConfigValue } from "@/hooks/use-config-value";
+import * as shell from "@tauri-apps/plugin-shell";
 
 const store = new Store("config.json");
 export const Developer = () => {

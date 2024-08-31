@@ -27,6 +27,12 @@ winget install OverlayedDev.Overlayed
 brew install overlayed
 ```
 
+#### Linux - Flathub
+
+```
+flatpak install flathub dev.overlayed.Overlayed
+```
+
 #### Guides for all Platforms
 
 https://overlayed.dev/blog/installation-guide

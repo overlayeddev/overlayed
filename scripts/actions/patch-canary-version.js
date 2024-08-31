@@ -16,7 +16,7 @@ export const script = async ({ context, github }) => {
   const patchVersionName = `0.0.0-canary.${commitSha.slice(0, 7)}`;
 
   // patch it with the new version
-  currentFileJson["package"]["version"] = patchVersionName;
+  currentFileJson["version"] = patchVersionName;
 
   // write it back to the file
   fs.writeFileSync(tauriConfig, JSON.stringify(currentFileJson, null, 2));

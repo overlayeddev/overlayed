@@ -18,35 +18,31 @@ mod window_custom;
 use crate::commands::*;
 use config::create_or_get_config;
 use constants::*;
-use log::LevelFilter;
-use log::{debug, info};
-use tauri_plugin_store::Store;
-use std::str::FromStr;
-use std::sync::atomic::AtomicBool;
-use std::sync::Mutex;
-use tauri::{generate_handler, LogicalSize, Manager, SystemTray, Wry};
-use tauri_plugin_log::LogTarget;
+use std::sync::{atomic::AtomicBool, Mutex};
+use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
-use window_custom::WindowExt;
+use window_custom::WebviewWindowExt;
 
 #[cfg(target_os = "macos")]
 use app_handle::AppHandleExt;
 
 #[cfg(target_os = "macos")]
-use window_custom::macos::WindowExtMacos;
+use window_custom::macos::WebviewWindowExtMacos;
 
 #[cfg(target_os = "macos")]
 use system_notification::WorkspaceListener;
 
 #[cfg(target_os = "macos")]
-use tauri::Window;
+use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
 pub struct StoreWrapper(pub Mutex<Store<Wry>>);
 
+pub struct TrayMenu(Mutex<Menu<Wry>>);
+
 #[cfg(target_os = "macos")]
-fn apply_macos_specifics(window: &Window) {
+fn apply_macos_specifics(window: &WebviewWindow) {
   use tauri::{AppHandle, Wry};
   use tauri_nspanel::ManagerExt;
 
@@ -65,7 +61,7 @@ fn apply_macos_specifics(window: &Window) {
       if let Some(bundle_id) = bundle_id {
         let is_league_of_legends = bundle_id == "com.riotgames.LeagueofLegends.GameClient";
 
-        let panel = app_handle.get_panel(MAIN_WINDOW_NAME).unwrap();
+        let panel = app_handle.get_webview_panel(MAIN_WINDOW_NAME).unwrap();
 
         panel.set_level(if is_league_of_legends {
           constants::HIGHER_LEVEL_THAN_LEAGUE
@@ -89,15 +85,14 @@ fn main() {
   info!("Log level set to: {:?}", log_level);
 
   let mut app = tauri::Builder::default()
+    .plugin(tauri_plugin_updater::Builder::new().build())
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
-    .plugin(
-      tauri_plugin_log::Builder::default()
-        .targets([LogTarget::LogDir, LogTarget::Stdout, LogTarget::Stdout])
-        .level(log_level)
-        .build(),
-    )
-    .plugin(tauri_plugin_store::Builder::default().build())
+    .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_process::init())
+    .plugin(tauri_plugin_shell::init())
+    .plugin(tauri_plugin_os::init())
+    .plugin(tauri_plugin_http::init())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
@@ -110,9 +105,8 @@ fn main() {
   app = app
     .manage(Pinned(AtomicBool::new(false)))
     .setup(|app| {
-      debug!("Starting the setup hook");
-      let window = app.get_window(MAIN_WINDOW_NAME).unwrap();
-      let settings = app.get_window(SETTINGS_WINDOW_NAME).unwrap();
+      let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
+      let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
 
       // the window should always be on top
       #[cfg(not(target_os = "macos"))]
@@ -142,12 +136,7 @@ fn main() {
       }
 
       // update the system tray
-      Tray::update_tray(&app.app_handle());
-      debug!("Updated the tray/taskbar");
-
-      // we should call this to create the config file
-      let config = create_or_get_config(&app.app_handle());
-      app.manage(StoreWrapper(Mutex::new(config)));
+      Tray::update_tray(app.app_handle());
 
       // NOTE: always force settings window to be a certain size
       settings.set_size(LogicalSize {
@@ -158,10 +147,6 @@ fn main() {
       info!("App setup completed successfully!");
       Ok(())
     })
-    // Add the system tray
-    .system_tray(SystemTray::new())
-    // Handle system tray events
-    .on_system_tray_event(tray::Tray::handle_tray_events)
     .invoke_handler(generate_handler![
       toggle_pin,
       get_pin,
@@ -174,20 +159,16 @@ fn main() {
   app
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!")
-    .run(|app, event| match event {
-      tauri::RunEvent::WindowEvent {
+    .run(|app, event| {
+      if let tauri::RunEvent::WindowEvent {
         label,
-        event: win_event,
+        event: tauri::WindowEvent::CloseRequested { api, .. },
         ..
-      } => match win_event {
-        // NOTE: prevent destroying the window
-        tauri::WindowEvent::CloseRequested { api, .. } => {
-          let win = app.get_window(label.as_str()).unwrap();
-          win.hide().unwrap();
-          api.prevent_close();
-        }
-        _ => {}
-      },
-      _ => {}
+      } = event
+      {
+        let win = app.get_webview_window(label.as_str()).unwrap();
+        win.hide().unwrap();
+        api.prevent_close();
+      }
     });
 }

@@ -1,7 +1,7 @@
 import { Download } from "lucide-react";
 
-import { installUpdate, type UpdateStatus } from "@tauri-apps/api/updater";
-import { relaunch } from "@tauri-apps/api/process";
+import { type Update } from "@tauri-apps/plugin-updater";
+import { relaunch } from "@tauri-apps/plugin-process";
 import {
   Dialog,
   DialogClose,
@@ -16,12 +16,9 @@ import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
 
-export const Updater = ({
-  update,
-}: {
-  update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
-}) => {
+export const Updater = ({ update }: { update: Update }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +28,7 @@ export const Updater = ({
     })();
   }, []);
 
-  if (update.isAvailable && update.status !== null) {
+  if (isUpdating) {
     return (
       <div className="py-2 h-[48px] bg-green-600">
         <div className="!text-white text-xl font-bold cursor-pointer flex gap-2 items-center justify-center">
@@ -58,8 +55,9 @@ export const Updater = ({
               e.preventDefault();
               console.log("starting update...");
               try {
+                setIsUpdating(true);
                 console.log("installing update...");
-                await installUpdate();
+                await update.downloadAndInstall();
                 console.log("restarting app...");
                 await relaunch();
               } catch (e) {

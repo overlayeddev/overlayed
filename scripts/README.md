@@ -9,7 +9,7 @@ NOTE: make sure to have an `.env` file in the root with a `GITHUB_TOKEN` so that
 ### Testing locally with creds
 my strat for running via 1password cli
 ```
-op run --env-file=.env -- npx tsx scripts/test.ts r2
+op run --env-file=.env -- npx tsx scripts/test.ts download
 ```
 
 ### Typescript for `scripts/actions'
