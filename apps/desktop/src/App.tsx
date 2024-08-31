@@ -12,9 +12,11 @@ import { useUpdate } from "./hooks/use-update";
 import { useAppStore } from "./store";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
+import { useSocket } from "./rpc/manager";
 
 function App() {
   useDisableWebFeatures();
+  useSocket();
 
   useEffect(() => {
     const styleForLog = "font-size: 20px; color: #00dffd";

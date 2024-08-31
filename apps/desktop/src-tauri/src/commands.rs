@@ -34,6 +34,7 @@ pub fn zoom_window(window: tauri::Window, scale_factor: f64) {
   });
 }
 
+#[tauri::command]
 pub fn open_settings(window: WebviewWindow, update: bool) {
   let app = window.app_handle();
   let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);
