@@ -1,4 +1,3 @@
-import { useSocket } from "./rpc/manager";
 import { Routes, Route } from "react-router-dom";
 import { MainView } from "./views/main";
 import { ChannelView } from "./views/channel";
@@ -15,7 +14,6 @@ import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 
 function App() {
-  useSocket();
   useDisableWebFeatures();
 
   useEffect(() => {
@@ -23,7 +21,7 @@ function App() {
     console.log(`%cOverlayed ${window.location.hash} Window`, styleForLog);
   }, []);
 
-  const { isAvailable, error, status } = useUpdate();
+  const { update } = useUpdate();
   const { visible } = useAppStore();
 
   const { pin } = usePin();
@@ -35,29 +33,17 @@ function App() {
     <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
       {!pin && (
         <NavBar
-          isUpdateAvailable={isAvailable}
+          isUpdateAvailable={update?.available ?? false}
           pin={pin}
           alignDirection={horizontal}
           setAlignDirection={setHorizontalDirection}
         />
       )}
-
       <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />
         <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
-        <Route
-          path="/settings"
-          element={
-            <SettingsView
-              update={{
-                isAvailable,
-                error,
-                status,
-              }}
-            />
-          }
-        />
+        <Route path="/settings" element={<SettingsView update={update} />} />
         <Route path="/error" Component={ErrorView} />
       </Routes>
     </div>

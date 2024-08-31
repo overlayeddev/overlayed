@@ -1,0 +1,30 @@
+name: "New Release"
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  upload-to-r2:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install
+        run: pnpm install --filter=overlayed-root
+      - name: Download draft binaries
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
+            await script({ github, context }, "stable");
+        env:
+          # NOTE: we need this to download the bins
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

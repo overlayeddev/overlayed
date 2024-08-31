@@ -10,11 +10,12 @@ import {
 } from "lucide-react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import React, { useEffect } from "react";
-import { invoke } from "@tauri-apps/api";
 import Config, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
 import { CHANNEL_TYPES } from "@/constants";
+import { Metric, track } from "@/metrics";
+import { invoke } from "@tauri-apps/api/core";
 const mapping = {
   left: 0,
   center: 1,
@@ -132,6 +133,8 @@ export const NavBar = ({
                 onClick={async () => {
                   await invoke("toggle_pin");
                   await Config.set("pin", !pin);
+                  // track if it gets pinned
+                  track(Metric.Pin, 1);
                   navigate("/channel");
                 }}
               />

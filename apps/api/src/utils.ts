@@ -4,7 +4,25 @@ import { ReleaseResponse, RepoResponse } from "./types.js";
 // @ts-expect-error something is wrong with types here
 import { LatestVersion } from "types";
 
-const filenameToPlatform = (filename: string) => {
+export async function getLatestRelease(authToken: string) {
+	const releases = (await fetch(
+		`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`,
+		{
+			cf: {
+				cacheTtl: 300,
+				cacheEverything: true,
+			},
+			headers: {
+				Authorization: `token ${authToken}`,
+				"User-Agent": "overlayed-updater v1",
+			},
+		},
+	).then((res) => res.json())) as ReleaseResponse;
+
+	return releases;
+}
+
+export const filenameToPlatform = (filename: string) => {
 	if (filename.includes("msi")) {
 		return "windows";
 	}
@@ -23,7 +41,7 @@ export async function getStars({
 }): Promise<{ stars: number; updateAt: string } | null> {
 	// fetch all releases from github
 	try {
-		const releases: RepoResponse = await fetch(
+		const releases = (await fetch(
 			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}`,
 			{
 				cf: {
@@ -35,7 +53,7 @@ export async function getStars({
 					"User-Agent": "overlayed-updater v1",
 				},
 			},
-		).then((res) => res.json());
+		).then((res) => res.json())) as RepoResponse;
 
 		return {
 			stars: releases.stargazers_count,
@@ -54,19 +72,7 @@ export async function getPlatformDownloads({
 }) {
 	// fetch all releases from github
 	try {
-		const releases: ReleaseResponse = await fetch(
-			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`,
-			{
-				cf: {
-					cacheTtl: 300,
-					cacheEverything: true,
-				},
-				headers: {
-					Authorization: `token ${authToken}`,
-					"User-Agent": "overlayed-updater v1",
-				},
-			},
-		).then((res) => res.json());
+		const releases = await getLatestRelease(authToken);
 
 		const versions = releases.assets
 			.map((asset) => ({
@@ -90,19 +96,7 @@ interface LatestVersionInput {
 export async function getLatestVersions({ authToken }: LatestVersionInput) {
 	// fetch all releases from github
 	try {
-		const releases: ReleaseResponse = await fetch(
-			`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`,
-			{
-				cf: {
-					cacheTtl: 300,
-					cacheEverything: true,
-				},
-				headers: {
-					Authorization: `token ${authToken}`,
-					"User-Agent": "overlayed-updater v1",
-				},
-			},
-		).then((res) => res.json());
+		const releases = await getLatestRelease(authToken);
 
 		// get the assets that is called latest.json
 		const latest = releases.assets.find(
@@ -142,9 +136,7 @@ export const fetchAuthToken = (
 	isProd: boolean,
 ) => {
 	const form = new URLSearchParams();
-	const baseUrl = isProd
-		? "https://api.overlayed.dev"
-		: "http://localhost:8787";
+	const baseUrl = getApiUrl(isProd);
 
 	form.append("client_id", env.CLIENT_ID);
 	form.append("client_secret", env.CLIENT_SECRET);
@@ -166,4 +158,12 @@ export const fetchAuthToken = (
 
 export function isProd(url: string) {
 	return url.startsWith("https://api.");
+}
+
+export function getApiUrl(isProd: boolean) {
+	const baseUrl = isProd
+		? "https://api.overlayed.dev"
+		: "http://localhost:8787";
+
+	return baseUrl;
 }

@@ -1,13 +1,9 @@
 {
-  "package": {
-    "productName": "Overlayed-CI",
-    "version": "0.0.0"
-  },
-  "tauri": {
-    "bundle": {
-      "active": false,
-      "targets": "all",
-      "identifier": "com.overlayed.ci.dev"
-    }
+  "productName": "Overlayed-CI",
+  "version": "0.0.0",
+  "identifier": "com.overlayed.ci.dev",
+  "bundle": {
+    "active": false,
+    "targets": "all"
   }
 }

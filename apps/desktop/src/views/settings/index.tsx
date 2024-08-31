@@ -1,11 +1,11 @@
 import { Updater } from "@/components/updater";
-import type { UpdateStatus } from "@tauri-apps/api/updater";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Account } from "./account";
 import { JoinHistory } from "./join-history";
 import { useState } from "react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import { SiX, SiTwitch, SiDiscord, type IconType } from "@icons-pack/react-simple-icons";
+import type { Update } from "@tauri-apps/plugin-updater";
 
 function Link({ icon: Icon, url }: { icon: IconType; url: string }) {
   return (
@@ -15,11 +15,7 @@ function Link({ icon: Icon, url }: { icon: IconType; url: string }) {
   );
 }
 
-export const SettingsView = ({
-  update,
-}: {
-  update: { isAvailable: boolean; status: UpdateStatus | null; error: string };
-}) => {
+export const SettingsView = ({ update }: { update: Update | null }) => {
   const { canary } = usePlatformInfo();
   const [currentTab, setCurrentTab] = useState("account");
   return (
@@ -41,7 +37,7 @@ export const SettingsView = ({
             </a>
           </div>
         )}
-        {!canary && update.isAvailable && <Updater update={update} />}
+        {!canary && update?.available && <Updater update={update} />}
         <div className="p-4 pt-0">
           <TabsContent tabIndex={-1} value="account">
             <Account />

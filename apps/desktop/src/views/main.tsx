@@ -1,7 +1,7 @@
 import { useAppStore } from "../store";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { exit } from "@tauri-apps/api/process";
+import { exit } from "@tauri-apps/plugin-process";
 
 export const MainView = () => {
   const { resetErrors } = useAppStore();

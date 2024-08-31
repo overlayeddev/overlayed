@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { exit } from "@tauri-apps/api/process";
+import { exit } from "@tauri-apps/plugin-process";
 import * as dateFns from "date-fns";
-import { saveWindowState, StateFlags } from "tauri-plugin-window-state-api";
+import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 
-import { shell } from "@tauri-apps/api";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import Config from "@/config";
 
@@ -25,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
 import { useConfigValue } from "@/hooks/use-config-value";
 import { Slider } from "@/components/ui/slider";
+import * as shell from "@tauri-apps/plugin-shell";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
@@ -243,9 +243,7 @@ export const Account = () => {
               <form
                 onSubmit={async event => {
                   event.preventDefault();
-                  // FIXME: this is freezing the app if we use ALL or SIZE flags
-                  // so for now we only save the POSITION, what's strange is the rust side works with ALL 🤔
-                  await saveWindowState(StateFlags.POSITION);
+                  await saveWindowState(StateFlags.POSITION && StateFlags.SIZE);
                   await exit();
                 }}
               >

@@ -1,0 +1,47 @@
+---
+title: Windows SmartScreen and Overlayed
+customSlug: windows-smartscreen-and-overlayed
+canonicalPath: windows-smartscreen-and-overlayed
+description: Windows SmartScreen will show up when trying to install Overlayed on Windows
+ogImage: "../../assets/blog/windows-smartscreen.png"
+pubDate: "July 24 2024"
+draft: false
+---
+
+import Link from "../../components/link.astro";
+
+## 🤔 TL;DR
+
+Is it safe? Yes, Overlayed is safe to download and use. Overlayed has to build trust with Microsoft so this banner will not go away until that point is reached.
+
+SmartScreen is the blue popup that you may see when trying to install Overlayed on Windows.
+<div class="flex flex-col">
+  <Link
+    target="_blank"
+    to="https://www.virustotal.com/gui/file/c001b197575369f7c3984364c98b8083665477697878975a2abdff0f80db2091"
+  >✅ Overlayed v0.5.0 .msi on VirusTotal</Link>
+  <Link
+    target="_blank"
+    to="https://www.virustotal.com/gui/file/dc28419bc55a2efcd383ec3495aa1a07393e0cc5530db97e066f4378384fbf5f"
+  >✅ Overlayed v0.5.0 .exe on VirusTotal</Link>
+</div>
+
+![First smart screen prompt](/img/blog/installing-overlayed-on-windows/smartscreen-1.png)
+![Second smart screen prompt](/img/blog/installing-overlayed-on-windows/smartscreen-2.png)
+
+## 🤓 Technical mumbo jumbo
+
+<Link
+  target="_blank"
+  to="https://learn.microsoft.com/en-us/windows/security/operating-system-security/virus-and-threat-protection/microsoft-defender-smartscreen/"
+>Windows Defender SmartScreen</Link>
+protects against phishing or malware websites and applications, and the
+downloading of potentially malicious files.
+
+Overlayed signs its windows executables (.msi and .exe) with a code signing certificate from <Link to="https://ssl.com">ssl.com</Link> in order to build trust with Microsoft. However, since Overlayed uses an <Link to="https://www.ssl.com/faqs/which-code-signing-certificate-do-i-need-ev-ov/">OV Code Signing certificate</Link> it again means trust has to be built over time.
+
+You can read this <Link
+  target="_blank"
+  to="https://stackoverflow.com/a/66582477">stackoverflow post</Link> to get a better understanding of how it all works.
+
+If you have any questions, comments, or concerts please do leave them down below in the comment section 👇.

@@ -39,6 +39,7 @@ app.get("/latest/stable", async (c) => {
 	);
 });
 
+// TODO: support local loading of canary artifacts somehow?
 app.get("/latest/canary", async (c) => {
 	const files = await c.env.BUCKET.list({
 		prefix: "canary/",
@@ -72,6 +73,7 @@ app.get("/latest/canary", async (c) => {
 	);
 });
 
+// NOTE: THIS SHOULD HAVE BEEN PREFIXED 😂
 app.get("/:target/:arch/:currentVersion", async (c) => {
 	const currentVersion = c.req.param("currentVersion");
 

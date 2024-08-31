@@ -1,22 +1,22 @@
 import { RPCCommand } from "./command";
-import { fetch, Body } from "@tauri-apps/api/http";
-import { type } from "@tauri-apps/api/os";
+import { fetch } from "@tauri-apps/plugin-http";
+import { type } from "@tauri-apps/plugin-os";
 import { RPCEvent } from "./event";
 import * as uuid from "uuid";
-import WebSocket from "tauri-plugin-websocket-api";
-import type { Message } from "tauri-plugin-websocket-api";
+import WebSocket from "@tauri-apps/plugin-websocket";
+import type { Message } from "@tauri-apps/plugin-websocket";
 import { useAppStore as appStore, createUserStateItem } from "../store";
 import type { AppActions, AppState } from "../store";
 import { useNavigate, type NavigateFunction, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { RPCErrors } from "./errors";
-import { MetricNames, track, trackEvent } from "@/metrics";
+import { Metric, track, trackEvent } from "@/metrics";
 import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import type { VoiceUser } from "@/types";
 import { getVersion } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 interface TokenResponse {
   access_token: string;
@@ -91,6 +91,8 @@ class SocketManager {
   public _navigate: NavigateFunction | null = null;
   public isConnected = false;
   public version: string | undefined;
+  // @ts-expect-error need better types
+  public soundBoardItemsResolver = Promise.withResolvers();
 
   private navigate(url: string) {
     if (window.location.hash.includes("#settings")) return;
@@ -151,7 +153,21 @@ class SocketManager {
     this.send({
       args: {
         client_id: APP_ID,
-        scopes: ["rpc", "identify"],
+        scopes: [
+          "identify",
+          "rpc",
+          // TODO: when we need soundboard we can enable these scopes
+          // "guilds",
+          // "rpc.notifications.read",
+          // TODO: how do you use other scopes 🤔
+          // "rpc.activities.write",
+          // "rpc.voice.read",
+          // "rpc.voice.write",
+          // "rpc.video.read",
+          // "rpc.video.write",
+          // "rpc.screenshare.read",
+          // "rpc.screenshare.write",
+        ],
       },
       cmd: RPCCommand.AUTHORIZE,
     });
@@ -193,6 +209,7 @@ class SocketManager {
     }
 
     const payload: DiscordPayload = JSON.parse(event.data);
+    console.log(payload);
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
@@ -241,6 +258,11 @@ class SocketManager {
       this.store.updateUser(payload.data);
     }
 
+    if (payload.cmd === RPCCommand.GET_SOUNDBOARD_SOUNDS) {
+      // update the Promise
+      this.soundBoardItemsResolver.resolve(payload.data);
+    }
+
     // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
     if (payload.evt === RPCEvent.VOICE_CHANNEL_SELECT) {
       if (payload.data.channel_id === null) {
@@ -267,21 +289,25 @@ class SocketManager {
           },
         });
       }
+
+      // track user joining a channel
+      track(Metric.ChannelJoin, 1);
     }
 
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${API_URL}/token`, {
+      const res = await fetch(`${API_URL}/token`, {
         method: "POST",
-        body: Body.json({ code }),
+        body: JSON.stringify({ code }),
       });
 
+      const text: TokenResponse = await res.json();
       // we need send the token to discord
-      this.userdataStore.setAccessToken(res.data.access_token);
+      this.userdataStore.setAccessToken(text.access_token);
 
       // login with the token
-      this.login(res.data.access_token);
+      this.login(text.access_token);
     }
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
@@ -316,14 +342,14 @@ class SocketManager {
       this.navigate("/error");
 
       // track error metric
-      track(MetricNames.DiscordAuthed, 0);
+      track(Metric.DiscordAuthed, 0);
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // track success metric
-      track(MetricNames.DiscordAuthed, 1);
+      track(Metric.DiscordAuthed, 1);
 
       // track user session anonymously for sensitive bits
       // TODO: we should allSettled these promises?
-      trackEvent(MetricNames.DiscordUser, {
+      trackEvent(Metric.DiscordUser, {
         id: await hash(payload.data.user.id),
         username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
@@ -334,10 +360,10 @@ class SocketManager {
       // try to find the user
       this.requestUserChannel();
 
-      // subscribe to get notified when the user changes channels
+      // sub to any otifs
       this.send({
         cmd: RPCCommand.SUBSCRIBE,
-        evt: RPCEvent.VOICE_CHANNEL_SELECT,
+        evt: RPCEvent.NOTIFICATION_CREATE,
       });
 
       this.userdataStore.setAccessTokenExpiry(payload.data.expires);
@@ -372,12 +398,21 @@ class SocketManager {
     });
   }
 
+  /** Get the soundboard items */
+  public async getSoundBoardItems() {
+    await this.send({
+      cmd: RPCCommand.GET_SOUNDBOARD_SOUNDS,
+    });
+
+    return this.soundBoardItemsResolver.promise;
+  }
+
   /**
    * Send a message to discord
    * @param payload {DiscordPayload} the payload to send
    */
-  private send(payload: DiscordPayload) {
-    this.socket?.send(
+  public send(payload: DiscordPayload) {
+    return this.socket?.send(
       JSON.stringify({
         ...payload,
         nonce: uuid.v4(),
@@ -397,7 +432,6 @@ class SocketManager {
         cmd,
         args: { channel_id: channelId },
         evt: eventName,
-        nonce: uuid.v4(),
       })
     );
   }

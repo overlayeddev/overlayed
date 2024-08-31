@@ -1,0 +1,30 @@
+{
+  "identifier": "desktop-capability",
+  "windows": ["main", "settings"],
+  "webviews": ["main", "settings"],
+  "platforms": ["macOS", "windows", "linux"],
+  "permissions": [
+    "core:default",
+    "updater:default",
+    "fs:default",
+    {
+      "identifier": "fs:allow-app-write",
+      "allow": [{ "path": "$APPCONFIG/*" }],
+      "permissions": ["fs:allow-app-write"]
+    },
+    "core:window:allow-set-size",
+    "core:window:allow-start-dragging",
+    "process:default",
+    "core:tray:default",
+    "core:app:default",
+    "core:event:default",
+    "shell:default",
+    "websocket:default",
+    "window-state:default",
+    {
+      "identifier": "http:default",
+      "allow": [{ "url": "https://api.overlayed.dev" }],
+      "permissions": ["http:default"]
+    }
+  ]
+}

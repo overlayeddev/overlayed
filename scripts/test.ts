@@ -10,6 +10,8 @@ import { script as downloadDraftBins } from "./actions/download-draft-bins.js";
 import { script as createRelease } from "./actions/create-release.js";
 // @ts-ignore
 import { script as patchCanaryVersion } from "./actions/patch-canary-version.js";
+// @ts-ignore
+import { script as uploadBinsToR2 } from "./actions/upload-to-r2.js";
 
 const { GITHUB_TOKEN } = process.env;
 if (!GITHUB_TOKEN) throw new Error("GITHUB_TOKEN not found");
@@ -31,7 +33,7 @@ const releases = await github.rest.repos.listReleases({
   repo: context.repo.repo,
 });
 
-const draft = releases.data.find((release) => release.draft);
+const draft = releases.data.find(release => release.draft);
 if (!draft) throw new Error("No draft found");
 const draftId = draft.id;
 
@@ -48,6 +50,13 @@ switch (arg) {
   case "canary":
     await patchCanaryVersion({ github, context });
     break;
+  case "upload-canary":
+    await uploadBinsToR2({ github, context }, "canary");
+    break;
+  case "upload-stable":
+    context.ref = "v0.5.0";
+    await uploadBinsToR2({ github, context }, "stable");
+    break;
   default:
-    console.log("No script found, accepted answers are: create, download, upload, r2");
+    console.log("No script found, accepted answers are: create, download, upload, upload-stable, upload-canary");
 }

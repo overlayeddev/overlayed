@@ -4,14 +4,18 @@ import Config from "@/config";
 export const OVERLAYED_DATASET = "overlayed-prod";
 
 /** The name of the metric to track. */
-export const MetricNames = {
+export const Metric = {
   /** If the auth to discord was successful or not */
   DiscordAuthed: "discord-auth",
   /** Track user login and limited metadata */
   DiscordUser: "discord-user",
+  /** Track user joins a channel */
+  ChannelJoin: "channel-join",
+  /** Track when user pins overlayed */
+  Pin: "pin",
 } as const;
 
-type MetricNamesValues = (typeof MetricNames)[keyof typeof MetricNames];
+type MetricNamesValues = (typeof Metric)[keyof typeof Metric];
 
 // NOTE: allow opt-out of tracking from the settings UI
 const isTelemetryEnabled = () => {

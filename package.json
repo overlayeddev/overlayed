@@ -1,4 +1,5 @@
 {
+  "name": "overlayed-root",
   "private": true,
   "scripts": {
     "start": "turbo start",
@@ -16,7 +17,8 @@
   "type": "module",
   "devDependencies": {
     "@actions/github": "^6.0.0",
-    "@aws-sdk/client-s3": "^3.582.0",
+    "@aws-sdk/client-s3": "^3.592.0",
+    "@types/github-script": "github:actions/github-script",
     "dotenv": "^16.4.5",
     "eslint": "^9.3.0",
     "glob": "^10.3.10",
@@ -28,6 +30,5 @@
     "turbo": "^2.0.4",
     "typescript": "~5.1.6"
   },
-  "packageManager": "pnpm@9.1.1",
-  "name": "overlayed"
+  "packageManager": "pnpm@9.1.1"
 }

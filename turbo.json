@@ -1,10 +1,33 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "ES_USERNAME",
+    "ES_PASSWORD",
+    "ES_CREDENTIAL_ID",
+    "ES_TOTP_SECRET",
+    "APPLE_PASSWORD",
+    "APPLE_TEAM_ID",
+    "APPLE_SIGNING_IDENTITY",
+    "TAURI_SIGNING_PRIVATE_KEY",
+    "TAURI_SIGNING_PUBLIC_KEY",
+    "VITE_AXIOM_TOKEN",
+    "R2_ACCOUNT_ID",
+    "R2_ACCESS_KEY_ID",
+    "R2_SECRET_ACCESS_KEY",
+    "R2_BUCKET"
+  ],
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".vercel/output/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**",
+        ".vercel/output/**"
+      ]
     },
     "lint": {},
     "clean": {

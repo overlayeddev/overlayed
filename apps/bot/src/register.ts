@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import process from "node:process";
-import { FEEDBACK, INFO, INSTALL } from "./commands.js";
+import * as allExports from "./commands.js";
 
 /**
  * This file is meant to be run from the command line, and is not used by the
@@ -34,7 +34,7 @@ const response = await fetch(url, {
 		Authorization: `Bot ${token}`,
 	},
 	method: "PUT",
-	body: JSON.stringify([INSTALL, FEEDBACK, INFO]),
+	body: JSON.stringify(Object.values(allExports)),
 });
 
 if (response.ok) {

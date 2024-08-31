@@ -44,3 +44,4 @@ binaries/
 apps/desktop/src-tauri/*.txt
 
 tsconfig.tsbuildinfo
+assets
