@@ -1,4 +1,3 @@
-import { useSocket } from "./rpc/manager";
 import { Routes, Route } from "react-router-dom";
 import { MainView } from "./views/main";
 import { ChannelView } from "./views/channel";
@@ -13,11 +12,8 @@ import { useUpdate } from "./hooks/use-update";
 import { useAppStore } from "./store";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
-import { Button } from "./components/ui/button";
-import { RPCCommand } from "./rpc/command";
 
 function App() {
-  const socket = useSocket();
   useDisableWebFeatures();
 
   useEffect(() => {
