@@ -1,5 +1,5 @@
 import { axiom } from "@/axiom";
-import { Store } from "tauri-plugin-store-api";
+import { Store } from "@tauri-apps/plugin-store";
 
 const store = new Store("config.json");
 

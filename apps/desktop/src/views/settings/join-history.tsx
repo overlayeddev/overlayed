@@ -9,14 +9,13 @@ import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Store } from "tauri-plugin-store-api";
+import Config from "@/config";
 import type { JoinHistoryLogUser } from "@/types";
-import { emit } from "@tauri-apps/api/event";
 import { useConfigValue } from "@/hooks/use-config-value";
+import { emit } from "@tauri-apps/api/event";
 
 const MAX_LOG_LENGTH = 420;
 
-const store = new Store("config.json");
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
   const { value: joinHistoryNotifications } = useConfigValue("joinHistoryNotifications");
@@ -52,6 +51,12 @@ export const JoinHistory = () => {
     });
   }, []);
 
+  // keep the notifications toggle in sync with the config
+  useEffect(() => {
+    // HACK: add a ref to avoid stale closure
+    notificationsEnabledRef.current = joinHistoryNotifications;
+  }, [joinHistoryNotifications]);
+
   const resetUserLog = () => {
     setUserLog([]);
   };
@@ -67,9 +72,8 @@ export const JoinHistory = () => {
             id="notification"
             checked={joinHistoryNotifications}
             onCheckedChange={async () => {
-              const newValue = !joinHistoryNotifications;
-              await store.set("joinHistoryNotifications", newValue);
-              await store.save();
+              await Config.set("joinHistoryNotifications", !joinHistoryNotifications);
+              await emit("config_update", await Config.getConfig());
             }}
           />
           <label
