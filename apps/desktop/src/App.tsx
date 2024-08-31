@@ -1,4 +1,3 @@
-import { useSocket } from "./rpc/manager";
 import { Routes, Route } from "react-router-dom";
 import { MainView } from "./views/main";
 import { ChannelView } from "./views/channel";
@@ -15,7 +14,6 @@ import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 
 function App() {
-  useSocket();
   useDisableWebFeatures();
 
   useEffect(() => {
@@ -41,7 +39,6 @@ function App() {
           setAlignDirection={setHorizontalDirection}
         />
       )}
-
       <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />
