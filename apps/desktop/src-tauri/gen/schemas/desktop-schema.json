@@ -4719,6 +4719,21 @@
           "enum": ["http:deny-fetch-send"]
         },
         {
+          "description": "log:default -> Allows the log command",
+          "type": "string",
+          "enum": ["log:default"]
+        },
+        {
+          "description": "log:allow-log -> Enables the log command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["log:allow-log"]
+        },
+        {
+          "description": "log:deny-log -> Denies the log command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["log:deny-log"]
+        },
+        {
           "description": "os:default -> This permission set configures which\noperating system information are available\nto gather from the frontend.\n\n#### Granted Permissions\n\nAll information except the host name are available.\n\n",
           "type": "string",
           "enum": ["os:default"]
@@ -4882,6 +4897,131 @@
           "description": "shell:deny-stdin-write -> Denies the stdin_write command without any pre-configured scope.",
           "type": "string",
           "enum": ["shell:deny-stdin-write"]
+        },
+        {
+          "description": "store:default -> This permission set configures what kind of\noperations are available from the store plugin.\n\n#### Granted Permissions\n\nAll operations are enabled by default.\n\n",
+          "type": "string",
+          "enum": ["store:default"]
+        },
+        {
+          "description": "store:allow-clear -> Enables the clear command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-clear"]
+        },
+        {
+          "description": "store:allow-delete -> Enables the delete command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-delete"]
+        },
+        {
+          "description": "store:allow-entries -> Enables the entries command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-entries"]
+        },
+        {
+          "description": "store:allow-get -> Enables the get command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-get"]
+        },
+        {
+          "description": "store:allow-has -> Enables the has command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-has"]
+        },
+        {
+          "description": "store:allow-keys -> Enables the keys command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-keys"]
+        },
+        {
+          "description": "store:allow-length -> Enables the length command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-length"]
+        },
+        {
+          "description": "store:allow-load -> Enables the load command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-load"]
+        },
+        {
+          "description": "store:allow-reset -> Enables the reset command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-reset"]
+        },
+        {
+          "description": "store:allow-save -> Enables the save command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-save"]
+        },
+        {
+          "description": "store:allow-set -> Enables the set command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-set"]
+        },
+        {
+          "description": "store:allow-values -> Enables the values command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:allow-values"]
+        },
+        {
+          "description": "store:deny-clear -> Denies the clear command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-clear"]
+        },
+        {
+          "description": "store:deny-delete -> Denies the delete command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-delete"]
+        },
+        {
+          "description": "store:deny-entries -> Denies the entries command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-entries"]
+        },
+        {
+          "description": "store:deny-get -> Denies the get command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-get"]
+        },
+        {
+          "description": "store:deny-has -> Denies the has command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-has"]
+        },
+        {
+          "description": "store:deny-keys -> Denies the keys command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-keys"]
+        },
+        {
+          "description": "store:deny-length -> Denies the length command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-length"]
+        },
+        {
+          "description": "store:deny-load -> Denies the load command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-load"]
+        },
+        {
+          "description": "store:deny-reset -> Denies the reset command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-reset"]
+        },
+        {
+          "description": "store:deny-save -> Denies the save command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-save"]
+        },
+        {
+          "description": "store:deny-set -> Denies the set command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-set"]
+        },
+        {
+          "description": "store:deny-values -> Denies the values command without any pre-configured scope.",
+          "type": "string",
+          "enum": ["store:deny-values"]
         },
         {
           "description": "updater:default -> This permission set configures which kind of\nupdater functions are exposed to the frontend.\n\n#### Granted Permissions\n\nThe full workflow from checking for updates to installing them\nis enabled.\n\n",

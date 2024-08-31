@@ -19,7 +19,7 @@ const MAX_LOG_LENGTH = 420;
 const store = new Store("config.json");
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
-  const { value: joinHistoryNotifications} = useConfigValue("joinHistoryNotifications");
+  const { value: joinHistoryNotifications } = useConfigValue("joinHistoryNotifications");
 
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);

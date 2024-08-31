@@ -16,8 +16,10 @@ mod tray;
 mod window_custom;
 
 use crate::commands::*;
-use config::create_or_get_config;
+// use config::create_or_get_config;
 use constants::*;
+use tauri_plugin_log::{Target, TargetKind, LogLevel};
+use tauri_plugin_store::Store;
 use std::sync::{atomic::AtomicBool, Mutex};
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_window_state::StateFlags;
@@ -77,10 +79,10 @@ fn main() {
   let flags = StateFlags::POSITION | StateFlags::SIZE;
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
 
-  let log_level = std::env::var("LOG_LEVEL")
-    .ok()
-    .and_then(|thing| LevelFilter::from_str(thing.as_str()).ok())
-    .unwrap_or(LevelFilter::Info);
+  // let log_level = std::env::var("LOG_LEVEL")
+  //   .ok()
+  //   .and_then(|thing| LevelFilter::from_str(thing.as_str()).ok())
+  //   .unwrap_or(LevelFilter::Info);
 
   info!("Log level set to: {:?}", log_level);
 
@@ -93,6 +95,13 @@ fn main() {
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
     .plugin(tauri_plugin_http::init())
+    .plugin(
+      tauri_plugin_log::Builder::new()
+        .targets([
+          Target::new(TargetKind::LogDir { file_name: None }),
+        ])
+        .build(),
+    )
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
