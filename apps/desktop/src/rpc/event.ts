@@ -17,6 +17,12 @@ export enum RPCEvent {
   VOICE_CHANNEL_SELECT = "VOICE_CHANNEL_SELECT",
   /** sent when the client's voice connection status changes */
   VOICE_CONNECTION_STATUS = "VOICE_CONNECTION_STATUS",
+  /** not quite sure */
+  VIDEO_STATE_UPDATE = "VIDEO_STATE_UPDATE",
+  /** not quite sure */
+  SCREENSHARE_STATE_UPDATE = "SCREENSHARE_STATE_UPDATE",
+  /** sent when the you get a message that tags your or a dm */
+  NOTIFICATION_CREATE = "NOTIFICATION_CREATE",
 }
 
 // TODO: move this somewhere
