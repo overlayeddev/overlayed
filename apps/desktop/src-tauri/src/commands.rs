@@ -15,8 +15,9 @@ pub fn zoom_window(window: tauri::Window, scale_factor: f64) {
   let _ = window.with_webview(move |webview| {
     #[cfg(target_os = "linux")]
     {
-      use webkit2gtk::auto::web_view::WebViewExt;
-      webview.inner().set_zoom_level(scale_factor);
+      // TODO: implement zoom for linux
+      // use webkit2gtk::auto::web_view::WebViewExt;
+      // webview.inner().set_zoom_level(scale_factor);
     }
 
     #[cfg(windows)]
