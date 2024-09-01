@@ -8,6 +8,32 @@ use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, Webvie
 use crate::{constants::*, Pinned, TrayMenu};
 
 #[tauri::command]
+pub fn zoom_window(window: tauri::Window, scale_factor: f64) {
+  let window = window
+    .get_webview_window(MAIN_WINDOW_NAME)
+    .expect("can't find the main window");
+  let _ = window.with_webview(move |webview| {
+    #[cfg(target_os = "linux")]
+    {
+      // TODO: implement zoom for linux
+      // use webkit2gtk::auto::web_view::WebViewExt;
+      // webview.inner().set_zoom_level(scale_factor);
+    }
+
+    #[cfg(windows)]
+    unsafe {
+      // see https://docs.rs/webview2-com/0.19.1/webview2_com/Microsoft/Web/WebView2/Win32/struct.ICoreWebView2Controller.html
+      webview.controller().SetZoomFactor(scale_factor).unwrap();
+    }
+
+    #[cfg(target_os = "macos")]
+    unsafe {
+      let () = msg_send![webview.inner(), setPageZoom: scale_factor];
+    }
+  });
+}
+
+#[tauri::command]
 pub fn open_settings(window: WebviewWindow, update: bool) {
   let app = window.app_handle();
   let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);

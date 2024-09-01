@@ -140,7 +140,8 @@ fn main() {
       set_pin,
       open_devtools,
       close_settings,
-      open_settings
+      open_settings,
+      zoom_window
     ]);
 
   app

@@ -42,12 +42,12 @@ async function uploadStableArtifacts({ github, context }) {
 
   console.log(`[${context.ref}] Found ${artifacts.length} artifacts in the release`);
 
-  const releaseBinDir = path.join(ASSET_DIR, context.ref);
+  const releaseBinDir = path.join(ASSET_DIR, "stable", context.ref);
 
   // make the dir for version
   fs.mkdirSync(releaseBinDir, { recursive: true });
 
-  // // download all the artifacts from the build
+  // download all the artifacts from the build
   for (const artifact of artifacts) {
     console.log(`[${context.ref}] Downloading stable artifact ${artifact.name}`);
     fetch(artifact.browser_download_url)
@@ -57,25 +57,34 @@ async function uploadStableArtifacts({ github, context }) {
       });
   }
 
-  // upload to r2
-  for (const file of fs.readdirSync(releaseBinDir)) {
-    const assetFilePath = path.join(releaseBinDir, file);
-    const fileStream = fs.createReadStream(assetFilePath);
+  try {
+    // upload to r2
+    for (const file of fs.readdirSync(releaseBinDir)) {
+      const assetFilePath = path.join(releaseBinDir, file);
+      const fileStream = fs.createReadStream(assetFilePath);
 
-    const uploadBinsCommand = new PutObjectCommand({
-      Bucket: R2_BUCKET,
-      Key: `stable/${context.ref}/${file}`,
-      Body: fileStream,
-    });
+      const uploadBinsCommand = new PutObjectCommand({
+        Bucket: R2_BUCKET,
+        Key: `stable/${context.ref}/${file}`,
+        Body: fileStream,
+      });
 
-    await client.send(uploadBinsCommand);
+      await client.send(uploadBinsCommand);
 
-    console.log(`[${context.ref}] ${file} uploaded successfully`);
+      console.log(`[${context.ref}] ${file} uploaded successfully`);
+    }
+
+  } catch (err) {
+    console.log(err);
   }
 }
 
 /** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
 async function uploadCanaryArtifacts({ github, context }) {
+  const releaseBinDir = path.join(ASSET_DIR, "canary");
+
+  fs.mkdirSync(releaseBinDir, { recursive: true });
+
   const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
     owner: context.repo.owner,
     repo: context.repo.repo,
@@ -92,14 +101,14 @@ async function uploadCanaryArtifacts({ github, context }) {
       archive_format: "zip",
     });
 
-    fs.writeFileSync(path.join(ASSET_DIR, `${artifact.name}`), Buffer.from(data));
+    fs.writeFileSync(path.join(releaseBinDir, artifact.name), Buffer.from(data));
   }
 
   console.log("Starting upload to R2...");
 
   try {
-    for (const file of fs.readdirSync(ASSET_DIR)) {
-      const assetFilePath = path.join(ASSET_DIR, file);
+    for (const file of fs.readdirSync(releaseBinDir)) {
+      const assetFilePath = path.join(releaseBinDir, file);
       const fileStream = fs.createReadStream(assetFilePath);
 
       const uploadBinsCommand = new PutObjectCommand({

@@ -23,6 +23,7 @@ import { emit } from "@tauri-apps/api/event";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
 import { useConfigValue } from "@/hooks/use-config-value";
+import { Slider } from "@/components/ui/slider";
 import * as shell from "@tauri-apps/plugin-shell";
 
 export const Developer = () => {
@@ -125,6 +126,7 @@ export const Account = () => {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [user, setUser] = useState<VoiceUser | null>(null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
+  const [zoom, setZoom] = useState(1);
 
   // pull out the user data from localStorage
   useEffect(() => {
@@ -183,7 +185,6 @@ export const Account = () => {
             </div>
           </div>
         </div>
-
         <div className="flex flex-row gap-4 pb-4">
           <div>
             <Dialog
@@ -266,6 +267,20 @@ export const Account = () => {
           <Developer />
         </div>
         <AppInfo />
+        Zoom
+        <Slider
+          onValueChange={async ([val]) => {
+            setZoom(val as number);
+            console.log(val);
+            await invoke("zoom_window", { scaleFactor: zoom });
+          }}
+          defaultValue={[1.0]}
+          min={0.4}
+          max={1.5}
+          step={0.1}
+          className="w-[60%]"
+        />
+        {zoom}
       </div>
     </div>
   );
