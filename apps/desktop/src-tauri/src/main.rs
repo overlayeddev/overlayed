@@ -16,8 +16,13 @@ mod window_custom;
 
 use crate::commands::*;
 use constants::*;
-use std::sync::{atomic::AtomicBool, Mutex};
+use log::{debug, info};
+use std::{
+  str::FromStr,
+  sync::{atomic::AtomicBool, Mutex},
+};
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
+use tauri_plugin_log::{Target, TargetKind};
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
 use window_custom::WebviewWindowExt;
@@ -72,6 +77,17 @@ fn apply_macos_specifics(window: &WebviewWindow) {
 fn main() {
   let flags = StateFlags::POSITION | StateFlags::SIZE;
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
+  let log_level = std::env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
+
+  let log_level_filter = log::LevelFilter::from_str(&log_level).unwrap_or(log::LevelFilter::Info);
+
+  let log_plugin_builder = tauri_plugin_log::Builder::new()
+    .targets([Target::new(TargetKind::LogDir { file_name: None })])
+    .level_for("overlayed", log_level_filter)
+    .level_for("notify", log::LevelFilter::Off)
+    .level_for("tokio_tungstenite", log::LevelFilter::Off)
+    .level_for("tungstenite", log::LevelFilter::Off)
+    .level_for("tao", log::LevelFilter::Off);
 
   let mut app = tauri::Builder::default()
     .plugin(tauri_plugin_updater::Builder::new().build())
@@ -82,6 +98,7 @@ fn main() {
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
     .plugin(tauri_plugin_http::init())
+    .plugin(log_plugin_builder.build())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
@@ -93,10 +110,12 @@ fn main() {
 
   app = app
     .manage(Pinned(AtomicBool::new(false)))
-    .setup(|app| {
+    .setup(move |app| {
+      debug!("starting app...");
       let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
       let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
 
+      info!("Log level set to: {log_level}");
       // the window should always be on top
       #[cfg(not(target_os = "macos"))]
       window.set_always_on_top(true);
@@ -159,4 +178,6 @@ fn main() {
         api.prevent_close();
       }
     });
+
+  debug!("app started succesfully!");
 }
