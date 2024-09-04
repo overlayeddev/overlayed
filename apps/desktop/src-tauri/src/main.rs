@@ -11,11 +11,14 @@ mod app_handle;
 mod commands;
 mod constants;
 mod tray;
+mod config;
 mod window_custom;
 
 use crate::commands::*;
+use config::create_or_get_config;
 use constants::*;
 use log::{debug, info};
+use tauri_plugin_store::Store;
 use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
@@ -39,7 +42,7 @@ use system_notification::WorkspaceListener;
 use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
-
+pub struct StoreWrapper(Mutex<Store<Wry>>);
 pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
@@ -95,6 +98,7 @@ fn main() {
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_store::Builder::default().build())
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
@@ -132,6 +136,10 @@ fn main() {
       // NOTE: this might be a bug?
       window.set_decorations(false);
       window.set_shadow(false);
+
+     // we should call this to create the config file
+      let config = create_or_get_config(&app.app_handle());
+      app.manage(StoreWrapper(Mutex::new(config)));
 
       // add mac things
       #[cfg(target_os = "macos")]
