@@ -7,7 +7,7 @@ use serde_json::json;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 use tauri_plugin_store::Store;
 
-use crate::{constants::*, Pinned, AppSettings, TrayMenu};
+use crate::{constants::*, AppSettings, Pinned, TrayMenu};
 
 #[tauri::command]
 pub fn open_settings(window: WebviewWindow, update: bool) {

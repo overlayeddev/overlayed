@@ -10,7 +10,7 @@ use anyhow::Result;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{
-  commands, toggle_pin, Pinned, AppSettings, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED,
+  commands, toggle_pin, AppSettings, Pinned, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED,
   SETTINGS_WINDOW_NAME, TRAY_OPEN_DEVTOOLS_MAIN, TRAY_OPEN_DEVTOOLS_SETTINGS, TRAY_QUIT,
   TRAY_RELOAD, TRAY_SETTINGS, TRAY_SHOW_APP, TRAY_TOGGLE_PIN,
 };

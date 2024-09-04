@@ -29,7 +29,7 @@ pub struct Settings {
   pub feature_flags: FeatureFlags,
 }
 
-// create a default config 
+// create a default config
 impl Default for Settings {
   fn default() -> Self {
     Settings {
