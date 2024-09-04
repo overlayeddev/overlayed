@@ -10,7 +10,9 @@ use anyhow::Result;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{
-  commands, toggle_pin, Pinned, StoreWrapper, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED, SETTINGS_WINDOW_NAME, TRAY_OPEN_DEVTOOLS_MAIN, TRAY_OPEN_DEVTOOLS_SETTINGS, TRAY_QUIT, TRAY_RELOAD, TRAY_SETTINGS, TRAY_SHOW_APP, TRAY_TOGGLE_PIN
+  commands, toggle_pin, Pinned, StoreWrapper, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED,
+  SETTINGS_WINDOW_NAME, TRAY_OPEN_DEVTOOLS_MAIN, TRAY_OPEN_DEVTOOLS_SETTINGS, TRAY_QUIT,
+  TRAY_RELOAD, TRAY_SETTINGS, TRAY_SHOW_APP, TRAY_TOGGLE_PIN,
 };
 
 pub struct Tray;
@@ -50,7 +52,12 @@ impl Tray {
       TRAY_TOGGLE_PIN => {
         let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
 
-        toggle_pin(window, app.state::<Pinned>(), app.state::<TrayMenu>(), app.state::<StoreWrapper>());
+        toggle_pin(
+          window,
+          app.state::<Pinned>(),
+          app.state::<TrayMenu>(),
+          app.state::<StoreWrapper>(),
+        );
       }
       TRAY_SHOW_APP => {
         let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
