@@ -5,7 +5,7 @@ use std::{
 
 use serde_json::json;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
-use tauri_plugin_store::{Store, StoreCollection};
+use tauri_plugin_store::Store;
 
 use crate::{constants::*, Pinned, StoreWrapper, TrayMenu};
 
@@ -45,7 +45,12 @@ pub fn open_devtools(window: WebviewWindow) {
 }
 
 #[tauri::command]
-pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, config: State<StoreWrapper>) {
+pub fn toggle_pin(
+  window: WebviewWindow,
+  pin: State<Pinned>,
+  menu: State<TrayMenu>,
+  config: State<StoreWrapper>,
+) {
   let app = window.app_handle();
   let value = !get_pin(app.state::<Pinned>());
 
@@ -53,7 +58,13 @@ pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMen
 }
 
 #[tauri::command]
-pub fn set_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, value: bool, config: State<StoreWrapper>) {
+pub fn set_pin(
+  window: WebviewWindow,
+  pin: State<Pinned>,
+  menu: State<TrayMenu>,
+  value: bool,
+  config: State<StoreWrapper>,
+) {
   _set_pin(value, &window, pin, menu, config);
 }
 
@@ -81,7 +92,13 @@ impl Deref for TrayMenu {
   }
 }
 
-fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: State<TrayMenu>,  config: State<StoreWrapper>) {
+fn _set_pin(
+  value: bool,
+  window: &WebviewWindow,
+  pinned: State<Pinned>,
+  menu: State<TrayMenu>,
+  config: State<StoreWrapper>,
+) {
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
