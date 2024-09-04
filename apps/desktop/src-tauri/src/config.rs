@@ -41,7 +41,9 @@ pub fn create_or_get_config(app: &AppHandle) -> Store<Wry> {
   appdir.push(CONFIG_FILE_NAME);
   let config_exists = (appdir.clone()).exists();
 
-  let mut store = StoreBuilder::new(CONFIG_FILE_NAME).build(app.app_handle().clone());
+  let mut store = StoreBuilder::new(CONFIG_FILE_NAME)
+    .serialize(|cache| serde_json::to_vec_pretty(&cache).map_err(Into::into))
+    .build(app.app_handle().clone());
 
   // if the file exists we don't want to overwrite it
   if config_exists {
