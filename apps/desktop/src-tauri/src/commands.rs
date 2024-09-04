@@ -3,9 +3,11 @@ use std::{
   sync::{atomic::AtomicBool, Mutex},
 };
 
+use serde_json::json;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
+use tauri_plugin_store::{Store, StoreCollection};
 
-use crate::{constants::*, Pinned, TrayMenu};
+use crate::{constants::*, Pinned, StoreWrapper, TrayMenu};
 
 #[tauri::command]
 pub fn zoom_window(window: tauri::Window, scale_factor: f64) {
@@ -60,7 +62,7 @@ pub fn close_settings(window: WebviewWindow) {
 
 #[tauri::command]
 pub fn get_pin(storage: State<Pinned>) -> bool {
-  storage.0.load(std::sync::atomic::Ordering::Relaxed)
+  storage.load(std::sync::atomic::Ordering::Relaxed)
 }
 
 #[tauri::command]
@@ -69,20 +71,28 @@ pub fn open_devtools(window: WebviewWindow) {
 }
 
 #[tauri::command]
-pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>) {
+pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, config: State<StoreWrapper>) {
   let app = window.app_handle();
   let value = !get_pin(app.state::<Pinned>());
 
-  _set_pin(value, &window, pin, menu);
+  _set_pin(value, &window, pin, menu, config);
 }
 
 #[tauri::command]
-pub fn set_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, value: bool) {
-  _set_pin(value, &window, pin, menu);
+pub fn set_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, value: bool, config: State<StoreWrapper>) {
+  _set_pin(value, &window, pin, menu, config);
 }
 
 impl Deref for Pinned {
   type Target = AtomicBool;
+
+  fn deref(&self) -> &Self::Target {
+    &self.0
+  }
+}
+
+impl Deref for StoreWrapper {
+  type Target = Mutex<Store<Wry>>;
 
   fn deref(&self) -> &Self::Target {
     &self.0
@@ -97,7 +107,7 @@ impl Deref for TrayMenu {
   }
 }
 
-fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: State<TrayMenu>) {
+fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: State<TrayMenu>,  config: State<StoreWrapper>) {
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
@@ -119,6 +129,11 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
       let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: value];
     }
   });
+
+  if let Ok(mut c) = config.lock() {
+    c.insert("pin".to_owned(), json!(value));
+    c.save();
+  }
 
   window.set_ignore_cursor_events(value);
 
