@@ -9,8 +9,8 @@
 extern crate objc;
 
 mod app_handle;
-mod commands;
 mod app_settings;
+mod commands;
 mod constants;
 mod tray;
 mod window_custom;
