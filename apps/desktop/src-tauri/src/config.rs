@@ -45,7 +45,8 @@ pub fn create_or_get_config(app: &AppHandle) -> Store<Wry> {
 
   // if the file exists we don't want to overwrite it
   if config_exists {
-    debug!("Config file already exists, skipping creation");
+    debug!("Config file already exists, loading from file");
+    store.load();
   } else {
     store.insert("pin".to_string(), json!(false));
     store.insert("placement".to_string(), json!(WindowLayout::Center));
