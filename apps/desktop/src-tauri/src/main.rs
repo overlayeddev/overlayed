@@ -10,22 +10,22 @@ extern crate objc;
 
 mod app_handle;
 mod commands;
+mod config;
 mod constants;
 mod tray;
-mod config;
 mod window_custom;
 
 use crate::commands::*;
 use config::create_or_get_config;
 use constants::*;
 use log::{debug, info};
-use tauri_plugin_store::Store;
 use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
 };
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_log::{Target, TargetKind};
+use tauri_plugin_store::Store;
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
 use window_custom::WebviewWindowExt;
@@ -136,7 +136,7 @@ fn main() {
       // NOTE: this might be a bug?
       window.set_decorations(false);
 
-     // we should call this to create the config file
+      // we should call this to create the config file
       let config = create_or_get_config(&app.app_handle());
       app.manage(StoreWrapper(Mutex::new(config)));
 
