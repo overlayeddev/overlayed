@@ -84,6 +84,7 @@ fn main() {
   let log_plugin_builder = tauri_plugin_log::Builder::new()
     .targets([Target::new(TargetKind::LogDir { file_name: None })])
     .level_for("overlayed", log_level_filter)
+    .level_for("reqwest", log_level_filter)
     .level_for("notify", log::LevelFilter::Off)
     .level_for("tokio_tungstenite", log::LevelFilter::Off)
     .level_for("tungstenite", log::LevelFilter::Off)
