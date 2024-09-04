@@ -20,7 +20,7 @@ pub struct FeatureFlags {
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct Config {
+pub struct Settings {
   pub pin: bool,
   pub placment: WindowLayout,
   pub telemetry: bool,
@@ -29,10 +29,26 @@ pub struct Config {
   pub feature_flags: FeatureFlags,
 }
 
-const CONFIG_FILE_NAME: &str = "expirmental_config_v2.json";
+// create a default config 
+impl Default for Settings {
+  fn default() -> Self {
+    Settings {
+      pin: false,
+      placment: WindowLayout::Center,
+      telemetry: true,
+      join_history_notifications: true,
+      show_only_talking_users: true,
+      feature_flags: FeatureFlags {
+        hide_overlay_on_mouseover: false,
+      },
+    }
+  }
+}
+
+const CONFIG_FILE_NAME: &str = "experimental_config.json";
 // create a helper function to seed the config with values
-pub fn create_or_get_config(app: &AppHandle) -> Store<Wry> {
-  debug!("Creating or getting config...");
+pub fn get_app_settings(app: &AppHandle) -> Store<Wry> {
+  debug!("Creating or getting app settings...");
   // create the store
   let mut appdir = app
     .path()
@@ -48,8 +64,12 @@ pub fn create_or_get_config(app: &AppHandle) -> Store<Wry> {
   // if the file exists we don't want to overwrite it
   if config_exists {
     debug!("Config file already exists, loading from file");
+    // NOTE: we can get the config from the filesystem
     store.load();
+
+    // add keys from the default confg
   } else {
+    // NOTE: we need to create the config for the first time
     store.insert("pin".to_string(), json!(false));
     store.insert("placement".to_string(), json!(WindowLayout::Center));
     store.insert("telemetry".to_string(), json!(true));
