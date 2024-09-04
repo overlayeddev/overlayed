@@ -7,7 +7,7 @@ use serde_json::json;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 use tauri_plugin_store::Store;
 
-use crate::{constants::*, Pinned, StoreWrapper, TrayMenu};
+use crate::{constants::*, Pinned, AppSettings, TrayMenu};
 
 #[tauri::command]
 pub fn open_settings(window: WebviewWindow, update: bool) {
@@ -49,7 +49,7 @@ pub fn toggle_pin(
   window: WebviewWindow,
   pin: State<Pinned>,
   menu: State<TrayMenu>,
-  config: State<StoreWrapper>,
+  config: State<AppSettings>,
 ) {
   let app = window.app_handle();
   let value = !get_pin(app.state::<Pinned>());
@@ -63,9 +63,9 @@ pub fn set_pin(
   pin: State<Pinned>,
   menu: State<TrayMenu>,
   value: bool,
-  config: State<StoreWrapper>,
+  settings: State<AppSettings>,
 ) {
-  _set_pin(value, &window, pin, menu, config);
+  _set_pin(value, &window, pin, menu, settings);
 }
 
 impl Deref for Pinned {
@@ -76,7 +76,7 @@ impl Deref for Pinned {
   }
 }
 
-impl Deref for StoreWrapper {
+impl Deref for AppSettings {
   type Target = Mutex<Store<Wry>>;
 
   fn deref(&self) -> &Self::Target {
@@ -97,7 +97,7 @@ fn _set_pin(
   window: &WebviewWindow,
   pinned: State<Pinned>,
   menu: State<TrayMenu>,
-  config: State<StoreWrapper>,
+  config: State<AppSettings>,
 ) {
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);

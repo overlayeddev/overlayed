@@ -9,13 +9,13 @@ extern crate objc;
 
 mod app_handle;
 mod commands;
-mod config;
+mod app_settings;
 mod constants;
 mod tray;
 mod window_custom;
 
 use crate::commands::*;
-use config::create_or_get_config;
+use app_settings::get_app_settings;
 use constants::*;
 use log::{debug, info};
 use std::{
@@ -42,7 +42,7 @@ use system_notification::WorkspaceListener;
 use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
-pub struct StoreWrapper(Mutex<Store<Wry>>);
+pub struct AppSettings(Mutex<Store<Wry>>);
 pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
@@ -138,8 +138,8 @@ fn main() {
       window.set_shadow(false);
 
       // we should call this to create the config file
-      let config = create_or_get_config(&app.app_handle());
-      app.manage(StoreWrapper(Mutex::new(config)));
+      let app_settings = get_app_settings(&app.app_handle());
+      app.manage(AppSettings(Mutex::new(app_settings)));
 
       // add mac things
       #[cfg(target_os = "macos")]
