@@ -209,7 +209,9 @@ class SocketManager {
     }
 
     const payload: DiscordPayload = JSON.parse(event.data);
-    console.log(payload);
+
+    // TODO: we need a client side logger with levels too so that we can enable this
+    // console.log(payload);
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
