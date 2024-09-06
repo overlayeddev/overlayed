@@ -131,6 +131,7 @@ fn main() {
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
       window.set_decorations(false);
+      window.set_shadow(false);
 
       // add mac things
       #[cfg(target_os = "macos")]
