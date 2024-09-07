@@ -176,7 +176,6 @@ fn main() {
       } = event
       {
         let win = app.get_webview_window(label.as_str()).unwrap();
-        win.hide().unwrap();
         api.prevent_close();
       }
     });

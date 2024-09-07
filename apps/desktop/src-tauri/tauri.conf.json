@@ -1,4 +1,5 @@
 {
+  "$schema": "https://github.com/tauri-apps/tauri/releases/download/tauri-build-v2.0.0-beta.13/schema.json",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
@@ -14,8 +15,7 @@
       "icons/stable/128x128@2x.png",
       "icons/stable/icon.icns",
       "icons/stable/icon.ico"
-    ],
-    "createUpdaterArtifacts": "v1Compatible"
+    ]
   },
   "productName": "Overlayed",
   "version": "0.5.0",
@@ -31,6 +31,7 @@
       {
         "fullscreen": false,
         "resizable": true,
+        "minimizable": false,
         "transparent": true,
         "decorations": false,
         "shadow": false,
