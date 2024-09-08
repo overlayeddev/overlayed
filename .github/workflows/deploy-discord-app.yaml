@@ -38,6 +38,8 @@ jobs:
         env:
           DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      - name: Remove types package
+        run: pnpm uninstall @types/github-script
       - name: Deploy worker
         if: steps.changes.outputs.api == 'true' && ${{ github.event_name }}" != "workflow_dispatch"
         uses: cloudflare/wrangler-action@v3
@@ -46,4 +48,3 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: apps/bot
           packageManager: pnpm
-          preCommands: pnpm uninstall @types/github-script
