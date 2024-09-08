@@ -1,4 +1,4 @@
-name: Deploy bot
+name: Deploy Discord App
 
 on:
   workflow_dispatch:
@@ -46,3 +46,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: apps/bot
           packageManager: pnpm
+          preCommands: pnpm uninstall @types/github-script
