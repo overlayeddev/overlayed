@@ -17,7 +17,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
   const [platformDownloads, setPlatformDownloads] = useState<{
     downloads: PlatformDownload[];
     latestVersion: string;
-    updatedAt?: string;
+    updated?: string;
   }>({
     downloads: [],
     latestVersion: "",
@@ -38,16 +38,16 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
   useEffect(() => {
     const timerId = setInterval(() => {
       setFormattedTime(
-        getRelativeTime(platformDownloads.updatedAt || new Date()),
+        getRelativeTime(platformDownloads.updated || new Date()),
       );
     }, 1000);
 
     setFormattedTime(
-      getRelativeTime(platformDownloads.updatedAt || new Date()),
+      getRelativeTime(platformDownloads.updated || new Date()),
     );
 
     return () => clearInterval(timerId);
-  }, [platformDownloads.updatedAt]);
+  }, [platformDownloads.updated]);
 
   const commitSha = platformDownloads.latestVersion.substring(0, 7);
   const shortCommitSha = commitSha.substring(0, 7);
