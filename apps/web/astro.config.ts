@@ -15,11 +15,9 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-const SITE_URL = process.env.VERCEL_URL ?? "http://127.0.0.1:5431";
-
 // https://astro.build/config
 export default defineConfig({
-  site: SITE_URL,
+  site: "https://overlayed.dev",
   trailingSlash: "never",
   integrations,
   server: {
