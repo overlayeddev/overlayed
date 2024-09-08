@@ -42,9 +42,7 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
       );
     }, 1000);
 
-    setFormattedTime(
-      getRelativeTime(platformDownloads.updated || new Date()),
-    );
+    setFormattedTime(getRelativeTime(platformDownloads.updated || new Date()));
 
     return () => clearInterval(timerId);
   }, [platformDownloads.updated]);
