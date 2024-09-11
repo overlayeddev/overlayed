@@ -9,12 +9,14 @@
 extern crate objc;
 
 mod app_handle;
+mod app_settings;
 mod commands;
 mod constants;
 mod tray;
 mod window_custom;
 
 use crate::commands::*;
+use app_settings::get_app_settings;
 use constants::*;
 use log::{debug, info};
 use std::{
@@ -23,6 +25,7 @@ use std::{
 };
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_log::{Target, TargetKind};
+use tauri_plugin_store::Store;
 use tauri_plugin_window_state::StateFlags;
 use tray::Tray;
 use window_custom::WebviewWindowExt;
@@ -40,7 +43,7 @@ use system_notification::WorkspaceListener;
 use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
-
+pub struct AppSettings(Mutex<Store<Wry>>);
 pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
@@ -95,6 +98,7 @@ fn main() {
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_store::Builder::default().build())
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
@@ -132,6 +136,10 @@ fn main() {
       // NOTE: this might be a bug?
       window.set_decorations(false);
       window.set_shadow(false);
+
+      // we should call this to create the config file
+      let app_settings = get_app_settings(&app.app_handle());
+      app.manage(AppSettings(Mutex::new(app_settings)));
 
       // add mac things
       #[cfg(target_os = "macos")]

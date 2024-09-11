@@ -35,6 +35,7 @@ tauri-plugin-shell = "2.0.0-rc"
 tauri-plugin-os = "2.0.0-rc"
 tauri-plugin-http = "2.0.0-rc"
 tauri-plugin-log = "2.0.0-rc"
+tauri-plugin-store = "2.0.0-rc"
 anyhow = "1.0.86"
 log = "0.4.22"
 
