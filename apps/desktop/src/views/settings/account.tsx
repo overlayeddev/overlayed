@@ -125,7 +125,6 @@ export const Account = () => {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [user, setUser] = useState<VoiceUser | null>(null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
-  const [zoom, setZoom] = useState(1);
 
   // pull out the user data from localStorage
   useEffect(() => {
