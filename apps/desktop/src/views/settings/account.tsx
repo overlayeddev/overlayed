@@ -23,7 +23,6 @@ import { emit } from "@tauri-apps/api/event";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
 import { useConfigValue } from "@/hooks/use-config-value";
-import { Slider } from "@/components/ui/slider";
 import * as shell from "@tauri-apps/plugin-shell";
 
 export const Developer = () => {
@@ -267,20 +266,6 @@ export const Account = () => {
           <Developer />
         </div>
         <AppInfo />
-        Zoom
-        <Slider
-          onValueChange={async ([val]) => {
-            setZoom(val as number);
-            console.log(val);
-            await invoke("zoom_window", { scaleFactor: zoom });
-          }}
-          defaultValue={[1.0]}
-          min={0.4}
-          max={1.5}
-          step={0.1}
-          className="w-[60%]"
-        />
-        {zoom}
       </div>
     </div>
   );
