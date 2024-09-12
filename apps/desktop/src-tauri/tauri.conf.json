@@ -15,7 +15,12 @@
       "icons/stable/128x128@2x.png",
       "icons/stable/icon.icns",
       "icons/stable/icon.ico"
-    ]
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "offlineInstaller"
+      }
+    }
   },
   "productName": "Overlayed",
   "version": "0.5.0",

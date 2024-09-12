@@ -168,14 +168,12 @@ fn main() {
   app
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!")
-    .run(|app, event| {
+    .run(|_app, event| {
       if let tauri::RunEvent::WindowEvent {
-        label,
         event: tauri::WindowEvent::CloseRequested { api, .. },
         ..
       } = event
       {
-        let win = app.get_webview_window(label.as_str()).unwrap();
         api.prevent_close();
       }
     });
