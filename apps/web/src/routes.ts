@@ -12,10 +12,11 @@ export const routes: ReadonlyArray<Route<string>> = [
     title: "About",
     path: "/about",
   },
-  {
-    title: "Download",
-    path: "/download",
-  },
+  // TODO: schedule for a later time
+  // {
+  //   title: "Download",
+  //   path: "/download",
+  // },
   {
     title: "Canary",
     path: "/canary",
