@@ -4,7 +4,6 @@
   "webviews": ["main", "settings"],
   "platforms": ["macOS", "windows", "linux"],
   "permissions": [
-    "core:default",
     "updater:default",
     "fs:default",
     {
@@ -14,6 +13,7 @@
     },
     "core:window:allow-set-size",
     "core:window:allow-start-dragging",
+    "core:window:deny-maximize",
     "process:default",
     "core:tray:default",
     "core:app:default",
