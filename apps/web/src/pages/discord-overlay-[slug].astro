@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Footer from "../components/footer.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 export async function getStaticPaths() {
@@ -27,6 +26,4 @@ const { Content } = await post.render();
   <main class="px-4 prose prose-invert mx-auto pt-28">
     <Content />
   </main>
-
-  <Footer />
 </Layout>

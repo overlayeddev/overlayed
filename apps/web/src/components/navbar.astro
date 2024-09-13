@@ -2,6 +2,7 @@
 import { DISCORD_INVITE_LINK } from "../constants";
 import { GithubIcon, TwitterIcon, OverlayedIcon, DiscordIcon } from "./icons";
 import Link from "../components/link.astro";
+import { routes } from "../routes";
 ---
 
 <style>
@@ -139,11 +140,13 @@ import Link from "../components/link.astro";
   </div>
   <!--spacer -->
   <div class="hidden md:flex justify-center gap-4">
-    <Link to="/" title="Home">Home</Link>
-    <Link to="/about" title="About">About</Link>
-    <Link to="/canary" title="Canary">Canary</Link>
-    <Link to="/discord" title="Discord">Discord</Link>
-    <Link to="/blog" title="Blog">Blog</Link>
+    {
+      routes.map((route) => (
+        <Link to={route.path} title={route.title}>
+          {route.title}
+        </Link>
+      ))
+    }
   </div>
   <!--spacer small screen-->
   <div class="flex md:hidden"></div>

@@ -2,6 +2,7 @@
 import { SITE_TITLE, SITE_DESCRIPTION } from "../constants";
 import CommonHead from "../components/common-head.astro";
 import Navbar from "../components/navbar.astro";
+import Footer from "../components/footer.astro";
 import "../styles/prose.css";
 
 interface Props {
@@ -41,5 +42,6 @@ const { title, description, canonicalPath, ogImage } = Astro.props;
         scroll-behavior: smooth;
       }
     </style>
+    <Footer />
   </body>
 </html>

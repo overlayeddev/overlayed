@@ -2,7 +2,6 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import Footer from "../../components/footer.astro";
 
 export const getStaticPaths = (async () => {
   const blogPosts = await getCollection("blog");
@@ -56,5 +55,4 @@ const { Content } = await post.render();
       crossorigin="anonymous"
       async></script>
   </main>
-  <Footer />
 </Layout>

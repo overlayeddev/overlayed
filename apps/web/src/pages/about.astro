@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Footer from "../components/footer.astro";
 
 interface Frontmatter {
   title: string;
@@ -18,5 +17,4 @@ const [about] = await Astro.glob<Frontmatter>("../content/about/index.mdx");
     <div class="pt-2 pb-20"></div>
     <about.Content />
   </main>
-  <Footer />
 </Layout>
