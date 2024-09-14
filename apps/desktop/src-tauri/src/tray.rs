@@ -1,7 +1,9 @@
 use std::sync::Mutex;
 
 use tauri::{
-  menu::{Menu, MenuBuilder, MenuEvent}, tray::TrayIconBuilder, AppHandle, LogicalSize, Manager, Position, Wry
+  menu::{Menu, MenuBuilder, MenuEvent},
+  tray::TrayIconBuilder,
+  AppHandle, LogicalSize, Manager, Wry,
 };
 
 use anyhow::Result;
@@ -85,7 +87,7 @@ impl Tray {
       TRAY_QUIT => {
         // NOTE: we only save position and size so that StateFlags::FULLSCREEN is not saved, as
         // nspanels do not support it
-        app.save_window_state(StateFlags::POSITION | StateFlags::SIZE );
+        app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
         std::process::exit(0)
       }
       _ => {}
