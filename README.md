@@ -5,11 +5,15 @@
 </p>
 
 <a href="https://discord.gg/eXmeNkVjye" target="_parent">
-<img alt="Discord" height=20 src="https://img.shields.io/discord/906349283358408704?style=&logo=discord&logoColor=white&label=%20&labelColor=%237389D8&color=%237389D8" />
+<img alt="Discord" height=20 src="https://img.shields.io/discord/906349283358408704?style=&logo=discord&logoColor=white&label=%20&labelColor=5865F2&color=5865F2" />
 </a>
 <a href="https://twitter.com/OverlayedDev" target="_parent">
 <img alt="Twitter" height=20 src="https://img.shields.io/twitter/follow/overlayeddev.svg?style=&logo=twitter&logoColor=white&label=@OverlayedDev&labelColor=%231DA1F2&color=%231DA1F2" />
 </a>
+<a href="https://overlayed.dev/canary" target="_parent">
+<img alt="Canary Build" height=20 src="https://img.shields.io/github/actions/workflow/status/overlayeddev/overlayed/.github%2Fworkflows%2Fcanary.yaml?label=Canary Build" />
+</a>
+
 
 A modern, open-source, and free voice chat overlay for Discord that supports Mac, Linux, and Windows!
 
