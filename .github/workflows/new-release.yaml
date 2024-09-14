@@ -46,7 +46,7 @@ jobs:
         with:
           script: |
             const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
-            const tag = "${{ tag }}"
+            const tag = "${{ github.event.inputs.tag }}"
             if (tag) {
               context.ref = tag
             }
