@@ -54,7 +54,7 @@ switch (arg) {
     await uploadBinsToR2({ github, context }, "canary");
     break;
   case "upload-stable":
-    context.ref = "v0.5.0";
+    context.ref = "v0.6.0";
     await uploadBinsToR2({ github, context }, "stable");
     break;
   default:

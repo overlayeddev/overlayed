@@ -59,6 +59,7 @@ async function uploadStableArtifacts({ github, context }) {
 
   try {
     // upload to r2
+    console.log(`[${context.ref}] Starting upload to R2...`);
     for (const file of fs.readdirSync(releaseBinDir)) {
       const assetFilePath = path.join(releaseBinDir, file);
       const fileStream = fs.createReadStream(assetFilePath);
@@ -69,6 +70,7 @@ async function uploadStableArtifacts({ github, context }) {
         Body: fileStream,
       });
 
+      console.log(`[${context.ref}] ${file} starting upload...`);
       await client.send(uploadBinsCommand);
 
       console.log(`[${context.ref}] ${file} uploaded successfully`);
