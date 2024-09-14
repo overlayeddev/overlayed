@@ -2,6 +2,10 @@ name: "New Release"
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: select a tag
+      
   release:
     types:
       - published
@@ -42,7 +46,11 @@ jobs:
         with:
           script: |
             const { script } = await import('${{ github.workspace }}/scripts/actions/upload-to-r2.js')
-            await script({ github, context }, "stable");
+            const tag = "${{ tag }}"
+            if (tag) {
+              context.ref = tag
+            }
+            await script({ github, context }, "stable", )
         env:
           # NOTE: we need this to download the bins
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
