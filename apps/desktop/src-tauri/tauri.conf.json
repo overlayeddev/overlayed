@@ -23,7 +23,7 @@
     }
   },
   "productName": "Overlayed",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "identifier": "com.overlayed.dev",
   "plugins": {
     "updater": {
