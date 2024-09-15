@@ -181,11 +181,25 @@ class SocketManager {
     const payload: DiscordPayload = JSON.parse(event.data);
 
     // TODO: we need a client side logger with levels too so that we can enable this
-    // console.log(payload);
+    console.log(JSON.stringify(payload));
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
-      const acessToken = null; //this.userdataStore.accessToken;
+      const allUsers = this.userdataStore.users;
+
+      let acessToken = null;
+      // TODO: how the hell do you handle multiple users?
+      if (Object.keys(allUsers).length === 1) {
+        const firstUser = Object.keys(allUsers)[0];
+        if (firstUser && allUsers[firstUser]) {
+          let token = allUsers[firstUser]!.authdata.accessToken
+          console.log("Using first users access token to login", token);
+          acessToken = token;
+
+          // TODO: before we try and use the token we should check if it's expired
+
+        }
+      }
 
       if (acessToken) {
         this.login(acessToken);
