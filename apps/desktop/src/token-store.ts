@@ -18,14 +18,13 @@ export interface TokenActions {
   setAuth: (id: string, userdata: Authdata) => void;
 }
 
-const storeInit: StateCreator<TokenState, [["zustand/persist", unknown], ["zustand/immer", never]], [], TokenState> = (
+const storeInit: StateCreator<TokenState, [["zustand/persist", unknown], ["zustand/immer", never]], [], TokenState & TokenActions> = (
   set,
-  get
 ) => ({
   users: {},
   setUserdata: (id, data) =>
     set(state => {
-      console.log("setting userdata", id, data);
+      console.log("setting userdata");
       // @ts-ignore
       state.users = {
         ...state.users,
@@ -37,8 +36,16 @@ const storeInit: StateCreator<TokenState, [["zustand/persist", unknown], ["zusta
     }),
   setAuth: (id, data) =>
     set(state => {
-      console.log("setting authdata", id, data);
+      console.log("setting authdata");
+      // @ts-ignore
+      state.users = {
+        ...state.users,
+        [id]: {
+          ...state.users[id],
+          authdata: data,
+        },
+      };
     }),
 });
 
-export const useTokenStore = create<TokenState & TokenActions>()(immer(persist(storeInit, { nam : "token-store" })));
+export const useTokenStore = create<TokenState & TokenActions>()(immer(persist(storeInit, { name: "token-store" })));

@@ -276,13 +276,7 @@ class SocketManager {
 
       // TODO: handle error
       const jsonRes = await res.json() as TokenResponse;
-
       const { authdata, userdata } = jsonRes;
-
-      console.log({
-        authdata,
-        userdata,
-      });
 
       this.userdataStore.setAuth(userdata.id, {
         accessToken: authdata.accessToken,
