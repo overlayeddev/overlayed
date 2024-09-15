@@ -15,7 +15,7 @@ import { emit } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import { getVersion } from "@tauri-apps/api/app";
 import { hash } from "@/utils/crypto";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { useTokenStore as TokenStore } from "@/token-store";
 import type { TokenResponse } from "@/types";
 
@@ -269,12 +269,15 @@ class SocketManager {
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
       const { code } = payload.data;
-      const res = await fetch<TokenResponse>(`${API_URL}/v2/token`, {
+      const res = await fetch(`${API_URL}/v2/token`, {
         method: "POST",
         body: JSON.stringify({ code }),
       });
 
-      const { authdata, userdata } = res.data;
+      // TODO: handle error
+      const jsonRes = await res.json() as TokenResponse;
+
+      const { authdata, userdata } = jsonRes;
 
       console.log({
         authdata,
