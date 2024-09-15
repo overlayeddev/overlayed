@@ -42,12 +42,14 @@
       "allow": [
         {
           "url": "https://api.overlayed.dev"
+        },
+        {
+          "url": "http://127.0.0.1:8787"
         }
       ],
       "permissions": [
         "http:default"
       ]
-    },
-    "notification:default"
+    }
   ]
 }
