@@ -362,12 +362,6 @@ class SocketManager {
       // try to find the user
       this.requestUserChannel();
 
-      // sub to any otifs
-      this.send({
-        cmd: RPCCommand.SUBSCRIBE,
-        evt: RPCEvent.NOTIFICATION_CREATE,
-      });
-
       this.userdataStore.setAccessTokenExpiry(payload.data.expires);
       this.store.setMe(payload.data.user);
 
