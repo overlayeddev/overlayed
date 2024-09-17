@@ -4,7 +4,7 @@
   <launchable type="desktop-id">dev.overlayed.Overlayed.desktop</launchable>
   <name>Overlayed</name>
   <developer_name>Team Overlayed</developer_name>
-  <summary>A discord overlay</summary>
+  <summary>A Discord overlay</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-only</project_license>
   <url type="homepage">https://overlayed.dev</url>
@@ -29,11 +29,17 @@
   </requires>
   <screenshots>
     <screenshot type="default">
-      <caption>The home screen of the app</caption>
-      <image>https://assets.overlayed.dev/appdir/pres/slide1.png</image>
+      <caption>Overlayed Marketing Image showing the app used in Minecraft</caption>
+      <image>https://artifacts.overlayed.dev/media/overlayed.png</image>
     </screenshot>
   </screenshots>
   <releases>
+    <release version="0.6.1" date="2024-09-16" type="stable">
+      <url>https://github.com/overlayeddev/overlayed/releases/tag/v0.6.1</url>
+    </release>
+    <release version="0.6.0" date="2024-09-14" type="stable">
+      <url>https://github.com/overlayeddev/overlayed/releases/tag/v0.6.0</url>
+    </release>
     <release version="0.5.0" date="2024-07-20" type="stable">
       <url>https://github.com/overlayeddev/overlayed/releases/tag/v0.5.0</url>
     </release>
