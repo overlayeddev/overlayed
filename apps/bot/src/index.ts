@@ -9,7 +9,7 @@ import {
 	CANARY,
 	HELP,
 	INFO,
-    INVITE,
+	INVITE,
 } from "./commands.js";
 import { Bindings } from "./types.js";
 import { verifyDiscordRequest } from "./utils.js";

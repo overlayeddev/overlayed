@@ -1,5 +1,5 @@
 // shim some stuff
-import 'core-js/actual/promise';
+import "core-js/actual/promise";
 
 import React from "react";
 import ReactDOM from "react-dom/client";

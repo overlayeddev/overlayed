@@ -13,6 +13,7 @@ import { useAppStore } from "./store";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 import { useSocket } from "./rpc/manager";
+import { cn } from "./utils/tw";
 
 function App() {
   useDisableWebFeatures();
@@ -28,11 +29,15 @@ function App() {
 
   const { pin } = usePin();
   const { horizontal, setHorizontalDirection } = useAlign();
-
   const visibleClass = visible ? "opacity-100" : "opacity-0";
 
   return (
-    <div className={`text-white h-screen select-none rounded-lg ${visibleClass}`}>
+    <div
+      className={cn(
+        `text-white h-screen select-none rounded-lg ${visibleClass}`,
+        pin ? null : "border border-zinc-600"
+      )}
+    >
       {!pin && (
         <NavBar
           isUpdateAvailable={update?.available ?? false}
