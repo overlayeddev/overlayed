@@ -9,6 +9,7 @@ import {
 	CANARY,
 	HELP,
 	INFO,
+    INVITE,
 } from "./commands.js";
 import { Bindings } from "./types.js";
 import { verifyDiscordRequest } from "./utils.js";
@@ -88,6 +89,16 @@ app.post("/", async (c) => {
 				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
 				data: {
 					content: `${LOGO_MOJI} Learn more about Windows SmartScreen by visiting https://overlayed.dev/blog/windows-smartscreen-and-overlayed`,
+				},
+			});
+		}
+
+		if (command === INVITE.name.toLowerCase()) {
+			return c.json({
+				type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+				data: {
+					content: `${LOGO_MOJI} Join the Overlayed Discord
+discord.gg/eXmeNkVjye`,
 				},
 			});
 		}

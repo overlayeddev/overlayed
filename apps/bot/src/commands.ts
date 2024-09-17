@@ -51,3 +51,10 @@ export const HELP = defineCommand({
 	integration_types: [USER_INSTALL, GUILD_INSTALL],
 	contexts: [0, 1, 2],
 });
+
+export const INVITE = defineCommand({
+	name: "invite",
+	description: "Join the Overlayed discord",
+	integration_types: [USER_INSTALL, GUILD_INSTALL],
+	contexts: [0, 1, 2],
+});
