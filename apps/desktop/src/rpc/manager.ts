@@ -359,6 +359,12 @@ class SocketManager {
         version: this.version,
       });
 
+      // subscribe to channel select events
+      this.send({
+        cmd: RPCCommand.SUBSCRIBE,
+        evt: RPCEvent.VOICE_CHANNEL_SELECT,
+      });
+
       // try to find the user
       this.requestUserChannel();
 
