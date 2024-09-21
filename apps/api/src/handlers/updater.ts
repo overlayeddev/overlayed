@@ -59,7 +59,7 @@ app.get("/latest/canary", async (c) => {
 			return {
 				name: file.key,
 				url: `https://artifacts.overlayed.dev/${file.key}`,
-				platform,
+				platform: platform.replace(".zip", ""),
 			};
 		})
 		.filter((file) => file.name !== "canary/latest.json");
