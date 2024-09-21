@@ -54,15 +54,15 @@ app.get("/latest/canary", async (c) => {
 
 	// get the latest canary build for each platform
 	const downloads = files.objects
+		.filter((file) => file?.key !== "canary/latest.json")
 		.map((file) => {
 			const platform = file.key.split("/")[1].split("-")[2];
 			return {
 				name: file.key,
 				url: `https://artifacts.overlayed.dev/${file.key}`,
-				platform: platform.replace(".zip", ""),
+				platform: platform.slice(0, -4),
 			};
-		})
-		.filter((file) => file.name !== "canary/latest.json");
+		});
 
 	return c.json(
 		{

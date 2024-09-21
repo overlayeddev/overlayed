@@ -65,6 +65,8 @@ export async function getStars({
 	}
 }
 
+const CDN_URL = "https://artifacts.overlayed.dev";
+
 export async function getPlatformDownloads({
 	authToken,
 }: {
@@ -73,12 +75,20 @@ export async function getPlatformDownloads({
 	// fetch all releases from github
 	try {
 		const releases = await getLatestRelease(authToken);
+		const latestVersion = releases.tag_name.substring(1);
 
-		const versions = releases.assets
-			.map((asset) => ({
-				name: asset.name,
-				url: asset.browser_download_url,
-				platform: filenameToPlatform(asset.name),
+		const versions = [
+			{
+				file: `Overlayed_${latestVersion}_amd64.AppImage`,
+				platform: "linux",
+			},
+			{ file: `Overlayed_${latestVersion}_universal.dmg`, platform: "mac" },
+			{ file: `Overlayed_${latestVersion}_x64_en-US.msi`, platform: "windows" },
+		]
+			.map((item) => ({
+				name: `${item.file}`,
+				url: `${CDN_URL}/stable/v${latestVersion}/${item.file}`,
+				platform: item.platform,
 			}))
 			.filter((asset) => asset.name.match(/\.(dmg|msi|AppImage)$/));
 

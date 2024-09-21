@@ -32,10 +32,6 @@ export default (paths) => {
     ? createMockedProxy((pathname) => shouldFilterReq(paths, pathname))
     : createProxy((pathname) => shouldFilterReq(paths, pathname));
 
-  console.log(
-    "[🌐 Mocked Proxy] Enabled, will resolve /latest/stable to /stable-mock.json",
-  );
-
   return {
     name: "proxy",
     hooks: {
