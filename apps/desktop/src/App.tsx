@@ -14,18 +14,37 @@ import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 import { useSocket } from "./rpc/manager";
 import { cn } from "./utils/tw";
+import { listen } from "@tauri-apps/api/event";
+import { RPCCommand } from "./rpc/command";
 
 function App() {
   useDisableWebFeatures();
-  useSocket();
+  const socket = useSocket();
+  const { visible, me } = useAppStore();
 
   useEffect(() => {
     const styleForLog = "font-size: 20px; color: #00dffd";
     console.log(`%cOverlayed ${window.location.hash} Window`, styleForLog);
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      if (!me) return;
+      await listen("mute_toggle", async () => {
+        const voiceStatus = await socket?.getSelfVoiceStatus();
+        const newVoiceStatus = !voiceStatus.mute;
+        console.log("voiceStatus", { voiceStatus, newVoiceStatus, crr: voiceStatus.mute });
+        await socket?.send({
+          cmd: RPCCommand.SET_VOICE_SETTINGS,
+          args: {
+            mute: me.selfMuted,
+          },
+        });
+      });
+    })();
+  }, [me]);
+
   const { update } = useUpdate();
-  const { visible } = useAppStore();
 
   const { pin } = usePin();
   const { horizontal, setHorizontalDirection } = useAlign();

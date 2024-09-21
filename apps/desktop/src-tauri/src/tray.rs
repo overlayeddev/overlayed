@@ -1,9 +1,7 @@
 use std::sync::Mutex;
 
 use tauri::{
-  menu::{Menu, MenuBuilder, MenuEvent},
-  tray::TrayIconBuilder,
-  AppHandle, LogicalSize, Manager, Wry,
+  menu::{Menu, MenuBuilder, MenuEvent}, tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent}, AppHandle, Emitter, LogicalSize, Manager, Wry
 };
 
 use anyhow::Result;
@@ -40,6 +38,19 @@ impl Tray {
     let menu = Tray::create_tray_menu(app_handle)?;
     let _ = TrayIconBuilder::with_id(OVERLAYED)
       .menu(&menu)
+      .on_tray_icon_event(|tray, event| {
+        if let TrayIconEvent::Click {
+          button: MouseButton::Right,
+          button_state: MouseButtonState::Down,
+          ..
+        } = event
+        {
+          let window = tray.app_handle().get_webview_window(MAIN_WINDOW_NAME).unwrap();
+          println!("right click");
+
+          window.emit("mute_toggle", ());
+        }
+      })
       .on_menu_event(Self::handle_menu_events)
       .build(app_handle)?;
     app_handle.manage(TrayMenu(Mutex::new(menu)));

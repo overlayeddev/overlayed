@@ -93,6 +93,8 @@ class SocketManager {
   public version: string | undefined;
   // @ts-expect-error need better types
   public soundBoardItemsResolver = Promise.withResolvers();
+  // @ts-expect-error need better types
+  public selfVoiceStatusResolver = Promise.withResolvers();
 
   private navigate(url: string) {
     if (window.location.hash.includes("#settings")) return;
@@ -211,7 +213,7 @@ class SocketManager {
     const payload: DiscordPayload = JSON.parse(event.data);
 
     // TODO: we need a client side logger with levels too so that we can enable this
-    // console.log(payload);
+    console.log(payload);
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
@@ -261,8 +263,11 @@ class SocketManager {
     }
 
     if (payload.cmd === RPCCommand.GET_SOUNDBOARD_SOUNDS) {
-      // update the Promise
       this.soundBoardItemsResolver.resolve(payload.data);
+    }
+
+    if (payload.cmd === RPCCommand.GET_VOICE_SETTINGS) {
+      this.selfVoiceStatusResolver.resolve(payload.data);
     }
 
     // VOICE_CHANNEL_SELECT	sent when the client joins a voice channel
@@ -401,6 +406,15 @@ class SocketManager {
     });
 
     return this.soundBoardItemsResolver.promise;
+  }
+
+  /** Get the soundboard items */
+  public async getSelfVoiceStatus() {
+    await this.send({
+      cmd: RPCCommand.GET_VOICE_SETTINGS,
+    });
+
+    return this.selfVoiceStatusResolver.promise;
   }
 
   /**
