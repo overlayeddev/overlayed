@@ -115,7 +115,7 @@ async function uploadCanaryArtifacts({ github, context }) {
 
       const uploadBinsCommand = new PutObjectCommand({
         Bucket: R2_BUCKET,
-        Key: `canary/${file}`,
+        Key: `canary/${file}.zip`,
         Body: fileStream,
       });
 
