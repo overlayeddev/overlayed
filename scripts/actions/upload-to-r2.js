@@ -56,7 +56,13 @@ async function uploadStableArtifacts({ github, context }) {
     const stream = Readable.fromWeb(response.body)
 
     console.log(`[${tag}] Writing stable artifact ${artifact.name}`);
-    await fs.promises.writeFile(path.join(releaseBinDir, `${artifact.name}`), stream);
+    const filePath = path.join(releaseBinDir, artifact.name);
+    const fileStream = fs.createWriteStream(filePath);
+    await new Promise((resolve, reject) => {
+      stream.pipe(fileStream);
+      stream.on('end', resolve);
+      stream.on('error', reject);
+    });
   }
 
   try {
