@@ -68,7 +68,11 @@ async function uploadStableArtifacts({ github, context }) {
   try {
     // upload to r2
     console.log(`[${tag}] Starting upload to R2...`);
-    for (const file of fs.readdirSync(releaseBinDir)) {
+    const assetDirectory = await fs.promises.readdir(releaseBinDir);
+
+    console.log("files", assetDirectory);
+
+    for (const file of assetDirectory) {
       const assetFilePath = path.join(releaseBinDir, file);
       const fileStream = fs.createReadStream(assetFilePath);
 
