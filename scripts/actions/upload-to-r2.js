@@ -1,4 +1,5 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { Readable } from "node:stream"
 import fs from "fs";
 import path from "path";
 
@@ -51,11 +52,11 @@ async function uploadStableArtifacts({ github, context }) {
   // download all the artifacts from the build
   for (const artifact of artifacts) {
     console.log(`[${tag}] Downloading stable artifact ${artifact.name}`);
-    fetch(artifact.browser_download_url)
-      .then(res => res.arrayBuffer())
-      .then(data => {
-        fs.writeFileSync(path.join(releaseBinDir, `${artifact.name}`), Buffer.from(data));
-      });
+    const response = await fetch(artifact.browser_download_url)
+    const stream = Readable.fromWeb(response.body)
+
+    console.log(`[${tag}] Writing stable artifact ${artifact.name}`);
+    await fs.promises.writeFile(path.join(releaseBinDir, `${artifact.name}`), stream);
   }
 
   try {
