@@ -1,3 +1,4 @@
 src-tauri/target
+src-tauri/gen
 dist/
 .xwin-cache
