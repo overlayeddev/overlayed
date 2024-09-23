@@ -22,6 +22,8 @@ export default defineConfig({
   integrations,
   server: {
     host: "0.0.0.0",
+    // NOTE: using this port cause discord had it set for streamkit RPC Origin of http://localhost:3000
+    port: 3000,
   },
   adapter: vercel({
     webAnalytics: {

@@ -1,0 +1,81 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <main class="main-content prose prose-invert px-8 pt-28">
+    <div>
+      <h1>Overlayed Connection Test</h1>
+
+      <h3>Overlayed</h3>
+      <div id="overlayed">⌛ Connecting to Discord...</div>
+
+      <h3>Streamkit</h3>
+      <div id="streamkit">connecting...</div>
+
+      <pre id="socket-log"></pre>
+    </div>
+  </main>
+
+  <style>
+    /* TODO: move this to a shared layout?*/
+    .main-content {
+      margin: auto;
+      width: 800px;
+      max-width: calc(100% - 2rem);
+    }
+  </style>
+
+  <script>
+    const connnected = false;
+    const overlayedDiv = document.getElementById("overlayed");
+    const socketLog = document.getElementById("socket-log");
+    const streamkitDiv = document.getElementById("streamkit");
+
+    function connectToDiscord(url, domNode) {
+      const socket = new WebSocket(url);
+
+      const timeoutId = setTimeout(() => {
+        if (!connnected) {
+          domNode.innerHTML = "❌ Failed to connect to Discord";
+        }
+      }, 20_000);
+
+      socket.addEventListener("open", () => {
+        console.log("Connected to ws server");
+        domNode.innerHTML = "🌎 Connected to Discord";
+        clearTimeout(timeoutId);
+        connnected = true;
+      });
+
+      socket.addEventListener("message", (event) => {
+        const payload = JSON.parse(event.data);
+        console.log(payload);
+
+        socketLog.innerHTML = JSON.stringify(payload, null, 2);
+
+        if (payload.evt === "READY") {
+          domNode.innerHTML = "✅ Connected to Discord (READY)";
+        }
+      });
+
+      socket.addEventListener("close", (err) => {
+        console.log("close server", err);
+      });
+
+      socket.addEventListener("error", (err) => {
+        console.log("err", err);
+      });
+    }
+
+    connectToDiscord(
+      "ws://127.0.0.1:6463?v=1&encoding=json&client_id=905987126099836938",
+      overlayedDiv,
+    );
+
+    connectToDiscord(
+      "ws://127.0.0.1:6463?v=1&encoding=json&client_id=207646673902501888",
+      streamkitDiv,
+    );
+  </script>
+</Layout>
