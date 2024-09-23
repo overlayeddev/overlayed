@@ -3,7 +3,6 @@ use std::{
   sync::{atomic::AtomicBool, Mutex},
 };
 
-use cocoa::appkit::NSWindow;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 
 use crate::{constants::*, Pinned, TrayMenu};
@@ -88,12 +87,11 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   }
 
   #[cfg(target_os = "macos")]
-  window.with_webview(move |webview| {
+  window.with_webview(move |webview| unsafe {
     #[cfg(target_os = "macos")]
-    unsafe {
-      let id = webview.ns_window() as cocoa::base::id;
-      id.setIgnoresMouseEvents_(value);
-    }
+    use cocoa::appkit::NSWindow;
+    let id = webview.ns_window() as cocoa::base::id;
+    id.setIgnoresMouseEvents_(value);
   });
 
   window.set_ignore_cursor_events(value);
