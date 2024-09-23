@@ -27,12 +27,12 @@ import Layout from "../layouts/Layout.astro";
   </style>
 
   <script>
-    const connnected = false;
-    const overlayedDiv = document.getElementById("overlayed");
-    const socketLog = document.getElementById("socket-log");
-    const streamkitDiv = document.getElementById("streamkit");
+    let connnected = false;
+    const overlayedDiv = document.getElementById("overlayed")!;
+    const socketLog = document.getElementById("socket-log")!;
+    const streamkitDiv = document.getElementById("streamkit")!;
 
-    function connectToDiscord(url, domNode) {
+    function connectToDiscord(url: string, domNode: HTMLElement) {
       const socket = new WebSocket(url);
 
       const timeoutId = setTimeout(() => {
