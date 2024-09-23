@@ -10,8 +10,10 @@ import Layout from "../layouts/Layout.astro";
       <h3>Overlayed</h3>
       <div id="overlayed">⌛ Connecting to Discord...</div>
 
-      <h3>Streamkit</h3>
-      <div id="streamkit">connecting...</div>
+      <div id="streamkit-wrapper" class="hidden">
+        <h3>Streamkit</h3>
+        <div id="streamkit">connecting...</div>
+      </div>
 
       <pre id="socket-log"></pre>
     </div>
@@ -30,9 +32,14 @@ import Layout from "../layouts/Layout.astro";
     let connnected = false;
     const overlayedDiv = document.getElementById("overlayed")!;
     const socketLog = document.getElementById("socket-log")!;
+    const streamkitWrapperDiv = document.getElementById("streamkit-wrapper")!;
     const streamkitDiv = document.getElementById("streamkit")!;
 
-    function connectToDiscord(url: string, domNode: HTMLElement) {
+    function connectToDiscord(
+      label: string,
+      url: string,
+      domNode: HTMLElement,
+    ) {
       const socket = new WebSocket(url);
 
       const timeoutId = setTimeout(() => {
@@ -44,7 +51,6 @@ import Layout from "../layouts/Layout.astro";
       socket.addEventListener("open", () => {
         console.log("Connected to ws server");
         domNode.innerHTML = "🌎 Connected to Discord";
-        clearTimeout(timeoutId);
         connnected = true;
       });
 
@@ -52,10 +58,15 @@ import Layout from "../layouts/Layout.astro";
         const payload = JSON.parse(event.data);
         console.log(payload);
 
-        socketLog.innerHTML = JSON.stringify(payload, null, 2);
+        socketLog.innerHTML =
+          socketLog.innerHTML +
+          `[${label}]\n` +
+          JSON.stringify(payload, null, 2) +
+          "\n";
 
         if (payload.evt === "READY") {
-          domNode.innerHTML = "✅ Connected to Discord (READY)";
+          domNode.innerHTML = "✅ Received Discord READY Event";
+          clearTimeout(timeoutId);
         }
       });
 
@@ -69,13 +80,19 @@ import Layout from "../layouts/Layout.astro";
     }
 
     connectToDiscord(
+      "overlayed",
       "ws://127.0.0.1:6463?v=1&encoding=json&client_id=905987126099836938",
       overlayedDiv,
     );
 
-    connectToDiscord(
-      "ws://127.0.0.1:6463?v=1&encoding=json&client_id=207646673902501888",
-      streamkitDiv,
-    );
+    console.log("window.location.origin", window.location.origin);
+    if (window.location.origin === "http://localhost:3000") {
+      streamkitWrapperDiv.classList.remove("hidden");
+      connectToDiscord(
+        "streamkit",
+        "ws://127.0.0.1:6463?v=1&encoding=json&client_id=207646673902501888",
+        streamkitDiv,
+      );
+    }
   </script>
 </Layout>
