@@ -5,7 +5,6 @@
 #![allow(unused_must_use)]
 
 #[cfg(target_os = "macos")]
-#[macro_use]
 extern crate objc;
 
 mod app_handle;
@@ -163,7 +162,6 @@ fn main() {
       open_devtools,
       close_settings,
       open_settings,
-      zoom_window
     ]);
 
   app
