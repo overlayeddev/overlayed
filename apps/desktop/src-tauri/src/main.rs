@@ -91,6 +91,7 @@ fn main() {
     .level_for("tao", log::LevelFilter::Off);
 
   let mut app = tauri::Builder::default()
+    .plugin(tauri_plugin_notification::init())
     .plugin(tauri_plugin_updater::Builder::new().build())
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())

@@ -3,6 +3,7 @@ use std::{
   sync::{atomic::AtomicBool, Mutex},
 };
 
+use cocoa::appkit::NSWindow;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 
 use crate::{constants::*, Pinned, TrayMenu};
@@ -13,23 +14,23 @@ pub fn zoom_window(window: tauri::Window, scale_factor: f64) {
     .get_webview_window(MAIN_WINDOW_NAME)
     .expect("can't find the main window");
   let _ = window.with_webview(move |webview| {
-    #[cfg(target_os = "linux")]
-    {
-      // TODO: implement zoom for linux
-      // use webkit2gtk::auto::web_view::WebViewExt;
-      // webview.inner().set_zoom_level(scale_factor);
-    }
+    // #[cfg(target_os = "linux")]
+    // {
+    //   // TODO: implement zoom for linux
+    //   use webkit2gtk::auto::web_view::WebViewExt;
+    //   webview.inner().set_zoom_level(scale_factor);
+    // }
 
-    #[cfg(windows)]
-    unsafe {
-      // see https://docs.rs/webview2-com/0.19.1/webview2_com/Microsoft/Web/WebView2/Win32/struct.ICoreWebView2Controller.html
-      webview.controller().SetZoomFactor(scale_factor).unwrap();
-    }
-
-    #[cfg(target_os = "macos")]
-    unsafe {
-      let () = msg_send![webview.inner(), setPageZoom: scale_factor];
-    }
+    // #[cfg(windows)]
+    // unsafe {
+    //   // see https://docs.rs/webview2-com/0.19.1/webview2_com/Microsoft/Web/WebView2/Win32/struct.ICoreWebView2Controller.html
+    //   webview.controller().SetZoomFactor(scale_factor).unwrap();
+    // }
+    //
+    // #[cfg(target_os = "macos")]
+    // unsafe {
+    //   let () = msg_send![webview.inner(), setPageZoom: scale_factor];
+    // }
   });
 }
 
@@ -116,7 +117,8 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   window.with_webview(move |webview| {
     #[cfg(target_os = "macos")]
     unsafe {
-      let _: () = msg_send![webview.ns_window(), setIgnoresMouseEvents: value];
+      let id = webview.ns_window() as cocoa::base::id;
+      id.setIgnoresMouseEvents_(value);
     }
   });
 
