@@ -1,8 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import testOgImage from "../assets/pages/rpc-test.png";
 ---
 
-<Layout>
+<Layout
+  title="Overlayed Connection Test"
+  description="Test connecting to Discord's RPC Server using WebSockets"
+  ogImage={testOgImage.src}
+>
   <main class="main-content prose prose-invert px-8 pt-28">
     <div>
       <h1>Overlayed Connection Test</h1>
@@ -15,7 +20,7 @@ import Layout from "../layouts/Layout.astro";
         <div id="streamkit">connecting...</div>
       </div>
 
-      <pre id="socket-log"></pre>
+      <pre id="socket-log" class="hidden"></pre>
     </div>
   </main>
 
@@ -29,11 +34,12 @@ import Layout from "../layouts/Layout.astro";
   </style>
 
   <script>
-    let connnected = false;
+    const connectionMap: Record<string, boolean> = {};
     const overlayedDiv = document.getElementById("overlayed")!;
-    const socketLog = document.getElementById("socket-log")!;
     const streamkitWrapperDiv = document.getElementById("streamkit-wrapper")!;
     const streamkitDiv = document.getElementById("streamkit")!;
+
+    const MAX_TIMEOUT_MS = 5_000;
 
     function connectToDiscord(
       label: string,
@@ -43,39 +49,33 @@ import Layout from "../layouts/Layout.astro";
       const socket = new WebSocket(url);
 
       const timeoutId = setTimeout(() => {
-        if (!connnected) {
+        if (!connectionMap[label]) {
           domNode.innerHTML = "❌ Failed to connect to Discord";
         }
-      }, 20_000);
+      }, MAX_TIMEOUT_MS);
 
       socket.addEventListener("open", () => {
-        console.log("Connected to ws server");
+        console.log(`[${label}] Connected to ws server`);
         domNode.innerHTML = "🌎 Connected to Discord";
-        connnected = true;
       });
 
       socket.addEventListener("message", (event) => {
         const payload = JSON.parse(event.data);
-        console.log(payload);
-
-        socketLog.innerHTML =
-          socketLog.innerHTML +
-          `[${label}]\n` +
-          JSON.stringify(payload, null, 2) +
-          "\n";
+        console.log(`[${label}]`, payload);
 
         if (payload.evt === "READY") {
           domNode.innerHTML = "✅ Received Discord READY Event";
           clearTimeout(timeoutId);
+          connectionMap[label] = true;
         }
       });
 
       socket.addEventListener("close", (err) => {
-        console.log("close server", err);
+        console.log(`[${label}] close server`, err);
       });
 
       socket.addEventListener("error", (err) => {
-        console.log("err", err);
+        console.log(`[${label}] err`, err);
       });
     }
 
