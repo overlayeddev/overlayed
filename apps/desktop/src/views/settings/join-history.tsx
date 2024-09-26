@@ -7,7 +7,7 @@ import { listen } from "@tauri-apps/api/event";
 import type { UnlistenFn } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
-import { requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
+import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 import { Checkbox } from "@/components/ui/checkbox";
 import Config from "@/config";
 import type { JoinHistoryLogUser } from "@/types";
@@ -29,7 +29,12 @@ export const JoinHistory = () => {
     if (notificationListener.current) return;
 
     // TODO: handle this better, maybe at the app level?
-    requestPermission();
+    if (!isPermissionGranted()) {
+      console.log("Requesting notification permission 👌");
+      requestPermission();
+    } else {
+      console.log("Notification permission already granted!");
+    }
 
     notificationListener.current = listen(Event.UserLogUpdate, event => {
       const payload = event.payload as JoinHistoryLogUser;

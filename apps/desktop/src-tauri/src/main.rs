@@ -5,7 +5,6 @@
 #![allow(unused_must_use)]
 
 #[cfg(target_os = "macos")]
-#[macro_use]
 extern crate objc;
 
 mod app_handle;
@@ -91,6 +90,7 @@ fn main() {
     .level_for("tao", log::LevelFilter::Off);
 
   let mut app = tauri::Builder::default()
+    .plugin(tauri_plugin_notification::init())
     .plugin(tauri_plugin_updater::Builder::new().build())
     .plugin(window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
@@ -162,7 +162,6 @@ fn main() {
       open_devtools,
       close_settings,
       open_settings,
-      zoom_window
     ]);
 
   app
