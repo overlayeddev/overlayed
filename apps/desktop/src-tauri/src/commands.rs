@@ -91,7 +91,16 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
     #[cfg(target_os = "macos")]
     use cocoa::appkit::NSWindow;
     let id = webview.ns_window() as cocoa::base::id;
+
+    #[cfg(target_arch = "aarch64")]
     id.setIgnoresMouseEvents_(value);
+
+    // convert bool into number
+    #[cfg(target_arch = "x86_64")]
+    {
+      let value = if value { 1 } else { 0 };
+      id.setHasShadow_(value);
+    }
   });
 
   window.set_ignore_cursor_events(value);
