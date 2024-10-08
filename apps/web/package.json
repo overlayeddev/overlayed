@@ -28,12 +28,15 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.7.0",
+    "@astrojs/markdown-remark": "^5.2.0",
     "@astrojs/react": "^3.5.0",
     "@tailwindcss/typography": "^0.5.13",
+    "@types/hast": "^3.0.4",
     "@types/node": "^20.14.2",
     "@types/react": "^18.2.64",
     "cross-env": "^7.0.3",
     "eslint-plugin-astro": "^1.2.2",
+    "hast": "^1.0.0",
     "http-proxy-middleware": "^2.0.6",
     "lint": "workspace:*",
     "prettier": "^3.2.5",
@@ -44,6 +47,7 @@
     "sharp": "^0.33.2",
     "tsconfig": "workspace:*",
     "types": "workspace:*",
+    "unist-util-visit": "^5.0.0",
     "utils": "workspace:*",
     "vite": "^5.1.5"
   }
