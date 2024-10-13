@@ -154,8 +154,6 @@ export const fetchAuthToken = (
 	form.append("redirect_uri", `${baseUrl}/oauth/callback`);
 	form.append("code", code);
 
-	console.log("formdata:", form.toString());
-
 	return fetch("https://discord.com/api/oauth2/token", {
 		method: "POST",
 		body: form.toString(),
