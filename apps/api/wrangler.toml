@@ -3,6 +3,9 @@ main = "src/index.ts"
 compatibility_date = "2023-11-21"
 workers_dev = true
 
+[observability]
+enabled = true
+
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "overlayed-artifacts"
