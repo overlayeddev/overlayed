@@ -3,7 +3,6 @@ import { getLatestVersions, getPlatformDownloads, getStars } from "../utils.js";
 import { Bindings } from "../types.js";
 
 const app = new Hono<{ Bindings: Bindings }>();
-// TODO: either use a github client or make a wrapper to simplify the rest call
 
 app.get("/stars", async (c) => {
 	const response = await getStars({
