@@ -83,7 +83,7 @@ app.get("/:target/:arch/:currentVersion", async (c) => {
 		});
 
 		if (currentVersion === latestVersion?.version) {
-			return c.json({}, 204);
+			return c.body(null, 204);
 		}
 
 		return c.json(latestVersion);
