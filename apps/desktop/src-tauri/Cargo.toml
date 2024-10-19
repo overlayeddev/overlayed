@@ -36,6 +36,7 @@ tauri-plugin-os = "2.0.0-rc.1"
 tauri-plugin-http = "2.0.0-rc.4"
 tauri-plugin-log = "2.0.0-rc.2"
 tauri-plugin-notification = "2.0.0-rc.5"
+tauri-plugin-store = "2.0.0-rc"
 anyhow = "1.0.86"
 log = "0.4.22"
 
