@@ -9,10 +9,9 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
-  canonicalPath?: string;
 }
 
-const { title, description, canonicalPath, ogImage } = Astro.props;
+const { title, description, ogImage } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,7 +20,6 @@ const { title, description, canonicalPath, ogImage } = Astro.props;
     title={title ?? SITE_TITLE}
     description={description ?? SITE_DESCRIPTION}
     image={ogImage}
-    canonicalPath={canonicalPath}
   />
 
   <body>
