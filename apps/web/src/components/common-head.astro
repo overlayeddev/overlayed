@@ -8,16 +8,8 @@ export interface Props {
   image?: string;
 }
 
-const defaultCanonicalUrl = removeTrailingSlash(
-  new URL(Astro.url.pathname, Astro.site).toString(),
-);
-
 // Image has website default
 const { title, description, image = SITE_IMAGE } = Astro.props;
-
-function removeTrailingSlash(str: string) {
-  return str.replace(/\/+$/, "");
-}
 
 const ogCacheKey = "v3";
 const ogImage = new URL(`${image}?c=${ogCacheKey}`, Astro.url);
