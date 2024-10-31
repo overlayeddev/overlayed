@@ -16,7 +16,7 @@ const config = tseslint.config(
       sourceType: "module",
       globals: {
         ...globals.browser,
-        process: true
+        ...globals.node
       },
     },
     rules: {
