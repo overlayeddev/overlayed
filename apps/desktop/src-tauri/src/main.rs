@@ -179,7 +179,12 @@ fn main() {
           win.hide().unwrap();
         }
 
-        api.prevent_close();
+        if label == MAIN_WINDOW_NAME {
+          app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+          std::process::exit(0);
+        } else {
+          api.prevent_close();
+        }
       }
     });
 
