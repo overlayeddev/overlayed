@@ -27,9 +27,6 @@ use tray::Tray;
 use window_custom::WebviewWindowExt;
 
 #[cfg(target_os = "macos")]
-use app_handle::AppHandleExt;
-
-#[cfg(target_os = "macos")]
 use window_custom::macos::WebviewWindowExtMacos;
 
 #[cfg(target_os = "macos")]
