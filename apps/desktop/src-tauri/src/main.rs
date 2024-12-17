@@ -22,7 +22,7 @@ use std::{
 };
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_log::{Target, TargetKind};
-use tauri_plugin_window_state::StateFlags;
+use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 use tray::Tray;
 use window_custom::WebviewWindowExt;
 
