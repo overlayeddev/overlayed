@@ -1,0 +1,15 @@
+name: Publish release to WinGet
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: vedantmgoyal9/winget-releaser@a3ac67b0c3026bc335a33b722188e3ec769d6a64
+        with:
+          identifier: OverlayedDev.Overlayed
+          version: ${{ github.event.release.tag_name }}
+          token: ${{ secrets.WINGET_TOKEN }}
