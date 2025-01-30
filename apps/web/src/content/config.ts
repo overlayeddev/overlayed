@@ -13,9 +13,7 @@ const blog = defineCollection({
       title: z.string(),
       customSlug: z.string(),
       pubDate: z.string(),
-      ogImage: image().refine((img) => img.width >= 1200, {
-        message: "OG image must be at least 1080 pixels wide!",
-      }),
+      ogImage: image(),
       description: z.string(),
       draft: z.boolean().optional(),
     }),
