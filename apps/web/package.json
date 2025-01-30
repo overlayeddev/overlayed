@@ -49,7 +49,6 @@
     "types": "workspace:*",
     "typescript": "~5.1.6",
     "unist-util-visit": "^5.0.0",
-    "utils": "workspace:*",
-    "vite": "^5.4.14"
+    "utils": "workspace:*"
   }
 }
