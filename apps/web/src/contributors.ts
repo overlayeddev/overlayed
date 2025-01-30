@@ -21,7 +21,7 @@ export const contributors = [
         "type": "User",
         "user_view_type": "public",
         "site_admin": false,
-        "contributions": 984
+        "contributions": 986
     },
     {
         "login": "Pyr33x",
