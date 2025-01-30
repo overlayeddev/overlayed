@@ -4,7 +4,6 @@ const { MOCKED } = process.env;
 const shouldFilterReq = (paths, pathname) => paths.includes(pathname);
 const isMockedMode = Boolean(MOCKED);
 
-console.log(`[🌐 Proxy] Running in ${isMockedMode ? "mocked" : "proxy"} mode`);
 /**
  * @param {string} filter
  */
@@ -23,7 +22,8 @@ const createMockedProxy = (filter) =>
   });
 
 const createProxy = (filter) =>
-  createProxyMiddleware(filter, {
+  createProxyMiddleware({
+    pathFilter: filter,
     target: "http://127.0.0.1:8787",
     changeOrigin: true,
   });
