@@ -4,38 +4,20 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import type { RehypePlugin } from "@astrojs/markdown-remark";
-import { visit } from "unist-util-visit";
-import type { Element } from "hast";
 
-import proxyMiddleware from "./plugins/proxy-middleware.mjs";
+import proxyMiddleware from "./plugins/proxy-middleware.js";
+import { targetBlank } from "./plugins/target-blank.js";
 
 const integrations = [sitemap(), react(), tailwind(), mdx()];
 
 if (process.env.NODE_ENV !== "production") {
   integrations.push(
+    // NOTE: this will proxy requests to the local wrapped server
+    // and it can be ran with pnpm start:mocked to use the mocks
+    // folder so you don't have to run the server locally
     proxyMiddleware(["/stars", "/latest/canary", "/latest/stable"]),
   );
 }
-
-// TODO: figure out the type error
-// code from: https://dan.salvagni.io/b/astro-plugin-open-external-links-in-new-tab/
-export const targetBlank: RehypePlugin = ({
-  domain = "overlayed.dev",
-} = {}) => {
-  return (tree) => {
-    visit(tree, "element", (e: Element) => {
-      if (
-        e.tagName === "a" &&
-        e.properties?.href &&
-        e.properties.href.toString().startsWith("http") &&
-        !e.properties.href.toString().includes(domain)
-      ) {
-        e.properties!["target"] = "_blank";
-      }
-    });
-  };
-};
 
 // https://astro.build/config
 export default defineConfig({
@@ -53,8 +35,6 @@ export default defineConfig({
     },
   }),
   markdown: {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     rehypePlugins: [targetBlank],
   },
 });

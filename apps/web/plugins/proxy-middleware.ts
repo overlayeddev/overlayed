@@ -1,15 +1,13 @@
 import { createProxyMiddleware } from "http-proxy-middleware";
+import type { AstroIntegration } from "astro";
 
 const { MOCKED } = process.env;
-const shouldFilterReq = (paths, pathname) => paths.includes(pathname);
 const isMockedMode = Boolean(MOCKED);
 
-/**
- * @param {string} filter
- */
-const createMockedProxy = (filter) =>
+const createMockedProxy = (filter: string[]) =>
   createProxyMiddleware({
     pathFilter: filter,
+    // TODO: use PORT var from the vite config
     target: "http://127.0.0.1:3000",
     changeOrigin: true,
     pathRewrite: (path) => {
@@ -21,20 +19,15 @@ const createMockedProxy = (filter) =>
     },
   });
 
-const createProxy = (filter) =>
+const createProxy = (filter: string[]) =>
   createProxyMiddleware({
     pathFilter: filter,
     target: "http://127.0.0.1:8787",
     changeOrigin: true,
   });
 
-/**
- * @param {string[]} paths
- */
-export default (paths) => {
-  const apiProxy = isMockedMode
-    ? createMockedProxy((pathname) => shouldFilterReq(paths, pathname))
-    : createProxy((pathname) => shouldFilterReq(paths, pathname));
+export default (paths: string[]) => {
+  const apiProxy = isMockedMode ? createMockedProxy(paths) : createProxy(paths);
 
   return {
     name: "proxy",
@@ -43,5 +36,5 @@ export default (paths) => {
         server.middlewares.use(apiProxy);
       },
     },
-  };
+  } as AstroIntegration;
 };
