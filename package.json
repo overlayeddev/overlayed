@@ -22,7 +22,7 @@
     "dotenv": "^16.4.7",
     "eslint": "^9.19.0",
     "lint": "workspace:*",
-    "octokit": "^3.1.2",
+    "octokit": "^4.1.0",
     "prettier": "^3.4.2",
     "tsconfig": "workspace:*",
     "tsx": "^4.19.2",
