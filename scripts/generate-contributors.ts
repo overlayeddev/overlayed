@@ -30,10 +30,10 @@ async function start() {
   const contributors = await getOcto();
 
   const text = [
-    `// prettier-ignore`,
-    `// eslint-disable`,
+    "// prettier-ignore",
+    "// eslint-disable",
     `export const contributors = ${JSON.stringify(contributors, null, 4)}`,
-    ``,
+    "",
   ].join("\n");
 
   const dir = path.join(__dirname, "../apps/web/src");
