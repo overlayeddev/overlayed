@@ -22,12 +22,12 @@ use std::{
 };
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_log::{Target, TargetKind};
-use tauri_plugin_window_state::StateFlags;
+use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 use tray::Tray;
 use window_custom::WebviewWindowExt;
 
 #[cfg(target_os = "macos")]
-use app_handle::AppHandleExt;
+use app_handle::AppHandleExt as MacAppHandleExt;
 
 #[cfg(target_os = "macos")]
 use window_custom::macos::WebviewWindowExtMacos;
@@ -179,7 +179,12 @@ fn main() {
           win.hide().unwrap();
         }
 
-        api.prevent_close();
+        if label == MAIN_WINDOW_NAME {
+          app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+          std::process::exit(0);
+        } else {
+          api.prevent_close();
+        }
       }
     });
 
