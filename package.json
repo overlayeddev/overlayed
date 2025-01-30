@@ -27,7 +27,7 @@
     "tsconfig": "workspace:*",
     "tsx": "^4.19.2",
     "turbo": "^2.3.4",
-    "typescript": "~5.1.6"
+    "typescript": "~5.7.3"
   },
   "packageManager": "pnpm@9.1.1"
 }

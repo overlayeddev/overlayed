@@ -1,3 +1,3 @@
-export { Windows as WindowsIcon } from "./windows";
-export { Linux as LinuxIcon } from "./linux";
-export { Mac as MacIcon } from "./mac";
+export { Windows as WindowsIcon } from "./windows.js";
+export { Linux as LinuxIcon } from "./linux.js";
+export { Mac as MacIcon } from "./mac.js";

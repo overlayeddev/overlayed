@@ -3,9 +3,14 @@ import Layout from "../layouts/Layout.astro";
 
 import canaryOgImage from "../assets/blog/canary.png";
 import { Download } from "../components/react/download";
+import type { JSX } from "astro/jsx-runtime";
+
+interface Frontmatter {
+  Content: JSX.Element;
+}
 
 const [canary] = Object.values(
-  import.meta.glob("../content/canary/index.mdx", { eager: true }),
+  import.meta.glob<Frontmatter>("../content/canary/index.mdx", { eager: true }),
 );
 ---
 

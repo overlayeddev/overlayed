@@ -1,9 +1,11 @@
 ---
+import type { JSX } from "astro/jsx-runtime";
 import Layout from "../layouts/Layout.astro";
 
 interface Frontmatter {
   title: string;
   description?: string;
+  Content: JSX.Element;
 }
 
 const [about] = Object.values(
@@ -11,10 +13,7 @@ const [about] = Object.values(
 );
 ---
 
-<Layout
-  title={`Overlayed - ${about.frontmatter.title}`}
-  description={about.frontmatter.description}
->
+<Layout title={`Overlayed - ${about.title}`} description={about.description}>
   <main class="px-4 prose prose-invert mx-auto">
     <div class="pt-2 pb-20"></div>
     <about.Content />
