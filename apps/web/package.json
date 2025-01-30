@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "@astrojs/markdown-remark": "^6.0.2",
+    "@astrojs/markdown-remark": "^6.1.0",
     "@astrojs/react": "^4.2.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/hast": "^3.0.4",
