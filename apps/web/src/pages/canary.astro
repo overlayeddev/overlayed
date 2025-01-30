@@ -4,7 +4,9 @@ import Layout from "../layouts/Layout.astro";
 import canaryOgImage from "../assets/blog/canary.png";
 import { Download } from "../components/react/download";
 
-const [canary] = await Astro.glob("../content/canary/index.mdx");
+const [canary] = Object.values(
+  import.meta.glob("../content/canary/index.mdx", { eager: true }),
+);
 ---
 
 <style>
