@@ -6,7 +6,9 @@ interface Frontmatter {
   description?: string;
 }
 
-const [about] = await Astro.glob<Frontmatter>("../content/about/index.mdx");
+const [about] = Object.values(
+  import.meta.glob<Frontmatter>("../content/about/index.mdx", { eager: true }),
+);
 ---
 
 <Layout
