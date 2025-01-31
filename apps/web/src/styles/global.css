@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 /* Define custom colors */
-:root {
+@theme {
   --color-primary: #5865F2;
   --color-zinc-800: #27272A;
   /* Adjust as per your design */
