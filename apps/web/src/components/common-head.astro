@@ -1,5 +1,4 @@
 ---
-import { AstroFont } from "astro-font";
 import { SITE_IMAGE } from "../constants";
 
 export interface Props {
@@ -64,34 +63,4 @@ const ogImage = new URL(`${image}?c=${ogCacheKey}`, Astro.url);
   <meta property="twitter:title" content={title} />
   <meta property="twitter:description" content={description} />
   <meta property="twitter:image" content={ogImage} />
-
-  <AstroFont
-    config={[
-      {
-        name: "roboto",
-        src: [
-          {
-            style: "normal",
-            weight: "400",
-            path: "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
-          },
-          {
-            style: "normal",
-            weight: "500",
-            path: "https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmEU9fBBc4AMP6lQ.woff2",
-          },
-          {
-            preload: true,
-            style: "normal",
-            weight: "700",
-            path: "https://fonts.gstatic.com/s/roboto/v30/KFOlCnqEu92Fr1MmWUlfBBc4AMP6lQ.woff2",
-          },
-        ],
-        preload: false,
-        display: "swap",
-        selector: "html",
-        fallback: "sans-serif",
-      },
-    ]}
-  />
 </head>

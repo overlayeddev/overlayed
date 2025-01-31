@@ -16,15 +16,15 @@
   "dependencies": {
     "@astrojs/mdx": "^4.0.7",
     "@astrojs/sitemap": "^3.2.1",
-    "@astrojs/tailwind": "^5.1.5",
+    "@astrojs/tailwind": "^6.0.0",
     "@astrojs/vercel": "^8.0.4",
+    "@tailwindcss/vite": "^4.0.1",
     "@vercel/analytics": "^1.4.1",
     "astro": "^5.1.10",
-    "astro-font": "^0.0.77",
     "clsx": "^2.1.0",
     "date-fns": "^2.30.0",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^4.0.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

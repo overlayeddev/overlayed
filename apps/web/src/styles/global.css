@@ -1,0 +1,52 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Define custom colors */
+:root {
+  --color-primary: #5865F2;
+  --color-zinc-800: #27272A;
+  /* Adjust as per your design */
+  --color-zinc-700: #3F3F46;
+  /* Adjust as per your design */
+}
+
+@font-face {
+  font-family: 'DM Sans', sans-serif;
+  font-style: normal;
+  font-weight: 400 500 700;
+  src: url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap') format('woff2');
+}
+
+/* Typography styles */
+.prose {
+  max-width: 100ch;
+}
+
+.prose code {
+  background-color: var(--color-zinc-800);
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-zinc-700);
+  padding: 4px 6px;
+}
+
+/* Code pseudo-elements */
+.prose code::before,
+.prose code::after {
+  content: "";
+}
+
+/* Keyframes for background shine animation */
+@keyframes background-shine {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Animation class */
+.background-shine {
+  animation: background-shine 2s linear infinite;
+}
