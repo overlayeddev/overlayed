@@ -8,6 +8,7 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
 
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
   const { value: showOwnUser } = useConfigValue("showOwnUser");
+  const { value: opacity } = useConfigValue("opacity");
 
   const allUsers = Object.entries(users);
   let userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking) : allUsers;
@@ -23,7 +24,7 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
     <div>
       <div className={`py-2 ${alignDirection === "center" ? "flex flex-wrap justify-center" : ""}`}>
         {userList.map(([, item]) => (
-          <User key={item.id} item={item} alignDirection={alignDirection} />
+          <User key={item.id} item={item} alignDirection={alignDirection} opacity={opacity} />
         ))}
       </div>
     </div>

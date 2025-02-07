@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
 import { useConfigValue } from "@/hooks/use-config-value";
 import * as shell from "@tauri-apps/plugin-shell";
+import { Input } from "@/components/ui/input";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
@@ -69,6 +70,7 @@ const canaryVersionToCommit = (version: string) => {
 export const AppInfo = () => {
   const platformInfo = usePlatformInfo();
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
+  const { value: opacity } = useConfigValue("opacity");
 
   const urlForVersion = platformInfo.canary
     ? `https://github.com/overlayeddev/overlayed/commit/${canaryVersionToCommit(platformInfo.appVersion)}`
@@ -92,6 +94,28 @@ export const AppInfo = () => {
           className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Only show users who are speaking
+        </label>
+      </div>
+      <div className="flex items-center pb-2">
+        <Input
+          id="opacity"
+          type="number"
+          min={1}
+          max={100}
+          value={opacity}
+          onChange={async event => {
+            const newOpacity = event.target.value;
+            await Config.set("opacity", Number(newOpacity));
+
+            await emit("config_update", await Config.getConfig());
+          }}
+          className="w-20"
+        />
+        <label
+          htmlFor="opacity"
+          className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Overlay opacity
         </label>
       </div>
       <div className="flex items-center gap-2 pb-4 text-zinc-400">
