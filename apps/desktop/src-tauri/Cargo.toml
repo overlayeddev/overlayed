@@ -10,10 +10,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.0.0-rc.10", features = [] }
+tauri-build = { version = "2.0.5", features = [] }
 
 [dependencies]
-tauri = { version = "2.0.0-rc.10", features = [
+tauri = { version = "2.2.5", features = [
   "macos-private-api",
   "devtools", "image-png", "image-ico", "tray-icon",
 ] }
@@ -22,20 +22,20 @@ serde_json = "1.0"
 tokio = { version = "1.38.0", features = [
   "full",
 ] } # Required for asynchronous operations
-tauri-plugin-websocket = { version = "2.0.0-rc.1" }
 
 # NOTE: we are using a forked version because of this issue
 # https://github.com/tauri-apps/plugins-workspace/issues/1546
 tauri-plugin-window-state = { git = "https://github.com/Hacksore/plugins-workspace", branch = "v2" }
 
 tauri-plugin-single-instance = { version = "2.0.0-rc.3" }
-tauri-plugin-fs = "2.0.0-rc.3"
-tauri-plugin-process = "2.0.0-rc.1"
-tauri-plugin-shell = "2.0.0-rc.3"
-tauri-plugin-os = "2.0.0-rc.1"
-tauri-plugin-http = "2.0.0-rc.4"
-tauri-plugin-log = "2.0.0-rc.2"
-tauri-plugin-notification = "2.0.0-rc.5"
+tauri-plugin-websocket = { version = "2.2.0" }
+tauri-plugin-fs = "2.2.0"
+tauri-plugin-process = "2.2.0"
+tauri-plugin-shell = "2.2.0"
+tauri-plugin-os = "2.2.0"
+tauri-plugin-http = "2.2.0"
+tauri-plugin-log = "2.2.0"
+tauri-plugin-notification = "2.2.0"
 anyhow = "1.0.86"
 log = "0.4.22"
 
