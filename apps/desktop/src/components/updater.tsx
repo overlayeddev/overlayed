@@ -31,7 +31,7 @@ export const Updater = ({ update }: { update: Update }) => {
   if (isUpdating) {
     return (
       <div className="py-2 h-[48px] bg-green-600">
-        <div className="!text-white text-xl font-bold cursor-pointer flex gap-2 items-center justify-center">
+        <div className="text-white! text-xl font-bold cursor-pointer flex gap-2 items-center justify-center">
           <p>Updating...</p>
         </div>
       </div>
