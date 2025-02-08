@@ -161,38 +161,38 @@ importers:
         specifier: 0.0.1-beta.204
         version: 0.0.1-beta.204(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tauri-apps/api':
-        specifier: 2.0.0-rc.4
-        version: 2.0.0-rc.4
+        specifier: 2.2.0
+        version: 2.2.0
       '@tauri-apps/plugin-fs':
-        specifier: 2.0.0-rc.2
-        version: 2.0.0-rc.2
+        specifier: 2.2.0
+        version: 2.2.0
       '@tauri-apps/plugin-global-shortcut':
-        specifier: 2.0.0-rc.0
-        version: 2.0.0-rc.0
+        specifier: 2.2.0
+        version: 2.2.0
       '@tauri-apps/plugin-http':
-        specifier: 2.0.0-rc.2
-        version: 2.0.0-rc.2
+        specifier: 2.3.0
+        version: 2.3.0
       '@tauri-apps/plugin-notification':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.2.1
+        version: 2.2.1
       '@tauri-apps/plugin-os':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.2.0
+        version: 2.2.0
       '@tauri-apps/plugin-process':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.2.0
+        version: 2.2.0
       '@tauri-apps/plugin-shell':
-        specifier: 2.0.0-rc.1
-        version: 2.0.0-rc.1
+        specifier: 2.2.0
+        version: 2.2.0
       '@tauri-apps/plugin-updater':
-        specifier: 2.0.0-rc.2
-        version: 2.0.0-rc.2
+        specifier: 2.5.0
+        version: 2.5.0
       '@tauri-apps/plugin-websocket':
-        specifier: 2.0.0-rc.0
-        version: 2.0.0-rc.0
+        specifier: 2.3.0
+        version: 2.3.0
       '@tauri-apps/plugin-window-state':
-        specifier: 2.0.0-rc.0
-        version: 2.0.0-rc.0
+        specifier: 2.2.1
+        version: 2.2.1
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -3227,11 +3227,8 @@ packages:
     resolution: {integrity: sha512-Hq5mwC9oPD1HVRIsgxASYtJQAv5x7k42SMXBq2b/fMYrtMf7WMkOArOMs/ExoNED214Ql94Ft4zVWr0u2D6a6w==}
     engines: {node: '>=12'}
 
-  '@tauri-apps/api@2.0.0-rc.1':
-    resolution: {integrity: sha512-qubAWjM9sqofUh7fe+7UAbBY3wlkfCyxm+PNRYpq9mnNng7lvSQq3sYsFUEB12AYvgGARZSb54VMVUvRuVLi7w==}
-
-  '@tauri-apps/api@2.0.0-rc.4':
-    resolution: {integrity: sha512-UNiIhhKG08j4ooss2oEEVexffmWkgkYlC2M3GcX3VPtNsqFgVNL8Mcw/4Y7rO9M9S+ffAMnLOF5ypzyuyb8tyg==}
+  '@tauri-apps/api@2.2.0':
+    resolution: {integrity: sha512-R8epOeZl1eJEl603aUMIGb4RXlhPjpgxbGVEaqY+0G5JG9vzV/clNlzTeqc+NLYXVqXcn8mb4c5b9pJIUDEyAg==}
 
   '@tauri-apps/cli-darwin-arm64@2.0.0-rc.4':
     resolution: {integrity: sha512-CSkGon9QAGymYhDng3GTiBuyrWAkqdGimL+3hzfAA4c0yMV87Y68IZ7mwzzbmRjweImvrhuNgw4ME94d1wnGPQ==}
@@ -3298,35 +3295,35 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
-  '@tauri-apps/plugin-fs@2.0.0-rc.2':
-    resolution: {integrity: sha512-TFjCfso3tN4b5s2EBjqP8N2gYrPh93Ds3VNKj8pCXv4wbvnItyfG0aHO0haUsedBOHQryDwv9vDAdPX6/T0a+g==}
+  '@tauri-apps/plugin-fs@2.2.0':
+    resolution: {integrity: sha512-+08mApuONKI8/sCNEZ6AR8vf5vI9DXD4YfrQ9NQmhRxYKMLVhRW164vdW5BSLmMpuevftpQ2FVoL9EFkfG9Z+g==}
 
-  '@tauri-apps/plugin-global-shortcut@2.0.0-rc.0':
-    resolution: {integrity: sha512-rcefV4AG+vnbTtGc07hDn4Uj8u//NpuqHVg1CShACyiCS0q2sZrDVC3qPN3RGhzQyeIOPq4bY1kQRHODffKXZA==}
+  '@tauri-apps/plugin-global-shortcut@2.2.0':
+    resolution: {integrity: sha512-clI9Bg/BcxWXNDK+ij601o1qC2WxMEy8ovhGgEW5Ai17oPy0KK8uwzmc59KiVnOYKpBWHCUPqBxG+KBNUFXgzw==}
 
-  '@tauri-apps/plugin-http@2.0.0-rc.2':
-    resolution: {integrity: sha512-s/AbbMaQPgqnIOoObvWNAjJOV17gyf9G+U6gmvjLoFbt7D6jsujOUW6fn+Oe/+rzNSEeo1ZSVrUoMen5DgM+OA==}
+  '@tauri-apps/plugin-http@2.3.0':
+    resolution: {integrity: sha512-pigTvz+zzAqbIhCzRiR1GE98Jw7A03j2V+Eiexr9thBI8VfMiwFQMcbgON51xlwnVaI72LdbYKNajU84im8tlg==}
 
-  '@tauri-apps/plugin-notification@2.0.0-rc.1':
-    resolution: {integrity: sha512-ddDj7xM8XR7Zv2vdpofNXlLjcp49p/VjlL0D+/eBcMuyooaLNMor3jz/+H6s23iHerdxMWA50mzy26BRN1BySA==}
+  '@tauri-apps/plugin-notification@2.2.1':
+    resolution: {integrity: sha512-QF8Zod6XDhxD6xkD5nU/BjbOpJ6+3gxGCrVULOdLpvMuMSN2Z2IdObV/qgnrEJk1UamUCF1ClQUqNCbk4zTJNQ==}
 
-  '@tauri-apps/plugin-os@2.0.0-rc.1':
-    resolution: {integrity: sha512-PV8zlSTmYfiN2xzILUmlDSEycS7UYbH2yXk/ZqF+qQU6/s+OVQvmSth4EhllFjcpvPbtqELvpzfjw+2qEouchA==}
+  '@tauri-apps/plugin-os@2.2.0':
+    resolution: {integrity: sha512-HszbCdbisMlu5QhCNAN8YIWyz2v33abAWha6+uvV2CKX8P5VSct/y+kEe22JeyqrxCnWlQ3DRx7s49Byg7/0EA==}
 
-  '@tauri-apps/plugin-process@2.0.0-rc.1':
-    resolution: {integrity: sha512-Bl22xdoiu+AqEP6rzjb7DUJwdLDnejuRFukpkdrqF1/VEWJK5PuE903l+8mIOsd17zZ1Ua8y8WaBWnOXx4QHmw==}
+  '@tauri-apps/plugin-process@2.2.0':
+    resolution: {integrity: sha512-uypN2Crmyop9z+KRJr3zl71OyVFgTuvHFjsJ0UxxQ/J5212jVa5w4nPEYjIewcn8bUEXacRebwE6F7owgrbhSw==}
 
-  '@tauri-apps/plugin-shell@2.0.0-rc.1':
-    resolution: {integrity: sha512-JtNROc0rqEwN/g93ig5pK4cl1vUo2yn+osCpY9de64cy/d9hRzof7AuYOgvt/Xcd5VPQmlgo2AGvUh5sQRSR1A==}
+  '@tauri-apps/plugin-shell@2.2.0':
+    resolution: {integrity: sha512-iC3Ic1hLmasoboG7BO+7p+AriSoqAwKrIk+Hpk+S/bjTQdXqbl2GbdclghI4gM32X0bls7xHzIFqhRdrlvJeaA==}
 
-  '@tauri-apps/plugin-updater@2.0.0-rc.2':
-    resolution: {integrity: sha512-Ngvpa/km/00KASvOsFqRQbVf/6BaAX/gYwQs9eFxjygDpxxlZkZDVP1Fg0urW8s5dY7ELD6UAFB/ZI/g8D0QvQ==}
+  '@tauri-apps/plugin-updater@2.5.0':
+    resolution: {integrity: sha512-CWpwrkgpMESDPgJ0EuXgQTI/U9zeZQ9NLUvMyuWVrsuRez7tJ/3c7y73LAkvkI6+ekUxVaRJrxYrSfd8W+DRvQ==}
 
-  '@tauri-apps/plugin-websocket@2.0.0-rc.0':
-    resolution: {integrity: sha512-qBpDEi1kkTeFDrSpGDmgPpNlZ4j0LgZpivHcQTKkKF356Jx15FROEnjOOd5b+JOrZ4SfTOBGxYCZck7bUOPV4g==}
+  '@tauri-apps/plugin-websocket@2.3.0':
+    resolution: {integrity: sha512-eAwRGe3tnqDeQYE0wq4g1PUKbam9tYvlC4uP/au12Y/z7MP4lrS4ylv+aoZ5Ly+hTlBdi7hDkhHomwF/UeBesA==}
 
-  '@tauri-apps/plugin-window-state@2.0.0-rc.0':
-    resolution: {integrity: sha512-lR8reD+D1yIHT+53v56WltLS0+Y2zIkKqTuwrvz1yNbY5Hk4Z6foFV2Byo4kJAAvi5vbeGtvxYAjSiczZK5euw==}
+  '@tauri-apps/plugin-window-state@2.2.1':
+    resolution: {integrity: sha512-L7FhG/ocQNt8t+TMBkvl8eLhCU6I19t848unKMUgNHuvwHPaurzZr4knulNyKzqz7zVYSz9AdvgWy4915eq+AA==}
 
   '@types/acorn@4.0.6':
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
@@ -9674,9 +9671,7 @@ snapshots:
 
   '@tanstack/store@0.0.1': {}
 
-  '@tauri-apps/api@2.0.0-rc.1': {}
-
-  '@tauri-apps/api@2.0.0-rc.4': {}
+  '@tauri-apps/api@2.2.0': {}
 
   '@tauri-apps/cli-darwin-arm64@2.0.0-rc.4':
     optional: true
@@ -9721,45 +9716,45 @@ snapshots:
       '@tauri-apps/cli-win32-ia32-msvc': 2.0.0-rc.4
       '@tauri-apps/cli-win32-x64-msvc': 2.0.0-rc.4
 
-  '@tauri-apps/plugin-fs@2.0.0-rc.2':
+  '@tauri-apps/plugin-fs@2.2.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.4
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-global-shortcut@2.0.0-rc.0':
+  '@tauri-apps/plugin-global-shortcut@2.2.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.1
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-http@2.0.0-rc.2':
+  '@tauri-apps/plugin-http@2.3.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.4
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-notification@2.0.0-rc.1':
+  '@tauri-apps/plugin-notification@2.2.1':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.4
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-os@2.0.0-rc.1':
+  '@tauri-apps/plugin-os@2.2.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.4
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-process@2.0.0-rc.1':
+  '@tauri-apps/plugin-process@2.2.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.4
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-shell@2.0.0-rc.1':
+  '@tauri-apps/plugin-shell@2.2.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.4
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-updater@2.0.0-rc.2':
+  '@tauri-apps/plugin-updater@2.5.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.4
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-websocket@2.0.0-rc.0':
+  '@tauri-apps/plugin-websocket@2.3.0':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.1
+      '@tauri-apps/api': 2.2.0
 
-  '@tauri-apps/plugin-window-state@2.0.0-rc.0':
+  '@tauri-apps/plugin-window-state@2.2.1':
     dependencies:
-      '@tauri-apps/api': 2.0.0-rc.1
+      '@tauri-apps/api': 2.2.0
 
   '@types/acorn@4.0.6':
     dependencies:
