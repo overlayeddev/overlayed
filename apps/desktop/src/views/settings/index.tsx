@@ -65,7 +65,7 @@ export const SettingsView = ({ update }: { update: Update | null }) => {
               github repo
             </a>
           </p>
-          <div className="flex flex-grow pr-4 justify-end gap-3 ">
+          <div className="flex grow pr-4 justify-end gap-3 ">
             <Link icon={SiX} url="https://x.com/OverlayedDev" />
             <Link icon={SiTwitch} url="https://twitch.tv/OverlayedDev" />
             <Link icon={SiDiscord} url="https://discord.gg/eXmeNkVjye" />

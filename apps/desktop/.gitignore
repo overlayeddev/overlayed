@@ -3,3 +3,4 @@
 .env.sentry-build-plugin
 
 src/__generated__/*
+node_modules

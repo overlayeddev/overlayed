@@ -88,7 +88,7 @@ export const JoinHistory = () => {
             Enable join/leave notifications
           </label>
         </div>
-        <div className="flex-grow"></div>
+        <div className="grow"></div>
         <Button size="sm" onClick={resetUserLog} variant="ghost" className="hover:bg-red-500">
           <span className="mr-2">Clear list</span>
           <Trash size={18} />
