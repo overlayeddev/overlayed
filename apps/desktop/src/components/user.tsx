@@ -3,13 +3,22 @@ import type { OverlayedUser } from "../types";
 import { HeadphonesOff } from "./icons/headphones-off";
 import { MicOff } from "./icons/mic-off";
 
-export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirection: DirectionLR }) => {
+export const User = ({
+  item,
+  alignDirection,
+  opacity,
+}: {
+  item: OverlayedUser;
+  alignDirection: DirectionLR;
+  opacity: number;
+}) => {
   const { id, selfMuted, selfDeafened, talking, muted, deafened, avatarHash } = item;
 
   const avatarUrl = avatarHash ? `https://cdn.discordapp.com/avatars/${id}/${avatarHash}.jpg` : "/img/default.png";
 
   const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted || muted ? "text-zinc-400" : "";
+  const opacityStyle = talking ? "100%" : `${opacity}%`;
 
   // TODO: use tw merge so this looks better i guess
 
@@ -47,9 +56,10 @@ export const User = ({ item, alignDirection }: { item: OverlayedUser; alignDirec
 
   return (
     <div
-      className={`flex gap-2 py-1 p-2 justify-start items-center ${
+      className={`flex gap-2 py-1 p-2 justify-start items-center transition-opacity ${
         alignDirection == "right" ? "flex-row-reverse" : "flex-row"
       }`}
+      style={{ opacity: opacityStyle }}
     >
       <div className={`pointer-events-none relative rounded-full border-2 ${talkingClass}`}>
         <img

@@ -16,6 +16,7 @@ export interface OverlayedConfig {
   joinHistoryNotifications: boolean;
   showOnlyTalkingUsers: boolean;
   showOwnUser: boolean;
+  opacity: number;
 }
 
 export type OverlayedConfigKey = keyof OverlayedConfig;
@@ -29,6 +30,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   joinHistoryNotifications: false,
   showOnlyTalkingUsers: false,
   showOwnUser: true,
+  opacity: 100,
 };
 
 const CONFIG_FILE_NAME = "config.json";
