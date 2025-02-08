@@ -36,7 +36,7 @@
 
     --error-label: 0 84.2% 60.2%;
 
-    --ring: 240 5% 64.9%;
+    --ring: var(--primary);
 
     --radius: 0.5rem;
 
@@ -84,7 +84,7 @@
 
     --error-label: 0 92.2% 64.9%;
 
-    --ring: 240 3.7% 15.9%;
+    --ring: var(--primary);
   }
 }
 

@@ -5,7 +5,6 @@ import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
 
 import { invoke } from "@tauri-apps/api/core";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import Config from "@/config";
 
 import {
   Dialog,
@@ -18,13 +17,9 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { emit } from "@tauri-apps/api/event";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { VoiceUser } from "@/types";
-import { useConfigValue } from "@/hooks/use-config-value";
 import * as shell from "@tauri-apps/plugin-shell";
-import { Input } from "@/components/ui/input";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
@@ -69,76 +64,32 @@ const canaryVersionToCommit = (version: string) => {
 
 export const AppInfo = () => {
   const platformInfo = usePlatformInfo();
-  const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
-  const { value: opacity } = useConfigValue("opacity");
 
   const urlForVersion = platformInfo.canary
     ? `https://github.com/overlayeddev/overlayed/commit/${canaryVersionToCommit(platformInfo.appVersion)}`
     : `https://github.com/overlayeddev/overlayed/releases/tag/v${platformInfo.appVersion}`;
 
   return (
-    <div>
-      <div className="flex items-center pb-2">
-        <Checkbox
-          id="notification"
-          checked={showOnlyTalkingUsers}
-          onCheckedChange={async () => {
-            const newBool = !showOnlyTalkingUsers;
-            await Config.set("showOnlyTalkingUsers", newBool);
-
-            await emit("config_update", await Config.getConfig());
-          }}
-        />
-        <label
-          htmlFor="notification"
-          className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Only show users who are speaking
-        </label>
+    <div className="flex items-center gap-2 pb-4 text-zinc-400">
+      <div>
+        <p className="text-sm">
+          <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
+        </p>
       </div>
-      <div className="flex items-center pb-2">
-        <Input
-          id="opacity"
-          type="number"
-          min={1}
-          max={100}
-          value={opacity}
-          onChange={async event => {
-            const newOpacity = event.target.value;
-            await Config.set("opacity", Number(newOpacity));
-
-            await emit("config_update", await Config.getConfig());
-          }}
-          className="w-20"
-        />
-        <label
-          htmlFor="opacity"
-          className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Overlay opacity
-        </label>
+      <span className="text-xs">/</span>
+      <div>
+        <p className="text-sm">
+          <strong>Tauri</strong> {platformInfo.tauriVersion}
+        </p>
       </div>
-      <div className="flex items-center gap-2 pb-4 text-zinc-400">
-        <div>
-          <p className="text-sm">
-            <strong>OS</strong> {platformInfo.os} {platformInfo.kernalVersion} {platformInfo.arch}
-          </p>
-        </div>
-        <span className="text-xs">/</span>
-        <div>
-          <p className="text-sm">
-            <strong>Tauri</strong> {platformInfo.tauriVersion}
-          </p>
-        </div>
-        <span className="text-sm">/</span>
-        <div>
-          <p className="text-sm">
-            <strong>App</strong>{" "}
-            <a target="_blank" rel="noreferrer" href={urlForVersion}>
-              {platformInfo.appVersion}
-            </a>
-          </p>
-        </div>
+      <span className="text-sm">/</span>
+      <div>
+        <p className="text-sm">
+          <strong>App</strong>{" "}
+          <a target="_blank" rel="noreferrer" href={urlForVersion}>
+            {platformInfo.appVersion}
+          </a>
+        </p>
       </div>
     </div>
   );
