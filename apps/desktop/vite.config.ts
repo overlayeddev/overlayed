@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 
@@ -13,6 +14,7 @@ export default defineConfig(async () => ({
       org: "overlayed",
       project: "overlayed-desktop-production",
     }),
+    tailwindcss(),
   ],
   optimizeDeps: {
     esbuildOptions: {
