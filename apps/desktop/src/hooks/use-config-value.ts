@@ -9,7 +9,6 @@ interface ConfigUpdatePayload {
   value: any;
 }
 
-// TODO: make this work somehow
 export const useConfigValueV2 = <T extends OverlayedConfigKey>(
   key: T
 ): {
@@ -18,6 +17,7 @@ export const useConfigValueV2 = <T extends OverlayedConfigKey>(
   // TODO: we have to get the inintial value from the context
   // and it's an async call 😂
   const settings = useContext(SettingContext);
+  // FIXME: reading the config values is async so this can have undesired behavior where boolean values will quickly "update" to the correct value
   const [value, setValue] = useState<OverlayedConfig[T]>(DEFAULT_OVERLAYED_CONFIG[key]);
 
   useEffect(() => {

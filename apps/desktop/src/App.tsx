@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { MainView } from "./views/main";
 import { ChannelView } from "./views/channel";
 
@@ -16,6 +16,7 @@ import { cn } from "./utils/tw";
 import React from "react";
 import { LazyStore } from "@tauri-apps/plugin-store";
 import { useConfigValueV2 } from "./hooks/use-config-value";
+import { twMerge } from "tailwind-merge";
 
 export const settings = new LazyStore("config.json");
 export const SettingContext = React.createContext(settings);
@@ -35,12 +36,13 @@ function App() {
 
   const { horizontal, setHorizontalDirection } = useAlign();
   const visibleClass = visible ? "opacity-100" : "opacity-0";
+  const location = useLocation();
 
   return (
     <div
-      className={cn(
-        `text-white h-screen select-none rounded-lg ${visibleClass}`,
-        pin ? null : "border border-zinc-600"
+      className={twMerge(
+        cn("text-white h-screen select-none rounded-lg", visibleClass),
+        !pin && location.pathname === "/channel" ? "border border-accent" : ""
       )}
     >
       {!pin && (

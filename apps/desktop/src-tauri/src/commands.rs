@@ -81,7 +81,7 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
     "value": value
   });
 
-  // FIXME: this has to use the plugin store to propegate the change without this hack
+  // FIXME: we should use the store directly to modify the value and we won't have to do the hack below
   // HACK: this is a hack
   window.emit("store://change", payload).unwrap();
 
