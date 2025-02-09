@@ -9,6 +9,7 @@ export const Configuration = () => {
   const { value: showOnlyTalkingUsers } = useConfigValueV2("showOnlyTalkingUsers");
   const { value: showOwnUser } = useConfigValueV2("showOwnUser");
   const { value: opacity } = useConfigValueV2("opacity");
+  const { value: pin } = useConfigValueV2("pin");
   const store = useContext(SettingContext);
 
   return (
@@ -76,6 +77,23 @@ export const Configuration = () => {
           onCheckedChange={async () => {
             const flag = !telemetry;
             store.set("telemetry", flag);
+          }}
+        />
+      </div>
+
+      <div className="flex h-8 items-center justify-between">
+        <label
+          htmlFor="pin"
+          className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Pin
+        </label>
+        <Switch
+          id="telemetry"
+          checked={pin}
+          onCheckedChange={async () => {
+            const flag = !pin;
+            store.set("pin", flag);
           }}
         />
       </div>

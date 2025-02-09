@@ -75,6 +75,8 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
+  // FIXME: this has to use the plugin store to propegate the change
+
   // let the client know
   window.emit(TRAY_TOGGLE_PIN, value).unwrap();
 
