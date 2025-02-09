@@ -1,34 +1,7 @@
 import { SettingContext } from "@/App";
-import Config, { DEFAULT_OVERLAYED_CONFIG, type OverlayedConfig, type OverlayedConfigKey } from "@/config";
+import { DEFAULT_OVERLAYED_CONFIG, type OverlayedConfig, type OverlayedConfigKey } from "@/config";
 import { listen } from "@tauri-apps/api/event";
 import { useContext, useEffect, useState } from "react";
-
-// NOTE: legacy and migate all of them to useConfigValueV2, then rename v2 to useConfigValue
-export const useConfigValue = <T extends OverlayedConfigKey>(
-  key: T
-): {
-  value: OverlayedConfig[T];
-} => {
-  const [value, setValue] = useState<OverlayedConfig[T]>(DEFAULT_OVERLAYED_CONFIG[key]);
-
-  useEffect(() => {
-    Config.get<T>(key).then(setValue);
-
-    const listenFn = listen<OverlayedConfig>("config_update", event => {
-      const { payload } = event;
-
-      // update the latest value
-      // TODO: fix
-      setValue(payload[key]);
-    });
-
-    return () => {
-      listenFn.then(fn => fn()); // remove the listener
-    };
-  }, []);
-
-  return { value };
-};
 
 interface ConfigUpdatePayload {
   key: OverlayedConfigKey;
