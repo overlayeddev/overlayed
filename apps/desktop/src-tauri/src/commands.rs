@@ -76,12 +76,9 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
-
   let payload = json!({
-    "payload": {
-      "key": "pin",
-      "value": value
-    }
+    "key": "pin",
+    "value": value
   });
 
   // FIXME: this has to use the plugin store to propegate the change without this hack
