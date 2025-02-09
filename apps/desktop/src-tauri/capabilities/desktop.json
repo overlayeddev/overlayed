@@ -48,7 +48,6 @@
         "http:default"
       ]
     },
-    "notification:default",
-    "store:default"
+    "notification:default"
   ]
 }

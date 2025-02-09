@@ -6,7 +6,7 @@ import { emit } from "@tauri-apps/api/event";
 
 export const Configuration = () => {
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
-  const { value: opacity, setValue: setOpacity } = useConfigValue("opacity");
+  const { value: opacity } = useConfigValue("opacity");
 
   return (
     <div className="flex flex-col gap-2">
@@ -43,8 +43,9 @@ export const Configuration = () => {
           value={opacity}
           onChange={async event => {
             const newOpacity = event.target.value;
-            setOpacity(Number(newOpacity));
-            // await store.set("opacity", Number(newOpacity));
+            await Config.set("opacity", Number(newOpacity));
+
+            await emit("config_update", await Config.getConfig());
           }}
           className="w-20"
         />

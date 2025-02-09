@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { LazyStore } from "@tauri-apps/plugin-store";
 import {
   Settings,
   Pin,
@@ -133,10 +132,7 @@ export const NavBar = ({
                 size={20}
                 onClick={async () => {
                   await invoke("toggle_pin");
-
-                  // await Config.set("pin", !pin);
-                  // new pin toggle
-
+                  await Config.set("pin", !pin);
                   // track if it gets pinned
                   track(Metric.Pin, 1);
                   navigate("/channel");
