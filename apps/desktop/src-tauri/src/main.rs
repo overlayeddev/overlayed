@@ -16,12 +16,14 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use log::{debug, info};
+use serde::{Deserialize, Serialize};
 use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
 };
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_log::{Target, TargetKind};
+use tauri_plugin_store::StoreExt;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 use tray::Tray;
 use window_custom::WebviewWindowExt;
@@ -42,6 +44,7 @@ pub struct Pinned(AtomicBool);
 
 pub struct TrayMenu(Mutex<Menu<Wry>>);
 
+// TODO: move this out of main
 #[cfg(target_os = "macos")]
 fn apply_macos_specifics(window: &WebviewWindow) {
   use tauri::{AppHandle, Wry};
@@ -73,14 +76,20 @@ fn apply_macos_specifics(window: &WebviewWindow) {
   );
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+struct AppSettings {
+  opacity: f32,
+}
+
 fn main() {
   let flags = StateFlags::POSITION | StateFlags::SIZE;
-  let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
+  let tauri_window_state_plugin =
+    tauri_plugin_window_state::Builder::default().with_state_flags(flags);
   let log_level = std::env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
 
   let log_level_filter = log::LevelFilter::from_str(&log_level).unwrap_or(log::LevelFilter::Info);
 
-  let log_plugin_builder = tauri_plugin_log::Builder::new()
+  let tauri_plugin_log = tauri_plugin_log::Builder::new()
     .targets([Target::new(TargetKind::LogDir { file_name: None })])
     .level_for("overlayed", log_level_filter)
     .level_for("reqwest", log_level_filter)
@@ -92,14 +101,15 @@ fn main() {
   let mut app = tauri::Builder::default()
     .plugin(tauri_plugin_notification::init())
     .plugin(tauri_plugin_updater::Builder::new().build())
-    .plugin(window_state_plugin.build())
+    .plugin(tauri_window_state_plugin.build())
     .plugin(tauri_plugin_websocket::init())
     .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
     .plugin(tauri_plugin_http::init())
-    .plugin(log_plugin_builder.build())
+    .plugin(tauri_plugin_log.build())
+    .plugin(tauri_plugin_store::Builder::default().build())
     .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
@@ -113,8 +123,8 @@ fn main() {
     .manage(Pinned(AtomicBool::new(false)))
     .setup(move |app| {
       debug!("starting app...");
-      let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
-      let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
+      let main_window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
+      let settings_window = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
 
       info!("Log level set to: {log_level}");
       // the window should always be on top
@@ -123,35 +133,65 @@ fn main() {
 
       // set the document title for the main window
       // TODO: we could just get the tauri window title in js as an alternative?
-      window.set_document_title("Overlayed - Main");
+      main_window.set_document_title("Overlayed - Main");
 
       // set the document title for the settings window
-      settings.set_document_title("Overlayed - Settings");
+      settings_window.set_document_title("Overlayed - Settings");
 
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
-      window.set_decorations(false);
-      window.set_shadow(false);
+      main_window.set_decorations(false);
+      main_window.set_shadow(false);
 
       // add mac things
       #[cfg(target_os = "macos")]
-      apply_macos_specifics(&window);
+      apply_macos_specifics(&main_window);
 
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       {
-        window.open_devtools();
-        settings.open_devtools();
+        // main_window.open_devtools();
+        // settings_window.open_devtools();
       }
 
       // update the system tray
       Tray::update_tray(app.app_handle());
 
       // NOTE: always force settings window to be a certain size
-      settings.set_size(LogicalSize {
+      settings_window.set_size(LogicalSize {
         width: SETTINGS_WINDOW_WIDTH,
         height: SETTINGS_WINDOW_HEIGHT,
       });
+
+      // load the store
+      let store = app.store("config.json")?;
+
+      // seed the store for the first ime if it's empty
+      // TODO: how do we handle key merges for new items?
+      if store.is_empty() {
+        store.set("pin", true);
+        store.set("horizontal", "right");
+        store.set("vertical", "bottom");
+        store.set("telemetry", true);
+        store.set("joinHistoryNotifications", true);
+        store.set("showOnlyTalkingUsers", false);
+        store.set("showOwnUser", true);
+        store.set("opacity", 1);
+      }
+
+      store.save();
+
+
+      let pin = store
+        .get("pin")
+        .and_then(|pin: bool| {
+          if pin {
+            main_window.set_always_on_top(true);
+          }
+
+          Some(pin)
+        });
+
 
       Ok(())
     })
