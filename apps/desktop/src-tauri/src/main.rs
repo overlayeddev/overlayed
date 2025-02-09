@@ -109,7 +109,7 @@ fn get_config<R: Runtime>(store: &Store<R>) -> Result<Config, Box<dyn std::error
 
 fn main() {
   let flags = StateFlags::POSITION | StateFlags::SIZE;
-  let tauri_window_state_plugin =
+  let tauri_plugin_window_state =
     tauri_plugin_window_state::Builder::default().with_state_flags(flags);
   let log_level = std::env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
 
@@ -127,7 +127,7 @@ fn main() {
   let mut app = tauri::Builder::default()
     .plugin(tauri_plugin_notification::init())
     .plugin(tauri_plugin_updater::Builder::new().build())
-    .plugin(tauri_window_state_plugin.build())
+    .plugin(tauri_plugin_window_state.build())
     .plugin(tauri_plugin_websocket::init())
     .plugin(tauri_plugin_fs::init())
     .plugin(tauri_plugin_process::init())
