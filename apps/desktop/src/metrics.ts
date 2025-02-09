@@ -25,7 +25,7 @@ const isTelemetryEnabled = async () => {
   if (!(telemetryEnabled && hasTelemetryToken)) {
     console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");
     console.warn("[TELEMETRY] Disabling sentry.io telemetry because the user has disabled it");
-    Sentry.close();
+    await Sentry.close();
   } else {
     console.log("[TELEMETRY] Axiom telemetry is enabled!");
     console.log("[TELEMETRY] sentry.io telemetry is enabled!");
