@@ -2,23 +2,23 @@ import { Button } from "@/components/ui/button";
 import { Trash, PhoneOff, PhoneIncoming } from "lucide-react";
 import { cn } from "@/utils/tw";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
 import type { UnlistenFn } from "@tauri-apps/api/event";
 import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 import { Checkbox } from "@/components/ui/checkbox";
-import Config from "@/config";
 import type { JoinHistoryLogUser } from "@/types";
 import { useConfigValueV2 } from "@/hooks/use-config-value";
-import { emit } from "@tauri-apps/api/event";
+import { SettingContext } from "@/App";
 
 const MAX_LOG_LENGTH = 420;
 
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
   const { value: joinHistoryNotifications } = useConfigValueV2("joinHistoryNotifications");
+  const store = useContext(SettingContext);
 
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
@@ -77,8 +77,7 @@ export const JoinHistory = () => {
             id="notification"
             checked={joinHistoryNotifications}
             onCheckedChange={async () => {
-              await Config.set("joinHistoryNotifications", !joinHistoryNotifications);
-              await emit("config_update", await Config.getConfig());
+              await store.set("joinHistoryNotifications", !joinHistoryNotifications);
             }}
           />
           <label
