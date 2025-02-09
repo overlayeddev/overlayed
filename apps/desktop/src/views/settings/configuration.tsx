@@ -5,13 +5,14 @@ import { useConfigValueV2 } from "@/hooks/use-config-value";
 import { useContext } from "react";
 
 export const Configuration = () => {
+  const { value: telemetry } = useConfigValueV2("telemetry");
   const { value: showOnlyTalkingUsers } = useConfigValueV2("showOnlyTalkingUsers");
   const { value: showOwnUser } = useConfigValueV2("showOwnUser");
   const { value: opacity } = useConfigValueV2("opacity");
   const store = useContext(SettingContext);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-4">
       <div className="flex h-8 items-center justify-between">
         <label
           htmlFor="show-own-user"
@@ -60,6 +61,22 @@ export const Configuration = () => {
             store.set("opacity", Number(newOpacity));
           }}
           className="w-20"
+        />
+      </div>
+      <div className="flex h-8 items-center justify-between">
+        <label
+          htmlFor="telemetry"
+          className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Telemetry
+        </label>
+        <Switch
+          id="telemetry"
+          checked={telemetry}
+          onCheckedChange={async () => {
+            const flag = !telemetry;
+            store.set("telemetry", flag);
+          }}
         />
       </div>
     </div>
