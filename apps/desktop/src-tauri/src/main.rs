@@ -169,17 +169,17 @@ fn main() {
       // seed the store for the first ime if it's empty
       // TODO: how do we handle key merges for new items?
       if store.is_empty() {
-        store.set("pin", true);
+        store.set("pin", false);
         store.set("horizontal", "right");
         store.set("vertical", "bottom");
         store.set("telemetry", true);
-        store.set("joinHistoryNotifications", true);
+        store.set("joinHistoryNotifications", false);
         store.set("showOnlyTalkingUsers", false);
         store.set("showOwnUser", true);
         store.set("opacity", 1);
       }
 
-      store.save();
+      // store.save();
 
       Ok(())
     })
