@@ -1,16 +1,16 @@
 import { SettingContext } from "@/App";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useConfigValueV2 } from "@/hooks/use-config-value";
+import { useConfigValue } from "@/hooks/use-config-value";
 import { invoke } from "@tauri-apps/api/core";
 import { useContext } from "react";
 
 export const Configuration = () => {
-  const { value: telemetry } = useConfigValueV2("telemetry");
-  const { value: showOnlyTalkingUsers } = useConfigValueV2("showOnlyTalkingUsers");
-  const { value: showOwnUser } = useConfigValueV2("showOwnUser");
-  const { value: opacity } = useConfigValueV2("opacity");
-  const { value: pin } = useConfigValueV2("pin");
+  const { value: telemetry } = useConfigValue("telemetry");
+  const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
+  const { value: showOwnUser } = useConfigValue("showOwnUser");
+  const { value: opacity } = useConfigValue("opacity");
+  const { value: pin } = useConfigValue("pin");
   const store = useContext(SettingContext);
 
   return (

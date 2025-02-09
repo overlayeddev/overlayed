@@ -15,7 +15,7 @@ import { useSocket } from "./rpc/manager";
 import { cn } from "./utils/tw";
 import React from "react";
 import { LazyStore } from "@tauri-apps/plugin-store";
-import { useConfigValueV2 } from "./hooks/use-config-value";
+import { useConfigValue } from "./hooks/use-config-value";
 import { twMerge } from "tailwind-merge";
 
 export const settings = new LazyStore("config.json");
@@ -32,7 +32,7 @@ function App() {
 
   const { update } = useUpdate();
   const { visible } = useAppStore();
-  const { value: pin } = useConfigValueV2("pin");
+  const { value: pin } = useConfigValue("pin");
 
   const { horizontal, setHorizontalDirection } = useAlign();
   const visibleClass = visible ? "opacity-100" : "opacity-0";

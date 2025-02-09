@@ -9,7 +9,7 @@ interface ConfigUpdatePayload {
   value: any;
 }
 
-export const useConfigValueV2 = <T extends OverlayedConfigKey>(
+export const useConfigValue = <T extends OverlayedConfigKey>(
   key: T
 ): {
   value: OverlayedConfig[T];

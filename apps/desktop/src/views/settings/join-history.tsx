@@ -10,14 +10,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { JoinHistoryLogUser } from "@/types";
-import { useConfigValueV2 } from "@/hooks/use-config-value";
+import { useConfigValue } from "@/hooks/use-config-value";
 import { SettingContext } from "@/App";
 
 const MAX_LOG_LENGTH = 420;
 
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
-  const { value: joinHistoryNotifications } = useConfigValueV2("joinHistoryNotifications");
+  const { value: joinHistoryNotifications } = useConfigValue("joinHistoryNotifications");
   const store = useContext(SettingContext);
 
   const { toast } = useToast();
