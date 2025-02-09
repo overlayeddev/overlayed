@@ -14,6 +14,11 @@ import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 import { useSocket } from "./rpc/manager";
 import { cn } from "./utils/tw";
+import React from "react";
+import { LazyStore } from "@tauri-apps/plugin-store";
+
+const settings = new LazyStore("config.json");
+export const SettingContext = React.createContext(settings);
 
 function App() {
   useDisableWebFeatures();
@@ -32,28 +37,30 @@ function App() {
   const visibleClass = visible ? "opacity-100" : "opacity-0";
 
   return (
-    <div
-      className={cn(
-        `text-white h-screen select-none rounded-lg ${visibleClass}`,
-        pin ? null : "border border-zinc-600"
-      )}
-    >
-      {!pin && (
-        <NavBar
-          isUpdateAvailable={update?.available ?? false}
-          pin={pin}
-          alignDirection={horizontal}
-          setAlignDirection={setHorizontalDirection}
-        />
-      )}
-      <Toaster />
-      <Routes>
-        <Route path="/" Component={MainView} />
-        <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
-        <Route path="/settings" element={<SettingsView update={update} />} />
-        <Route path="/error" Component={ErrorView} />
-      </Routes>
-    </div>
+    <SettingContext.Provider value={settings}>
+      <div
+        className={cn(
+          `text-white h-screen select-none rounded-lg ${visibleClass}`,
+          pin ? null : "border border-zinc-600"
+        )}
+      >
+        {!pin && (
+          <NavBar
+            isUpdateAvailable={update?.available ?? false}
+            pin={pin}
+            alignDirection={horizontal}
+            setAlignDirection={setHorizontalDirection}
+          />
+        )}
+        <Toaster />
+        <Routes>
+          <Route path="/" Component={MainView} />
+          <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
+          <Route path="/settings" element={<SettingsView update={update} />} />
+          <Route path="/error" Component={ErrorView} />
+        </Routes>
+      </div>
+    </SettingContext.Provider>
   );
 }
 

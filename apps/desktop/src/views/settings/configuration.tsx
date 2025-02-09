@@ -1,12 +1,15 @@
+import { SettingContext } from "@/App";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import Config from "@/config";
-import { useConfigValue } from "@/hooks/use-config-value";
+import { useConfigValue, useConfigValueV2 } from "@/hooks/use-config-value";
 import { emit } from "@tauri-apps/api/event";
+import { useContext } from "react";
 
 export const Configuration = () => {
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
-  const { value: opacity } = useConfigValue("opacity");
+  const { value: opacity } = useConfigValueV2("opacity");
+  const store = useContext(SettingContext);
 
   return (
     <div className="flex flex-col gap-2">
@@ -43,9 +46,7 @@ export const Configuration = () => {
           value={opacity}
           onChange={async event => {
             const newOpacity = event.target.value;
-            await Config.set("opacity", Number(newOpacity));
-
-            await emit("config_update", await Config.getConfig());
+            store.set("opacity", Number(newOpacity));
           }}
           className="w-20"
         />
