@@ -3,6 +3,7 @@ use std::{
   sync::{atomic::AtomicBool, Mutex},
 };
 
+use serde_json::json;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 
 use crate::{constants::*, Pinned, TrayMenu};
@@ -75,10 +76,17 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
-  // FIXME: this has to use the plugin store to propegate the change
 
-  // let the client know
-  window.emit(TRAY_TOGGLE_PIN, value).unwrap();
+  let payload = json!({
+    "payload": {
+      "key": "pin",
+      "value": value
+    }
+  });
+
+  // FIXME: this has to use the plugin store to propegate the change without this hack
+  // HACK: this is a hack
+  window.emit("store://change", payload).unwrap();
 
   // invert the label for the tray
   if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {
