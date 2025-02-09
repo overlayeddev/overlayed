@@ -12,15 +12,15 @@ export const Configuration = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex h-8 items-center justify-between">
         <label
-          htmlFor="notification"
+          htmlFor="show-own-user"
           className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Always show own user
         </label>
         <Switch
-          id="notification"
+          id="show-own-user"
           checked={showOwnUser}
           onCheckedChange={async () => {
             const flag = !showOwnUser;
@@ -28,15 +28,15 @@ export const Configuration = () => {
           }}
         />
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex h-8 items-center justify-between">
         <label
-          htmlFor="notification"
+          htmlFor="only-talking-users"
           className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Only show users who are speaking
         </label>
         <Switch
-          id="notification"
+          id="only-talking-users"
           checked={showOnlyTalkingUsers}
           onCheckedChange={async () => {
             const flag = !showOnlyTalkingUsers;
@@ -44,7 +44,7 @@ export const Configuration = () => {
           }}
         />
       </div>
-      <div className="flex items-center justify-between">
+      <div className="flex h-8 items-center justify-between">
         <label
           htmlFor="opacity"
           className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -54,8 +54,6 @@ export const Configuration = () => {
         <Input
           id="opacity"
           type="number"
-          min={1}
-          max={100}
           value={opacity}
           onChange={async event => {
             const newOpacity = event.target.value;
