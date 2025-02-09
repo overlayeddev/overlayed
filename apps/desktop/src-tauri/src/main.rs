@@ -155,7 +155,7 @@ fn main() {
       info!("Log level set to: {log_level}");
       // the window should always be on top
       #[cfg(not(target_os = "macos"))]
-      window.set_always_on_top(true);
+      main_window.set_always_on_top(true);
 
       // set the document title for the main window
       // TODO: we could just get the tauri window title in js as an alternative?
