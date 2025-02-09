@@ -2,6 +2,7 @@ import { SettingContext } from "@/App";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useConfigValueV2 } from "@/hooks/use-config-value";
+import { invoke } from "@tauri-apps/api/core";
 import { useContext } from "react";
 
 export const Configuration = () => {
@@ -89,11 +90,16 @@ export const Configuration = () => {
           Pin
         </label>
         <Switch
-          id="telemetry"
+          id="pin"
           checked={pin}
           onCheckedChange={async () => {
             const flag = !pin;
             store.set("pin", flag);
+
+            // let rust know to update the tray
+            await invoke("set_pin", {
+              value: flag,
+            });
           }}
         />
       </div>

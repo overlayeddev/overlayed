@@ -46,14 +46,18 @@ pub fn open_devtools(window: WebviewWindow) {
 #[tauri::command]
 pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>) {
   let app = window.app_handle();
+  let main_window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
   let value = !get_pin(app.state::<Pinned>());
 
-  _set_pin(value, &window, pin, menu);
+  _set_pin(value, &main_window, pin, menu);
 }
 
 #[tauri::command]
 pub fn set_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, value: bool) {
-  _set_pin(value, &window, pin, menu);
+  let app = window.app_handle();
+  let main_window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
+
+  _set_pin(value, &main_window, pin, menu);
 }
 
 impl Deref for Pinned {
