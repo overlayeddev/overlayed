@@ -293,7 +293,7 @@ class SocketManager {
       }
 
       // track user joining a channel
-      track(Metric.ChannelJoin, 1);
+      await track(Metric.ChannelJoin, 1);
     }
 
     // we got a token back from discord let's fetch an access token
@@ -344,10 +344,10 @@ class SocketManager {
       this.navigate("/error");
 
       // track error metric
-      track(Metric.DiscordAuthed, 0);
+      await track(Metric.DiscordAuthed, 0);
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       // track success metric
-      track(Metric.DiscordAuthed, 1);
+      await track(Metric.DiscordAuthed, 1);
 
       // track user session anonymously for sensitive bits
       // TODO: we should allSettled these promises?
@@ -355,7 +355,7 @@ class SocketManager {
         id: await hash(payload.data.user.id),
         username: await hash(payload.data.user.username),
         discordAppId: APP_ID,
-        os: await type(),
+        os: type(),
         version: this.version,
       });
 

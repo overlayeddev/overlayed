@@ -134,7 +134,7 @@ export const NavBar = ({
                   await invoke("toggle_pin");
                   await Config.set("pin", !pin);
                   // track if it gets pinned
-                  track(Metric.Pin, 1);
+                  await track(Metric.Pin, 1);
                   navigate("/channel");
                 }}
               />

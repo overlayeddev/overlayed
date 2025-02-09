@@ -17,7 +17,7 @@ import { cn } from "./utils/tw";
 import React from "react";
 import { LazyStore } from "@tauri-apps/plugin-store";
 
-const settings = new LazyStore("config.json");
+export const settings = new LazyStore("config.json");
 export const SettingContext = React.createContext(settings);
 
 function App() {
