@@ -195,8 +195,15 @@ fn main() {
 
       // NOTE: we are only letting the backend use the pinned state
       if config.pin {
-        app.state::<Pinned>().store(true, std::sync::atomic::Ordering::Relaxed);
-        set_pin(main_window, app.state::<Pinned>(), app.state::<TrayMenu>(), true);
+        app
+          .state::<Pinned>()
+          .store(true, std::sync::atomic::Ordering::Relaxed);
+        set_pin(
+          main_window,
+          app.state::<Pinned>(),
+          app.state::<TrayMenu>(),
+          true,
+        );
       }
 
       Ok(())
