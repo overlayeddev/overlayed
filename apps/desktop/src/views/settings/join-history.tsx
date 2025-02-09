@@ -11,14 +11,14 @@ import { isPermissionGranted, requestPermission, sendNotification } from "@tauri
 import { Checkbox } from "@/components/ui/checkbox";
 import Config from "@/config";
 import type { JoinHistoryLogUser } from "@/types";
-import { useConfigValue } from "@/hooks/use-config-value";
+import { useConfigValueV2 } from "@/hooks/use-config-value";
 import { emit } from "@tauri-apps/api/event";
 
 const MAX_LOG_LENGTH = 420;
 
 export const JoinHistory = () => {
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
-  const { value: joinHistoryNotifications } = useConfigValue("joinHistoryNotifications");
+  const { value: joinHistoryNotifications } = useConfigValueV2("joinHistoryNotifications");
 
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);

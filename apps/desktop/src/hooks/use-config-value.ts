@@ -57,6 +57,7 @@ export const useConfigValueV2 = <T extends OverlayedConfigKey>(
 
     // handle updates
     const listenFn = listen<ConfigUpdatePayload>("store://change", event => {
+      if (event.payload.key !== key) return;
       setValue(event.payload.value);
     });
 

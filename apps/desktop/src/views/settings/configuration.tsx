@@ -1,18 +1,33 @@
 import { SettingContext } from "@/App";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import Config from "@/config";
-import { useConfigValue, useConfigValueV2 } from "@/hooks/use-config-value";
-import { emit } from "@tauri-apps/api/event";
+import { useConfigValueV2 } from "@/hooks/use-config-value";
 import { useContext } from "react";
 
 export const Configuration = () => {
-  const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
+  const { value: showOnlyTalkingUsers } = useConfigValueV2("showOnlyTalkingUsers");
+  const { value: showOwnUser } = useConfigValueV2("showOwnUser");
   const { value: opacity } = useConfigValueV2("opacity");
   const store = useContext(SettingContext);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <label
+          htmlFor="notification"
+          className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Always show own user
+        </label>
+        <Switch
+          id="notification"
+          checked={showOwnUser}
+          onCheckedChange={async () => {
+            const flag = !showOwnUser;
+            store.set("showOwnUser", flag);
+          }}
+        />
+      </div>
       <div className="flex items-center justify-between">
         <label
           htmlFor="notification"
@@ -24,10 +39,8 @@ export const Configuration = () => {
           id="notification"
           checked={showOnlyTalkingUsers}
           onCheckedChange={async () => {
-            const newBool = !showOnlyTalkingUsers;
-            await Config.set("showOnlyTalkingUsers", newBool);
-
-            await emit("config_update", await Config.getConfig());
+            const flag = !showOnlyTalkingUsers;
+            store.set("showOnlyTalkingUsers", flag);
           }}
         />
       </div>
