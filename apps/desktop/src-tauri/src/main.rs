@@ -2,7 +2,6 @@
   all(not(debug_assertions), target_os = "windows"),
   windows_subsystem = "windows"
 )]
-#![allow(unused_must_use)]
 
 #[cfg(target_os = "macos")]
 extern crate objc;
@@ -166,8 +165,8 @@ fn main() {
 
       // setting this seems to fix windows somehow
       // NOTE: this might be a bug?
-      main_window.set_decorations(false);
-      main_window.set_shadow(false);
+      let _ = main_window.set_decorations(false);
+      let _ = main_window.set_shadow(false);
 
       // add mac things
       #[cfg(target_os = "macos")]
@@ -181,10 +180,10 @@ fn main() {
       }
 
       // update the system tray
-      Tray::update_tray(app.app_handle());
+      let _ = Tray::update_tray(app.app_handle());
 
       // NOTE: always force settings window to be a certain size
-      settings_window.set_size(LogicalSize {
+      let _ = settings_window.set_size(LogicalSize {
         width: SETTINGS_WINDOW_WIDTH,
         height: SETTINGS_WINDOW_HEIGHT,
       });
@@ -233,7 +232,7 @@ fn main() {
         }
 
         if label == MAIN_WINDOW_NAME {
-          app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+          let _ = app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
           std::process::exit(0);
         } else {
           api.prevent_close();

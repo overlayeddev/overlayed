@@ -59,7 +59,7 @@ impl Tray {
         window.show().unwrap();
 
         // center and resize the window
-        window.center();
+        let _ = window.center();
         window.set_size(LogicalSize::new(400, 700)).unwrap();
 
         window.set_focus().unwrap();
@@ -87,7 +87,7 @@ impl Tray {
       TRAY_QUIT => {
         // NOTE: we only save position and size so that StateFlags::FULLSCREEN is not saved, as
         // nspanels do not support it
-        app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+        let _ = app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
         std::process::exit(0)
       }
       _ => {}
