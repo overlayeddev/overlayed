@@ -13,8 +13,8 @@ pub fn open_settings(window: WebviewWindow, update: bool) {
   let app = window.app_handle();
   let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
-    settings_windows.show();
-    settings_windows.set_focus();
+    let _ = settings_windows.show();
+    let _ = settings_windows.set_focus();
     if update {
       // emit to the settings window to show update
       settings_windows
@@ -29,7 +29,7 @@ pub fn close_settings(window: WebviewWindow) {
   let app = window.app_handle();
   let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
-    settings_windows.hide();
+    let _ = settings_windows.hide();
   }
 }
 
@@ -92,13 +92,13 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // invert the label for the tray
   if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {
     let enable_or_disable = if value { "Unpin" } else { "Pin" };
-    toggle_pin_menu_item
+    let _ = toggle_pin_menu_item
       .as_menuitem_unchecked()
       .set_text(enable_or_disable);
   }
 
   #[cfg(target_os = "macos")]
-  window.with_webview(move |webview| unsafe {
+  let _ = window.with_webview(move |webview| unsafe {
     #[cfg(target_os = "macos")]
     use cocoa::appkit::NSWindow;
     let id = webview.ns_window() as cocoa::base::id;
@@ -114,7 +114,7 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
     }
   });
 
-  window.set_ignore_cursor_events(value);
+  let _ = window.set_ignore_cursor_events(value);
 
   // update the tray icon
   update_tray_icon(window.app_handle(), value);
@@ -129,7 +129,7 @@ pub fn update_tray_icon(app: &AppHandle, pinned: bool) {
 
   if let Some(tray) = app.tray_by_id(OVERLAYED) {
     if let Ok(icon) = Image::from_bytes(icon_bytes) {
-      tray.set_icon(Some(icon));
+      let _ = tray.set_icon(Some(icon));
     }
   }
 }
