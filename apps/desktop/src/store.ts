@@ -196,8 +196,9 @@ export const useAppStore = create<AppState & AppActions>()(
 
         // give me the new keys
         const unseenKeys = getUnseenKeys(mergedSettings, currentFields);
+        console.log("unseen keys", unseenKeys);
 
-        if (unseenKeys.length >= 0) {
+        if (unseenKeys.length > 0) {
           for (const key of unseenKeys) {
             if (currentFields.includes(key)) continue;
             settings.set(key, mergedSettings[key]);

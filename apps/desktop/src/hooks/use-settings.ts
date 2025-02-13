@@ -28,6 +28,8 @@ export const useSettings = () => {
             const value = await settings.get(key);
 
             // Type assertion to handle potential type mismatches.  Important!
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             loadedSettings[key as keyof AppSettings] = value as AppSettings[keyof AppSettings];
           } catch (error) {
             console.error(`Error loading setting for key ${key}:`, error);

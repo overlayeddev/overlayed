@@ -15,15 +15,12 @@ mod window_custom;
 use crate::commands::*;
 use constants::*;
 use log::{debug, info};
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
 };
-use tauri::{generate_handler, ipc::InvokeError, menu::Menu, LogicalSize, Manager, Runtime, Wry};
+use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_log::{Target, TargetKind};
-use tauri_plugin_store::{Store, StoreExt};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 use tray::Tray;
 use window_custom::WebviewWindowExt;
@@ -145,8 +142,8 @@ fn main() {
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       {
-        // main_window.open_devtools();
-        // settings_window.open_devtools();
+        main_window.open_devtools();
+        settings_window.open_devtools();
       }
 
       // update the system tray

@@ -1,4 +1,4 @@
-import type { DirectionLR } from "@/config";
+import type { DirectionLR } from "@/store";
 import type { OverlayedUser } from "../types";
 import { HeadphonesOff } from "./icons/headphones-off";
 import { MicOff } from "./icons/mic-off";

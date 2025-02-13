@@ -21,6 +21,7 @@ type MetricNamesValues = (typeof Metric)[keyof typeof Metric];
 const isTelemetryEnabled = async () => {
   const telemetryEnabled = await settings.get("telemetry");
   const hasTelemetryToken = import.meta.env.VITE_AXIOM_TOKEN;
+  console.log(telemetryEnabled, hasTelemetryToken);
 
   if (!(telemetryEnabled && hasTelemetryToken)) {
     console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");

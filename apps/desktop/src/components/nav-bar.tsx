@@ -9,7 +9,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { type DirectionLR } from "@/store";
 import { useAppStore } from "../store";
 import { useState } from "react";
