@@ -133,7 +133,7 @@ export const NavBar = ({
                 size={20}
                 onClick={async () => {
                   await invoke("toggle_pin");
-                  store.setSettingValue("pin", !pin);
+                  store.setSettingValue("pinned", !pin);
                   // track if it gets pinned
                   await track(Metric.Pin, 1);
                   navigate("/channel");

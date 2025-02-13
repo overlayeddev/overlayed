@@ -45,6 +45,7 @@ export const useSettings = () => {
     // listen for backend changes from the rust side
     const fn = listen<StoreUpdatePayload>("store://change", event => {
       const { key, value } = event.payload;
+      console.log("store change", key, value);
       store.setSettingValue(key, value, true);
     });
 

@@ -26,3 +26,5 @@ pub static OVERLAYED_NORMAL_LEVEL: i32 = 8;
 /// because the save sate plugin will not allow use to filter windows out
 pub const SETTINGS_WINDOW_WIDTH: i32 = 600;
 pub const SETTINGS_WINDOW_HEIGHT: i32 = 400;
+
+pub const CONFIG_FILE: &str = "config.json";

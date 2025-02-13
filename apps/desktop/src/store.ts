@@ -10,7 +10,7 @@ export type DirectionLR = "left" | "right" | "center";
 export type DirectionTB = "top" | "bottom";
 
 const DEFAULT_SETTINGS: AppSettings = {
-  pin: false,
+  pinned: false,
   horizontal: "right",
   // TODO: vertical alignment? i.e., if aligned to bottom, then the navbar should be at the bottom (and corner radius changes appropriately)
   vertical: "bottom",
@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS: AppSettings = {
 };
 
 export interface AppSettings {
-  pin: boolean;
+  pinned: boolean;
   horizontal: DirectionLR;
   vertical: DirectionTB;
   telemetry: boolean;

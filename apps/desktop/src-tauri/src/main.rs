@@ -16,11 +16,12 @@ use crate::commands::*;
 use constants::*;
 use log::{debug, info};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
 };
-use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Runtime, Wry};
+use tauri::{generate_handler, ipc::InvokeError, menu::Menu, LogicalSize, Manager, Runtime, Wry};
 use tauri_plugin_log::{Target, TargetKind};
 use tauri_plugin_store::{Store, StoreExt};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
@@ -73,37 +74,6 @@ fn apply_macos_specifics(window: &WebviewWindow) {
       }
     },
   );
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-struct Config {
-  pin: bool,
-}
-
-impl Default for Config {
-  fn default() -> Self {
-    Self {
-      pin: false,
-      // TODO: if we need to store more values that rust needs we do that later
-      // currentlu the front end is controlling writing to the disk
-    }
-  }
-}
-
-fn get_config<R: Runtime>(store: &Store<R>) -> Result<Config, Box<dyn std::error::Error>> {
-  if store.is_empty() {
-    let config = Config::default();
-    Ok(config)
-  } else {
-    // Get each value individually
-    let config = Config {
-      pin: store
-        .get("pin")
-        .and_then(|v| v.as_bool())
-        .unwrap_or_default(),
-    };
-    Ok(config)
-  }
 }
 
 fn main() {
@@ -188,22 +158,6 @@ fn main() {
         height: SETTINGS_WINDOW_HEIGHT,
       });
 
-      // load the store
-      let store = app.store("config.json")?;
-      let config = get_config(&store).map_err(|e| e.to_string())?;
-
-      // NOTE: we are only letting the backend use the pinned state
-      if config.pin {
-        app
-          .state::<Pinned>()
-          .store(true, std::sync::atomic::Ordering::Relaxed);
-        set_pin(
-          main_window,
-          app.state::<Pinned>(),
-          app.state::<TrayMenu>(),
-          true,
-        );
-      }
 
       Ok(())
     })

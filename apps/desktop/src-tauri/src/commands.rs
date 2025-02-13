@@ -5,6 +5,7 @@ use std::{
 
 use serde_json::json;
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
+use tauri_plugin_store::StoreExt;
 
 use crate::{constants::*, Pinned, TrayMenu};
 
@@ -80,14 +81,9 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
-  let payload = json!({
-    "key": "pin",
-    "value": value
-  });
-
-  // FIXME: we should use the store directly to modify the value and we won't have to do the hack below
-  // HACK: this is a hack
-  window.emit("store://change", payload).unwrap();
+  let app = window.app_handle();
+  let store = app.store(CONFIG_FILE).unwrap();
+  store.set("pinned", json!(value));
 
   // invert the label for the tray
   if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {

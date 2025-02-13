@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 export const Configuration = () => {
   const store = useAppStore();
-  const { telemetry, showOnlyTalkingUsers, showOwnUser, opacity, pin } = store.settings;
+  const { telemetry, showOnlyTalkingUsers, showOwnUser, opacity, pinned} = store.settings;
 
   return (
     <div className="flex flex-col gap-4 mt-4">
@@ -85,10 +85,10 @@ export const Configuration = () => {
         </label>
         <Switch
           id="pin"
-          checked={pin}
+          checked={pinned}
           onCheckedChange={async () => {
-            const flag = !pin;
-            store.setSettingValue("pin", flag);
+            const flag = !pinned;
+            store.setSettingValue("pinned", flag);
 
             // let rust know to update the tray
             await invoke("set_pin", {

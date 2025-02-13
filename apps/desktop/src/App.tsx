@@ -31,7 +31,7 @@ function App() {
   const { update } = useUpdate();
   const { visible, settings } = useAppStore();
 
-  const pin = settings.pin;
+  const pin = settings.pinned;
 
   const { horizontal, setHorizontalDirection } = useAlign();
   const visibleClass = visible ? "opacity-100" : "opacity-0";
