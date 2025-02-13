@@ -10,16 +10,14 @@ import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useUpdate } from "./hooks/use-update";
 import { useAppStore } from "./store";
 import { Toaster } from "./components/ui/toaster";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSocket } from "./rpc/manager";
 import { cn } from "./utils/tw";
-import React from "react";
 import { LazyStore } from "@tauri-apps/plugin-store";
-import { useConfigValue } from "./hooks/use-config-value";
 import { twMerge } from "tailwind-merge";
+import { useSettings } from "./hooks/use-settings";
 
 export const settings = new LazyStore("config.json");
-export const SettingContext = React.createContext(settings);
 
 function App() {
   useDisableWebFeatures();
@@ -31,8 +29,9 @@ function App() {
   }, []);
 
   const { update } = useUpdate();
-  const { visible } = useAppStore();
-  const { value: pin } = useConfigValue("pin");
+  const { visible, settings } = useAppStore();
+
+  const pin = settings.pin;
 
   const { horizontal, setHorizontalDirection } = useAlign();
   const visibleClass = visible ? "opacity-100" : "opacity-0";
@@ -65,11 +64,20 @@ function App() {
 }
 
 function AppWrapper() {
-  return (
-    <SettingContext.Provider value={settings}>
-      <App />
-    </SettingContext.Provider>
-  );
+  const store = useAppStore();
+  const allSettings = useSettings();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!allSettings) return;
+    setIsLoading(true);
+    store.loadSettings(allSettings);
+    setIsLoading(false);
+  }, [allSettings]);
+
+  if (isLoading) <p>loading...</p>;
+
+  return <App />;
 }
 
 export default AppWrapper;

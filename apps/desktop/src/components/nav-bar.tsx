@@ -10,13 +10,12 @@ import {
 } from "lucide-react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
 import React, { useContext, useEffect } from "react";
-import { type DirectionLR } from "../config";
+import { type DirectionLR } from "@/store";
 import { useAppStore } from "../store";
 import { useState } from "react";
 import { CHANNEL_TYPES } from "@/constants";
 import { Metric, track } from "@/metrics";
 import { invoke } from "@tauri-apps/api/core";
-import { SettingContext } from "@/App";
 const mapping = {
   left: 0,
   center: 1,
@@ -58,10 +57,10 @@ export const NavBar = ({
   setAlignDirection: React.Dispatch<React.SetStateAction<DirectionLR>>;
   isUpdateAvailable: boolean;
 }) => {
-  const store = useContext(SettingContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentChannel } = useAppStore();
+  const store = useAppStore();
+  const currentChannel = store.currentChannel;
 
   const [channelName, setChannelName] = useState<string>();
   const [currentAlignment, setCurrentAlignment] = useState(mapping[alignDirection]);
@@ -125,7 +124,7 @@ export const NavBar = ({
                   const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
                   setCurrentAlignment(newAlignment);
                   setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
-                  await store.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
+                  store.setSettingValue("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
                 }}
               />
             </button>
@@ -134,7 +133,7 @@ export const NavBar = ({
                 size={20}
                 onClick={async () => {
                   await invoke("toggle_pin");
-                  await store.set("pin", !pin);
+                  store.setSettingValue("pin", !pin);
                   // track if it gets pinned
                   await track(Metric.Pin, 1);
                   navigate("/channel");

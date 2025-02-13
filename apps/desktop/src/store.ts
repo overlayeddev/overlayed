@@ -2,8 +2,37 @@ import { create } from "zustand";
 import type { CurrentChannel, OverlayedUser, VoiceStateUser } from "./types";
 import { immer } from "zustand/middleware/immer";
 import { enableMapSet } from "immer";
+import { settings } from "./App";
 
 enableMapSet();
+
+export type DirectionLR = "left" | "right" | "center";
+export type DirectionTB = "top" | "bottom";
+
+const DEFAULT_SETTINGS: AppSettings = {
+  pin: false,
+  horizontal: "right",
+  // TODO: vertical alignment? i.e., if aligned to bottom, then the navbar should be at the bottom (and corner radius changes appropriately)
+  vertical: "bottom",
+  telemetry: true,
+  joinHistoryNotifications: false,
+  showOnlyTalkingUsers: false,
+  showOwnUser: true,
+  opacity: 100,
+};
+
+export interface AppSettings {
+  pin: boolean;
+  horizontal: DirectionLR;
+  vertical: DirectionTB;
+  telemetry: boolean;
+  joinHistoryNotifications: boolean;
+  showOnlyTalkingUsers: boolean;
+  showOwnUser: boolean;
+  opacity: number;
+}
+
+export type AppSettingsKeys = keyof AppSettings;
 
 export const createUserStateItem = (payload: VoiceStateUser) => {
   const data: OverlayedUser = {
@@ -30,6 +59,7 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 };
 
 export interface AppState {
+  settings: AppSettings;
   visible: boolean;
   pin: boolean;
   me: OverlayedUser | null;
@@ -51,7 +81,15 @@ export interface AppActions {
   setMe: (user: OverlayedUser | null) => void;
   pushError: (message: string) => void;
   resetErrors: () => void;
+
+  setSettingValue: <T extends AppSettingsKeys>(key: T, value: AppSettings[T], skipPersist?: boolean) => void;
+  loadSettings: (config: AppSettings) => void;
 }
+
+const getUnseenKeys = (mergedSettings: AppSettings, currentFields: (keyof AppSettings)[]): (keyof AppSettings)[] => {
+  const unseenKeys = (Object.keys(mergedSettings) as (keyof AppSettings)[]).filter(key => !currentFields.includes(key));
+  return unseenKeys;
+};
 
 // sort discord users by name and myself on top
 const sortUserList = (myId: string | undefined, users: VoiceStateUser[]) => {
@@ -92,6 +130,7 @@ const sortOverlayedUsers = (myId: string | undefined, users: Record<string, Over
 // TODO: split this into multiple stores
 export const useAppStore = create<AppState & AppActions>()(
   immer(set => ({
+    settings: DEFAULT_SETTINGS,
     visible: true,
     me: null,
     discordErrors: new Set(),
@@ -147,6 +186,43 @@ export const useAppStore = create<AppState & AppActions>()(
     resetErrors: () =>
       set(state => {
         state.discordErrors.clear();
+      }),
+
+    loadSettings: (rawSettings: AppSettings) =>
+      set(state => {
+        // handle merging new settings that are the input object
+        const currentFields = Object.keys(rawSettings) as AppSettingsKeys[];
+        const mergedSettings = { ...DEFAULT_SETTINGS, ...rawSettings };
+
+        // give me the new keys
+        const unseenKeys = getUnseenKeys(mergedSettings, currentFields);
+
+        if (unseenKeys.length >= 0) {
+          for (const key of unseenKeys) {
+            if (currentFields.includes(key)) continue;
+            settings.set(key, mergedSettings[key]);
+          }
+
+          console.log("saving settings...");
+          settings.save();
+        }
+
+        state.settings = mergedSettings;
+
+        return state;
+      }),
+    setSettingValue: (key, val, skipPersist = false) =>
+      set(state => {
+        state.settings[key] = val;
+
+        if (!skipPersist) {
+          // NOTE: always perist to tauri but it's not blocking so fire and forget?
+          settings.set(key, val);
+          // write to disk
+          settings.save();
+        }
+
+        return state;
       }),
   }))
 );

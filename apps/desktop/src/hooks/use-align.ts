@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type DirectionLR, type DirectionTB } from "../config";
+import { type DirectionLR, type DirectionTB } from "@/store";
 
 // TODO: make it update automatically when the window moves
 export const useAlign = () => {

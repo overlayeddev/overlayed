@@ -1,17 +1,11 @@
-import { SettingContext } from "@/App";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useConfigValue } from "@/hooks/use-config-value";
+import { useAppStore } from "@/store";
 import { invoke } from "@tauri-apps/api/core";
-import { useContext } from "react";
 
 export const Configuration = () => {
-  const { value: telemetry } = useConfigValue("telemetry");
-  const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
-  const { value: showOwnUser } = useConfigValue("showOwnUser");
-  const { value: opacity } = useConfigValue("opacity");
-  const { value: pin } = useConfigValue("pin");
-  const store = useContext(SettingContext);
+  const store = useAppStore();
+  const { telemetry, showOnlyTalkingUsers, showOwnUser, opacity, pin } = store.settings;
 
   return (
     <div className="flex flex-col gap-4 mt-4">
@@ -27,7 +21,7 @@ export const Configuration = () => {
           checked={showOwnUser}
           onCheckedChange={async () => {
             const flag = !showOwnUser;
-            store.set("showOwnUser", flag);
+            store.setSettingValue("showOwnUser", flag);
           }}
         />
       </div>
@@ -43,7 +37,7 @@ export const Configuration = () => {
           checked={showOnlyTalkingUsers}
           onCheckedChange={async () => {
             const flag = !showOnlyTalkingUsers;
-            store.set("showOnlyTalkingUsers", flag);
+            store.setSettingValue("showOnlyTalkingUsers", flag);
           }}
         />
       </div>
@@ -60,7 +54,7 @@ export const Configuration = () => {
           value={opacity}
           onChange={async event => {
             const newOpacity = event.target.value;
-            store.set("opacity", Number(newOpacity));
+            store.setSettingValue("opacity", Number(newOpacity));
           }}
           className="w-20"
         />
@@ -77,7 +71,7 @@ export const Configuration = () => {
           checked={telemetry}
           onCheckedChange={async () => {
             const flag = !telemetry;
-            store.set("telemetry", flag);
+            store.setSettingValue("telemetry", flag);
           }}
         />
       </div>
@@ -94,7 +88,7 @@ export const Configuration = () => {
           checked={pin}
           onCheckedChange={async () => {
             const flag = !pin;
-            store.set("pin", flag);
+            store.setSettingValue("pin", flag);
 
             // let rust know to update the tray
             await invoke("set_pin", {
