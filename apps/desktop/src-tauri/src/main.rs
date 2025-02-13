@@ -19,8 +19,10 @@ use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
 };
+
 use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
 use tauri_plugin_log::{Target, TargetKind};
+use tauri_plugin_store::StoreExt;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 use tray::Tray;
 use window_custom::WebviewWindowExt;
@@ -142,8 +144,8 @@ fn main() {
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       {
-        main_window.open_devtools();
-        settings_window.open_devtools();
+        // main_window.open_devtools();
+        // settings_window.open_devtools();
       }
 
       // update the system tray
@@ -155,6 +157,33 @@ fn main() {
         height: SETTINGS_WINDOW_HEIGHT,
       });
 
+      // load the store
+      let store = app.store(CONFIG_FILE)?;
+      let result = store.get("pinned").and_then(|v| v.as_bool());
+      let mut pinned = false;
+
+      // HACK: if they are first time user the config will be empty/not created
+      if result.is_none() {
+        store.set("pinned", false);
+        _ = store.save();
+      } else {
+        pinned = result.unwrap();
+      }
+
+      if pinned {
+        // TODO: we can probably get rid of this and just use the tauri plugin store
+        // where we need to read read this value
+        app
+          .state::<Pinned>()
+          .store(true, std::sync::atomic::Ordering::Relaxed);
+
+        set_pin(
+          main_window,
+          app.state::<Pinned>(),
+          app.state::<TrayMenu>(),
+          true,
+        );
+      }
 
       Ok(())
     })
