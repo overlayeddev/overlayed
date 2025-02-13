@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 export const Configuration = () => {
   const store = useAppStore();
-  const { telemetry, showOnlyTalkingUsers, showOwnUser, opacity, pinned} = store.settings;
+  const { telemetry, showOnlyTalkingUsers, showOwnUser, opacity, pinned } = store.settings;
 
   return (
     <div className="flex flex-col gap-4 mt-4">

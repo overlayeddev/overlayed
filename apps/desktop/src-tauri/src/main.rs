@@ -163,10 +163,7 @@ fn main() {
       let mut pinned = false;
 
       // HACK: if they are first time user the config will be empty/not created
-      if result.is_none() {
-        store.set("pinned", false);
-        _ = store.save();
-      } else {
+      if !result.is_none() {
         pinned = result.unwrap();
       }
 
