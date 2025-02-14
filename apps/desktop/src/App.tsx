@@ -5,7 +5,6 @@ import { ChannelView } from "./views/channel";
 import { SettingsView } from "./views/settings";
 import { ErrorView } from "./views/error";
 import { NavBar } from "./components/nav-bar";
-import { useAlign } from "./hooks/use-align";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useUpdate } from "./hooks/use-update";
 import { useAppStore } from "./store";
@@ -30,27 +29,17 @@ function App() {
 
   const { update } = useUpdate();
   const { settings } = useAppStore();
-
-  const pin = settings.pinned;
-
-  const { horizontal, setHorizontalDirection } = useAlign();
   const location = useLocation();
 
+  const { pinned, horizontal } = settings;
   return (
     <div
       className={twMerge(
         cn("text-white h-screen select-none rounded-lg"),
-        !pin && location.pathname === "/channel" ? "border border-accent" : ""
+        !pinned && location.pathname === "/channel" ? "border border-accent" : ""
       )}
     >
-      {!pin && (
-        <NavBar
-          isUpdateAvailable={update?.available ?? false}
-          pin={pin}
-          alignDirection={horizontal}
-          setAlignDirection={setHorizontalDirection}
-        />
-      )}
+      {!pinned && <NavBar isUpdateAvailable={update?.available ?? false} pin={pinned} alignDirection={horizontal} />}
       <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />

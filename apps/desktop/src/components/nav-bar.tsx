@@ -49,12 +49,10 @@ const horizontalAlignments: Alignment[] = [
 export const NavBar = ({
   pin,
   alignDirection,
-  setAlignDirection,
   isUpdateAvailable,
 }: {
   pin: boolean;
   alignDirection: DirectionLR;
-  setAlignDirection: React.Dispatch<React.SetStateAction<DirectionLR>>;
   isUpdateAvailable: boolean;
 }) => {
   const location = useLocation();
@@ -123,7 +121,6 @@ export const NavBar = ({
                 onClick={async () => {
                   const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
                   setCurrentAlignment(newAlignment);
-                  setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
                   store.setSettingValue("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
                 }}
               />
