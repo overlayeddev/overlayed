@@ -13,7 +13,7 @@ interface StoreUpdatePayload {
 }
 
 export const useSettings = () => {
-  // const store = useAppStore();
+  const store = useAppStore();
   const initialSettingsRef = useRef<AppSettings | null>(null);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const useSettings = () => {
     const fn = listen<StoreUpdatePayload>("store://change", event => {
       const { key, value } = event.payload;
       console.log("store change", key, value);
-      // store.setSettingValue(key, value, true);
+      store.setSettingValue(key, value, true);
     });
 
     return () => {

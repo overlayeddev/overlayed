@@ -9,24 +9,25 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { type DirectionLR } from "@/store";
 import { useAppStore } from "../store";
 import { useState } from "react";
 import { CHANNEL_TYPES } from "@/constants";
 import { Metric, track } from "@/metrics";
 import { invoke } from "@tauri-apps/api/core";
-const mapping = {
-  left: 0,
-  center: 1,
-  right: 2,
-};
 
 interface Alignment {
   direction: DirectionLR;
   name: string;
   icon: LucideIcon;
 }
+
+const mapping = {
+  left: 0,
+  center: 1,
+  right: 2,
+};
 
 const horizontalAlignments: Alignment[] = [
   {
