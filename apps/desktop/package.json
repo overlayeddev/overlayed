@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "tauri dev",
+    "start": "LOG_LEVEL=debug tauri dev",
     "start:canary": "tauri dev --config \"src-tauri/tauri.conf.canary.json\"",
     "dev": "vite",
     "build": "tsc && vite build",

@@ -80,8 +80,9 @@ fn main() {
   let tauri_plugin_window_state =
     tauri_plugin_window_state::Builder::default().with_state_flags(flags);
   let log_level = std::env::var("LOG_LEVEL").unwrap_or_else(|_| "info".to_string());
-
   let log_level_filter = log::LevelFilter::from_str(&log_level).unwrap_or(log::LevelFilter::Info);
+
+  println!("Overlayed log level: {log_level}");
 
   let tauri_plugin_log = tauri_plugin_log::Builder::new()
     .targets([Target::new(TargetKind::LogDir { file_name: None })])
@@ -166,6 +167,8 @@ fn main() {
       if !result.is_none() {
         pinned = result.unwrap();
       }
+
+      debug!("pinned: {pinned}");
 
       if pinned {
         // TODO: we can probably get rid of this and just use the tauri plugin store

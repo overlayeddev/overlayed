@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { settings } from "../App";
 import { useAppStore, type AppSettings } from "../store";
 import { listen } from "@tauri-apps/api/event";
@@ -8,17 +8,18 @@ interface StoreUpdatePayload {
   resourceId: number;
   key: keyof AppSettings;
   // TODO: how to fix this?
-  value: never;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  value: any;
   exists: boolean;
 }
 
 export const useSettings = () => {
   const store = useAppStore();
-  const initialSettingsRef = useRef<AppSettings | null>(null);
+  const [initialSettings, setInitialSettings] = useState<AppSettings | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    // NOTE: we wonly load settings once
-    if (initialSettingsRef.current) return;
     const loadSettings = async () => {
       try {
         const keys = await settings.keys();
@@ -28,7 +29,6 @@ export const useSettings = () => {
           try {
             const value = await settings.get(key);
 
-            console.log("loaded setting", key, value);
             // Type assertion to handle potential type mismatches.  Important!
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -38,8 +38,7 @@ export const useSettings = () => {
           }
         }
 
-        console.log("loaded settings", loadedSettings);
-        initialSettingsRef.current = loadedSettings as AppSettings; // Store in ref
+        setInitialSettings(loadedSettings as AppSettings); // Cast to AppSettings
       } catch (error) {
         console.error("Error loading settings keys:", error);
       }
@@ -50,7 +49,6 @@ export const useSettings = () => {
     // listen for backend changes from the rust side
     const fn = listen<StoreUpdatePayload>("store://change", event => {
       const { key, value } = event.payload;
-      console.log("store change", key, value);
       store.setSettingValue(key, value, true);
     });
 
@@ -59,5 +57,5 @@ export const useSettings = () => {
     };
   }, []);
 
-  return initialSettingsRef.current;
+  return initialSettings;
 };
