@@ -60,8 +60,6 @@ export const createUserStateItem = (payload: VoiceStateUser) => {
 
 export interface AppState {
   settings: AppSettings;
-  visible: boolean;
-  pin: boolean;
   me: OverlayedUser | null;
   currentChannel: CurrentChannel | null;
   users: Record<string, OverlayedUser>;
@@ -69,8 +67,6 @@ export interface AppState {
 }
 
 export interface AppActions {
-  setAppVisible: (value: boolean) => void;
-  setPin: (enbabled: boolean) => void;
   setTalking: (id: string, talking: boolean) => void;
   setUsers: (users: VoiceStateUser[]) => void;
   updateUser: (user: VoiceStateUser) => void;
@@ -131,16 +127,11 @@ const sortOverlayedUsers = (myId: string | undefined, users: Record<string, Over
 export const useAppStore = create<AppState & AppActions>()(
   immer(set => ({
     settings: DEFAULT_SETTINGS,
-    visible: true,
     me: null,
     discordErrors: new Set(),
     pin: false,
     currentChannel: null,
     users: {},
-    setAppVisible: value =>
-      set(state => {
-        state.visible = value;
-      }),
     setMe: data =>
       set(state => {
         state.me = data;
@@ -174,10 +165,6 @@ export const useAppStore = create<AppState & AppActions>()(
     setCurrentChannel: channel =>
       set(state => {
         state.currentChannel = channel;
-      }),
-    setPin: (enabled: boolean) =>
-      set(state => {
-        state.pin = enabled;
       }),
     pushError: error =>
       set(state => {

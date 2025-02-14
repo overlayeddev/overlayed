@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { settings } from "../App";
 import { useAppStore, type AppSettings } from "../store";
 import { listen } from "@tauri-apps/api/event";
@@ -13,11 +13,12 @@ interface StoreUpdatePayload {
 }
 
 export const useSettings = () => {
-  const store = useAppStore();
-  const [initialSettings, setInitialSettings] = useState<AppSettings | null>(null);
+  // const store = useAppStore();
+  const initialSettingsRef = useRef<AppSettings | null>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
+    // NOTE: we wonly load settings once
+    if (initialSettingsRef.current) return;
     const loadSettings = async () => {
       try {
         const keys = await settings.keys();
@@ -27,6 +28,7 @@ export const useSettings = () => {
           try {
             const value = await settings.get(key);
 
+            console.log("loaded setting", key, value);
             // Type assertion to handle potential type mismatches.  Important!
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -36,7 +38,8 @@ export const useSettings = () => {
           }
         }
 
-        setInitialSettings(loadedSettings as AppSettings); // Cast to AppSettings
+        console.log("loaded settings", loadedSettings);
+        initialSettingsRef.current = loadedSettings as AppSettings; // Store in ref
       } catch (error) {
         console.error("Error loading settings keys:", error);
       }
@@ -48,7 +51,7 @@ export const useSettings = () => {
     const fn = listen<StoreUpdatePayload>("store://change", event => {
       const { key, value } = event.payload;
       console.log("store change", key, value);
-      store.setSettingValue(key, value, true);
+      // store.setSettingValue(key, value, true);
     });
 
     return () => {
@@ -56,5 +59,5 @@ export const useSettings = () => {
     };
   }, []);
 
-  return initialSettings;
+  return initialSettingsRef.current;
 };

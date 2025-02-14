@@ -29,18 +29,17 @@ function App() {
   }, []);
 
   const { update } = useUpdate();
-  const { visible, settings } = useAppStore();
+  const { settings } = useAppStore();
 
   const pin = settings.pinned;
 
   const { horizontal, setHorizontalDirection } = useAlign();
-  const visibleClass = visible ? "opacity-100" : "opacity-0";
   const location = useLocation();
 
   return (
     <div
       className={twMerge(
-        cn("text-white h-screen select-none rounded-lg", visibleClass),
+        cn("text-white h-screen select-none rounded-lg"),
         !pin && location.pathname === "/channel" ? "border border-accent" : ""
       )}
     >
