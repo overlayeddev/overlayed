@@ -1,6 +1,6 @@
 import { axiom } from "@/axiom";
-import { settings } from "@/App";
 import * as Sentry from "@sentry/react";
+import { useAppStore as appStore } from "@/store";
 
 export const OVERLAYED_DATASET = "overlayed-prod";
 
@@ -18,8 +18,9 @@ export const Metric = {
 
 type MetricNamesValues = (typeof Metric)[keyof typeof Metric];
 
+// TODO: how can we do this logic once then track and trackEvent are no-ops if disabled?
 const isTelemetryEnabled = async () => {
-  const telemetryEnabled = await settings.get("telemetry");
+  const telemetryEnabled = appStore.getState().settings.telemetry;
   const hasTelemetryToken = import.meta.env.VITE_AXIOM_TOKEN;
   console.log(telemetryEnabled, hasTelemetryToken);
 

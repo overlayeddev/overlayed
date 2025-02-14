@@ -144,8 +144,8 @@ fn main() {
       // Open dev tools only when in dev mode
       #[cfg(debug_assertions)]
       {
-        // main_window.open_devtools();
-        // settings_window.open_devtools();
+        main_window.open_devtools();
+        settings_window.open_devtools();
       }
 
       // update the system tray
