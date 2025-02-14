@@ -27,11 +27,24 @@ function App() {
     console.log(`%cOverlayed ${window.location.hash} Window`, styleForLog);
   }, []);
 
+  const allSettings = useSettings();
   const { update } = useUpdate();
-  const { settings } = useAppStore();
+  const store = useAppStore();
   const location = useLocation();
 
-  const { pinned, horizontal } = settings;
+  const { pinned, horizontal } = store.settings;
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!allSettings) return;
+    console.log("all settings", allSettings);
+    setIsLoading(true);
+    store.loadSettings(allSettings);
+    setIsLoading(false);
+  }, [allSettings]);
+
+  if (isLoading) <p>loading...</p>;
+
   return (
     <div
       className={twMerge(
@@ -51,21 +64,4 @@ function App() {
   );
 }
 
-function AppWrapper() {
-  const store = useAppStore();
-  const allSettings = useSettings();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!allSettings) return;
-    setIsLoading(true);
-    store.loadSettings(allSettings);
-    setIsLoading(false);
-  }, [allSettings]);
-
-  if (isLoading) <p>loading...</p>;
-
-  return <App />;
-}
-
-export default AppWrapper;
+export default App;
