@@ -28,6 +28,7 @@ tokio = { version = "1.38.0", features = [
 tauri-plugin-window-state = { git = "https://github.com/Hacksore/plugins-workspace", branch = "v2" }
 
 tauri-plugin-single-instance = { version = "2.0.0-rc.3" }
+tauri-plugin-store = { version = "2.2.0" }
 tauri-plugin-websocket = { version = "2.2.0" }
 tauri-plugin-fs = "2.2.0"
 tauri-plugin-process = "2.2.0"
@@ -50,6 +51,8 @@ system-notification = { git = "https://github.com/ahkohd/tauri-toolkit", branch 
 tauri-plugin-updater = "2.0.0-rc.3"
 
 [features]
+# Define the cargo-clippy feature
+cargo-clippy = []
 # this feature is used for production builds or when `devPath` points to the filesystem
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]

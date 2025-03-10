@@ -1,5 +1,6 @@
 import { axiom } from "@/axiom";
-import Config from "@/config";
+import * as Sentry from "@sentry/react";
+import { useAppStore as appStore } from "@/store";
 
 export const OVERLAYED_DATASET = "overlayed-prod";
 
@@ -17,21 +18,27 @@ export const Metric = {
 
 type MetricNamesValues = (typeof Metric)[keyof typeof Metric];
 
-// NOTE: allow opt-out of tracking from the settings UI
-const isTelemetryEnabled = () => {
-  return import.meta.env.VITE_AXIOM_TOKEN && Config.get("telemetry");
+// TODO: how can we do this logic once then track and trackEvent are no-ops if disabled?
+const isTelemetryEnabled = async () => {
+  const telemetryEnabled = appStore.getState().settings.telemetry;
+  const hasTelemetryToken = import.meta.env.VITE_AXIOM_TOKEN;
+  console.log(telemetryEnabled, hasTelemetryToken);
+
+  if (!(telemetryEnabled && hasTelemetryToken)) {
+    console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");
+    console.warn("[TELEMETRY] Disabling sentry.io telemetry because the user has disabled it");
+    await Sentry.close();
+  } else {
+    console.log("[TELEMETRY] Axiom telemetry is enabled!");
+    console.log("[TELEMETRY] sentry.io telemetry is enabled!");
+  }
+
+  return telemetryEnabled && hasTelemetryToken;
 };
 
-// tell the user if they have telemetry disabled
-if (!(await Config.get("telemetry"))) {
-  console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");
-} else {
-  console.log("[TELEMETRY] Axiom telemetry is enabled!");
-}
-
 /** Will track metric was successful or not. */
-export const track = (name: MetricNamesValues, status: number) => {
-  if (!isTelemetryEnabled()) return;
+export const track = async (name: MetricNamesValues, status: number) => {
+  if (!(await isTelemetryEnabled())) return;
 
   axiom.ingest(OVERLAYED_DATASET, [
     {
@@ -42,8 +49,8 @@ export const track = (name: MetricNamesValues, status: number) => {
 };
 
 /** Will track metric was successful or not. */
-export const trackEvent = (name: MetricNamesValues, payload: unknown) => {
-  if (!isTelemetryEnabled()) return;
+export const trackEvent = async (name: MetricNamesValues, payload: unknown) => {
+  if (!(await isTelemetryEnabled())) return;
 
   axiom.ingest(OVERLAYED_DATASET, [
     {

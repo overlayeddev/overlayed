@@ -30,6 +30,8 @@
     "core:window:allow-set-size",
     "core:window:allow-start-dragging",
     "core:window:deny-maximize",
+    "core:window:allow-outer-position",
+    "core:window:allow-outer-size",
     "process:default",
     "core:tray:default",
     "core:app:default",
@@ -48,6 +50,7 @@
         "http:default"
       ]
     },
-    "notification:default"
+    "notification:default",
+    "store:default"
   ]
 }

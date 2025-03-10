@@ -1,14 +1,13 @@
-import type { DirectionLR } from "@/config";
+import type { DirectionLR } from "@/store";
 import { User } from "../components/user";
 import { useAppStore } from "../store";
-import { useConfigValue } from "@/hooks/use-config-value";
 
 export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR }) => {
-  const { users, me } = useAppStore();
+  const { users, me, settings } = useAppStore();
 
-  const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
-  const { value: showOwnUser } = useConfigValue("showOwnUser");
-  const { value: opacity } = useConfigValue("opacity");
+  const showOnlyTalkingUsers = settings.showOnlyTalkingUsers;
+  const showOwnUser = settings.showOwnUser;
+  const opacity = settings.opacity;
 
   const allUsers = Object.entries(users);
   let userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking) : allUsers;

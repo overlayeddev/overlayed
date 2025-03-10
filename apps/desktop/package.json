@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "tauri dev",
+    "start": "LOG_LEVEL=debug tauri dev",
     "start:canary": "tauri dev --config \"src-tauri/tauri.conf.canary.json\"",
     "dev": "vite",
     "build": "tsc && vite build",
@@ -43,6 +43,7 @@
     "@tauri-apps/plugin-os": "2.2.0",
     "@tauri-apps/plugin-process": "2.2.0",
     "@tauri-apps/plugin-shell": "2.2.0",
+    "@tauri-apps/plugin-store": "^2.2.0",
     "@tauri-apps/plugin-updater": "2.5.0",
     "@tauri-apps/plugin-websocket": "2.3.0",
     "@tauri-apps/plugin-window-state": "2.2.1",

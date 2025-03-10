@@ -9,16 +9,15 @@ import { Event } from "@/constants";
 import { useToast } from "@/components/ui/use-toast";
 import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
 import { Checkbox } from "@/components/ui/checkbox";
-import Config from "@/config";
 import type { JoinHistoryLogUser } from "@/types";
-import { useConfigValue } from "@/hooks/use-config-value";
-import { emit } from "@tauri-apps/api/event";
+import { useAppStore } from "@/store";
 
 const MAX_LOG_LENGTH = 420;
 
 export const JoinHistory = () => {
+  const store = useAppStore();
   const [userLog, setUserLog] = useState<JoinHistoryLogUser[]>([]);
-  const { value: joinHistoryNotifications } = useConfigValue("joinHistoryNotifications");
+  const joinHistoryNotifications = store.settings.joinHistoryNotifications;
 
   const { toast } = useToast();
   const notificationListener = useRef<Promise<UnlistenFn> | null>(null);
@@ -77,8 +76,7 @@ export const JoinHistory = () => {
             id="notification"
             checked={joinHistoryNotifications}
             onCheckedChange={async () => {
-              await Config.set("joinHistoryNotifications", !joinHistoryNotifications);
-              await emit("config_update", await Config.getConfig());
+              store.setSettingValue("joinHistoryNotifications", !joinHistoryNotifications);
             }}
           />
           <label

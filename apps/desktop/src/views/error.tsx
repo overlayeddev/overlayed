@@ -5,7 +5,7 @@ import { useAppStore } from "../store";
 import { exit } from "@tauri-apps/plugin-process";
 
 export const ErrorView = () => {
-  useSetWindowSize({ width: 400, height: 600 });
+  useSetWindowSize({ width: 800, height: 1200 });
   const { discordErrors } = useAppStore();
 
   return (
