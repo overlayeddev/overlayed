@@ -22,7 +22,7 @@ export default defineConfig(async () => ({
     },
   },
   build: {
-    target: "esnext",
+    target: ["es2021", "chrome97", "safari13"],
     sourcemap: true,
   },
   clearScreen: false,

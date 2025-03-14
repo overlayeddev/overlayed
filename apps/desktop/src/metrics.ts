@@ -22,12 +22,13 @@ const isTelemetryEnabled = () => {
   return import.meta.env.VITE_AXIOM_TOKEN && Config.get("telemetry");
 };
 
+// TODO: fix this with the config update, top level await is no longer allowed for older targets :(
 // tell the user if they have telemetry disabled
-if (!(await Config.get("telemetry"))) {
-  console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");
-} else {
-  console.log("[TELEMETRY] Axiom telemetry is enabled!");
-}
+// if (!(await Config.get("telemetry"))) {
+//   console.warn("[TELEMETRY] Disabling axiom telemetry because the user has disabled it");
+// } else {
+//   console.log("[TELEMETRY] Axiom telemetry is enabled!");
+// }
 
 /** Will track metric was successful or not. */
 export const track = (name: MetricNamesValues, status: number) => {
