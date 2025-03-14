@@ -1,5 +1,6 @@
 // shim some stuff
 import "core-js/actual/promise";
+import "core-js/full/bigint";
 
 import React from "react";
 import ReactDOM from "react-dom/client";
