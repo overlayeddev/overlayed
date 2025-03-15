@@ -100,7 +100,7 @@ async function uploadCanaryArtifacts({ github, context }) {
   const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    run_id: context.runId || "10445719576",
+    run_id: context.runId || "13859303155",
   });
 
   // download all the artifacts from the build
