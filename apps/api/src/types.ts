@@ -1,5 +1,5 @@
 import type { Endpoints } from "@octokit/types";
-import { Context } from "hono";
+import type { Context } from "hono";
 
 export type RepoResponse =
 	Endpoints["GET /repos/{owner}/{repo}"]["response"]["data"];

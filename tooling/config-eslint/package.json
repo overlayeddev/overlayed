@@ -2,6 +2,16 @@
   "name": "lint",
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./node.js",
+      "require": "./node.js"
+    },
+    "./next.js": {
+      "import": "./next.js",
+      "require": "./next.js"
+    }
+  },
   "files": [
     "node.js",
     "next.js",
