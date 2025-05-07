@@ -47,7 +47,6 @@
     "sharp": "^0.33.5",
     "tsconfig": "workspace:*",
     "types": "workspace:*",
-    "typescript": "~5.7.3",
     "unist-util-visit": "^5.0.0",
     "utils": "workspace:*"
   }
