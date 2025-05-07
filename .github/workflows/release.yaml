@@ -1,4 +1,4 @@
-name: "Create Release"
+name: "Release"
 
 on:
   # Allow manual
@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   create-release:
+    name: Create or Update
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -104,7 +105,8 @@ jobs:
           releaseId: ${{ needs.create-release.outputs.release_id }}
           args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }},updater
 
-  sign-windows:
+  sign-windows-bins:
+    name: Sign Windows Binaries
     runs-on: ubuntu-latest
     needs: [create-release, build-tauri]
     permissions:
