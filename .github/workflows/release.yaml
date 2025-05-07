@@ -129,36 +129,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
           path: ./binaries
-      # - name: Sign Windows Binaries
-      #   uses: signpath/github-action-submit-signing-request@v1.1
-      #   with:
-      #     api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-      #     organization-id: '<SignPath organization id>'
-      #     project-slug: '<SignPath project slug>'
-      #     signing-policy-slug: '<SignPath signing policy slug>'
-      #     github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
-      #     wait-for-completion: true
-      #     output-artifact-directory: 'binaries/signed'
-      #     parameters: |
-      #       version: ${{ toJSON(some.userinput) }}
-      #       myparam: "another param"
-      # FIXME: this was the old code
-      # - name: Sign Windows Binaries
-      #   run: |
-      #     echo "Starting code sign for windows bins..."
-      #     docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
-      #       -username=${ES_USERNAME} \
-      #       -password=${ES_PASSWORD} \
-      #       -credential_id=${ES_CREDENTIAL_ID} \
-      #       -totp_secret=${ES_TOTP_SECRET} \
-      #       -input_dir_path="/code/binaries" \
-      #       -output_dir_path="/code/binaries/signed"
-      #   env:
-      #     ES_USERNAME: "${{ secrets.ES_USERNAME }}"
-      #     ES_PASSWORD: "${{ secrets.ES_PASSWORD }}"
-      #     ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
-      #     ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
-
+      - name: Sign Windows Binaries
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: 'b2cc34a4-3b75-4753-82e4-b755351770ea'
+          project-slug: 'overlayed'
+          signing-policy-slug: 'test-signing'
+          github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: 'binaries/signed'
       - name: Postsign
         run: |
           ls -hal binaries/signed
