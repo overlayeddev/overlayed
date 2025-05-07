@@ -6,6 +6,7 @@ on:
   push:
     branches:
       # TODO: REMOVE ME BEFORE MERGE
+      # FIXME: fr fr ong pls remove
       - migrate/codesign
 
 concurrency:

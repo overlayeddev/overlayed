@@ -1,0 +1,24 @@
+github-policies:
+  runners:
+    allowed_groups:
+      - 'GitHub Actions'                         # all jobs need to run on GitHub-hosted runners
+  build:
+    disallow_reruns: true
+  branch_rulesets:
+    - condition:
+        rules:
+        - block_force_pushes:                    # force pushes are prevented
+        - pull_request:                          # code reviews are required
+            min_required_approvals: 1
+            require_code_owner_review: true
+      allow_bypass_actors: false                 # no-one is allowed to bypass this rule
+      enforced_from: EARLIEST                    # rule enforcement history is checked
+    - condition:
+        rules:
+        - require_code_scanning:                 # code scanning must not reveal problems
+            tools:
+              - tool: CodeQL
+                min_alerts_threshold: errors
+                min_security_alerts_threshold: medium
+        allow_bypass_actors: true                # some people may bypass these rules
+        enforced_from: '2025-01-01 00:00'        # had to be reset at some point
