@@ -126,7 +126,7 @@ jobs:
       - name: Presign
         run: |
           ls -hal binaries
-          sha1sum binaries/*
+          sha256sum binaries/*
       - name: upload-unsigned-artifact
         id: upload-unsigned-artifact
         uses: actions/upload-artifact@v4
@@ -138,6 +138,7 @@ jobs:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: 'b2cc34a4-3b75-4753-82e4-b755351770ea'
           project-slug: 'overlayed'
+          # TODO: when we have the production signing policy update this
           signing-policy-slug: 'test-signing'
           github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
           wait-for-completion: true
@@ -145,7 +146,7 @@ jobs:
       - name: Postsign
         run: |
           ls -hal binaries/signed
-          sha1sum binaries/signed/*
+          sha256sum binaries/signed/*
       - name: Upload signed windows binaries
         uses: actions/github-script@v7
         with:
