@@ -85,7 +85,7 @@ jobs:
       # TODO: figure out where the binary are in the fs from the above action
       - name: Presign
         run: |
-          echo ${{ steps.tauri.artifactPaths }}
+          ls -hal ${{ steps.tauri.artifactPaths }}
           ls -hal binaries
           sha256sum binaries/*
       - name: upload-unsigned-artifact
