@@ -1,60 +1,42 @@
-name: "Create Release"
+name: "Release"
 
 on:
   # Allow manual
   workflow_dispatch:
+  push:
+    branches:
+      # TODO: REMOVE ME BEFORE MERGE
+      # FIXME: fr fr ong pls remove
+      - migrate/codesign
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  create-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    outputs:
-      release_id: ${{ steps.create-release.outputs.result }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Get app version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
-      - name: Create release or skip
-        id: create-release
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { script } = await import('${{ github.workspace }}/scripts/actions/create-release.js')
-            return await script({ github, context });
-
   build-tauri:
     name: Build (${{ matrix.settings.os }})
-    needs: create-release
     permissions:
       contents: write
     strategy:
       fail-fast: false
       matrix:
         settings:
-          - host: macos-latest
-            target: universal-apple-darwin
-            toolchain: aarch64-apple-darwin,x86_64-apple-darwin
-            bundles: app,dmg
-            os: darwin
+          # - host: macos-latest
+          #   target: universal-apple-darwin
+          #   toolchain: aarch64-apple-darwin,x86_64-apple-darwin
+          #   bundles: app,dmg
+          #   os: darwin
           - host: windows-latest
             target: x86_64-pc-windows-msvc
             toolchain: x86_64-pc-windows-msvc
             bundles: msi,nsis
             os: windows
-          - host: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            toolchain: x86_64-unknown-linux-gnu
-            bundles: deb,appimage
-            os: linux
+          # - host: ubuntu-latest
+          #   target: x86_64-unknown-linux-gnu
+          #   toolchain: x86_64-unknown-linux-gnu
+          #   bundles: deb,appimage
+          #   os: linux
     env:
       APP_DIR: "apps/desktop"
     runs-on: ${{ matrix.settings.host }}
@@ -82,6 +64,7 @@ jobs:
       - name: install frontend dependencies
         run: pnpm install
       - uses: tauri-apps/tauri-action@dev
+        id: tauri
         env:
           APPLE_ID: "${{ secrets.APPLE_ID }}"
           APPLE_PASSWORD: "${{ secrets.APPLE_PASSWORD }}"
@@ -95,54 +78,65 @@ jobs:
           VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
           VITE_SENTRY_AUTH_TOKEN: "${{ secrets.VITE_SENTRY_AUTH_TOKEN }}"
         with:
+          # NOTE: we only use this action to build the project bins for each platform
+          # because we need to do code signing for windows we will upload manually after the signing is completed
           projectPath: "${{ env.APP_DIR }}"
-          releaseId: ${{ needs.create-release.outputs.release_id }}
           args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }},updater
-
-  sign-windows:
-    runs-on: ubuntu-latest
-    needs: [create-release, build-tauri]
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download draft binaries
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { script } = await import('${{ github.workspace }}/scripts/actions/download-draft-bins.js')
-            const id = "${{ needs.create-release.outputs.release_id }}";
-            await script({ github, context }, id);
-        env:
-          # NOTE: we need this to download the bins
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # TODO: figure out where the binary are in the fs from the above action
       - name: Presign
         run: |
+          ls -hal ${{ steps.tauri.artifactPaths }}
           ls -hal binaries
-          sha1sum binaries/*
+          sha256sum binaries/*
+      - name: upload-unsigned-artifact
+        id: upload-unsigned-artifact
+        uses: actions/upload-artifact@v4
+        with: 
+          path: ./binaries
       - name: Sign Windows Binaries
-        run: |
-          echo "Starting code sign for windows bins..."
-          docker run -v "./binaries:/code/binaries" ghcr.io/sslcom/codesigner:latest batch_sign \
-            -username=${ES_USERNAME} \
-            -password=${ES_PASSWORD} \
-            -credential_id=${ES_CREDENTIAL_ID} \
-            -totp_secret=${ES_TOTP_SECRET} \
-            -input_dir_path="/code/binaries" \
-            -output_dir_path="/code/binaries/signed"
-        env:
-          ES_USERNAME: "${{ secrets.ES_USERNAME }}"
-          ES_PASSWORD: "${{ secrets.ES_PASSWORD }}"
-          ES_CREDENTIAL_ID: "${{ secrets.ES_CREDENTIAL_ID }}"
-          ES_TOTP_SECRET: "${{ secrets.ES_TOTP_SECRET }}"
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: 'b2cc34a4-3b75-4753-82e4-b755351770ea'
+          project-slug: 'overlayed'
+          # TODO: when we have the production signing policy update this
+          signing-policy-slug: 'test-signing'
+          github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: 'binaries/signed'
       - name: Postsign
         run: |
           ls -hal binaries/signed
-          sha1sum binaries/signed/*
-      - name: Upload signed windows binaries
+          sha256sum binaries/signed/*
+      # TODO: refactor this later
+      # - name: Upload signed windows binaries
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       const { script } = await import('${{ github.workspace }}/scripts/actions/upload-signed-bins.js');
+      #       const id = "${{ needs.create-release.outputs.release_id }}";
+      #       await script({ github, context }, id);
+  create-release:
+    needs: build-tauri
+    name: Create or Update
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create-release.outputs.result }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Get app version
+        run: echo "PACKAGE_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').package.version")" >> $GITHUB_ENV
+      - name: Create release or skip
+        id: create-release
         uses: actions/github-script@v7
         with:
           script: |
-            const { script } = await import('${{ github.workspace }}/scripts/actions/upload-signed-bins.js');
-            const id = "${{ needs.create-release.outputs.release_id }}";
-            await script({ github, context }, id);
+            const { script } = await import('${{ github.workspace }}/scripts/actions/create-release.js')
+            return await script({ github, context });
+
