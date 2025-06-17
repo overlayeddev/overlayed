@@ -1,10 +1,13 @@
 name: "CI"
 on:
   workflow_dispatch:
-  pull_request:
+  # NOTE: disable before merge
+  # FIXME: FYI
+  # pull_request:
 
 jobs:
   quality:
+    name: Quality
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
@@ -34,6 +37,7 @@ jobs:
         run: pnpm lint
 
   cargo-fmt:
+    name: Cargo Format
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4

@@ -37,6 +37,7 @@ export const script = async ({ context, github }, releaseId) => {
 
   for (const file of files) {
     const filePath = `${SIGNED_BINARIES_DIR}/${file}`;
+    // TODO: can this use readable streams somehow?
     const fileData = fs.readFileSync(filePath);
 
     console.log("uploading asset", file, filePath);
