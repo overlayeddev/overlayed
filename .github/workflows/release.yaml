@@ -88,8 +88,7 @@ jobs:
           echo "Artifact paths from tauri action:"
           echo "${{ steps.tauri.outputs.artifactPaths }}"
 
-          Get-ChildItem -Path ${{ steps.tauri.outputs.artifactPaths }} -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
-          Move-Item -Path ${{ steps.tauri.outputs.artifactPaths }} -Destination ./binaries
+          Move-Item -Path "${{ join(fromJSON(steps.tauri.outputs.artifactPaths), '\n') }}" -Destination ./binaries
 
           # sha sum the files in binaries
           Get-ChildItem -Path ./binaries -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
