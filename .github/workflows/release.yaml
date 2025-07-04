@@ -87,11 +87,13 @@ jobs:
         run: |
           echo "Artifact paths from tauri action:"
           echo "${{ steps.tauri.outputs.artifactPaths }}"
-          echo "Parsed artifact paths:"
-          echo "${{ join(fromJSON(steps.tauri.outputs.artifactPaths), '\n') }}"
-          echo "Checking binaries directory:"
-          ls -hal binaries
-          sha256sum binaries/*
+
+          Get-ChildItem -Path ${{ steps.tauri.outputs.artifactPaths }} -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
+          Move-Item -Path ${{ steps.tauri.outputs.artifactPaths }} -Destination ./binaries
+
+          # sha sum the files in binaries
+          Get-ChildItem -Path ./binaries -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
+
       - name: upload-unsigned-artifact
         id: upload-unsigned-artifact
         uses: actions/upload-artifact@v4
@@ -110,8 +112,8 @@ jobs:
           output-artifact-directory: 'binaries/signed'
       - name: Postsign
         run: |
-          ls -hal binaries/signed
-          sha256sum binaries/signed/*
+          # using powershell lets list out the sha sum of the signed binaries
+          Get-ChildItem -Path binaries/signed -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
       # TODO: refactor this later
       # - name: Upload signed windows binaries
       #   uses: actions/github-script@v7
