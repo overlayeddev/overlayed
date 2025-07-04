@@ -88,7 +88,14 @@ jobs:
           echo "Artifact paths from tauri action:"
           echo "${{ steps.tauri.outputs.artifactPaths }}"
 
-          Move-Item -Path "${{ join(fromJSON(steps.tauri.outputs.artifactPaths), '\n') }}" -Destination ./binaries
+          # find the *.msi and *.exe files and move them into a folder binaries/
+          # TODO: this seems brittle and maybe we can figure out how to parse the variable above?
+          $release_dir = "D:\a\overlayed\overlayed\apps\desktop\src-tauri\target\x86_64-pc-windows-msvc\release\"
+          Get-ChildItem -Path "$release_dir" -File -Recurse | ForEach-Object {
+            if ($_.Extension -eq ".msi" -or $_.Extension -eq ".exe") {
+              Move-Item -Path $_.FullName -Destination ./binaries
+            }
+          }
 
           # sha sum the files in binaries
           Get-ChildItem -Path ./binaries -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
