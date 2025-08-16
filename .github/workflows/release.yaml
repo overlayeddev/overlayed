@@ -88,6 +88,8 @@ jobs:
           echo "Artifact paths from tauri action:"
           echo "${{ steps.tauri.outputs.artifactPaths }}"
 
+          New-Item -ItemType Directory -Path "./binaries" -Force
+
           # find the *.msi and *.exe files and move them into a folder binaries/
           # TODO: this seems brittle and maybe we can figure out how to parse the variable above?
           $release_dir = "D:\a\overlayed\overlayed\apps\desktop\src-tauri\target\x86_64-pc-windows-msvc\release\"
