@@ -90,7 +90,9 @@ jobs:
 
           # Parse artifactPaths to extract .exe and .msi files
           $artifactPaths = "${{ steps.tauri.outputs.artifactPaths }}"
-          $paths = $artifactPaths -split ','
+          
+          # Parse as JSON array
+          $paths = $artifactPaths | ConvertFrom-Json
           
           # Extract .exe and .msi files (excluding .sig and .zip files)
           $exeFiles = $paths | Where-Object { $_ -match '\.exe$' } | Where-Object { $_ -notmatch '\.(sig|zip)$' }
