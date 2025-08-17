@@ -88,15 +88,29 @@ jobs:
           echo "Artifact paths from tauri action:"
           echo "${{ steps.tauri.outputs.artifactPaths }}"
 
-          New-Item -ItemType Directory -Path "./binaries" -Force
-
-          # find the *.msi and *.exe files and move them into a folder binaries/
-          # TODO: this seems brittle and maybe we can figure out how to parse the variable above?
-          $release_dir = "D:\a\overlayed\overlayed\apps\desktop\src-tauri\target\x86_64-pc-windows-msvc\release\"
-          Get-ChildItem -Path "$release_dir" -File -Recurse | ForEach-Object {
-            if ($_.Extension -eq ".msi" -or $_.Extension -eq ".exe") {
-              Move-Item -Path $_.FullName -Destination ./binaries
-            }
+          # Parse artifactPaths to extract .exe and .msi files
+          $artifactPaths = "${{ steps.tauri.outputs.artifactPaths }}"
+          $paths = $artifactPaths -split ','
+          
+          # Extract .exe and .msi files (excluding .sig and .zip files)
+          $exeFiles = $paths | Where-Object { $_ -match '\.exe$' } | Where-Object { $_ -notmatch '\.(sig|zip)$' }
+          $msiFiles = $paths | Where-Object { $_ -match '\.msi$' } | Where-Object { $_ -notmatch '\.(sig|zip)$' }
+          
+          Write-Host "Found EXE files:"
+          $exeFiles | ForEach-Object { Write-Host "  $_" }
+          
+          Write-Host "Found MSI files:"
+          $msiFiles | ForEach-Object { Write-Host "  $_" }
+          
+          # Move the files to binaries folder
+          $exeFiles | ForEach-Object { 
+            $fileName = Split-Path $_ -Leaf
+            Copy-Item $_ -Destination "./binaries/$fileName"
+          }
+          
+          $msiFiles | ForEach-Object { 
+            $fileName = Split-Path $_ -Leaf
+            Copy-Item $_ -Destination "./binaries/$fileName"
           }
 
           # sha sum the files in binaries
