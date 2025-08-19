@@ -89,7 +89,7 @@ jobs:
           echo "${{ steps.tauri.outputs.artifactPaths }}"
 
           # Parse artifactPaths to extract .exe and .msi files
-          $artifactPaths = ${{ steps.tauri.outputs.artifactPaths }}
+          $artifactPaths = '${{ steps.tauri.outputs.artifactPaths }}'
           
           # Parse as JSON array
           $paths = $artifactPaths | ConvertFrom-Json
