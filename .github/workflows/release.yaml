@@ -85,9 +85,6 @@ jobs:
       # TODO: figure out where the binary are in the fs from the above action
       - name: Presign
         run: |
-          echo "Artifact paths from tauri action:"
-          echo "${{ steps.tauri.outputs.artifactPaths }}"
-
           # Create binaries directory if it doesn't exist
           New-Item -ItemType Directory -Force -Path "./binaries"
 
@@ -119,9 +116,9 @@ jobs:
           }
 
           # sha sum the files in binaries
-          Get-ChildItem -Path ./binaries -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
+          Get-ChildItem -Path ".\binaries" -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
 
-      - name: upload-unsigned-artifact
+      - name: Upload Unsigned Windows Binaries
         id: upload-unsigned-artifact
         uses: actions/upload-artifact@v4
         with: 
@@ -141,14 +138,13 @@ jobs:
         run: |
           # using powershell lets list out the sha sum of the signed binaries
           Get-ChildItem -Path binaries/signed -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
-      # TODO: refactor this later
-      # - name: Upload signed windows binaries
-      #   uses: actions/github-script@v7
-      #   with:
-      #     script: |
-      #       const { script } = await import('${{ github.workspace }}/scripts/actions/upload-signed-bins.js');
-      #       const id = "${{ needs.create-release.outputs.release_id }}";
-      #       await script({ github, context }, id);
+      - name: Upload signed windows binaries
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { script } = await import('${{ github.workspace }}/scripts/actions/upload-signed-bins.js');
+            const id = "${{ needs.create-release.outputs.release_id }}";
+            await script({ github, context }, id);
   create-release:
     needs: build-tauri
     name: Create or Update
