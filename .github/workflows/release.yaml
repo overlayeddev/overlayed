@@ -88,6 +88,9 @@ jobs:
           echo "Artifact paths from tauri action:"
           echo "${{ steps.tauri.outputs.artifactPaths }}"
 
+          # Create binaries directory if it doesn't exist
+          New-Item -ItemType Directory -Force -Path "./binaries"
+
           # Parse artifactPaths to extract .exe and .msi files
           $artifactPaths = '${{ steps.tauri.outputs.artifactPaths }}'
           
@@ -107,12 +110,12 @@ jobs:
           # Move the files to binaries folder
           $exeFiles | ForEach-Object { 
             $fileName = Split-Path $_ -Leaf
-            Copy-Item $_ -Destination "./binaries/$fileName"
+            Copy-Item $_ -Destination ".\binaries\$fileName"
           }
           
           $msiFiles | ForEach-Object { 
             $fileName = Split-Path $_ -Leaf
-            Copy-Item $_ -Destination "./binaries/$fileName"
+            Copy-Item $_ -Destination ".\binaries\$fileName"
           }
 
           # sha sum the files in binaries
