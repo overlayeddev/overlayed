@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { MainView } from "./views/main";
 import { ChannelView } from "./views/channel";
 
@@ -30,12 +30,15 @@ function App() {
   const { pin } = usePin();
   const { horizontal, setHorizontalDirection } = useAlign();
   const visibleClass = visible ? "opacity-100" : "opacity-0";
+  const location = useLocation();
+  const isSettingsWindow = location.pathname === "/settings";
 
   return (
     <div
       className={cn(
         `text-white h-screen select-none rounded-lg flex flex-col ${visibleClass}`,
-        pin ? null : "border border-zinc-600"
+        // Only show the border on the overlay (main) window when not pinned.
+        pin || isSettingsWindow ? null : "border border-zinc-600"
       )}
     >
       <NavBar

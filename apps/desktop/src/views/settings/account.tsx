@@ -17,7 +17,9 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
+import { usePin } from "@/hooks/use-pin";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Pin } from "lucide-react";
 import type { VoiceUser } from "@/types";
 import * as shell from "@tauri-apps/plugin-shell";
 
@@ -100,6 +102,7 @@ export const Account = () => {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [user, setUser] = useState<VoiceUser | null>(null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
+  const { pin: pinned } = usePin();
 
   // pull out the user data from localStorage
   useEffect(() => {
@@ -160,6 +163,23 @@ export const Account = () => {
         </div>
         <div className="flex flex-row gap-4 pb-4">
           <div>
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-24 flex items-center justify-center"
+              onClick={async () => {
+                try {
+                  await invoke("set_pin", { value: !pinned });
+                } catch (e) {
+                  console.error("failed to set pin", e);
+                }
+              }}
+            >
+              <Pin className={pinned ? "mr-2 h-4 w-4 text-yellow-400" : "mr-2 h-4 w-4"} size={16} />
+              {pinned ? "Unpin" : "Pin"}
+            </Button>
+          </div>
+          <div>
             <Dialog
               onOpenChange={e => {
                 setShowLogoutDialog(e);
@@ -167,7 +187,7 @@ export const Account = () => {
               open={showLogoutDialog}
             >
               <DialogTrigger asChild>
-                <Button size="sm" disabled={!user?.id} className="w-[100px]">
+                <Button size="sm" disabled={!user?.id} className="w-20">
                   Logout
                 </Button>
               </DialogTrigger>
@@ -208,7 +228,7 @@ export const Account = () => {
             open={showQuitDialog}
           >
             <DialogTrigger asChild>
-              <Button size="sm" className="w-[100px]">
+              <Button size="sm" className="w-20">
                 Quit
               </Button>
             </DialogTrigger>

@@ -110,7 +110,7 @@ export const NavBar = ({
         {location.pathname !== "/settings" && (
           <div className="hidden gap-4 md:flex">
             {!canary && showUpdateButton && (
-              <button>
+              <button className="cursor-pointer">
                 <Download
                   className="text-green-500"
                   size={20}
@@ -122,7 +122,7 @@ export const NavBar = ({
                 />
               </button>
             )}
-            <button title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
+            <button className="cursor-pointer" title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
               <IconComponent
                 size={20}
                 onClick={async () => {
@@ -135,7 +135,7 @@ export const NavBar = ({
                 }}
               />
             </button>
-            <button title="Enable pin">
+            <button className="cursor-pointer" title="Enable pin">
               <Pin
                 size={20}
                 onClick={async () => {
@@ -148,6 +148,7 @@ export const NavBar = ({
               />
             </button>
             <button
+              className="cursor-pointer"
               title="Settings"
               onClick={() => {
                 invoke("open_settings", { update: false });

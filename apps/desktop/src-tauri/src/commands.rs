@@ -12,6 +12,7 @@ pub fn open_settings(window: WebviewWindow, update: bool) {
   let app = window.app_handle();
   let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
+    let _ = settings_windows.unminimize();
     settings_windows.show();
     settings_windows.set_focus();
     if update {
@@ -47,12 +48,18 @@ pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMen
   let app = window.app_handle();
   let value = !get_pin(app.state::<Pinned>());
 
-  _set_pin(value, &window, pin, menu);
+  // Always target the main overlay window so pinning from other windows
+  // (e.g., settings) does not affect those windows.
+  if let Some(main_win) = app.get_webview_window(MAIN_WINDOW_NAME) {
+    _set_pin(value, &main_win, pin, menu);
+  }
 }
 
 #[tauri::command]
 pub fn set_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, value: bool) {
-  _set_pin(value, &window, pin, menu);
+  if let Some(main_win) = window.app_handle().get_webview_window(MAIN_WINDOW_NAME) {
+    _set_pin(value, &main_win, pin, menu);
+  }
 }
 
 impl Deref for Pinned {
@@ -75,8 +82,19 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
-  // let the client know
+  // emit to the main window and also broadcast to all webviews so other
+  // windows (like settings) can react to the change.
   window.emit(TRAY_TOGGLE_PIN, value).unwrap();
+
+  // Broadcast the pin change to all webviews so other
+  // windows (like settings) can react to the change.
+  let app_handle = window.app_handle();
+  if let Some(main_win) = app_handle.get_webview_window(MAIN_WINDOW_NAME) {
+    let _ = main_win.emit(TRAY_TOGGLE_PIN, value);
+  }
+  if let Some(settings_win) = app_handle.get_webview_window(SETTINGS_WINDOW_NAME) {
+    let _ = settings_win.emit(TRAY_TOGGLE_PIN, value);
+  }
 
   // invert the label for the tray
   if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {

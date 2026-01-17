@@ -152,6 +152,9 @@ fn main() {
         width: SETTINGS_WINDOW_WIDTH,
         height: SETTINGS_WINDOW_HEIGHT,
       });
+      // Start the settings window minimized so it's available but not intrusive
+      // The `show` call from the UI will restore/unminimize it.
+      settings.minimize().ok();
 
       Ok(())
     })
@@ -168,22 +171,36 @@ fn main() {
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!")
     .run(|app, event| {
-      if let tauri::RunEvent::WindowEvent {
-        event: tauri::WindowEvent::CloseRequested { api, .. },
-        label,
-        ..
-      } = event
-      {
-        if label == SETTINGS_WINDOW_NAME {
-          let win = app.get_webview_window(label.as_str()).unwrap();
-          win.hide().unwrap();
-        }
+      use tauri::WindowEvent as WEvent;
 
-        if label == MAIN_WINDOW_NAME {
-          app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
-          std::process::exit(0);
-        } else {
-          api.prevent_close();
+      if let tauri::RunEvent::WindowEvent { event: we, label, .. } = event {
+        match we {
+          WEvent::CloseRequested { api, .. } => {
+            if label == SETTINGS_WINDOW_NAME {
+              let win = app.get_webview_window(label.as_str()).unwrap();
+              // Minimize the settings window instead of hiding/closing it when
+              // the user clicks the X so it remains available to restore.
+              win.minimize().ok();
+            }
+
+            if label == MAIN_WINDOW_NAME {
+              // Save state on close
+              app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+              std::process::exit(0);
+            } else {
+              api.prevent_close();
+            }
+          }
+
+          WEvent::Resized(_) | WEvent::Moved(_) => {
+            if label == MAIN_WINDOW_NAME {
+              // Also save state whenever the main window is moved or resized so
+              // we persist the latest bounds even if the process is terminated
+              app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+            }
+          }
+
+          _ => {}
         }
       }
     });
