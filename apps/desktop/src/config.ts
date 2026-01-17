@@ -5,6 +5,8 @@ import * as Sentry from "@sentry/react";
 export type DirectionLR = "left" | "right" | "center";
 export type DirectionTB = "top" | "bottom";
 
+export type OpacityTarget = "all" | "username-box";
+
 // TODO: this is hard to use we zzz
 // NOTE: how can i handle versions updates where i add new keys
 // NOTE: this looks cool https://github.com/harshkhandeparkar/tauri-settings/issues
@@ -17,6 +19,8 @@ export interface OverlayedConfig {
   showOnlyTalkingUsers: boolean;
   showOwnUser: boolean;
   opacity: number;
+  opacityTarget: OpacityTarget;
+  maxUsernameLength: number;
 }
 
 export type OverlayedConfigKey = keyof OverlayedConfig;
@@ -31,6 +35,8 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   showOnlyTalkingUsers: false,
   showOwnUser: true,
   opacity: 100,
+  opacityTarget: "all",
+  maxUsernameLength: 40,
 };
 
 const CONFIG_FILE_NAME = "config.json";
@@ -94,10 +100,19 @@ export class Config {
   }
 
   async set<K extends keyof OverlayedConfig>(key: K, value: OverlayedConfig[K]): Promise<void> {
-    await this.load();
+    // Always re-load the on-disk config to avoid races where multiple
+    // concurrent callers might overwrite recent changes. This ensures we
+    // merge against the latest file contents before writing.
+    try {
+      const config = await readTextFile(CONFIG_FILE_NAME, { baseDir: BaseDirectory.AppConfig });
+      this.config = JSON.parse(config);
+    } catch (e: unknown) {
+      // ignore and fall back to current in-memory or defaults
+      this.config = { ...DEFAULT_OVERLAYED_CONFIG, ...this.config };
+    }
 
     this.config[key] = value;
-    this.save();
+    await this.save();
   }
 
   async save() {

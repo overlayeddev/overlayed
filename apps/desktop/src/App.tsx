@@ -34,7 +34,7 @@ function App() {
   return (
     <div
       className={cn(
-        `text-white h-screen select-none rounded-lg ${visibleClass}`,
+        `text-white h-screen select-none rounded-lg flex flex-col ${visibleClass}`,
         pin ? null : "border border-zinc-600"
       )}
     >
@@ -46,10 +46,10 @@ function App() {
       />
       <Toaster />
       <Routes>
-        <Route path="/" Component={MainView} />
-        <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
-        <Route path="/settings" element={<SettingsView update={update} />} />
-        <Route path="/error" Component={ErrorView} />
+      <Route path="/" Component={MainView} />
+      <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
+      <Route path="/settings" element={<SettingsView update={update} />} />
+      <Route path="/error" Component={ErrorView} />
       </Routes>
     </div>
   );

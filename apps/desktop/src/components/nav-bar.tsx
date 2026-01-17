@@ -16,6 +16,7 @@ import { useState } from "react";
 import { CHANNEL_TYPES } from "@/constants";
 import { Metric, track } from "@/metrics";
 import { invoke } from "@tauri-apps/api/core";
+import { emit } from "@tauri-apps/api/event";
 const mapping = {
   left: 0,
   center: 1,
@@ -63,6 +64,11 @@ export const NavBar = ({
 
   const [channelName, setChannelName] = useState<string>();
   const [currentAlignment, setCurrentAlignment] = useState(mapping[alignDirection]);
+
+  // keep local currentAlignment in sync when the prop changes (e.g., loaded from config)
+  useEffect(() => {
+    setCurrentAlignment(mapping[alignDirection] ?? mapping.right);
+  }, [alignDirection]);
 
   const opacity = pin && location.pathname === "/channel" ? "opacity-0" : "opacity-100";
   const IconComponent = horizontalAlignments[currentAlignment]?.icon || ArrowLeftToLine;
@@ -122,8 +128,10 @@ export const NavBar = ({
                 onClick={async () => {
                   const newAlignment = (currentAlignment + 1) % horizontalAlignments.length;
                   setCurrentAlignment(newAlignment);
-                  setAlignDirection(horizontalAlignments[newAlignment]?.direction || "center");
-                  await Config.set("horizontal", horizontalAlignments[newAlignment]?.direction || "center");
+                  const dir = horizontalAlignments[newAlignment]?.direction || "center";
+                  setAlignDirection(dir);
+                  await Config.set("horizontal", dir);
+                  await emit("config_update", await Config.getConfig());
                 }}
               />
             </button>

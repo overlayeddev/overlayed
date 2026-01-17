@@ -1,5 +1,6 @@
 import type { DirectionLR } from "@/config";
 import { User } from "../components/user";
+import { cn } from "@/utils/tw";
 import { useAppStore } from "../store";
 import { useConfigValue } from "@/hooks/use-config-value";
 
@@ -9,6 +10,8 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
   const { value: showOwnUser } = useConfigValue("showOwnUser");
   const { value: opacity } = useConfigValue("opacity");
+  const { value: opacityTarget } = useConfigValue("opacityTarget");
+  const { value: vertical } = useConfigValue("vertical");
 
   const allUsers = Object.entries(users);
   let userList = showOnlyTalkingUsers ? allUsers.filter(([, item]) => item.talking) : allUsers;
@@ -21,10 +24,21 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
   });
 
   return (
-    <div>
-      <div className={`py-2 ${alignDirection === "center" ? "flex flex-wrap justify-center" : ""}`}>
+    <div className="h-full">
+      <div
+        className={cn(
+          "py-2 h-full overflow-auto",
+          {
+            "flex flex-wrap justify-center": alignDirection === "center",
+            "flex flex-1 flex-col": alignDirection !== "center",
+            "justify-end": alignDirection !== "center" && vertical === "bottom",
+            "justify-start": alignDirection !== "center" && vertical !== "bottom",
+          }
+        )}
+        style={{ maxHeight: "100%" }}
+      >
         {userList.map(([, item]) => (
-          <User key={item.id} item={item} alignDirection={alignDirection} opacity={opacity} />
+          <User key={item.id} item={item} alignDirection={alignDirection} opacity={opacity} opacityTarget={opacityTarget} />
         ))}
       </div>
     </div>
