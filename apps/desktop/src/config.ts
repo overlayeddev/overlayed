@@ -21,6 +21,7 @@ export interface OverlayedConfig {
   opacity: number;
   opacityTarget: OpacityTarget;
   maxUsernameLength: number;
+  userScale: number;
 }
 
 export type OverlayedConfigKey = keyof OverlayedConfig;
@@ -37,6 +38,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   opacity: 100,
   opacityTarget: "all",
   maxUsernameLength: 40,
+  userScale: 100,
 };
 
 const CONFIG_FILE_NAME = "config.json";

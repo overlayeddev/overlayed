@@ -11,6 +11,7 @@ export const Configuration = () => {
   const { value: vertical } = useConfigValue("vertical");
   const { value: horizontal } = useConfigValue("horizontal");
   const { value: maxUsernameLength } = useConfigValue("maxUsernameLength");
+  const { value: userScale } = useConfigValue("userScale");
 
   return (
     <div className="flex flex-col gap-2">
@@ -141,6 +142,29 @@ export const Configuration = () => {
           </div>
           <div className="w-10 text-right">
             <span className="text-sm">{opacity} %</span>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center justify-between h-8 mx-2">
+        <label htmlFor="userScale" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          Scale
+        </label>
+        <div className="flex items-center gap-4 w-1/2">
+          <div className="flex-1">
+            <Slider
+              value={[userScale]}
+              min={50}
+              max={200}
+              step={5}
+              onValueChange={async (val: number[]) => {
+                const newVal = val[0] ?? userScale;
+                await Config.set("userScale", Number(newVal));
+                await emit("config_update", await Config.getConfig());
+              }}
+            />
+          </div>
+          <div className="w-16 text-right">
+            <span className="text-sm">{userScale} %</span>
           </div>
         </div>
       </div>

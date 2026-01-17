@@ -11,6 +11,7 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
   const { value: showOwnUser } = useConfigValue("showOwnUser");
   const { value: opacity } = useConfigValue("opacity");
   const { value: opacityTarget } = useConfigValue("opacityTarget");
+  const { value: userScale } = useConfigValue("userScale");
   const { value: vertical } = useConfigValue("vertical");
 
   const allUsers = Object.entries(users);
@@ -27,18 +28,27 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
     <div className="h-full">
       <div
         className={cn(
-          "py-2 h-full overflow-auto",
+          "py-2 h-full",
           {
             "flex flex-wrap justify-center": alignDirection === "center",
             "flex flex-1 flex-col": alignDirection !== "center",
             "justify-end": alignDirection !== "center" && vertical === "bottom",
             "justify-start": alignDirection !== "center" && vertical !== "bottom",
+            "overflow-auto": userScale === 100,
+            "overflow-visible": userScale !== 100,
           }
         )}
         style={{ maxHeight: "100%" }}
       >
         {userList.map(([, item]) => (
-          <User key={item.id} item={item} alignDirection={alignDirection} opacity={opacity} opacityTarget={opacityTarget} />
+          <User
+            key={item.id}
+            item={item}
+            alignDirection={alignDirection}
+            opacity={opacity}
+            opacityTarget={opacityTarget}
+            userScale={userScale}
+          />
         ))}
       </div>
     </div>

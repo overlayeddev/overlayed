@@ -10,11 +10,13 @@ export const User = ({
   alignDirection,
   opacity,
   opacityTarget,
+  userScale,
 }: {
   item: OverlayedUser;
   alignDirection: DirectionLR;
   opacity: number;
   opacityTarget: OpacityTarget;
+  userScale: number;
 }) => {
   const { id, selfMuted, selfDeafened, talking, muted, deafened, avatarHash } = item;
 
@@ -23,6 +25,8 @@ export const User = ({
   const talkingClass = talking ? "border-green-500" : "border-zinc-800";
   const mutedClass = selfMuted || muted ? "text-zinc-400" : "";
   const opacityStyle = talking ? "100%" : `${opacity}%`;
+  const scaleFactor = (userScale ?? 100) / 100;
+  const transformOrigin = alignDirection === "left" ? "left center" : alignDirection === "right" ? "right center" : "center center";
 
   const { value: maxUsernameLength } = useConfigValue("maxUsernameLength");
 
@@ -72,7 +76,12 @@ export const User = ({
         "flex gap-2 py-1 p-2 justify-start items-center transition-opacity",
         alignDirection == "right" ? "flex-row-reverse" : "flex-row"
       )}
-      style={opacityTarget === "all" ? { opacity: opacityStyle } : undefined}
+      style={{
+        ...(opacityTarget === "all" ? { opacity: opacityStyle } : {}),
+        transform: scaleFactor !== 1 ? `scale(${scaleFactor})` : undefined,
+        transformOrigin: scaleFactor !== 1 ? transformOrigin : undefined,
+        willChange: scaleFactor !== 1 ? "transform" : undefined,
+      }}
     >
       <div className={`pointer-events-none relative rounded-full border-2 ${talkingClass}`}>
         <img
