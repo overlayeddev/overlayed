@@ -69,7 +69,7 @@ export const Configuration = () => {
 
             await emit("config_update", await Config.getConfig());
           }}
-          className="w-40 p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0"
+          className="w-40 p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0 cursor-pointer"
         >
           <option value="left" className="bg-zinc-800 text-white">Left</option>
           <option value="center" className="bg-zinc-800 text-white">Center</option>
@@ -89,7 +89,7 @@ export const Configuration = () => {
 
             await emit("config_update", await Config.getConfig());
           }}
-          className="w-40 p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0"
+          className="w-40 p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0 cursor-pointer"
         >
           <option value="top" className="bg-zinc-800 text-white">
             Top
@@ -112,7 +112,7 @@ export const Configuration = () => {
 
             await emit("config_update", await Config.getConfig());
           }}
-          className="p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0"
+          className="p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0 cursor-pointer"
         >
           <option value="all" className="bg-zinc-800 text-white">
             Everything
