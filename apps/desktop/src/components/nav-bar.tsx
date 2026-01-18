@@ -93,7 +93,7 @@ export const NavBar = ({
       <div data-tauri-drag-region className="flex justify-between">
         <div className="flex items-center">
           <img
-            src={canary ? "/img/32x32-canary.png " : "/img/32x32.png"}
+            src={canary ? "/img/32x32-canary.png" : "/img/32x32.png"}
             alt="logo"
             data-tauri-drag-region
             className="w-8 h-8 mr-2"
@@ -122,7 +122,10 @@ export const NavBar = ({
                 />
               </button>
             )}
-            <button className="cursor-pointer" title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}>
+            <button
+              className="cursor-pointer"
+              title={horizontalAlignments[currentAlignment]?.name + "-aligned. Click to toggle."}
+            >
               <IconComponent
                 size={20}
                 onClick={async () => {

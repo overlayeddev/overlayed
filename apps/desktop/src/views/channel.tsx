@@ -27,17 +27,14 @@ export const ChannelView = ({ alignDirection }: { alignDirection: DirectionLR })
   return (
     <div className="h-full">
       <div
-        className={cn(
-          "py-2 h-full",
-          {
-            "flex flex-wrap justify-center": alignDirection === "center",
-            "flex flex-1 flex-col": alignDirection !== "center",
-            "justify-end": alignDirection !== "center" && vertical === "bottom",
-            "justify-start": alignDirection !== "center" && vertical !== "bottom",
-            "overflow-auto": userScale === 100,
-            "overflow-visible": userScale !== 100,
-          }
-        )}
+        className={cn("py-2 h-full", {
+          "flex flex-wrap justify-center": alignDirection === "center",
+          "flex flex-1 flex-col": alignDirection !== "center",
+          "justify-end": alignDirection !== "center" && vertical === "bottom",
+          "justify-start": alignDirection !== "center" && vertical !== "bottom",
+          "overflow-auto": userScale === 100,
+          "overflow-visible": userScale !== 100,
+        })}
         style={{ maxHeight: "100%" }}
       >
         {userList.map(([, item]) => (

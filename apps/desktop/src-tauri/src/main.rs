@@ -173,7 +173,10 @@ fn main() {
     .run(|app, event| {
       use tauri::WindowEvent as WEvent;
 
-      if let tauri::RunEvent::WindowEvent { event: we, label, .. } = event {
+      if let tauri::RunEvent::WindowEvent {
+        event: we, label, ..
+      } = event
+      {
         match we {
           WEvent::CloseRequested { api, .. } => {
             if label == SETTINGS_WINDOW_NAME {

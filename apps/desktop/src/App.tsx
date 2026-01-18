@@ -49,10 +49,10 @@ function App() {
       />
       <Toaster />
       <Routes>
-      <Route path="/" Component={MainView} />
-      <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
-      <Route path="/settings" element={<SettingsView update={update} />} />
-      <Route path="/error" Component={ErrorView} />
+        <Route path="/" element={<MainView />} />
+        <Route path="/channel" element={<ChannelView alignDirection={horizontal} />} />
+        <Route path="/settings" element={<SettingsView update={update} />} />
+        <Route path="/error" element={<ErrorView />} />
       </Routes>
     </div>
   );

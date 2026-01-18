@@ -26,7 +26,12 @@ export const User = ({
   const mutedClass = selfMuted || muted ? "text-zinc-400" : "";
   const opacityStyle = talking ? "100%" : `${opacity}%`;
   const scaleFactor = (userScale ?? 100) / 100;
-  const transformOrigin = alignDirection === "left" ? "left center" : alignDirection === "right" ? "right center" : "center center";
+  let transformOrigin = "center center";
+  if (alignDirection === "left") {
+    transformOrigin = "left center";
+  } else if (alignDirection === "right") {
+    transformOrigin = "right center";
+  }
 
   const { value: maxUsernameLength } = useConfigValue("maxUsernameLength");
 
@@ -62,7 +67,7 @@ export const User = ({
         className={cn(
           "absolute left-3 -bottom-2 pr-1 py-0.5 min-w-6 h-6 rounded-full",
           anyState ? "bg-black/80" : "bg-transparent",
-          alignDirection == "center" ? "flex" : "md:hidden"
+          alignDirection === "center" ? "flex" : "md:hidden"
         )}
       >
         {icon}
@@ -105,7 +110,7 @@ export const User = ({
         className={cn(
           "max-w-[calc(100%-50px)] md:flex hidden pointer-events-none items-center rounded-md p-1 pl-2 pr-2",
           mutedClass,
-          alignDirection == "center" ? "hidden md:hidden" : undefined
+          alignDirection === "center" ? "hidden md:hidden" : undefined
         )}
         style={{ backgroundColor: `rgba(40, 40, 40, ${opacityTarget === "username-box" ? opacity / 100 : 1})` }}
       >

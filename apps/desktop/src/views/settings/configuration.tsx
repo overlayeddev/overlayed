@@ -34,7 +34,10 @@ export const Configuration = () => {
         />
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
-        <label htmlFor="maxUsernameLength" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <label
+          htmlFor="maxUsernameLength"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
           Max username length
         </label>
         <div className="flex items-center gap-4 w-1/2">
@@ -57,7 +60,10 @@ export const Configuration = () => {
         </div>
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
-        <label htmlFor="horizontal" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <label
+          htmlFor="horizontal"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
           Anchor horizontal
         </label>
         <select
@@ -71,13 +77,22 @@ export const Configuration = () => {
           }}
           className="w-40 p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0 cursor-pointer"
         >
-          <option value="left" className="bg-zinc-800 text-white">Left</option>
-          <option value="center" className="bg-zinc-800 text-white">Center</option>
-          <option value="right" className="bg-zinc-800 text-white">Right</option>
+          <option value="left" className="bg-zinc-800 text-white">
+            Left
+          </option>
+          <option value="center" className="bg-zinc-800 text-white">
+            Center
+          </option>
+          <option value="right" className="bg-zinc-800 text-white">
+            Right
+          </option>
         </select>
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
-        <label htmlFor="vertical" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <label
+          htmlFor="vertical"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
           Anchor vertical
         </label>
         <select
@@ -100,7 +115,10 @@ export const Configuration = () => {
         </select>
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
-        <label htmlFor="opacityTarget" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <label
+          htmlFor="opacityTarget"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
           Opacity target
         </label>
         <select
@@ -123,7 +141,10 @@ export const Configuration = () => {
         </select>
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
-        <label htmlFor="opacity" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <label
+          htmlFor="opacity"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
           Overlay opacity
         </label>
         <div className="flex items-center gap-4 w-1/2">
@@ -146,7 +167,10 @@ export const Configuration = () => {
         </div>
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
-        <label htmlFor="userScale" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        <label
+          htmlFor="userScale"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
           Scale
         </label>
         <div className="flex items-center gap-4 w-1/2">
