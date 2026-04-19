@@ -131,7 +131,16 @@ class SocketManager {
     // subscribe to local storage events to see if we need to move the user to the auth page
     window.addEventListener("storage", e => {
       if (e.key === "discord_access_token" && !e.newValue) {
+        this.store.setMe(null);
+        this.store.setCurrentChannel(null);
+        this.store.clearUsers();
         this.navigate("/");
+      }
+
+      if (e.key === "user_data" && !e.newValue) {
+        this.store.setMe(null);
+        this.store.setCurrentChannel(null);
+        this.store.clearUsers();
       }
     });
   }

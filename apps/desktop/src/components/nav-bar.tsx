@@ -62,7 +62,7 @@ export const NavBar = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { currentChannel } = useAppStore();
+  const { currentChannel, me } = useAppStore();
 
   const [channelName, setChannelName] = useState<string>();
   const [currentAlignment, setCurrentAlignment] = useState(mapping[alignDirection]);
@@ -206,7 +206,7 @@ export const NavBar = ({
                   }}
                 />
               </button>
-              {showFtue && (
+              {showFtue && !!me && (
                 <div className="absolute right-0 top-full z-50 mt-3 w-60 rounded-lg border border-zinc-700 bg-zinc-900 p-3 text-sm font-normal shadow-xl cursor-default">
                   {/* Arrow pointing up toward the pin button */}
                   <div className="absolute -top-3 right-0 h-0 w-0 border-x-[9px] border-b-[12px] border-x-transparent border-b-zinc-500" />
