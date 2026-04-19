@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { FTUE_PIN_TRAY_TIP_KEY } from "@/constants";
 import { exit } from "@tauri-apps/plugin-process";
 import * as dateFns from "date-fns";
 import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
@@ -42,11 +43,31 @@ export const Developer = () => {
             size="sm"
             variant="outline"
             onClick={async () => {
+              await invoke("open_overlay_devtools");
+            }}
+          >
+            Open Overlay Devtools
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={async () => {
               await shell.open(platformInfo.configDir);
             }}
           >
             Open Config Dir
           </Button>
+          {import.meta.env.DEV && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                localStorage.removeItem(FTUE_PIN_TRAY_TIP_KEY);
+              }}
+            >
+              Reset FTUE tip
+            </Button>
+          )}
         </div>
       </div>
     </>
@@ -257,8 +278,8 @@ export const Account = () => {
               </form>
             </DialogContent>
           </Dialog>
-          <Developer />
         </div>
+        <Developer />
         <AppInfo />
       </div>
     </div>

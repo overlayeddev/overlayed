@@ -12,7 +12,6 @@ pub fn open_settings(window: WebviewWindow, update: bool) {
   let app = window.app_handle();
   let settings_windows = app.get_webview_window(SETTINGS_WINDOW_NAME);
   if let Some(settings_windows) = settings_windows {
-    let _ = settings_windows.unminimize();
     settings_windows.show();
     settings_windows.set_focus();
     if update {
@@ -41,6 +40,14 @@ pub fn get_pin(storage: State<Pinned>) -> bool {
 #[tauri::command]
 pub fn open_devtools(window: WebviewWindow) {
   window.open_devtools();
+}
+
+#[tauri::command]
+pub fn open_overlay_devtools(window: WebviewWindow) {
+  let app = window.app_handle();
+  if let Some(main_window) = app.get_webview_window(MAIN_WINDOW_NAME) {
+    main_window.open_devtools();
+  }
 }
 
 #[tauri::command]

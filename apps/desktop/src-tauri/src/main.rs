@@ -99,10 +99,14 @@ fn main() {
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
     .plugin(tauri_plugin_http::init())
-    .plugin(log_plugin_builder.build())
-    .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+    .plugin(log_plugin_builder.build());
+
+  #[cfg(not(debug_assertions))]
+  {
+    app = app.plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
+  }
 
   #[cfg(target_os = "macos")]
   {
@@ -152,9 +156,6 @@ fn main() {
         width: SETTINGS_WINDOW_WIDTH,
         height: SETTINGS_WINDOW_HEIGHT,
       });
-      // Start the settings window minimized so it's available but not intrusive
-      // The `show` call from the UI will restore/unminimize it.
-      settings.minimize().ok();
 
       Ok(())
     })
@@ -163,6 +164,7 @@ fn main() {
       get_pin,
       set_pin,
       open_devtools,
+      open_overlay_devtools,
       close_settings,
       open_settings,
     ]);
@@ -181,9 +183,7 @@ fn main() {
           WEvent::CloseRequested { api, .. } => {
             if label == SETTINGS_WINDOW_NAME {
               let win = app.get_webview_window(label.as_str()).unwrap();
-              // Minimize the settings window instead of hiding/closing it when
-              // the user clicks the X so it remains available to restore.
-              win.minimize().ok();
+              win.hide().unwrap();
             }
 
             if label == MAIN_WINDOW_NAME {

@@ -52,7 +52,7 @@
         "transparent": true,
         "decorations": true,
         "resizable": false,
-        "visible": true,
+        "visible": false,
         "label": "settings",
         "url": "#settings",
         "title": "Overlayed - Settings",

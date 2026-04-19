@@ -6,6 +6,7 @@ import {
   ArrowLeftToLine,
   ArrowRightToLine,
   ChevronsRightLeft,
+  X,
   type LucideIcon,
 } from "lucide-react";
 import { usePlatformInfo } from "@/hooks/use-platform-info";
@@ -13,10 +14,11 @@ import React, { useEffect } from "react";
 import Config, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
-import { CHANNEL_TYPES } from "@/constants";
+import { CHANNEL_TYPES, FTUE_PIN_TRAY_TIP_KEY } from "@/constants";
 import { Metric, track } from "@/metrics";
 import { invoke } from "@tauri-apps/api/core";
 import { emit } from "@tauri-apps/api/event";
+
 const mapping = {
   left: 0,
   center: 1,
@@ -75,8 +77,27 @@ export const NavBar = ({
   const showUpdateButton = location.pathname !== "/settings" && isUpdateAvailable;
 
   const routesToShowOn = ["/channel", "/error", "/"];
-  const { canary } = usePlatformInfo();
+  const { canary, os } = usePlatformInfo();
+  const [showFtue, setShowFtue] = useState(() => !localStorage.getItem(FTUE_PIN_TRAY_TIP_KEY));
+
+  const dismissFtue = () => {
+    localStorage.setItem(FTUE_PIN_TRAY_TIP_KEY, "true");
+    setShowFtue(false);
+  };
+
   if (!routesToShowOn.includes(location.pathname)) return null;
+
+  useEffect(() => {
+    // Listen for storage changes from other windows (e.g., settings clearing FTUE key)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === FTUE_PIN_TRAY_TIP_KEY && e.newValue === null) {
+        setShowFtue(true);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   useEffect(() => {
     if (!!currentChannel && ([CHANNEL_TYPES.DM, CHANNEL_TYPES.GROUP_DM] as number[]).includes(currentChannel.type)) {
@@ -85,6 +106,40 @@ export const NavBar = ({
       setChannelName(currentChannel?.name);
     }
   }, [location.pathname, currentChannel]);
+
+  function getTrayHint(os: string): React.ReactNode {
+    if (os === "windows") {
+      return (
+        <>
+          Pinning hides this frame to only show the users in the call.
+          <br /><br />
+          Unpin or access Settings anytime via the{" "}
+          <strong className="text-white">system tray</strong>{" "}
+          icon in the near the clock in your taskbar.
+        </>
+      );
+    }
+    if (os === "macos") {
+      return (
+        <>
+          Pinning hides this frame to only show the users in the call.
+          <br /><br />
+          Unpin or access Settings anytime via the{" "}
+          <strong className="text-white">menu bar</strong>{" "}
+          icon in the top-right of your screen.
+        </>
+      );
+    }
+    return (
+      <>
+        Pinning hides this frame to only show the users in the call.
+        <br /><br />
+        Unpin or access Settings anytime via the{" "}
+        <strong className="text-white">system tray</strong> /{" "}
+        <strong className="text-white">notification area</strong> icon.
+      </>
+    );
+  }
 
   return (
     <div
@@ -138,18 +193,38 @@ export const NavBar = ({
                 }}
               />
             </button>
-            <button className="cursor-pointer" title="Enable pin">
-              <Pin
-                size={20}
-                onClick={async () => {
-                  await invoke("toggle_pin");
-                  await Config.set("pin", !pin);
-                  // track if it gets pinned
-                  track(Metric.Pin, 1);
-                  navigate("/channel");
-                }}
-              />
-            </button>
+            <div className="relative flex items-center">
+              <button className="cursor-pointer" title="Enable pin">
+                <Pin
+                  size={20}
+                  onClick={async () => {
+                    await invoke("toggle_pin");
+                    await Config.set("pin", !pin);
+                    // track if it gets pinned
+                    track(Metric.Pin, 1);
+                    navigate("/channel");
+                  }}
+                />
+              </button>
+              {showFtue && (
+                <div className="absolute right-0 top-full z-50 mt-3 w-60 rounded-lg border border-zinc-700 bg-zinc-900 p-3 text-sm font-normal shadow-xl cursor-default">
+                  {/* Arrow pointing up toward the pin button */}
+                  <div className="absolute -top-3 right-0 h-0 w-0 border-x-[9px] border-b-[12px] border-x-transparent border-b-zinc-500" />
+                  <div className="flex items-start gap-2">
+                    <p className="flex-1 leading-snug text-zinc-300">
+                      {getTrayHint(os)}
+                    </p>
+                    <button
+                      onClick={dismissFtue}
+                      className="absolute right-2 top-2 shrink-0 cursor-pointer text-zinc-400 hover:text-white"
+                      title="Dismiss"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
             <button
               className="cursor-pointer"
               title="Settings"

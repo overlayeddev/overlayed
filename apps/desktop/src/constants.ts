@@ -22,3 +22,5 @@ export const CHANNEL_TYPES = {
   GUILD_FORUM: 15,
   GUILD_MEDIA: 16,
 } as const;
+
+export const FTUE_PIN_TRAY_TIP_KEY = "overlayed:ftue:pin-tray-tip-shown";
