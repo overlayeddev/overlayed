@@ -52,6 +52,15 @@ class UserdataStore {
     this.store.removeItem(this.keys.accessToken);
     this.store.removeItem(this.keys.accessTokenExpiry);
   }
+
+  removeUserdata() {
+    this.store.removeItem(this.keys.userData);
+  }
+
+  clearAuth() {
+    this.removeAccessToken();
+    this.removeUserdata();
+  }
 }
 
 /**
@@ -337,14 +346,23 @@ class SocketManager {
     // console.log(payload);
     // we are ready to do things cause we are fully authed
     if (payload.cmd === RPCCommand.AUTHENTICATE && payload.evt === RPCEvent.ERROR) {
-      // they have a token from the old client id
-      if (payload.data.code === RPCErrors.INVALID_CLIENTID) {
-        this.userdataStore.removeAccessToken();
-      }
+      // These are recoverable auth issues (e.g. expired/revoked token),
+      // so clear auth state and send the user back to the reauth screen.
+      const shouldReauth = [
+        RPCErrors.INVALID_CLIENTID,
+        RPCErrors.INVALID_TOKEN,
+        RPCErrors.INVALID_USER,
+        RPCErrors.OAUTH2_ERROR,
+      ].includes(payload.data.code);
 
-      // they have an invalid token
-      if (payload.data.code === RPCErrors.INVALID_TOKEN) {
-        this.userdataStore.removeAccessToken();
+      if (shouldReauth) {
+        this.userdataStore.clearAuth();
+        this.store.setMe(null);
+        this.store.setCurrentChannel(null);
+        this.store.clearUsers();
+        this.navigate("/");
+        track(Metric.DiscordAuthed, 0);
+        return;
       }
 
       this.store.pushError(payload.data.message);

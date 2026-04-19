@@ -168,6 +168,7 @@ fn main() {
       set_pin,
       open_devtools,
       open_overlay_devtools,
+      simulate_error_screen,
       close_settings,
       open_settings,
       set_hide_taskbar_when_pinned,

@@ -51,6 +51,21 @@ pub fn open_overlay_devtools(window: WebviewWindow) {
 }
 
 #[tauri::command]
+pub fn simulate_error_screen(window: WebviewWindow) {
+  let app = window.app_handle();
+
+  if let Some(main_window) = app.get_webview_window(MAIN_WINDOW_NAME) {
+    let _ = main_window.eval("window.location.hash = '#/error';");
+    let _ = main_window.show();
+    let _ = main_window.set_focus();
+  }
+
+  if let Some(settings_window) = app.get_webview_window(SETTINGS_WINDOW_NAME) {
+    let _ = settings_window.hide();
+  }
+}
+
+#[tauri::command]
 pub fn toggle_pin(
   window: WebviewWindow,
   pin: State<Pinned>,
