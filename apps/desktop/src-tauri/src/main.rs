@@ -40,6 +40,8 @@ use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
 
+pub struct HideTaskbarWhenPinned(AtomicBool);
+
 pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
@@ -115,6 +117,7 @@ fn main() {
 
   app = app
     .manage(Pinned(AtomicBool::new(false)))
+    .manage(HideTaskbarWhenPinned(AtomicBool::new(false)))
     .setup(move |app| {
       debug!("starting app...");
       let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
@@ -167,6 +170,7 @@ fn main() {
       open_overlay_devtools,
       close_settings,
       open_settings,
+      set_hide_taskbar_when_pinned,
     ]);
 
   app

@@ -14,6 +14,8 @@ import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 import { useSocket } from "./rpc/manager";
 import { cn } from "./utils/tw";
+import Config from "./config";
+import { invoke } from "@tauri-apps/api/core";
 
 function App() {
   useDisableWebFeatures();
@@ -22,6 +24,15 @@ function App() {
   useEffect(() => {
     const styleForLog = "font-size: 20px; color: #00dffd";
     console.log(`%cOverlayed ${window.location.hash} Window`, styleForLog);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const config = await Config.getConfig();
+      await invoke("set_hide_taskbar_when_pinned", {
+        hideTaskbarWhenPinned: config.hideTaskbarWhenPinned,
+      });
+    })();
   }, []);
 
   const { update } = useUpdate();

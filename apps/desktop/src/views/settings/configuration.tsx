@@ -3,6 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import Config from "@/config";
 import { useConfigValue } from "@/hooks/use-config-value";
 import { emit } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/core";
 
 export const Configuration = () => {
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
@@ -12,6 +13,7 @@ export const Configuration = () => {
   const { value: horizontal } = useConfigValue("horizontal");
   const { value: maxUsernameLength } = useConfigValue("maxUsernameLength");
   const { value: userScale } = useConfigValue("userScale");
+  const { value: hideTaskbarWhenPinned } = useConfigValue("hideTaskbarWhenPinned");
 
   return (
     <div className="flex flex-col gap-2">
@@ -191,6 +193,28 @@ export const Configuration = () => {
             <span className="text-sm">{userScale} %</span>
           </div>
         </div>
+      </div>
+      <div className="flex items-center justify-between h-8 mx-2">
+        <label
+          htmlFor="hideTaskbar"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Hide taskbar when pinned
+        </label>
+        <Switch
+          id="hideTaskbar"
+          checked={hideTaskbarWhenPinned}
+          onCheckedChange={async () => {
+            const newBool = !hideTaskbarWhenPinned;
+            await Config.set("hideTaskbarWhenPinned", newBool);
+
+            await invoke("set_hide_taskbar_when_pinned", {
+              hideTaskbarWhenPinned: newBool,
+            });
+
+            await emit("config_update", await Config.getConfig());
+          }}
+        />
       </div>
     </div>
   );

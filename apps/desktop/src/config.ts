@@ -22,6 +22,7 @@ export interface OverlayedConfig {
   opacityTarget: OpacityTarget;
   maxUsernameLength: number;
   userScale: number;
+  hideTaskbarWhenPinned: boolean;
 }
 
 export type OverlayedConfigKey = keyof OverlayedConfig;
@@ -39,6 +40,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   opacityTarget: "all",
   maxUsernameLength: 40,
   userScale: 100,
+  hideTaskbarWhenPinned: false,
 };
 
 const CONFIG_FILE_NAME = "config.json";
