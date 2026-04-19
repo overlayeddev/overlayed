@@ -7,6 +7,7 @@
     "desktop": "pnpm turbo run start --filter=desktop",
     "build": "turbo run build",
     "build:desktop": "turbo run build:desktop",
+    "build:desktop:unsigned": "turbo run build:desktop:unsigned",
     "build:canary": "turbo run build:canary",
     "check:format": "turbo run check:format",
     "clean": "turbo run clean && rm -rf node_modules .turbo",

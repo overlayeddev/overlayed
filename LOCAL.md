@@ -48,6 +48,11 @@ pnpm start:mocked
 pnpm build:desktop
 ```
 
+### 4b. Building locally without updater signing
+```
+pnpm build:desktop:unsigned
+```
+
 ### 5. Building the canary version locally
 ```
 pnpm build:canary
