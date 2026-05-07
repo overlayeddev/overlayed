@@ -38,14 +38,12 @@ function App() {
         pin ? null : "border border-zinc-600"
       )}
     >
-      {!pin && (
-        <NavBar
-          isUpdateAvailable={update?.available ?? false}
-          pin={pin}
-          alignDirection={horizontal}
-          setAlignDirection={setHorizontalDirection}
-        />
-      )}
+      <NavBar
+        isUpdateAvailable={update?.available ?? false}
+        pin={pin}
+        alignDirection={horizontal}
+        setAlignDirection={setHorizontalDirection}
+      />
       <Toaster />
       <Routes>
         <Route path="/" Component={MainView} />
