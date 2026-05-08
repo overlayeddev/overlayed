@@ -1,7 +1,7 @@
 name: "CI"
 on:
+  # TODO: re-enable pull_request trigger after Windows signing is verified e2e
   workflow_dispatch:
-  pull_request:
 
 jobs:
   quality:
