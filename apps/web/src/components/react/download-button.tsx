@@ -27,7 +27,11 @@ export default function DownloadButton({
     >
       <a
         target="_blank"
-        href={platform.url}
+        href={
+          platform.platform === "linux"
+            ? "https://flathub.org/en-GB/apps/dev.overlayed.Overlayed"
+            : platform.url
+        }
         className="flex flex-col items-center justify-center gap-2 h-20 w-20"
         onClick={() => {
           const name = platform.name.includes("canary")

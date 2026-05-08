@@ -31,6 +31,10 @@ export const Download = ({ canary = true }: { canary?: boolean }) => {
       .then((res) => {
         setPlatformDownloads(res);
         setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch latest downloads:", err);
+        setIsLoading(false);
       });
   }, []);
 
