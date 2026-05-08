@@ -6,7 +6,6 @@ on:
   push:
     branches:
       # TODO: REMOVE ME BEFORE MERGE
-      # FIXME: fr fr ong pls remove
       - migrate/codesign
 
 concurrency:
@@ -22,21 +21,21 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          # - host: macos-latest
-          #   target: universal-apple-darwin
-          #   toolchain: aarch64-apple-darwin,x86_64-apple-darwin
-          #   bundles: app,dmg
-          #   os: darwin
+          - host: macos-latest
+            target: universal-apple-darwin
+            toolchain: aarch64-apple-darwin,x86_64-apple-darwin
+            bundles: app,dmg
+            os: darwin
           - host: windows-latest
             target: x86_64-pc-windows-msvc
             toolchain: x86_64-pc-windows-msvc
             bundles: msi,nsis
             os: windows
-          # - host: ubuntu-latest
-          #   target: x86_64-unknown-linux-gnu
-          #   toolchain: x86_64-unknown-linux-gnu
-          #   bundles: deb,appimage
-          #   os: linux
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            toolchain: x86_64-unknown-linux-gnu
+            bundles: deb,appimage
+            os: linux
     env:
       APP_DIR: "apps/desktop"
     runs-on: ${{ matrix.settings.host }}
@@ -78,76 +77,87 @@ jobs:
           VITE_AXIOM_TOKEN: "${{ secrets.VITE_AXIOM_TOKEN }}"
           VITE_SENTRY_AUTH_TOKEN: "${{ secrets.VITE_SENTRY_AUTH_TOKEN }}"
         with:
-          # NOTE: we only use this action to build the project bins for each platform
-          # because we need to do code signing for windows we will upload manually after the signing is completed
           projectPath: "${{ env.APP_DIR }}"
           args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }},updater
-      # TODO: figure out where the binary are in the fs from the above action
-      - name: Presign
+
+      # Windows: collect unsigned binaries, sign them, then assemble final artifact
+      - name: Collect unsigned Windows binaries
+        if: matrix.settings.os == 'windows'
+        shell: pwsh
         run: |
-          # Create binaries directory if it doesn't exist
           New-Item -ItemType Directory -Force -Path "./binaries"
-
-          # Parse artifactPaths to extract .exe and .msi files
-          $artifactPaths = '${{ steps.tauri.outputs.artifactPaths }}'
-          
-          # Parse as JSON array
-          $paths = $artifactPaths | ConvertFrom-Json
-          
-          # Extract .exe and .msi files (excluding .sig and .zip files)
-          $exeFiles = $paths | Where-Object { $_ -match '\.exe$' } | Where-Object { $_ -notmatch '\.(sig|zip)$' }
-          $msiFiles = $paths | Where-Object { $_ -match '\.msi$' } | Where-Object { $_ -notmatch '\.(sig|zip)$' }
-          
-          Write-Host "Found EXE files:"
-          $exeFiles | ForEach-Object { Write-Host "  $_" }
-          
-          Write-Host "Found MSI files:"
-          $msiFiles | ForEach-Object { Write-Host "  $_" }
-          
-          # Move the files to binaries folder
-          $exeFiles | ForEach-Object { 
+          $paths = '${{ steps.tauri.outputs.artifactPaths }}' | ConvertFrom-Json
+          $toSign = $paths | Where-Object { $_ -match '\.(exe|msi)$' } | Where-Object { $_ -notmatch '\.(sig|zip)$' }
+          $toSign | ForEach-Object {
             $fileName = Split-Path $_ -Leaf
             Copy-Item $_ -Destination ".\binaries\$fileName"
           }
-          
-          $msiFiles | ForEach-Object { 
-            $fileName = Split-Path $_ -Leaf
-            Copy-Item $_ -Destination ".\binaries\$fileName"
-          }
+          Get-ChildItem -Path ".\binaries" -File | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
 
-          # sha sum the files in binaries
-          Get-ChildItem -Path ".\binaries" -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
-
-      - name: Upload Unsigned Windows Binaries
+      - name: Upload unsigned Windows binaries
+        if: matrix.settings.os == 'windows'
         id: upload-unsigned-artifact
         uses: actions/upload-artifact@v4
-        with: 
+        with:
+          name: windows-unsigned
           path: ./binaries
-      - name: Sign Windows Binaries
+
+      - name: Sign Windows binaries
+        if: matrix.settings.os == 'windows'
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: 'b2cc34a4-3b75-4753-82e4-b755351770ea'
           project-slug: 'overlayed'
-          # TODO: when we have the production signing policy update this
+          # TODO: switch to the production signing policy when available
           signing-policy-slug: 'test-signing'
           github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
           wait-for-completion: true
           output-artifact-directory: 'binaries/signed'
-      - name: Postsign
+
+      - name: Add updater files to Windows release artifact
+        if: matrix.settings.os == 'windows'
+        shell: pwsh
         run: |
-          # using powershell lets list out the sha sum of the signed binaries
-          Get-ChildItem -Path binaries/signed -File -Recurse | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
-      - name: Upload signed windows binaries
-        uses: actions/github-script@v7
+          $paths = '${{ steps.tauri.outputs.artifactPaths }}' | ConvertFrom-Json
+          $updaterFiles = $paths | Where-Object { $_ -match '\.(sig|zip)$' }
+          $updaterFiles | ForEach-Object {
+            $fileName = Split-Path $_ -Leaf
+            Copy-Item $_ -Destination ".\binaries\signed\$fileName"
+          }
+          Get-ChildItem -Path ".\binaries\signed" -File | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
+
+      - name: Upload Windows release artifacts
+        if: matrix.settings.os == 'windows'
+        uses: actions/upload-artifact@v4
         with:
-          script: |
-            const { script } = await import('${{ github.workspace }}/scripts/actions/upload-signed-bins.js');
-            const id = "${{ needs.create-release.outputs.release_id }}";
-            await script({ github, context }, id);
+          name: windows-release
+          path: ./binaries/signed
+
+      # macOS and Linux: collect and upload all build artifacts
+      - name: Collect macOS/Linux artifacts
+        if: matrix.settings.os != 'windows'
+        shell: bash
+        run: |
+          mkdir -p ./artifacts
+          echo '${{ steps.tauri.outputs.artifactPaths }}' | python3 -c "
+          import json, sys, shutil, os
+          paths = json.load(sys.stdin)
+          for p in paths:
+              shutil.copy(p, './artifacts/' + os.path.basename(p))
+          "
+          ls -la ./artifacts/
+
+      - name: Upload ${{ matrix.settings.os }} release artifacts
+        if: matrix.settings.os != 'windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.settings.os }}-release
+          path: ./artifacts
+
   create-release:
     needs: build-tauri
-    name: Create or Update
+    name: Create Release
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -155,7 +165,7 @@ jobs:
       release_id: ${{ steps.create-release.outputs.result }}
     steps:
       - uses: actions/checkout@v4
-      - name: setup node
+      - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -168,4 +178,30 @@ jobs:
           script: |
             const { script } = await import('${{ github.workspace }}/scripts/actions/create-release.js')
             return await script({ github, context });
+
+  upload-release:
+    needs: create-release
+    name: Upload Release Artifacts
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Download all release artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: '*-release'
+          path: ./release-artifacts
+          merge-multiple: true
+      - name: Upload artifacts to release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { script } = await import('${{ github.workspace }}/scripts/actions/upload-release-artifacts.js')
+            const id = "${{ needs.create-release.outputs.release_id }}";
+            await script({ github, context }, id);
 

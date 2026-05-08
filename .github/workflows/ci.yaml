@@ -1,9 +1,7 @@
 name: "CI"
 on:
   workflow_dispatch:
-  # NOTE: disable before merge
-  # FIXME: FYI
-  # pull_request:
+  pull_request:
 
 jobs:
   quality:
