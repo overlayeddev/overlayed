@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 
 const RELEASE_ARTIFACTS_DIR = "./release-artifacts";
 
@@ -18,7 +19,7 @@ export const script = async ({ context, github }, releaseId) => {
   const errors = [];
 
   for (const file of files) {
-    const filePath = `${RELEASE_ARTIFACTS_DIR}/${file}`;
+    const filePath = path.join(RELEASE_ARTIFACTS_DIR, file);
     const stat = fs.statSync(filePath);
 
     if (stat.isDirectory()) {
