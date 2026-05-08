@@ -3,45 +3,39 @@ title: Installing Overlayed on Linux
 customSlug: installing-overlayed-on-linux
 description: Learn how to install the Overlayed app on Linux Step by Step
 ogImage: "../../assets/blog/installing-on-linux.png"
-pubDate: "Jan 01 2024"
+pubDate: "May 8 2026"
 draft: false
 ---
 
-This blog post will walk you through the downloading and installation process to get Overlayed up and running!
-
-## 📦 Downloading
-
-First, download the program for Linux from the [overlayed.dev](https://overlayed.dev) homepage.
-
-![Download on Linux](/img/blog/installing-overlayed-on-linux/download.png)
+This blog post will walk you through the installation process to get Overlayed up and running!
 
 ## ⬇️ Installing
 
-On Linux, Overlayed is packaged as an [AppImage](https://appimage.org). This means that you are not required to install the app, but can just run it. There are two primary methods how you can run AppImages.
+On Linux, Overlayed is distributed as a [Flatpak](https://flatpak.org) through Flathub. This is the recommended way to install and run Overlayed across different Linux distributions.
 
-### Graphical Method
+### Installing via Terminal
 
-Open your preferred file explorer and browse to the location where you downloaded `Overlayed_x.x.x.AppImage`.
+If you haven't set up Flatpak on your system yet, please follow the [official Flatpak setup guide](https://flatpak.org/setup/) for your specific distribution.
 
-Right click the file and click the 'Properties' entry.
+Once Flatpak and Flathub are set up, you can install Overlayed by running the following command in your terminal:
 
-The window might look something like this:
-![Mark executable](/img/blog/installing-overlayed-on-linux/mark-executable.png)
+```bash
+flatpak install flathub dev.overlayed.Overlayed
+```
 
-In this window, check the 'Executable as Program' option.
-Once you are done, you can close the window and double click the file to run Overlayed.
+### Graphical Method (Software Center)
 
-### Terminal Method
+Many modern Linux distributions (like Fedora, Linux Mint, or Pop!_OS) come with Flatpak and Flathub support built into their default graphical software centers.
 
-1. Navigate to the location where you have downloaded Overlayed using `cd <your location here>`.
-2. Mark the file as an executable: `chmod +x Overlayed_x.x.x.AppImage`
-3. Now you can run Overlayed using `./Overlayed_x.x.x.AppImage`
+Simply open your Software Center (e.g., GNOME Software or KDE Discover), search for **Overlayed**, and click **Install**.
 
-### Installation using AppImageLauncher
+### Running Overlayed
 
-If you want to install Overlayed similar to your other apps, you can use [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) to allow simple installations using a double click on the app.
+After installation, you can launch Overlayed directly from your desktop environment's application launcher. Alternatively, you can start it via terminal using:
 
-You can follow [the instructions here](https://github.com/TheAssassin/AppImageLauncher/wiki) to install AppImageLauncher, and then install Overlayed by just double clicking the file and following the instructions.
+```bash
+flatpak run dev.overlayed.Overlayed
+```
 
 ## 🥳 Congratulations!
 
