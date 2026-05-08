@@ -112,10 +112,10 @@ export const NavBar = ({
       return (
         <>
           Pinning hides this frame to only show the users in the call.
-          <br /><br />
-          Unpin or access Settings anytime via the{" "}
-          <strong className="text-white">system tray</strong>{" "}
-          icon in the near the clock in your taskbar.
+          <br />
+          <br />
+          Unpin or access Settings anytime via the <strong className="text-white">system tray</strong> icon in the near
+          the clock in your taskbar.
         </>
       );
     }
@@ -123,19 +123,19 @@ export const NavBar = ({
       return (
         <>
           Pinning hides this frame to only show the users in the call.
-          <br /><br />
-          Unpin or access Settings anytime via the{" "}
-          <strong className="text-white">menu bar</strong>{" "}
-          icon in the top-right of your screen.
+          <br />
+          <br />
+          Unpin or access Settings anytime via the <strong className="text-white">menu bar</strong> icon in the
+          top-right of your screen.
         </>
       );
     }
     return (
       <>
         Pinning hides this frame to only show the users in the call.
-        <br /><br />
-        Unpin or access Settings anytime via the{" "}
-        <strong className="text-white">system tray</strong> /{" "}
+        <br />
+        <br />
+        Unpin or access Settings anytime via the <strong className="text-white">system tray</strong> /{" "}
         <strong className="text-white">notification area</strong> icon.
       </>
     );
@@ -211,9 +211,7 @@ export const NavBar = ({
                   {/* Arrow pointing up toward the pin button */}
                   <div className="absolute -top-3 right-0 h-0 w-0 border-x-[9px] border-b-[12px] border-x-transparent border-b-zinc-500" />
                   <div className="flex items-start gap-2">
-                    <p className="flex-1 leading-snug text-zinc-300">
-                      {getTrayHint(os)}
-                    </p>
+                    <p className="flex-1 leading-snug text-zinc-300">{getTrayHint(os)}</p>
                     <button
                       onClick={dismissFtue}
                       className="absolute right-2 top-2 shrink-0 cursor-pointer text-zinc-400 hover:text-white"

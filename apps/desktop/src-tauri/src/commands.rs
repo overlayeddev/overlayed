@@ -130,12 +130,13 @@ fn apply_taskbar_visibility(app: &AppHandle, pinned: bool, hide_taskbar_when_pin
   #[cfg(target_os = "macos")]
   {
     use tauri::ActivationPolicy;
-    app.set_activation_policy(if skip_taskbar {
-      ActivationPolicy::Accessory
-    } else {
-      ActivationPolicy::Regular
-    })
-    .ok();
+    app
+      .set_activation_policy(if skip_taskbar {
+        ActivationPolicy::Accessory
+      } else {
+        ActivationPolicy::Regular
+      })
+      .ok();
   }
 }
 
