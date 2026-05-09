@@ -8,6 +8,7 @@
       "outputs": ["dist/**"]
     },
     "build:desktop": {},
+    "build:desktop:unsigned": {},
     "start:canary": {},
     "build:canary": {},
     "start": {

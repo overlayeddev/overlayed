@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { FTUE_PIN_TRAY_TIP_KEY } from "@/constants";
 import { exit } from "@tauri-apps/plugin-process";
 import * as dateFns from "date-fns";
 import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
@@ -17,12 +18,61 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useEffect, useState } from "react";
+import { usePin } from "@/hooks/use-pin";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Pin } from "lucide-react";
 import type { VoiceUser } from "@/types";
 import * as shell from "@tauri-apps/plugin-shell";
 
 export const Developer = () => {
   const platformInfo = usePlatformInfo();
+  const DEV_TOKEN_BACKUP_KEY = "overlayed:dev:token-backup";
+  const DEV_TOKEN_EXPIRY_BACKUP_KEY = "overlayed:dev:token-expiry-backup";
+  const DEV_USER_DATA_BACKUP_KEY = "overlayed:dev:user-data-backup";
+
+  const simulateTokenExpiryForTesting = async () => {
+    const currentToken = localStorage.getItem("discord_access_token");
+    const currentTokenExpiry = localStorage.getItem("discord_access_token_expiry");
+    const currentUserData = localStorage.getItem("user_data");
+
+    if (currentToken) {
+      localStorage.setItem(DEV_TOKEN_BACKUP_KEY, currentToken);
+    }
+    if (currentTokenExpiry) {
+      localStorage.setItem(DEV_TOKEN_EXPIRY_BACKUP_KEY, currentTokenExpiry);
+    }
+    if (currentUserData) {
+      localStorage.setItem(DEV_USER_DATA_BACKUP_KEY, currentUserData);
+    }
+
+    // Clear auth keys so the app immediately routes back to the re-auth screen.
+    localStorage.removeItem("discord_access_token");
+    localStorage.removeItem("discord_access_token_expiry");
+    localStorage.removeItem("user_data");
+
+    // Bring focus back to the main window where the auth screen is shown.
+    await invoke("close_settings");
+  };
+
+  const restoreTokenAfterTesting = () => {
+    const tokenBackup = localStorage.getItem(DEV_TOKEN_BACKUP_KEY);
+    const tokenExpiryBackup = localStorage.getItem(DEV_TOKEN_EXPIRY_BACKUP_KEY);
+    const userDataBackup = localStorage.getItem(DEV_USER_DATA_BACKUP_KEY);
+
+    if (tokenBackup) {
+      localStorage.setItem("discord_access_token", tokenBackup);
+      localStorage.removeItem(DEV_TOKEN_BACKUP_KEY);
+    }
+    if (tokenExpiryBackup) {
+      localStorage.setItem("discord_access_token_expiry", tokenExpiryBackup);
+      localStorage.removeItem(DEV_TOKEN_EXPIRY_BACKUP_KEY);
+    }
+    if (userDataBackup) {
+      localStorage.setItem("user_data", userDataBackup);
+      localStorage.removeItem(DEV_USER_DATA_BACKUP_KEY);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col gap-2">
@@ -32,6 +82,7 @@ export const Developer = () => {
             variant="outline"
             onClick={async () => {
               await invoke("open_devtools");
+              await invoke("open_overlay_devtools");
             }}
           >
             Open Devtools
@@ -46,6 +97,40 @@ export const Developer = () => {
             Open Config Dir
           </Button>
         </div>
+        {import.meta.env.DEV && (
+          <div className="flex gap-4 pb-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                localStorage.removeItem(FTUE_PIN_TRAY_TIP_KEY);
+              }}
+            >
+              Reset FTUE tip
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                void simulateTokenExpiryForTesting();
+              }}
+            >
+              Expire Auth
+            </Button>
+            <Button size="sm" variant="outline" onClick={restoreTokenAfterTesting}>
+              Restore Auth
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={async () => {
+                await invoke("simulate_error_screen");
+              }}
+            >
+              Simulate Error Screen
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );
@@ -100,6 +185,7 @@ export const Account = () => {
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [user, setUser] = useState<VoiceUser | null>(null);
   const [tokenExpires, setTokenExpires] = useState(localStorage.getItem("discord_access_token_expiry"));
+  const { pin: pinned } = usePin();
 
   // pull out the user data from localStorage
   useEffect(() => {
@@ -160,6 +246,23 @@ export const Account = () => {
         </div>
         <div className="flex flex-row gap-4 pb-4">
           <div>
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-24 flex items-center justify-center"
+              onClick={async () => {
+                try {
+                  await invoke("set_pin", { value: !pinned });
+                } catch (e) {
+                  console.error("failed to set pin", e);
+                }
+              }}
+            >
+              <Pin className={pinned ? "mr-2 h-4 w-4 text-yellow-400" : "mr-2 h-4 w-4"} size={16} />
+              {pinned ? "Unpin" : "Pin"}
+            </Button>
+          </div>
+          <div>
             <Dialog
               onOpenChange={e => {
                 setShowLogoutDialog(e);
@@ -167,7 +270,7 @@ export const Account = () => {
               open={showLogoutDialog}
             >
               <DialogTrigger asChild>
-                <Button size="sm" disabled={!user?.id} className="w-[100px]">
+                <Button size="sm" disabled={!user?.id} className="w-20">
                   Logout
                 </Button>
               </DialogTrigger>
@@ -208,7 +311,7 @@ export const Account = () => {
             open={showQuitDialog}
           >
             <DialogTrigger asChild>
-              <Button size="sm" className="w-[100px]">
+              <Button size="sm" className="w-20">
                 Quit
               </Button>
             </DialogTrigger>
@@ -237,8 +340,8 @@ export const Account = () => {
               </form>
             </DialogContent>
           </Dialog>
-          <Developer />
         </div>
+        <Developer />
         <AppInfo />
       </div>
     </div>

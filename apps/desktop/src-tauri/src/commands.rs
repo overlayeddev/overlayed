@@ -5,7 +5,7 @@ use std::{
 
 use tauri::{image::Image, menu::Menu, AppHandle, Emitter, Manager, State, WebviewWindow, Wry};
 
-use crate::{constants::*, Pinned, TrayMenu};
+use crate::{constants::*, HideTaskbarWhenPinned, Pinned, TrayMenu};
 
 #[tauri::command]
 pub fn open_settings(window: WebviewWindow, update: bool) {
@@ -43,16 +43,56 @@ pub fn open_devtools(window: WebviewWindow) {
 }
 
 #[tauri::command]
-pub fn toggle_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>) {
+pub fn open_overlay_devtools(window: WebviewWindow) {
   let app = window.app_handle();
-  let value = !get_pin(app.state::<Pinned>());
-
-  _set_pin(value, &window, pin, menu);
+  if let Some(main_window) = app.get_webview_window(MAIN_WINDOW_NAME) {
+    main_window.open_devtools();
+  }
 }
 
 #[tauri::command]
-pub fn set_pin(window: WebviewWindow, pin: State<Pinned>, menu: State<TrayMenu>, value: bool) {
-  _set_pin(value, &window, pin, menu);
+pub fn simulate_error_screen(window: WebviewWindow) {
+  let app = window.app_handle();
+
+  if let Some(main_window) = app.get_webview_window(MAIN_WINDOW_NAME) {
+    let _ = main_window.eval("window.location.hash = '#/error';");
+    let _ = main_window.show();
+    let _ = main_window.set_focus();
+  }
+
+  if let Some(settings_window) = app.get_webview_window(SETTINGS_WINDOW_NAME) {
+    let _ = settings_window.hide();
+  }
+}
+
+#[tauri::command]
+pub fn toggle_pin(
+  window: WebviewWindow,
+  pin: State<Pinned>,
+  menu: State<TrayMenu>,
+  hide_taskbar: State<HideTaskbarWhenPinned>,
+) {
+  let app = window.app_handle();
+  let value = !get_pin(app.state::<Pinned>());
+
+  // Always target the main overlay window so pinning from other windows
+  // (e.g., settings) does not affect those windows.
+  if let Some(main_win) = app.get_webview_window(MAIN_WINDOW_NAME) {
+    _set_pin(value, &main_win, pin, menu, hide_taskbar);
+  }
+}
+
+#[tauri::command]
+pub fn set_pin(
+  window: WebviewWindow,
+  pin: State<Pinned>,
+  menu: State<TrayMenu>,
+  hide_taskbar: State<HideTaskbarWhenPinned>,
+  value: bool,
+) {
+  if let Some(main_win) = window.app_handle().get_webview_window(MAIN_WINDOW_NAME) {
+    _set_pin(value, &main_win, pin, menu, hide_taskbar);
+  }
 }
 
 impl Deref for Pinned {
@@ -71,12 +111,58 @@ impl Deref for TrayMenu {
   }
 }
 
-fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: State<TrayMenu>) {
+impl Deref for HideTaskbarWhenPinned {
+  type Target = AtomicBool;
+
+  fn deref(&self) -> &Self::Target {
+    &self.0
+  }
+}
+
+fn apply_taskbar_visibility(app: &AppHandle, pinned: bool, hide_taskbar_when_pinned: bool) {
+  let skip_taskbar = pinned && hide_taskbar_when_pinned;
+
+  if let Some(main_window) = app.get_webview_window(MAIN_WINDOW_NAME) {
+    #[cfg(target_os = "windows")]
+    main_window.set_skip_taskbar(skip_taskbar).ok();
+  }
+
+  #[cfg(target_os = "macos")]
+  {
+    use tauri::ActivationPolicy;
+    app
+      .set_activation_policy(if skip_taskbar {
+        ActivationPolicy::Accessory
+      } else {
+        ActivationPolicy::Regular
+      })
+      .ok();
+  }
+}
+
+fn _set_pin(
+  value: bool,
+  window: &WebviewWindow,
+  pinned: State<Pinned>,
+  menu: State<TrayMenu>,
+  hide_taskbar: State<HideTaskbarWhenPinned>,
+) {
   // @d0nutptr cooked here
   pinned.store(value, std::sync::atomic::Ordering::Relaxed);
 
-  // let the client know
+  // emit to the main window and also broadcast to all webviews so other
+  // windows (like settings) can react to the change.
   window.emit(TRAY_TOGGLE_PIN, value).unwrap();
+
+  // Broadcast the pin change to all webviews so other
+  // windows (like settings) can react to the change.
+  let app_handle = window.app_handle();
+  if let Some(main_win) = app_handle.get_webview_window(MAIN_WINDOW_NAME) {
+    let _ = main_win.emit(TRAY_TOGGLE_PIN, value);
+  }
+  if let Some(settings_win) = app_handle.get_webview_window(SETTINGS_WINDOW_NAME) {
+    let _ = settings_win.emit(TRAY_TOGGLE_PIN, value);
+  }
 
   // invert the label for the tray
   if let Some(toggle_pin_menu_item) = menu.lock().ok().and_then(|m| m.get(TRAY_TOGGLE_PIN)) {
@@ -105,6 +191,12 @@ fn _set_pin(value: bool, window: &WebviewWindow, pinned: State<Pinned>, menu: St
 
   window.set_ignore_cursor_events(value);
 
+  apply_taskbar_visibility(
+    &window.app_handle(),
+    value,
+    hide_taskbar.load(std::sync::atomic::Ordering::Relaxed),
+  );
+
   // update the tray icon
   update_tray_icon(window.app_handle(), value);
 }
@@ -121,4 +213,23 @@ pub fn update_tray_icon(app: &AppHandle, pinned: bool) {
       tray.set_icon(Some(icon));
     }
   }
+}
+
+#[tauri::command]
+pub fn set_hide_taskbar_when_pinned(
+  window: WebviewWindow,
+  hide_taskbar_when_pinned: bool,
+  pinned: State<Pinned>,
+  hide_taskbar: State<HideTaskbarWhenPinned>,
+) {
+  hide_taskbar.store(
+    hide_taskbar_when_pinned,
+    std::sync::atomic::Ordering::Relaxed,
+  );
+
+  apply_taskbar_visibility(
+    &window.app_handle(),
+    pinned.load(std::sync::atomic::Ordering::Relaxed),
+    hide_taskbar_when_pinned,
+  );
 }

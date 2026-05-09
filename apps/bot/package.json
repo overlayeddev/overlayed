@@ -11,7 +11,8 @@
 		"clean": "rm -rf dist .turbo node_modules",
 		"register": "node --import tsx/esm ./src/register.ts",
 		"format": "prettier --write .",
-		"start": "wrangler dev --remote --port 8787"
+		"start": "wrangler dev --local --port 8788",
+		"start:remote": "wrangler dev --remote --port 8787"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20250129.0",

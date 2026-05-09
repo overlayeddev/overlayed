@@ -40,6 +40,8 @@ use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
 
+pub struct HideTaskbarWhenPinned(AtomicBool);
+
 pub struct TrayMenu(Mutex<Menu<Wry>>);
 
 #[cfg(target_os = "macos")]
@@ -99,10 +101,14 @@ fn main() {
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
     .plugin(tauri_plugin_http::init())
-    .plugin(log_plugin_builder.build())
-    .plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
+    .plugin(log_plugin_builder.build());
+
+  #[cfg(not(debug_assertions))]
+  {
+    app = app.plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
       println!("{}, {argv:?}, {cwd}", app.package_info().name);
     }));
+  }
 
   #[cfg(target_os = "macos")]
   {
@@ -111,6 +117,7 @@ fn main() {
 
   app = app
     .manage(Pinned(AtomicBool::new(false)))
+    .manage(HideTaskbarWhenPinned(AtomicBool::new(false)))
     .setup(move |app| {
       debug!("starting app...");
       let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
@@ -160,30 +167,48 @@ fn main() {
       get_pin,
       set_pin,
       open_devtools,
+      open_overlay_devtools,
+      simulate_error_screen,
       close_settings,
       open_settings,
+      set_hide_taskbar_when_pinned,
     ]);
 
   app
     .build(tauri::generate_context!())
     .expect("An error occured while running the app!")
     .run(|app, event| {
+      use tauri::WindowEvent as WEvent;
+
       if let tauri::RunEvent::WindowEvent {
-        event: tauri::WindowEvent::CloseRequested { api, .. },
-        label,
-        ..
+        event: we, label, ..
       } = event
       {
-        if label == SETTINGS_WINDOW_NAME {
-          let win = app.get_webview_window(label.as_str()).unwrap();
-          win.hide().unwrap();
-        }
+        match we {
+          WEvent::CloseRequested { api, .. } => {
+            if label == SETTINGS_WINDOW_NAME {
+              let win = app.get_webview_window(label.as_str()).unwrap();
+              win.hide().unwrap();
+            }
 
-        if label == MAIN_WINDOW_NAME {
-          app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
-          std::process::exit(0);
-        } else {
-          api.prevent_close();
+            if label == MAIN_WINDOW_NAME {
+              // Save state on close
+              app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+              std::process::exit(0);
+            } else {
+              api.prevent_close();
+            }
+          }
+
+          WEvent::Resized(_) | WEvent::Moved(_) => {
+            if label == MAIN_WINDOW_NAME {
+              // Also save state whenever the main window is moved or resized so
+              // we persist the latest bounds even if the process is terminated
+              app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);
+            }
+          }
+
+          _ => {}
         }
       }
     });
