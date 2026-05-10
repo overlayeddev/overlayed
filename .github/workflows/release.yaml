@@ -83,19 +83,37 @@ jobs:
           projectPath: "${{ env.APP_DIR }}"
           args: --target ${{ matrix.settings.target }} --bundles ${{ matrix.settings.bundles }},updater
 
-      # Windows: collect unsigned binaries, sign them, then assemble final artifact
-      - name: Collect unsigned Windows binaries
+      # Collect ALL Tauri artifacts (cross-platform, single source of truth)
+      - name: Collect release artifacts
+        shell: bash
+        env:
+          ARTIFACT_PATHS: ${{ steps.tauri.outputs.artifactPaths }}
+        run: |
+          mkdir -p ./release-artifacts
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const paths = JSON.parse(process.env.ARTIFACT_PATHS);
+            paths.forEach(p => {
+              const dest = path.join('./release-artifacts', path.basename(p));
+              fs.copyFileSync(p, dest);
+              console.log('Collected:', path.basename(p));
+            });
+          "
+
+      # Windows only: extract .exe/.msi for signing, sign, then replace in release-artifacts
+      - name: Extract Windows binaries for signing
         if: matrix.settings.os == 'windows'
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force -Path "./binaries"
-          $paths = '${{ steps.tauri.outputs.artifactPaths }}' | ConvertFrom-Json
-          $toSign = $paths | Where-Object { $_ -match '\.(exe|msi)$' } | Where-Object { $_ -notmatch '\.(sig|zip)$' }
-          $toSign | ForEach-Object {
-            $fileName = Split-Path $_ -Leaf
-            Copy-Item $_ -Destination ".\binaries\$fileName"
-          }
-          Get-ChildItem -Path ".\binaries" -File | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
+          New-Item -ItemType Directory -Force -Path "./binaries-to-sign"
+          Get-ChildItem -Path "./release-artifacts" -File |
+            Where-Object { $_.Extension -in '.exe', '.msi' } |
+            ForEach-Object {
+              Copy-Item $_.FullName -Destination "./binaries-to-sign/$($_.Name)"
+              Write-Host "To sign: $($_.Name)"
+            }
+          Get-ChildItem -Path "./binaries-to-sign" -File | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
 
       - name: Upload unsigned Windows binaries
         if: matrix.settings.os == 'windows'
@@ -103,7 +121,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-unsigned
-          path: ./binaries
+          path: ./binaries-to-sign
 
       - name: Sign Windows binaries
         if: matrix.settings.os == 'windows'
@@ -116,47 +134,24 @@ jobs:
           signing-policy-slug: 'test-signing'
           github-artifact-id: '${{ steps.upload-unsigned-artifact.outputs.artifact-id }}'
           wait-for-completion: true
-          output-artifact-directory: 'binaries/signed'
+          output-artifact-directory: 'binaries-signed'
 
-      - name: Add updater files to Windows release artifact
+      - name: Replace unsigned binaries with signed
         if: matrix.settings.os == 'windows'
         shell: pwsh
         run: |
-          $paths = '${{ steps.tauri.outputs.artifactPaths }}' | ConvertFrom-Json
-          $updaterFiles = $paths | Where-Object { $_ -match '\.(sig|zip)$' }
-          $updaterFiles | ForEach-Object {
-            $fileName = Split-Path $_ -Leaf
-            Copy-Item $_ -Destination ".\binaries\signed\$fileName"
+          Get-ChildItem -Path "./binaries-signed" -File | ForEach-Object {
+            Copy-Item $_.FullName -Destination "./release-artifacts/$($_.Name)" -Force
+            Write-Host "Replaced with signed: $($_.Name)"
           }
-          Get-ChildItem -Path ".\binaries\signed" -File | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
+          Get-ChildItem -Path "./release-artifacts" -File | ForEach-Object { Get-FileHash -Path $_.FullName -Algorithm SHA256 }
 
-      - name: Upload Windows release artifacts
-        if: matrix.settings.os == 'windows'
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-release
-          path: ./binaries/signed
-
-      # macOS and Linux: collect and upload all build artifacts
-      - name: Collect macOS/Linux artifacts
-        if: matrix.settings.os != 'windows'
-        shell: bash
-        run: |
-          mkdir -p ./artifacts
-          echo '${{ steps.tauri.outputs.artifactPaths }}' | python3 -c "
-          import json, sys, shutil, os
-          paths = json.load(sys.stdin)
-          for p in paths:
-              shutil.copy(p, './artifacts/' + os.path.basename(p))
-          "
-          ls -la ./artifacts/
-
+      # Upload release artifact — same step for all platforms (single source of truth)
       - name: Upload ${{ matrix.settings.os }} release artifacts
-        if: matrix.settings.os != 'windows'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.settings.os }}-release
-          path: ./artifacts
+          path: ./release-artifacts
 
   create-release:
     needs: build-tauri
