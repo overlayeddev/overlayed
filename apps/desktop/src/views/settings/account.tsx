@@ -22,10 +22,8 @@ import { usePin } from "@/hooks/use-pin";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pin } from "lucide-react";
 import type { VoiceUser } from "@/types";
-import * as shell from "@tauri-apps/plugin-shell";
 
 export const Developer = () => {
-  const platformInfo = usePlatformInfo();
   const DEV_TOKEN_BACKUP_KEY = "overlayed:dev:token-backup";
   const DEV_TOKEN_EXPIRY_BACKUP_KEY = "overlayed:dev:token-expiry-backup";
   const DEV_USER_DATA_BACKUP_KEY = "overlayed:dev:user-data-backup";
@@ -91,7 +89,7 @@ export const Developer = () => {
             size="sm"
             variant="outline"
             onClick={async () => {
-              await shell.open(platformInfo.configDir);
+              await invoke("open_config_dir");
             }}
           >
             Open Config Dir
