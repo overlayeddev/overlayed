@@ -240,6 +240,8 @@ pub fn open_config_dir(app: tauri::AppHandle) {
   use tauri_plugin_opener::OpenerExt;
   if let Ok(path) = app.path().app_config_dir() {
     let _ = std::fs::create_dir_all(&path);
-    let _ = app.opener().open_path(path.to_string_lossy().to_string(), None::<&str>);
+    let _ = app
+      .opener()
+      .open_path(path.to_string_lossy().to_string(), None::<&str>);
   }
 }
