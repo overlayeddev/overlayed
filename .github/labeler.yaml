@@ -1,19 +1,19 @@
-# Add web label if they changed web code
-web:
+# Add api label if they changed api code
+api:
   - changed-files:
-      - any-glob-to-any-file: apps/web/**
+      - any-glob-to-any-file: apps/api/**
+
+# Add bot label if they changed bot code
+bot:
+  - changed-files:
+      - any-glob-to-any-file: apps/bot/**
 
 # Add desktop label if they changed desktop code
 desktop:
   - changed-files:
       - any-glob-to-any-file: apps/desktop/**
-
-# Add updater label if they changed updater code
-updater:
+      
+# Add web label if they changed web code
+web:
   - changed-files:
-      - any-glob-to-any-file: apps/updater/**
-
-# Add updater label if they changed updater code
-bot:
-  - changed-files:
-      - any-glob-to-any-file: apps/bot/**
+      - any-glob-to-any-file: apps/web/**
