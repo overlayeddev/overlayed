@@ -26,9 +26,6 @@
     <category>Utility</category>
     <category>TelephonyTools</category>
   </categories>
-  <requires>
-    <id>com.discordapp.Discord</id>
-  </requires>
   <screenshots>
     <screenshot type="default">
       <caption>Overlayed Marketing Image showing the app used in Minecraft</caption>
@@ -56,6 +53,7 @@
     <control>touch</control>
   </supports>
   <requires>
+    <id>com.discordapp.Discord</id>
     <display_length compare="ge">360</display_length>
   </requires>
 </component>
