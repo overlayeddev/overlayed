@@ -101,6 +101,7 @@ fn main() {
     .plugin(tauri_plugin_shell::init())
     .plugin(tauri_plugin_os::init())
     .plugin(tauri_plugin_http::init())
+    .plugin(tauri_plugin_opener::init())
     .plugin(log_plugin_builder.build());
 
   #[cfg(not(debug_assertions))]
@@ -172,6 +173,7 @@ fn main() {
       close_settings,
       open_settings,
       set_hide_taskbar_when_pinned,
+      open_config_dir,
     ]);
 
   app
