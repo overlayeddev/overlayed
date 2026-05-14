@@ -4,6 +4,7 @@ import Config from "@/config";
 import { useConfigValue } from "@/hooks/use-config-value";
 import { emit } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
+import { SimpleSelect } from "@/components/ui/simple-select";
 
 export const Configuration = () => {
   const { value: showOnlyTalkingUsers } = useConfigValue("showOnlyTalkingUsers");
@@ -68,27 +69,22 @@ export const Configuration = () => {
         >
           Anchor horizontal
         </label>
-        <select
+        <SimpleSelect
           id="horizontal"
           value={horizontal}
-          onChange={async event => {
-            const newTarget = event.target.value as "left" | "center" | "right";
+          onChange={async val => {
+            const newTarget = val as "left" | "center" | "right";
             await Config.set("horizontal", newTarget);
 
             await emit("config_update", await Config.getConfig());
           }}
-          className="w-40 p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0 cursor-pointer"
-        >
-          <option value="left" className="bg-zinc-800 text-white">
-            Left
-          </option>
-          <option value="center" className="bg-zinc-800 text-white">
-            Center
-          </option>
-          <option value="right" className="bg-zinc-800 text-white">
-            Right
-          </option>
-        </select>
+          options={[
+            { value: "left", label: "Left" },
+            { value: "center", label: "Center" },
+            { value: "right", label: "Right" },
+          ]}
+          className="w-40"
+        />
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
         <label
@@ -97,24 +93,21 @@ export const Configuration = () => {
         >
           Anchor vertical
         </label>
-        <select
+        <SimpleSelect
           id="vertical"
           value={vertical}
-          onChange={async event => {
-            const newTarget = event.target.value as "top" | "bottom";
+          onChange={async val => {
+            const newTarget = val as "top" | "bottom";
             await Config.set("vertical", newTarget);
 
             await emit("config_update", await Config.getConfig());
           }}
-          className="w-40 p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0 cursor-pointer"
-        >
-          <option value="top" className="bg-zinc-800 text-white">
-            Top
-          </option>
-          <option value="bottom" className="bg-zinc-800 text-white">
-            Bottom
-          </option>
-        </select>
+          options={[
+            { value: "top", label: "Top" },
+            { value: "bottom", label: "Bottom" },
+          ]}
+          className="w-40"
+        />
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
         <label
@@ -123,24 +116,21 @@ export const Configuration = () => {
         >
           Opacity target
         </label>
-        <select
+        <SimpleSelect
           id="opacityTarget"
           value={opacityTarget}
-          onChange={async event => {
-            const newTarget = event.target.value as "all" | "username-box";
+          onChange={async val => {
+            const newTarget = val as "all" | "username-box";
             await Config.set("opacityTarget", newTarget);
 
             await emit("config_update", await Config.getConfig());
           }}
-          className="p-1 rounded border bg-zinc-800 text-white outline-none focus:ring-0 cursor-pointer"
-        >
-          <option value="all" className="bg-zinc-800 text-white">
-            Everything
-          </option>
-          <option value="username-box" className="bg-zinc-800 text-white">
-            Username background only
-          </option>
-        </select>
+          options={[
+            { value: "all", label: "Everything" },
+            { value: "username-box", label: "Username background only" },
+          ]}
+          className="w-56"
+        />
       </div>
       <div className="flex items-center justify-between h-8 mx-2">
         <label

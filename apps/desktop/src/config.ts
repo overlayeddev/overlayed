@@ -31,7 +31,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   pin: false,
   horizontal: "right",
   // TODO: vertical alignment? i.e., if aligned to bottom, then the navbar should be at the bottom (and corner radius changes appropriately)
-  vertical: "bottom",
+  vertical: "top",
   telemetry: true,
   joinHistoryNotifications: false,
   showOnlyTalkingUsers: false,
