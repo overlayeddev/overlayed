@@ -21,6 +21,7 @@
       <li>Transparent - Transparent window that can ignore mouse clicks</li>
       <li>Join History - See who enters and leaves a channel</li>
     </ul>
+    <p>Only the official Discord client is supported (no third party clients like Vesktop) since Overlayed requires Advanced RPC to function, see https://github.com/overlayeddev/overlayed/issues/78 for details.</p>
   </description>
   <categories>
     <category>Utility</category>
