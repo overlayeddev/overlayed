@@ -123,7 +123,7 @@ fn apply_taskbar_visibility(app: &AppHandle, pinned: bool, hide_taskbar_when_pin
   let skip_taskbar = pinned && hide_taskbar_when_pinned;
 
   if let Some(main_window) = app.get_webview_window(MAIN_WINDOW_NAME) {
-    #[cfg(target_os = "windows")]
+    #[cfg(any(target_os = "windows", target_os = "linux"))]
     main_window.set_skip_taskbar(skip_taskbar).ok();
   }
 
