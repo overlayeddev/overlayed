@@ -7,6 +7,12 @@ export type DirectionTB = "top" | "bottom";
 
 export type OpacityTarget = "all" | "username-box";
 
+export type HotkeyCommand = "pin" | "toggle-visibility" | "next-monitor" | "open-settings";
+export interface HotkeyBinding {
+  key: string;
+  command: HotkeyCommand;
+}
+
 export type PlacementMode = "manual" | "anchored";
 export type PlacementAnchor =
   | "top-left"
@@ -41,6 +47,7 @@ export interface OverlayedConfig {
   placementOffsetX: number;
   placementOffsetY: number;
   startPinned: boolean;
+  hotkeys: HotkeyBinding[];
 }
 
 export type OverlayedConfigKey = keyof OverlayedConfig;
@@ -65,6 +72,10 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   placementOffsetX: 16,
   placementOffsetY: 16,
   startPinned: false,
+  hotkeys: [
+    { key: "CommandOrControl+Shift+H", command: "pin" },
+    { key: "CommandOrControl+Shift+G", command: "toggle-visibility" },
+  ],
 };
 
 const CONFIG_FILE_NAME = "config.json";

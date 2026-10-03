@@ -10,6 +10,7 @@ extern crate objc;
 mod app_handle;
 mod commands;
 mod constants;
+mod hotkeys;
 mod placement;
 mod tray;
 mod window_custom;
@@ -118,6 +119,11 @@ fn main() {
     }));
   }
 
+  #[cfg(desktop)]
+  if hotkeys::supported() {
+    app = app.plugin(tauri_plugin_global_shortcut::Builder::new().build());
+  }
+
   #[cfg(target_os = "macos")]
   {
     app = app.plugin(tauri_nspanel::init());
@@ -127,6 +133,8 @@ fn main() {
     .manage(Pinned(AtomicBool::new(false)))
     .manage(HideTaskbarWhenPinned(AtomicBool::new(false)))
     .manage(placement::PlacementState::default())
+    .manage(hotkeys::HotkeysState::default())
+    .manage(hotkeys::OverlayVisibility::default())
     .setup(move |app| {
       debug!("starting app...");
       let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
@@ -172,9 +180,9 @@ fn main() {
       Ok(())
     })
     .invoke_handler(generate_handler![
-      toggle_pin,
+      hotkeys::toggle_pin,
       get_pin,
-      set_pin,
+      hotkeys::set_pin,
       open_devtools,
       open_overlay_devtools,
       simulate_error_screen,
@@ -185,6 +193,11 @@ fn main() {
       placement::get_monitors,
       placement::apply_placement,
       placement::release_placement,
+      hotkeys::set_hotkeys,
+      hotkeys::get_hotkeys,
+      hotkeys::suspend_hotkeys,
+      hotkeys::record_hotkey,
+      hotkeys::set_overlay_visible,
     ]);
 
   app
