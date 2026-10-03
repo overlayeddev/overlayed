@@ -7,6 +7,18 @@ export type DirectionTB = "top" | "bottom";
 
 export type OpacityTarget = "all" | "username-box";
 
+export type PlacementMode = "manual" | "anchored";
+export type PlacementAnchor =
+  | "top-left"
+  | "top-center"
+  | "top-right"
+  | "middle-left"
+  | "center"
+  | "middle-right"
+  | "bottom-left"
+  | "bottom-center"
+  | "bottom-right";
+
 // TODO: this is hard to use we zzz
 // NOTE: how can i handle versions updates where i add new keys
 // NOTE: this looks cool https://github.com/harshkhandeparkar/tauri-settings/issues
@@ -23,6 +35,12 @@ export interface OverlayedConfig {
   maxUsernameLength: number;
   userScale: number;
   hideTaskbarWhenPinned: boolean;
+  placementMode: PlacementMode;
+  placementMonitor: string | null;
+  placementAnchor: PlacementAnchor;
+  placementOffsetX: number;
+  placementOffsetY: number;
+  startPinned: boolean;
 }
 
 export type OverlayedConfigKey = keyof OverlayedConfig;
@@ -41,6 +59,12 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   maxUsernameLength: 40,
   userScale: 100,
   hideTaskbarWhenPinned: false,
+  placementMode: "manual",
+  placementMonitor: null,
+  placementAnchor: "top-left",
+  placementOffsetX: 16,
+  placementOffsetY: 16,
+  startPinned: false,
 };
 
 const CONFIG_FILE_NAME = "config.json";

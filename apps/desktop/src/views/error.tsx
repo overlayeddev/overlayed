@@ -4,8 +4,8 @@ import { useSetWindowSize } from "../hooks/use-set-size";
 import { useAppStore } from "../store";
 import { exit } from "@tauri-apps/plugin-process";
 
-export const ErrorView = () => {
-  useSetWindowSize({ width: 400, height: 600 });
+export const ErrorView = ({ anchored }: { anchored: boolean }) => {
+  useSetWindowSize({ width: 400, height: 600, enabled: !anchored });
   const { discordErrors } = useAppStore();
 
   return (

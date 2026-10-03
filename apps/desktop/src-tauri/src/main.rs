@@ -10,6 +10,7 @@ extern crate objc;
 mod app_handle;
 mod commands;
 mod constants;
+mod placement;
 mod tray;
 mod window_custom;
 
@@ -106,8 +107,14 @@ fn main() {
 
   #[cfg(not(debug_assertions))]
   {
-    app = app.plugin(tauri_plugin_single_instance::init(|app, argv, cwd| {
-      println!("{}, {argv:?}, {cwd}", app.package_info().name);
+    app = app.plugin(tauri_plugin_single_instance::init(|app, _, _| {
+      if let Some(settings) = app.get_webview_window(SETTINGS_WINDOW_NAME) {
+        for result in [settings.show(), settings.unminimize(), settings.set_focus()] {
+          if let Err(error) = result {
+            log::warn!("Could not bring settings forward after a second launch: {error}");
+          }
+        }
+      }
     }));
   }
 
@@ -119,6 +126,7 @@ fn main() {
   app = app
     .manage(Pinned(AtomicBool::new(false)))
     .manage(HideTaskbarWhenPinned(AtomicBool::new(false)))
+    .manage(placement::PlacementState::default())
     .setup(move |app| {
       debug!("starting app...");
       let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
@@ -174,6 +182,9 @@ fn main() {
       open_settings,
       set_hide_taskbar_when_pinned,
       open_config_dir,
+      placement::get_monitors,
+      placement::apply_placement,
+      placement::release_placement,
     ]);
 
   app
@@ -203,7 +214,7 @@ fn main() {
           }
 
           WEvent::Resized(_) | WEvent::Moved(_) => {
-            if label == MAIN_WINDOW_NAME {
+            if label == MAIN_WINDOW_NAME && !app.state::<placement::PlacementState>().is_active() {
               // Also save state whenever the main window is moved or resized so
               // we persist the latest bounds even if the process is terminated
               app.save_window_state(StateFlags::POSITION | StateFlags::SIZE);

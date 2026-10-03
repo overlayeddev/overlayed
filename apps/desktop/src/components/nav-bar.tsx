@@ -14,7 +14,9 @@ import React, { useEffect } from "react";
 import Config, { type DirectionLR } from "../config";
 import { useAppStore } from "../store";
 import { useState } from "react";
-import { CHANNEL_TYPES, FTUE_PIN_TRAY_TIP_KEY } from "@/constants";
+import { FTUE_PIN_TRAY_TIP_KEY } from "@/constants";
+import { getChannelName } from "@/utils/channel";
+import { cn } from "@/utils/tw";
 import { Metric, track } from "@/metrics";
 import { invoke } from "@tauri-apps/api/core";
 import { emit } from "@tauri-apps/api/event";
@@ -51,11 +53,13 @@ const horizontalAlignments: Alignment[] = [
 
 export const NavBar = ({
   pin,
+  anchored,
   alignDirection,
   setAlignDirection,
   isUpdateAvailable,
 }: {
   pin: boolean;
+  anchored: boolean;
   alignDirection: DirectionLR;
   setAlignDirection: React.Dispatch<React.SetStateAction<DirectionLR>>;
   isUpdateAvailable: boolean;
@@ -100,11 +104,7 @@ export const NavBar = ({
   }, []);
 
   useEffect(() => {
-    if (!!currentChannel && ([CHANNEL_TYPES.DM, CHANNEL_TYPES.GROUP_DM] as number[]).includes(currentChannel.type)) {
-      setChannelName("Private call");
-    } else {
-      setChannelName(currentChannel?.name);
-    }
+    setChannelName(getChannelName(currentChannel));
   }, [location.pathname, currentChannel]);
 
   function getTrayHint(os: string): React.ReactNode {
@@ -143,27 +143,33 @@ export const NavBar = ({
 
   return (
     <div
-      className={`${opacity} cursor-move rounded-t-lg font-bold select-none bg-white dark:bg-zinc-900 pr-3 pl-3 p-2`}
+      data-placement-navbar
+      className={`${opacity} ${anchored ? "shrink-0" : "cursor-move"} rounded-t-lg font-bold select-none bg-white dark:bg-zinc-900 pr-3 pl-3 p-2`}
     >
-      <div data-tauri-drag-region className="flex justify-between">
-        <div className="flex items-center">
+      <div data-tauri-drag-region={anchored ? undefined : true} className="flex justify-between">
+        <div className={cn("flex items-center", anchored && "min-w-0")}>
           <img
             src={canary ? "/img/32x32-canary.png" : "/img/32x32.png"}
             alt="logo"
-            data-tauri-drag-region
-            className="w-8 h-8 mr-2"
+            data-tauri-drag-region={anchored ? undefined : true}
+            className={cn("w-8 h-8 mr-2", anchored && "shrink-0")}
           />
 
           {channelName ? (
-            <div data-tauri-drag-region className="hidden md:inline">
+            <div
+              data-tauri-drag-region={anchored ? undefined : true}
+              className={cn("hidden md:inline", anchored && "truncate")}
+            >
               {channelName}
             </div>
           ) : (
-            <div data-tauri-drag-region>Overlayed</div>
+            <div data-tauri-drag-region={anchored ? undefined : true} className={anchored ? "truncate" : undefined}>
+              Overlayed
+            </div>
           )}
         </div>
         {location.pathname !== "/settings" && (
-          <div className="hidden gap-4 md:flex">
+          <div className={cn("hidden gap-4 md:flex", anchored && "shrink-0")}>
             {!canary && showUpdateButton && (
               <button className="cursor-pointer">
                 <Download
