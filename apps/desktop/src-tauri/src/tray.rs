@@ -3,16 +3,16 @@ use std::sync::Mutex;
 use tauri::{
   menu::{Menu, MenuBuilder, MenuEvent},
   tray::TrayIconBuilder,
-  AppHandle, LogicalSize, Manager, Wry,
+  AppHandle, Emitter, LogicalSize, Manager, Wry,
 };
 
 use anyhow::Result;
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 
 use crate::{
-  commands, toggle_pin, HideTaskbarWhenPinned, Pinned, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED,
-  SETTINGS_WINDOW_NAME, TRAY_OPEN_DEVTOOLS_MAIN, TRAY_OPEN_DEVTOOLS_SETTINGS, TRAY_QUIT,
-  TRAY_RELOAD, TRAY_SETTINGS, TRAY_SHOW_APP, TRAY_TOGGLE_PIN,
+  commands, hotkeys, TrayMenu, MAIN_WINDOW_NAME, OVERLAYED, SETTINGS_WINDOW_NAME,
+  TRAY_OPEN_DEVTOOLS_MAIN, TRAY_OPEN_DEVTOOLS_SETTINGS, TRAY_QUIT, TRAY_RELOAD, TRAY_SETTINGS,
+  TRAY_SHOW_APP, TRAY_TOGGLE_PIN,
 };
 
 pub struct Tray;
@@ -50,16 +50,17 @@ impl Tray {
   pub fn handle_menu_events(app: &AppHandle, event: MenuEvent) {
     match event.id().as_ref() {
       TRAY_TOGGLE_PIN => {
-        let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
-
-        toggle_pin(
-          window,
-          app.state::<Pinned>(),
-          app.state::<TrayMenu>(),
-          app.state::<HideTaskbarWhenPinned>(),
-        )
+        if let Err(error) = hotkeys::toggle_overlay_pin(app) {
+          log::warn!("Could not toggle overlay pin from tray: {error}");
+        }
       }
       TRAY_SHOW_APP => {
+        if app.state::<hotkeys::OverlayVisibility>().is_hidden() {
+          if let Err(error) = app.emit_to(MAIN_WINDOW_NAME, hotkeys::SHOW_OVERLAY, ()) {
+            log::warn!("Could not restore overlay visibility from tray: {error}");
+          }
+          return;
+        }
         let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
         window.show().unwrap();
 
