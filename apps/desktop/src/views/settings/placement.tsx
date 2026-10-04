@@ -103,7 +103,20 @@ export const Placement = () => {
     let saved = false;
     writes.current = writes.current
       .then(async () => {
-        await Config.set(key, value);
+        const current = await Config.getConfig();
+        if (current[key] !== value) await Config.set(key, value);
+        if (
+          (key === "placementAnchor" && current.placementMode === "anchored") ||
+          (key === "placementMode" && value === "anchored")
+        ) {
+          const config = await Config.getConfig();
+          const horizontal = config.placementAnchor.endsWith("-left")
+            ? "left"
+            : config.placementAnchor.endsWith("-right")
+              ? "right"
+              : null;
+          if (horizontal && config.horizontal !== horizontal) await Config.set("horizontal", horizontal);
+        }
         await emit("config_update", await Config.getConfig());
         saved = true;
         setError(null);
