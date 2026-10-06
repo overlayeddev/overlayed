@@ -376,13 +376,13 @@ class SocketManager {
    */
   private async onMessage(event: Message | string | null, generation: number) {
     if (!this.isCurrent(generation)) return;
-    if (!event || typeof event === "string" || event.type !== "Text") {
-      this.connectionLost(
-        typeof event === "string" ? "Socket read error" : `Socket ${event?.type ?? "closed"}`,
-        generation
-      );
+    // The websocket plugin reports read errors as a plain string. Treat those and
+    // a close as a lost connection; pings and other frames are not.
+    if (!event || typeof event === "string" || event.type === "Close") {
+      this.connectionLost(typeof event === "string" ? "Socket read error" : "Socket closed", generation);
       return;
     }
+    if (event.type !== "Text") return;
 
     const payload: DiscordPayload = JSON.parse(event.data);
 
