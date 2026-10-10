@@ -63,9 +63,16 @@ impl Tray {
         let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
         window.show().unwrap();
 
-        // center and resize the window
-        window.center();
-        window.set_size(LogicalSize::new(400, 700)).unwrap();
+        let placement = app.state::<crate::placement::PlacementState>();
+        if placement.is_active() {
+          if let Err(error) = crate::placement::reapply(&window, &placement) {
+            log::warn!("Could not reapply overlay placement: {error}");
+          }
+        } else {
+          // center and resize the window
+          window.center();
+          window.set_size(LogicalSize::new(400, 700)).unwrap();
+        }
 
         window.set_focus().unwrap();
       }
