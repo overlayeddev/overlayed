@@ -147,6 +147,17 @@
   }
 }
 
+html.placement-display,
+html.placement-display body,
+html.placement-display #root {
+  overflow: hidden;
+  background: transparent;
+}
+
+html.placement-display body {
+  padding: 0 !important;
+}
+
 ul {
   list-style-type: circle;
 }
