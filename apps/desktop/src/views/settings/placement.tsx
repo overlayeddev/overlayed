@@ -116,6 +116,12 @@ export const Placement = () => {
               ? "right"
               : null;
           if (horizontal && config.horizontal !== horizontal) await Config.set("horizontal", horizontal);
+          const vertical = config.placementAnchor.startsWith("top-")
+            ? "top"
+            : config.placementAnchor.startsWith("bottom-")
+              ? "bottom"
+              : null;
+          if (vertical && config.vertical !== vertical) await Config.set("vertical", vertical);
         }
         await emit("config_update", await Config.getConfig());
         saved = true;

@@ -14,6 +14,7 @@ export const Configuration = () => {
   const { value: maxUsernameLength } = useConfigValue("maxUsernameLength");
   const { value: userScale } = useConfigValue("userScale");
   const { value: hideTaskbarWhenPinned } = useConfigValue("hideTaskbarWhenPinned");
+  const { value: placementMode } = useConfigValue("placementMode");
 
   return (
     <div className="flex flex-col gap-2">
@@ -61,7 +62,10 @@ export const Configuration = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between h-8 mx-2">
+      {placementMode === "anchored" && (
+        <p className="text-xs text-zinc-400 mx-2">Alignment follows the fixed position.</p>
+      )}
+      <div className={placementMode === "anchored" ? "hidden" : "flex items-center justify-between h-8 mx-2"}>
         <label
           htmlFor="horizontal"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -90,7 +94,7 @@ export const Configuration = () => {
           </option>
         </select>
       </div>
-      <div className="flex items-center justify-between h-8 mx-2">
+      <div className={placementMode === "anchored" ? "hidden" : "flex items-center justify-between h-8 mx-2"}>
         <label
           htmlFor="vertical"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
