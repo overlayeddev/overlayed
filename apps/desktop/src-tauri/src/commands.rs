@@ -122,7 +122,7 @@ impl Deref for HideTaskbarWhenPinned {
 fn apply_taskbar_visibility(app: &AppHandle, pinned: bool, hide_taskbar_when_pinned: bool) {
   let skip_taskbar = pinned && hide_taskbar_when_pinned;
 
-  #[cfg(target_os = "windows")]
+  #[cfg(not(target_os = "macos"))]
   if let Some(main_window) = app.get_webview_window(MAIN_WINDOW_NAME) {
     main_window.set_skip_taskbar(skip_taskbar).ok();
   }
