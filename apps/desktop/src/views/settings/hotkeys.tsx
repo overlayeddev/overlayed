@@ -15,6 +15,12 @@ const commands: { command: HotkeyCommand; label: string }[] = [
   { command: "open-settings", label: "Open settings" },
 ];
 
+function bindingLabel(active: boolean, binding: HotkeyBinding | undefined, macos: boolean) {
+  if (active) return "Press a shortcut, or Escape to cancel";
+  if (binding) return formatHotkey(binding.key, macos);
+  return "Not set";
+}
+
 export const Hotkeys = () => {
   const [bindings, setBindings] = useState<HotkeyBinding[]>([]);
   const [status, setStatus] = useState<HotkeysStatus | null>(null);
@@ -238,11 +244,7 @@ export const Hotkeys = () => {
               <div className="min-w-0">
                 <p className="font-medium">{label}</p>
                 <p className="truncate text-xs text-zinc-400" title={binding?.key}>
-                  {active
-                    ? "Press a shortcut, or Escape to cancel"
-                    : binding
-                      ? formatHotkey(binding.key, macos)
-                      : "Not set"}
+                  {bindingLabel(active, binding, macos)}
                 </p>
               </div>
               <div className="flex shrink-0 gap-1">
