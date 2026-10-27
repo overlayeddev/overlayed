@@ -8,6 +8,7 @@ import { NavBar } from "./components/nav-bar";
 import { usePin } from "./hooks/use-pin";
 import { usePlacement } from "./hooks/use-placement";
 import { useStartPinned } from "./hooks/use-start-pinned";
+import { useHotkeys } from "./hooks/use-hotkeys";
 import { useAlign } from "./hooks/use-align";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
 import { useUpdate } from "./hooks/use-update";
@@ -42,6 +43,7 @@ function App() {
 
   const { pin } = usePin();
   useStartPinned();
+  useHotkeys();
   const { horizontal, setHorizontalDirection } = useAlign();
   const visibleClass = visible ? "opacity-100" : "opacity-0";
   const location = useLocation();

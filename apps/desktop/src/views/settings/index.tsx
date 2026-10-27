@@ -8,6 +8,7 @@ import { SiX, SiTwitch, SiDiscord, type IconType } from "@icons-pack/react-simpl
 import type { Update } from "@tauri-apps/plugin-updater";
 import { Configuration } from "./configuration";
 import { Placement } from "./placement";
+import { Hotkeys } from "./hotkeys";
 
 function Link({ icon: Icon, url }: { icon: IconType; url: string }) {
   return (
@@ -28,10 +29,11 @@ export const SettingsView = ({ update }: { update: Update | null }) => {
           setCurrentTab(value);
         }}
       >
-        <TabsList className="grid w-full grid-cols-4 rounded-t-none">
+        <TabsList className="grid w-full grid-cols-5 rounded-t-none [&>button]:text-xs">
           <TabsTrigger value="account">General</TabsTrigger>
           <TabsTrigger value="configuration">Configuration</TabsTrigger>
           <TabsTrigger value="placement">Position</TabsTrigger>
+          <TabsTrigger value="hotkeys">Hotkeys</TabsTrigger>
           <TabsTrigger value="join-history">Join History</TabsTrigger>
         </TabsList>
         {canary && (
@@ -51,6 +53,9 @@ export const SettingsView = ({ update }: { update: Update | null }) => {
           </TabsContent>
           <TabsContent tabIndex={-1} value="placement">
             <Placement />
+          </TabsContent>
+          <TabsContent tabIndex={-1} value="hotkeys">
+            <Hotkeys />
           </TabsContent>
           <TabsContent tabIndex={-1} forceMount value="join-history">
             <div style={{ display: currentTab === "join-history" ? "block" : "none" }}>
