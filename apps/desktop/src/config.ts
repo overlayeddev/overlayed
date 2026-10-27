@@ -59,7 +59,7 @@ export const DEFAULT_OVERLAYED_CONFIG: OverlayedConfig = {
   maxUsernameLength: 40,
   userScale: 100,
   hideTaskbarWhenPinned: false,
-  placementMode: "manual",
+  placementMode: "anchored",
   placementMonitor: null,
   placementAnchor: "top-left",
   placementOffsetX: 16,
@@ -94,6 +94,8 @@ export class Config {
           acc[key] = DEFAULT_OVERLAYED_CONFIG[key as OverlayedConfigKey];
           return acc;
         }, {} as OverlayedConfig),
+        // Preserve dragged windows when upgrading a pre-placement config.
+        ...(newKeys.includes("placementMode") ? { placementMode: "manual" } : {}),
       };
 
       // make sure to disable sentry if they have disabled telemetry
