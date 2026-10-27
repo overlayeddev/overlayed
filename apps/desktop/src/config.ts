@@ -1,5 +1,6 @@
 import { readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { BaseDirectory } from "@tauri-apps/api/path";
+import { listen } from "@tauri-apps/api/event";
 import * as Sentry from "@sentry/react";
 
 export type DirectionLR = "left" | "right" | "center";
@@ -85,6 +86,11 @@ export class Config {
   private loaded = false;
   constructor() {
     this.load();
+
+    // keep this window's copy in sync with changes saved from other windows
+    listen<OverlayedConfig>("config_update", event => {
+      this.config = event.payload;
+    });
   }
 
   load = async () => {

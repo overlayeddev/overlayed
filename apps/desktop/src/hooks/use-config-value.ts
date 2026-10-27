@@ -28,10 +28,8 @@ export const useConfigValue = <T extends OverlayedConfigKey>(
     });
 
     return () => {
-      (async () => {
-        // remove the listener
-        await listenFn;
-      })();
+      // remove the listener
+      listenFn.then(f => f());
     };
   }, []);
 

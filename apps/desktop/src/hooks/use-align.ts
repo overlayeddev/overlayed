@@ -26,9 +26,7 @@ export const useAlign = () => {
     });
 
     return () => {
-      (async () => {
-        await listenFn;
-      })();
+      listenFn.then(f => f());
     };
   }, []);
 
