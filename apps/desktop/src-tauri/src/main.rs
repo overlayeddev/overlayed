@@ -4,9 +4,6 @@
 )]
 #![allow(unused_must_use)]
 
-#[cfg(target_os = "macos")]
-extern crate objc;
-
 mod app_handle;
 mod commands;
 mod constants;

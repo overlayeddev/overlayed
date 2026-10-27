@@ -2801,7 +2801,7 @@ dependencies = [
  "anyhow",
  "cocoa 0.26.0",
  "log",
- "objc",
+ "objc2-app-kit",
  "serde",
  "serde_json",
  "system-notification",

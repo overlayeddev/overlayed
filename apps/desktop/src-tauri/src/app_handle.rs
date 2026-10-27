@@ -1,35 +1,7 @@
 #[cfg(target_os = "macos")]
+use objc2_app_kit::NSWorkspace;
+#[cfg(target_os = "macos")]
 use tauri::{AppHandle, Runtime};
-
-#[cfg(target_os = "macos")]
-use tauri_nspanel::{
-  cocoa::base::id,
-  objc::{class, msg_send, sel, sel_impl},
-};
-
-#[cfg(target_os = "macos")]
-fn nsstring_to_string(ns_string: id) -> Option<String> {
-  use std::ffi::{c_char, CStr};
-
-  // Applications launched outside a bundle may not have a bundle identifier.
-  if ns_string.is_null() {
-    return None;
-  }
-
-  let utf8: *const c_char = unsafe { msg_send![ns_string, UTF8String] };
-
-  if !utf8.is_null() {
-    Some(unsafe {
-      {
-        CStr::from_ptr(utf8)
-          .to_string_lossy()
-          .into_owned()
-      }
-    })
-  } else {
-    None
-  }
-}
 
 #[cfg(target_os = "macos")]
 pub trait AppHandleExt {
@@ -39,18 +11,14 @@ pub trait AppHandleExt {
 #[cfg(target_os = "macos")]
 impl<R: Runtime> AppHandleExt for AppHandle<R> {
   fn frontmost_application_bundle_id() -> Option<String> {
-    let workspace: id = unsafe { msg_send![class!(NSWorkspace), sharedWorkspace] };
-    if workspace.is_null() {
-      return None;
+    // SAFETY: These read-only AppKit queries have no additional preconditions.
+    // Retained objects keep the application and identifier alive during conversion.
+    unsafe {
+      let workspace = NSWorkspace::sharedWorkspace();
+      let application = workspace.frontmostApplication()?;
+      // Applications launched outside a bundle may not have a bundle identifier.
+      let bundle_id = application.bundleIdentifier()?;
+      Some(bundle_id.to_string())
     }
-
-    let frontmost_application: id = unsafe { msg_send![workspace, frontmostApplication] };
-    if frontmost_application.is_null() {
-      return None;
-    }
-
-    let bundle_id: id = unsafe { msg_send![frontmost_application, bundleIdentifier] };
-
-    nsstring_to_string(bundle_id)
   }
 }

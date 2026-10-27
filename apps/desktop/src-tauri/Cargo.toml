@@ -42,7 +42,7 @@ log = "0.4.22"
 
 # macos dependencies
 [target.'cfg(target_os = "macos")'.dependencies]
-objc = "0.2.7"
+objc2-app-kit = { version = "0.2.2", features = ["NSWorkspace", "NSRunningApplication"] }
 cocoa = "0.26.0"
 tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v2" }
 system-notification = { git = "https://github.com/ahkohd/tauri-toolkit", branch = "v2" }
