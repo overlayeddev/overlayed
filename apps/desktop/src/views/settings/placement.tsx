@@ -1,6 +1,6 @@
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import Config, { type OverlayedConfig, type PlacementAnchor } from "@/config";
+import Config, { type DirectionLR, type DirectionTB, type OverlayedConfig, type PlacementAnchor } from "@/config";
 import { useConfigValue } from "@/hooks/use-config-value";
 import type { PlacementMonitor, PlacementMonitors, PlacementPreview } from "@/hooks/use-placement";
 import { cn } from "@/utils/tw";
@@ -22,6 +22,25 @@ const anchors: PlacementAnchor[] = [
 ];
 
 type OffsetKey = keyof PlacementPreview;
+
+function alignmentForAnchor(anchor: PlacementAnchor): { horizontal: DirectionLR | null; vertical: DirectionTB | null } {
+  let horizontal: DirectionLR | null = null;
+  let vertical: DirectionTB | null = null;
+
+  if (anchor.endsWith("-left")) {
+    horizontal = "left";
+  } else if (anchor.endsWith("-right")) {
+    horizontal = "right";
+  }
+
+  if (anchor.startsWith("top-")) {
+    vertical = "top";
+  } else if (anchor.startsWith("bottom-")) {
+    vertical = "bottom";
+  }
+
+  return { horizontal, vertical };
+}
 
 const previewPosition = (length: number, size: number, offset: number, axis: number) => {
   const available = Math.max(0, length - size);
@@ -110,17 +129,8 @@ export const Placement = () => {
           (key === "placementMode" && value === "anchored")
         ) {
           const config = await Config.getConfig();
-          const horizontal = config.placementAnchor.endsWith("-left")
-            ? "left"
-            : config.placementAnchor.endsWith("-right")
-              ? "right"
-              : null;
+          const { horizontal, vertical } = alignmentForAnchor(config.placementAnchor);
           if (horizontal && config.horizontal !== horizontal) await Config.set("horizontal", horizontal);
-          const vertical = config.placementAnchor.startsWith("top-")
-            ? "top"
-            : config.placementAnchor.startsWith("bottom-")
-              ? "bottom"
-              : null;
           if (vertical && config.vertical !== vertical) await Config.set("vertical", vertical);
         }
         await emit("config_update", await Config.getConfig());
