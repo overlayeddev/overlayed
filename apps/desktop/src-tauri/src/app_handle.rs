@@ -11,12 +11,17 @@ use tauri_nspanel::{
 fn nsstring_to_string(ns_string: id) -> Option<String> {
   use std::ffi::{c_char, CStr};
 
-  let utf8: id = unsafe { msg_send![ns_string, UTF8String] };
+  // Applications launched outside a bundle may not have a bundle identifier.
+  if ns_string.is_null() {
+    return None;
+  }
+
+  let utf8: *const c_char = unsafe { msg_send![ns_string, UTF8String] };
 
   if !utf8.is_null() {
     Some(unsafe {
       {
-        CStr::from_ptr(utf8 as *const c_char)
+        CStr::from_ptr(utf8)
           .to_string_lossy()
           .into_owned()
       }
@@ -35,8 +40,14 @@ pub trait AppHandleExt {
 impl<R: Runtime> AppHandleExt for AppHandle<R> {
   fn frontmost_application_bundle_id() -> Option<String> {
     let workspace: id = unsafe { msg_send![class!(NSWorkspace), sharedWorkspace] };
+    if workspace.is_null() {
+      return None;
+    }
 
     let frontmost_application: id = unsafe { msg_send![workspace, frontmostApplication] };
+    if frontmost_application.is_null() {
+      return None;
+    }
 
     let bundle_id: id = unsafe { msg_send![frontmost_application, bundleIdentifier] };
 
