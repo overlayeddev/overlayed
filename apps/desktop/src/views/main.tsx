@@ -2,6 +2,7 @@ import { useAppStore } from "../store";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { exit } from "@tauri-apps/plugin-process";
+import { RETRY_AUTH_EVENT } from "@/rpc/manager";
 
 export const MainView = () => {
   const { resetErrors } = useAppStore();
@@ -35,8 +36,8 @@ export const MainView = () => {
         <div className="pt-8 text-2xl flex flex-col gap-4 items-center justify-center">
           <Button
             onClick={() => {
-              // TODO: this is a hack, it should be handled better
-              window.location.reload();
+              const retry = new Event(RETRY_AUTH_EVENT, { cancelable: true });
+              if (window.dispatchEvent(retry)) window.location.reload();
             }}
           >
             Try Again
