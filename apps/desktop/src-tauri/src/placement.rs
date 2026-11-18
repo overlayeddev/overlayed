@@ -14,6 +14,11 @@ const MANUAL_MIN_SIZE: LogicalSize<f64> = LogicalSize {
   width: 64.0,
   height: 106.0,
 };
+// Make room for the navbar on release without restricting later manual resizing.
+const MANUAL_RELEASE_MIN_SIZE: LogicalSize<f64> = LogicalSize {
+  width: 220.0,
+  height: 106.0,
+};
 
 #[derive(Clone, Copy, Deserialize)]
 #[serde(rename_all = "kebab-case")]
@@ -328,15 +333,38 @@ pub fn apply_placement(
   )
 }
 
+fn manual_release_size(current: PhysicalSize<u32>, scale: f64) -> PhysicalSize<u32> {
+  PhysicalSize::new(
+    current
+      .width
+      .max((MANUAL_RELEASE_MIN_SIZE.width * scale).ceil() as u32),
+    current
+      .height
+      .max((MANUAL_RELEASE_MIN_SIZE.height * scale).ceil() as u32),
+  )
+}
+
 fn release(window: &WebviewWindow, state: &PlacementState) -> Result<(), String> {
   *state.request.lock().map_err(|error| error.to_string())? = None;
   if !state.active.swap(false, Ordering::AcqRel) {
     return Ok(());
   }
+  let position = window.outer_position();
+  let current_size = window.inner_size();
+  let scale = window.scale_factor();
   let resizable = window.set_resizable(true);
   let min_size = window.set_min_size(Some(MANUAL_MIN_SIZE));
   resizable.map_err(|error| error.to_string())?;
-  min_size.map_err(|error| error.to_string())
+  min_size.map_err(|error| error.to_string())?;
+  let current_size = current_size.map_err(|error| error.to_string())?;
+  let size = manual_release_size(current_size, scale.map_err(|error| error.to_string())?);
+  if size != current_size {
+    window.set_size(size).map_err(|error| error.to_string())?;
+    window
+      .set_position(position.map_err(|error| error.to_string())?)
+      .map_err(|error| error.to_string())?;
+  }
+  Ok(())
 }
 
 #[tauri::command]
@@ -366,6 +394,31 @@ pub fn reapply(window: &WebviewWindow, state: &PlacementState) -> Result<(), Str
 #[cfg(test)]
 mod tests {
   use super::*;
+
+  #[test]
+  fn manual_release_grows_for_controls_without_shrinking_existing_bounds() {
+    for scale in [1.0, 1.25, 1.5, 2.0] {
+      let minimum = PhysicalSize::new(
+        (220.0_f64 * scale).ceil() as u32,
+        (106.0_f64 * scale).ceil() as u32,
+      );
+      assert_eq!(
+        manual_release_size(PhysicalSize::new(81, 77), scale),
+        minimum
+      );
+      assert_eq!(manual_release_size(minimum, scale), minimum);
+      let larger = PhysicalSize::new(1200, 900);
+      assert_eq!(manual_release_size(larger, scale), larger);
+      assert_eq!(
+        manual_release_size(PhysicalSize::new(1200, 77), scale),
+        PhysicalSize::new(1200, minimum.height)
+      );
+      assert_eq!(
+        manual_release_size(PhysicalSize::new(81, 900), scale),
+        PhysicalSize::new(minimum.width, 900)
+      );
+    }
+  }
 
   fn request(anchor: Anchor) -> PlacementRequest {
     PlacementRequest {
