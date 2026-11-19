@@ -68,6 +68,8 @@ export const usePlacement = (pin: boolean, pathname: string) => {
   currentPin.current = pin;
   const lockActivation = useRef(0);
   const pendingLock = useRef<number | null>(null);
+  const previousMode = useRef<OverlayedConfig["placementMode"] | null>(null);
+  const pendingUnlock = useRef(false);
 
   const configKeyFor = (value: OverlayedConfig) =>
     JSON.stringify([
@@ -84,6 +86,9 @@ export const usePlacement = (pin: boolean, pathname: string) => {
     let disposed = false;
     const receiveConfig = (value: OverlayedConfig) => {
       if (disposed) return;
+      if (previousMode.current === "anchored" && value.placementMode === "manual") pendingUnlock.current = true;
+      if (value.placementMode === "anchored") pendingUnlock.current = false;
+      previousMode.current = value.placementMode;
       savedOffsets.current = { placementOffsetX: value.placementOffsetX, placementOffsetY: value.placementOffsetY };
       if (value.placementMode === "manual") previewOffsets.current = {};
       const preview = previewOffsets.current;
@@ -194,6 +199,16 @@ export const usePlacement = (pin: boolean, pathname: string) => {
               await release();
             } catch (error) {
               console.warn("Could not release overlay placement", error);
+            }
+            if (pendingUnlock.current) {
+              pendingUnlock.current = false;
+              try {
+                // Wait for any in-flight fixed lock before restoring manual input.
+                const pinned = await invoke<boolean>("get_pin");
+                if (pinned && previousMode.current === "manual") await invoke("set_pin", { value: false });
+              } catch (error) {
+                console.warn("Could not unpin the manual overlay", error);
+              }
             }
             continue;
           }
