@@ -16,7 +16,7 @@ const client = new S3Client({
 
 const ASSET_DIR = "assets";
 
-/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+/** @param {import('./types').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ github, context }, channel) => {
   // make the artifact directory if it doesn't exist
   fs.mkdirSync(ASSET_DIR, { recursive: true });
@@ -30,7 +30,7 @@ export const script = async ({ github, context }, channel) => {
   }
 };
 
-/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+/** @param {import('./types').AsyncFunctionArguments} AsyncFunctionArguments */
 async function uploadStableArtifacts({ github, context }) {
   const tag = context.ref.replace("refs/tags/", "");
   console.log(`[${tag}] Fetching release...`);
@@ -91,7 +91,7 @@ async function uploadStableArtifacts({ github, context }) {
   }
 }
 
-/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+/** @param {import('./types').AsyncFunctionArguments} AsyncFunctionArguments */
 async function uploadCanaryArtifacts({ github, context }) {
   const releaseBinDir = path.join(ASSET_DIR, "canary");
 

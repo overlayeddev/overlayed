@@ -1,7 +1,7 @@
 import fs from "fs";
 const SIGNED_BINARIES_DIR = "./binaries/signed";
 
-/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+/** @param {import('./types').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }, releaseId) => {
   console.log("🔍 Start sign of windows binaries for release id", releaseId);
   console.log({ cwd: process.cwd() });
