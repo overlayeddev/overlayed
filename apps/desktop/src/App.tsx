@@ -11,6 +11,7 @@ import { useStartPinned } from "./hooks/use-start-pinned";
 import { useHotkeys } from "./hooks/use-hotkeys";
 import { useAlign } from "./hooks/use-align";
 import { useDisableWebFeatures } from "./hooks/use-disable-context-menu";
+import { useLayerDrag } from "./hooks/use-layer-drag";
 import { useUpdate } from "./hooks/use-update";
 import { useAppStore } from "./store";
 import { Toaster } from "./components/ui/toaster";
@@ -22,6 +23,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 function App() {
   useDisableWebFeatures();
+  useLayerDrag();
   useSocket();
 
   useEffect(() => {

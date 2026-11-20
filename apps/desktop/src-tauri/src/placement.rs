@@ -75,11 +75,30 @@ pub struct MonitorsResponse {
   positioning_supported: bool,
 }
 
-fn positioning_supported() -> bool {
+fn positioning_supported(window: &WebviewWindow) -> bool {
   let wayland = std::env::var_os("WAYLAND_DISPLAY").is_some_and(|value| !value.is_empty());
   let x11 =
     std::env::var("GDK_BACKEND").is_ok_and(|value| value.trim().eq_ignore_ascii_case("x11"));
-  !cfg!(target_os = "linux") || !wayland || x11
+  // On Wayland only a layer surface can place itself (see layer.rs)
+  !cfg!(target_os = "linux")
+    || !wayland
+    || x11
+    || crate::layer::is_layer_surface(window.app_handle())
+}
+
+/// (horizontal, vertical): 0 start, 1 center, 2 end
+fn anchor_axes(anchor: Anchor) -> (u8, u8) {
+  match anchor {
+    Anchor::TopLeft => (0, 0),
+    Anchor::TopCenter => (1, 0),
+    Anchor::TopRight => (2, 0),
+    Anchor::MiddleLeft => (0, 1),
+    Anchor::Center => (1, 1),
+    Anchor::MiddleRight => (2, 1),
+    Anchor::BottomLeft => (0, 2),
+    Anchor::BottomCenter => (1, 2),
+    Anchor::BottomRight => (2, 2),
+  }
 }
 
 fn monitor_name(monitor: &Monitor) -> String {
@@ -110,7 +129,7 @@ pub fn get_monitors(window: WebviewWindow) -> Result<MonitorsResponse, String> {
 
   Ok(MonitorsResponse {
     monitors,
-    positioning_supported: positioning_supported(),
+    positioning_supported: positioning_supported(&window),
   })
 }
 
@@ -179,17 +198,7 @@ fn geometry(
       .ceil()
       .clamp(1.0, f64::from(bounds.height)) as u32,
   );
-  let (horizontal, vertical) = match request.anchor {
-    Anchor::TopLeft => (0, 0),
-    Anchor::TopCenter => (1, 0),
-    Anchor::TopRight => (2, 0),
-    Anchor::MiddleLeft => (0, 1),
-    Anchor::Center => (1, 1),
-    Anchor::MiddleRight => (2, 1),
-    Anchor::BottomLeft => (0, 2),
-    Anchor::BottomCenter => (1, 2),
-    Anchor::BottomRight => (2, 2),
-  };
+  let (horizontal, vertical) = anchor_axes(request.anchor);
 
   Ok((
     PhysicalPosition::new(
@@ -238,8 +247,38 @@ fn apply_request(
   state: &PlacementState,
   request: PlacementRequest,
 ) -> Result<(), String> {
-  if !positioning_supported() {
+  if !positioning_supported(window) {
     return Err("Fixed placement is not supported on Wayland".to_string());
+  }
+
+  // A Wayland layer surface is placed with layer-shell anchors and margins
+  #[cfg(target_os = "linux")]
+  if crate::layer::is_layer_surface(window.app_handle()) {
+    let (horizontal, vertical) = anchor_axes(request.anchor);
+    let monitor = request.monitor.clone();
+    let (offset_x, offset_y) = (request.offset_x, request.offset_y);
+    let (width, height) = (request.width, request.height);
+    if !(width.is_finite() && height.is_finite() && width > 0.0 && height > 0.0)
+      || !(offset_x.is_finite() && offset_y.is_finite())
+    {
+      return Err("Invalid placement dimensions".to_string());
+    }
+    *state.request.lock().map_err(|error| error.to_string())? = Some(request);
+    if !state.active.swap(true, Ordering::AcqRel) {
+      window
+        .set_resizable(false)
+        .map_err(|error| error.to_string())?;
+    }
+    return crate::layer::place(
+      window,
+      monitor.as_deref(),
+      horizontal,
+      vertical,
+      offset_x,
+      offset_y,
+      width,
+      height,
+    );
   }
 
   let monitor = resolve_monitor(window, request.monitor.as_deref())?;
@@ -349,6 +388,22 @@ fn release(window: &WebviewWindow, state: &PlacementState) -> Result<(), String>
   if !state.active.swap(false, Ordering::AcqRel) {
     return Ok(());
   }
+
+  #[cfg(target_os = "linux")]
+  if crate::layer::is_layer_surface(window.app_handle()) {
+    crate::layer::unplace(window)?;
+    window
+      .set_resizable(true)
+      .map_err(|error| error.to_string())?;
+    let current_size = window.inner_size().map_err(|error| error.to_string())?;
+    let scale = window.scale_factor().map_err(|error| error.to_string())?;
+    let size = manual_release_size(current_size, scale);
+    if size != current_size {
+      crate::layer::set_size(window, size.into());
+    }
+    return Ok(());
+  }
+
   let position = window.outer_position();
   let current_size = window.inner_size();
   let scale = window.scale_factor();

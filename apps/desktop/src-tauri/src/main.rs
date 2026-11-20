@@ -8,7 +8,10 @@ mod app_handle;
 mod commands;
 mod constants;
 mod hotkeys;
+mod layer;
 mod placement;
+#[cfg(target_os = "linux")]
+mod resize_cursor;
 mod tray;
 mod window_custom;
 
@@ -19,7 +22,9 @@ use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
 };
-use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
+use tauri::{
+  generate_handler, menu::Menu, LogicalSize, Manager, WebviewWindow, WebviewWindowBuilder, Wry,
+};
 use tauri_plugin_log::{Target, TargetKind};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 use tray::Tray;
@@ -33,9 +38,6 @@ use window_custom::macos::WebviewWindowExtMacos;
 
 #[cfg(target_os = "macos")]
 use system_notification::WorkspaceListener;
-
-#[cfg(target_os = "macos")]
-use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
 
@@ -72,6 +74,57 @@ fn apply_macos_specifics(window: &WebviewWindow) {
       }
     },
   );
+}
+
+/// The main window has `"create": false` in tauri.conf.json, so its config
+/// stays the one source for every platform while it is created here: on a
+/// Wayland compositor with layer-shell it has to start hidden, to become a
+/// layer surface before GTK realizes it (see layer.rs).
+fn create_main_window(app: &tauri::App) -> tauri::Result<WebviewWindow> {
+  let config = app
+    .config()
+    .app
+    .windows
+    .iter()
+    .find(|config| config.label == MAIN_WINDOW_NAME)
+    .expect("tauri.conf.json has no main window")
+    .clone();
+
+  #[allow(unused_mut)]
+  let mut builder = WebviewWindowBuilder::from_config(app.handle(), &config)?;
+
+  #[cfg(target_os = "linux")]
+  if layer::will_use_layer_shell() {
+    builder = builder.visible(false);
+  }
+
+  builder.build()
+}
+
+/// tao 0.31 gives decorated windows on Wayland its own title bar: a HeaderBar
+/// under an EventBox that sits above it, so the EventBox takes the clicks
+/// meant for the minimize, maximize and close buttons. Use GTK's own title
+/// bar, as tao does since 07f3742b ("fix(wayland): fix client-side
+/// decorations"). Has to happen before the window is first shown.
+#[cfg(target_os = "linux")]
+fn use_gtk_titlebar(window: &tauri::WebviewWindow) {
+  use gtk::prelude::*;
+
+  let Ok(gtk_window) = window.gtk_window() else {
+    return;
+  };
+  let wayland = WidgetExt::display(&gtk_window).type_().name() == "GdkWaylandDisplay";
+  if !wayland || !gtk_window.is_decorated() || gtk_window.titlebar().is_none() {
+    return;
+  }
+  if gtk_window.is_realized() {
+    log::warn!(
+      "{} is already realized; keeping tao's title bar",
+      window.label()
+    );
+    return;
+  }
+  gtk_window.set_titlebar(None::<&gtk::Widget>);
 }
 
 fn main() {
@@ -132,10 +185,25 @@ fn main() {
     .manage(placement::PlacementState::default())
     .manage(hotkeys::HotkeysState::default())
     .manage(hotkeys::OverlayVisibility::default())
+    .manage(layer::LayerState::default())
     .setup(move |app| {
       debug!("starting app...");
-      let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
+      let window = create_main_window(app)?;
       let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
+
+      #[cfg(target_os = "linux")]
+      use_gtk_titlebar(&settings);
+
+      // Wayland with layer-shell: the (still hidden) overlay becomes a layer
+      // surface, shown at the end of setup
+      #[cfg(target_os = "linux")]
+      let layer_surface = layer::init(app.app_handle(), &window);
+
+      // A normal window: show tao's resize cursors over the webview
+      #[cfg(target_os = "linux")]
+      if !layer_surface {
+        resize_cursor::hook(app.app_handle(), &window);
+      }
 
       info!("Log level set to: {log_level}");
       // the window should always be on top
@@ -174,6 +242,11 @@ fn main() {
         height: SETTINGS_WINDOW_HEIGHT,
       });
 
+      #[cfg(target_os = "linux")]
+      if layer_surface {
+        window.show();
+      }
+
       Ok(())
     })
     .invoke_handler(generate_handler![
@@ -195,6 +268,9 @@ fn main() {
       hotkeys::suspend_hotkeys,
       hotkeys::record_hotkey,
       hotkeys::set_overlay_visible,
+      layer::layer_shell_active,
+      layer::layer_drag_begin,
+      layer::layer_set_size,
     ]);
 
   app
