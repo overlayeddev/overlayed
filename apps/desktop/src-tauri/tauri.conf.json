@@ -10,6 +10,14 @@
     "createUpdaterArtifacts": "v1Compatible",
     "active": true,
     "targets": "all",
+    "linux": {
+      "deb": {
+        "depends": ["libgtk-layer-shell0"]
+      },
+      "rpm": {
+        "depends": ["gtk-layer-shell"]
+      }
+    },
     "icon": [
       "icons/stable/32x32.png",
       "icons/stable/128x128.png",
