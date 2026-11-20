@@ -9,6 +9,8 @@ mod commands;
 mod constants;
 mod hotkeys;
 mod placement;
+#[cfg(target_os = "linux")]
+mod resize_cursor;
 mod tray;
 mod window_custom;
 
@@ -136,6 +138,10 @@ fn main() {
       debug!("starting app...");
       let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
       let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
+
+      // show tao's resize cursors over the webview
+      #[cfg(target_os = "linux")]
+      resize_cursor::hook(app.app_handle(), &window);
 
       info!("Log level set to: {log_level}");
       // the window should always be on top
