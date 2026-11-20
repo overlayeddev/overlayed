@@ -8,6 +8,7 @@ mod app_handle;
 mod commands;
 mod constants;
 mod hotkeys;
+mod layer;
 mod placement;
 #[cfg(target_os = "linux")]
 mod resize_cursor;
@@ -75,9 +76,10 @@ fn apply_macos_specifics(window: &WebviewWindow) {
   );
 }
 
-/// The main window has `"create": false` in tauri.conf.json: its config stays
-/// the one source for every platform, while setup creates it, so a platform
-/// can adjust the window before it is first shown.
+/// The main window has `"create": false` in tauri.conf.json, so its config
+/// stays the one source for every platform while it is created here: on a
+/// Wayland compositor with layer-shell it has to start hidden, to become a
+/// layer surface before GTK realizes it (see layer.rs).
 fn create_main_window(app: &tauri::App) -> tauri::Result<WebviewWindow> {
   let config = app
     .config()
@@ -88,7 +90,15 @@ fn create_main_window(app: &tauri::App) -> tauri::Result<WebviewWindow> {
     .expect("tauri.conf.json has no main window")
     .clone();
 
-  WebviewWindowBuilder::from_config(app.handle(), &config)?.build()
+  #[allow(unused_mut)]
+  let mut builder = WebviewWindowBuilder::from_config(app.handle(), &config)?;
+
+  #[cfg(target_os = "linux")]
+  if layer::will_use_layer_shell() {
+    builder = builder.visible(false);
+  }
+
+  builder.build()
 }
 
 /// tao 0.31 gives decorated windows on Wayland its own title bar: a HeaderBar
@@ -175,6 +185,7 @@ fn main() {
     .manage(placement::PlacementState::default())
     .manage(hotkeys::HotkeysState::default())
     .manage(hotkeys::OverlayVisibility::default())
+    .manage(layer::LayerState::default())
     .setup(move |app| {
       debug!("starting app...");
       let window = create_main_window(app)?;
@@ -183,9 +194,16 @@ fn main() {
       #[cfg(target_os = "linux")]
       use_gtk_titlebar(&settings);
 
-      // show tao's resize cursors over the webview
+      // Wayland with layer-shell: the (still hidden) overlay becomes a layer
+      // surface, shown at the end of setup
       #[cfg(target_os = "linux")]
-      resize_cursor::hook(app.app_handle(), &window);
+      let layer_surface = layer::init(app.app_handle(), &window);
+
+      // A normal window: show tao's resize cursors over the webview
+      #[cfg(target_os = "linux")]
+      if !layer_surface {
+        resize_cursor::hook(app.app_handle(), &window);
+      }
 
       info!("Log level set to: {log_level}");
       // the window should always be on top
@@ -224,6 +242,11 @@ fn main() {
         height: SETTINGS_WINDOW_HEIGHT,
       });
 
+      #[cfg(target_os = "linux")]
+      if layer_surface {
+        window.show();
+      }
+
       Ok(())
     })
     .invoke_handler(generate_handler![
@@ -245,6 +268,9 @@ fn main() {
       hotkeys::suspend_hotkeys,
       hotkeys::record_hotkey,
       hotkeys::set_overlay_visible,
+      layer::layer_shell_active,
+      layer::layer_drag_begin,
+      layer::layer_set_size,
     ]);
 
   app

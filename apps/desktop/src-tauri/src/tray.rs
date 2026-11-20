@@ -71,8 +71,13 @@ impl Tray {
           }
         } else {
           // center and resize the window
-          window.center();
-          window.set_size(LogicalSize::new(400, 700)).unwrap();
+          let size = LogicalSize::new(400, 700);
+          if crate::layer::set_size(&window, size.into()) {
+            crate::layer::reset_position(app);
+          } else {
+            window.center();
+            window.set_size(size).unwrap();
+          }
         }
 
         window.set_focus().unwrap();

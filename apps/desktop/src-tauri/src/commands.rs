@@ -191,6 +191,9 @@ fn _set_pin(
 
   window.set_ignore_cursor_events(value);
 
+  #[cfg(target_os = "linux")]
+  crate::layer::set_pinned(window, value);
+
   apply_taskbar_visibility(
     &window.app_handle(),
     value,

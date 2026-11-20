@@ -1,7 +1,12 @@
 import { PhysicalSize } from "@tauri-apps/api/dpi";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { useEffect, useRef } from "react";
+import { invoke } from "@tauri-apps/api/core";
 const appWindow = getCurrentWebviewWindow();
+
+// `setSize`, except on a Wayland layer surface where the size has to be a
+// size request on the content (see src-tauri/src/layer.rs)
+const setSize = (size: PhysicalSize) => invoke("layer_set_size", { width: size.width, height: size.height });
 
 export const useSetWindowSize = ({
   width,
@@ -25,14 +30,14 @@ export const useSetWindowSize = ({
       lastSizeRef.current = size;
 
       // set the new
-      appWindow.setSize(new PhysicalSize(width, height));
+      void setSize(new PhysicalSize(width, height));
     });
 
     // on unmount save the last size
     return () => {
       disposed = true;
       if (enabledRef.current && lastSizeRef.current) {
-        appWindow.setSize(lastSizeRef.current);
+        void setSize(lastSizeRef.current);
       }
     };
   }, [enabled]);

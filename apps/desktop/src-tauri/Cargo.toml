@@ -47,9 +47,11 @@ cocoa = "0.26.0"
 tauri-nspanel = { git = "https://github.com/ahkohd/tauri-nspanel", branch = "v2" }
 system-notification = { git = "https://github.com/ahkohd/tauri-toolkit", branch = "v2" }
 
-# linux: GTK and WebKitGTK, which tauri uses there
+# linux: GTK and WebKitGTK, which tauri uses there, and gtk-layer-shell for
+# the overlay on Wayland
 [target.'cfg(target_os = "linux")'.dependencies]
 gtk = "0.18"
+gtk-layer-shell = { version = "0.8.2", features = ["v0_6"] }
 webkit2gtk = "2.0"
 
 [target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
