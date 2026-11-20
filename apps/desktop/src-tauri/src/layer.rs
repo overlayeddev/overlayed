@@ -549,10 +549,98 @@ mod imp {
   pub fn layer_shell_active(app: AppHandle) -> bool {
     app.state::<LayerState>().is_active()
   }
+
+  // ---- taskbar stand-in ------------------------------------------------
+  //
+  // A layer surface never shows in a window list. To still give the
+  // unpinned overlay a taskbar (and Alt-Tab) entry, a normal toplevel stands
+  // in for it: same application (so the same app id and icon), fully
+  // transparent, 1x1 and click-through, so it can't be seen or hit. Its
+  // only job is the entry; closing it quits the app. The overlay itself
+  // stays the layer surface, realized once, which WebKit's GL drawing needs.
+
+  thread_local! {
+    static STAND_IN: RefCell<Option<gtk::Window>> = const { RefCell::new(None) };
+  }
+
+  fn create_stand_in(app: &AppHandle, main: &gtk::ApplicationWindow) -> gtk::Window {
+    let window = gtk::Window::new(gtk::WindowType::Toplevel);
+    if let Some(application) = main.application() {
+      window.set_application(Some(&application));
+    }
+    window.set_title("Overlayed");
+    if let Some(icon) = main.icon() {
+      window.set_icon(Some(&icon));
+    }
+    window.set_decorated(false);
+    window.set_resizable(false);
+    window.set_default_size(1, 1);
+    window.set_focus_on_map(false);
+    if let Some(visual) = GtkWindowExt::screen(&window).and_then(|screen| screen.rgba_visual()) {
+      window.set_visual(Some(&visual));
+    }
+    window.set_app_paintable(true);
+    window.connect_draw(|_, cr| {
+      cr.set_operator(gtk::cairo::Operator::Source);
+      cr.set_source_rgba(0.0, 0.0, 0.0, 0.0);
+      let _ = cr.paint();
+      gtk::glib::Propagation::Stop
+    });
+    window.input_shape_combine_region(Some(&gtk::cairo::Region::create()));
+
+    // closing the entry (taskbar menu, Alt+F4) quits, like closing the overlay
+    let handle = app.clone();
+    window.connect_delete_event(move |_, _| {
+      handle.exit(0);
+      gtk::glib::Propagation::Stop
+    });
+    window
+  }
+
+  /// Shows or hides the taskbar entry. Returns false when the overlay isn't a
+  /// layer surface, so the caller uses `set_skip_taskbar`.
+  pub fn set_taskbar_entry(app: &AppHandle, visible: bool) -> bool {
+    if !app.state::<LayerState>().is_active() {
+      return false;
+    }
+    let handle = app.clone();
+    let result = app.run_on_main_thread(move || {
+      let existing = STAND_IN.with(|stand_in| stand_in.borrow().clone());
+      let stand_in = match existing {
+        Some(window) => window,
+        None => {
+          let Some(main) = handle
+            .get_webview_window(crate::constants::MAIN_WINDOW_NAME)
+            .and_then(|window| window.gtk_window().ok())
+          else {
+            return;
+          };
+          let window = create_stand_in(&handle, &main);
+          STAND_IN.with(|stand_in| *stand_in.borrow_mut() = Some(window.clone()));
+          window
+        }
+      };
+      if visible {
+        stand_in.show_all();
+      } else {
+        stand_in.hide();
+      }
+      log::debug!(
+        "taskbar stand-in {}",
+        if visible { "shown" } else { "hidden" }
+      );
+    });
+    if let Err(error) = result {
+      log::warn!("Could not update the taskbar entry: {error}");
+    }
+    true
+  }
 }
 
 #[cfg(target_os = "linux")]
-pub use imp::{init, reset_position, set_pinned, set_size, will_use_layer_shell, LayerState};
+pub use imp::{
+  init, reset_position, set_pinned, set_size, set_taskbar_entry, will_use_layer_shell, LayerState,
+};
 
 #[cfg(not(target_os = "linux"))]
 #[derive(Default)]
@@ -565,6 +653,11 @@ pub fn set_size(_window: &tauri::WebviewWindow, _size: tauri::Size) -> bool {
 
 #[cfg(not(target_os = "linux"))]
 pub fn reset_position(_app: &tauri::AppHandle) {}
+
+#[cfg(not(target_os = "linux"))]
+pub fn set_taskbar_entry(_app: &tauri::AppHandle, _visible: bool) -> bool {
+  false
+}
 
 /// Resizes the overlay from the frontend; in layer mode through a size
 /// request, otherwise like `setSize`. Takes physical pixels like `setSize`.
