@@ -21,7 +21,9 @@ use std::{
   str::FromStr,
   sync::{atomic::AtomicBool, Mutex},
 };
-use tauri::{generate_handler, menu::Menu, LogicalSize, Manager, Wry};
+use tauri::{
+  generate_handler, menu::Menu, LogicalSize, Manager, WebviewWindow, WebviewWindowBuilder, Wry,
+};
 use tauri_plugin_log::{Target, TargetKind};
 use tauri_plugin_window_state::{AppHandleExt, StateFlags};
 use tray::Tray;
@@ -35,9 +37,6 @@ use window_custom::macos::WebviewWindowExtMacos;
 
 #[cfg(target_os = "macos")]
 use system_notification::WorkspaceListener;
-
-#[cfg(target_os = "macos")]
-use tauri::WebviewWindow;
 
 pub struct Pinned(AtomicBool);
 
@@ -74,6 +73,22 @@ fn apply_macos_specifics(window: &WebviewWindow) {
       }
     },
   );
+}
+
+/// The main window has `"create": false` in tauri.conf.json: its config stays
+/// the one source for every platform, while setup creates it, so a platform
+/// can adjust the window before it is first shown.
+fn create_main_window(app: &tauri::App) -> tauri::Result<WebviewWindow> {
+  let config = app
+    .config()
+    .app
+    .windows
+    .iter()
+    .find(|config| config.label == MAIN_WINDOW_NAME)
+    .expect("tauri.conf.json has no main window")
+    .clone();
+
+  WebviewWindowBuilder::from_config(app.handle(), &config)?.build()
 }
 
 /// tao 0.31 gives decorated windows on Wayland its own title bar: a HeaderBar
@@ -162,7 +177,7 @@ fn main() {
     .manage(hotkeys::OverlayVisibility::default())
     .setup(move |app| {
       debug!("starting app...");
-      let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
+      let window = create_main_window(app)?;
       let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
 
       #[cfg(target_os = "linux")]

@@ -42,6 +42,7 @@
         "decorations": false,
         "shadow": false,
         "label": "main",
+        "create": false,
         "title": "Overlayed - Main",
         "width": 420,
         "height": 600,
