@@ -76,6 +76,32 @@ fn apply_macos_specifics(window: &WebviewWindow) {
   );
 }
 
+/// tao 0.31 gives decorated windows on Wayland its own title bar: a HeaderBar
+/// under an EventBox that sits above it, so the EventBox takes the clicks
+/// meant for the minimize, maximize and close buttons. Use GTK's own title
+/// bar, as tao does since 07f3742b ("fix(wayland): fix client-side
+/// decorations"). Has to happen before the window is first shown.
+#[cfg(target_os = "linux")]
+fn use_gtk_titlebar(window: &tauri::WebviewWindow) {
+  use gtk::prelude::*;
+
+  let Ok(gtk_window) = window.gtk_window() else {
+    return;
+  };
+  let wayland = WidgetExt::display(&gtk_window).type_().name() == "GdkWaylandDisplay";
+  if !wayland || !gtk_window.is_decorated() || gtk_window.titlebar().is_none() {
+    return;
+  }
+  if gtk_window.is_realized() {
+    log::warn!(
+      "{} is already realized; keeping tao's title bar",
+      window.label()
+    );
+    return;
+  }
+  gtk_window.set_titlebar(None::<&gtk::Widget>);
+}
+
 fn main() {
   let flags = StateFlags::POSITION | StateFlags::SIZE;
   let window_state_plugin = tauri_plugin_window_state::Builder::default().with_state_flags(flags);
@@ -138,6 +164,9 @@ fn main() {
       debug!("starting app...");
       let window = app.get_webview_window(MAIN_WINDOW_NAME).unwrap();
       let settings = app.get_webview_window(SETTINGS_WINDOW_NAME).unwrap();
+
+      #[cfg(target_os = "linux")]
+      use_gtk_titlebar(&settings);
 
       // show tao's resize cursors over the webview
       #[cfg(target_os = "linux")]
