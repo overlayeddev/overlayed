@@ -75,6 +75,7 @@ const SUBSCRIBABLE_EVENTS = [
 ];
 
 export const APP_ID = "905987126099836938";
+export const RETRY_AUTH_EVENT = "retry-discord-authorization";
 const WEBSOCKET_URL = "ws://127.0.0.1:6463";
 const API_URL = "https://api.overlayed.dev";
 const RECONNECT_DELAYS = [2000, 5000, 15000, 30000];
@@ -113,6 +114,7 @@ class SocketManager {
   private stopped = false;
   private connecting = false;
   private authenticated = false;
+  private reauthRequested = false;
   private generation = 0;
   private removeListener: (() => void) | null = null;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
@@ -138,6 +140,7 @@ class SocketManager {
     console.log("Init web socket manager");
     this._navigate = navigate;
     window.addEventListener("storage", this.onStorage);
+    window.addEventListener(RETRY_AUTH_EVENT, this.onRetryAuth);
     const generation = this.generation;
     this.version = await getVersion();
     if (!this.isCurrent(generation)) return;
@@ -151,6 +154,7 @@ class SocketManager {
   private async connect(initial = false) {
     if (this.stopped || this.connecting || this.socket) return;
     this.connecting = true;
+    this.reauthRequested = false;
     const generation = ++this.generation;
     const connectionUrl = `${WEBSOCKET_URL}/?v=1&client_id=${APP_ID}`;
     try {
@@ -198,6 +202,12 @@ class SocketManager {
       this.store.setCurrentChannel(null);
       this.store.clearUsers();
     }
+  };
+
+  private onRetryAuth = (event: globalThis.Event) => {
+    if (!this.isConnected || this.authenticated) return;
+    event.preventDefault();
+    this.authenticate();
   };
 
   private stopResync() {
@@ -254,6 +264,7 @@ class SocketManager {
     this.stopped = true;
     this.closeSocket();
     window.removeEventListener("storage", this.onStorage);
+    window.removeEventListener(RETRY_AUTH_EVENT, this.onRetryAuth);
   }
 
   private scheduleResync() {
@@ -412,11 +423,12 @@ class SocketManager {
 
     // either the token is good and valid and we can login otherwise prompt them approve
     if (payload.evt === RPCEvent.READY) {
-      const acessToken = this.userdataStore.accessToken;
+      const accessToken = this.userdataStore.accessToken?.trim();
 
-      if (acessToken) {
-        this.login(acessToken);
+      if (accessToken && accessToken !== "undefined" && accessToken !== "null") {
+        this.login(accessToken);
       } else {
+        this.userdataStore.clearAuth();
         this.authenticate();
       }
     }
@@ -495,19 +507,30 @@ class SocketManager {
 
     // we got a token back from discord let's fetch an access token
     if (payload.cmd === RPCCommand.AUTHORIZE) {
-      const { code } = payload.data;
-      const res = await fetch(`${API_URL}/token`, {
-        method: "POST",
-        body: JSON.stringify({ code }),
-      });
+      if (payload.evt === RPCEvent.ERROR || typeof payload.data?.code !== "string") {
+        this.navigate("/");
+        return;
+      }
 
-      const text: TokenResponse = await res.json();
-      if (!this.isCurrent(generation)) return;
-      // we need send the token to discord
-      this.userdataStore.setAccessToken(text.access_token);
+      try {
+        const res = await fetch(`${API_URL}/token`, {
+          method: "POST",
+          body: JSON.stringify({ code: payload.data.code }),
+        });
 
-      // login with the token
-      this.login(text.access_token);
+        const text: TokenResponse = await res.json();
+        if (!res.ok || typeof text?.access_token !== "string" || !text.access_token.trim()) {
+          throw new Error("Invalid Discord token response");
+        }
+        if (!this.isCurrent(generation)) return;
+        this.userdataStore.setAccessToken(text.access_token);
+
+        this.login(text.access_token);
+      } catch {
+        if (!this.isCurrent(generation)) return;
+        this.store.pushError("Could not get a token from Discord, try again");
+        this.navigate("/error");
+      }
     }
 
     // GET_SELECTED_VOICE_CHANNEL	used to get the current voice channel the client is in
@@ -543,6 +566,10 @@ class SocketManager {
         this.store.setCurrentChannel(null);
         this.store.clearUsers();
         this.navigate("/");
+        if (!this.reauthRequested) {
+          this.reauthRequested = true;
+          this.authenticate();
+        }
         track(Metric.DiscordAuthed, 0);
         return;
       }
@@ -556,6 +583,7 @@ class SocketManager {
       track(Metric.DiscordAuthed, 0);
     } else if (payload?.cmd === RPCCommand.AUTHENTICATE) {
       this.authenticated = true;
+      this.reauthRequested = false;
       this.reconnectAttempt = 0;
       this.stopResync();
       this.scheduleResync();
