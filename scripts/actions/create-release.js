@@ -1,4 +1,4 @@
-/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+/** @param {import('./types').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }) => {
   const { data: listReleases } = await github.rest.repos.listReleases({
     owner: context.repo.owner,

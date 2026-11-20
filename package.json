@@ -19,7 +19,6 @@
   "devDependencies": {
     "@actions/github": "^6.0.0",
     "@aws-sdk/client-s3": "^3.738.0",
-    "@types/github-script": "github:actions/github-script",
     "dotenv": "^16.4.7",
     "eslint": "^9.19.0",
     "lint": "workspace:*",

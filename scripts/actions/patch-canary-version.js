@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-/** @param {import('@types/github-script').AsyncFunctionArguments} AsyncFunctionArguments */
+/** @param {import('./types').AsyncFunctionArguments} AsyncFunctionArguments */
 export const script = async ({ context, github }) => {
   // get the current commit sha
   const commitSha = context?.sha || "dev";
