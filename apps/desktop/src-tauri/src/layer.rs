@@ -533,6 +533,93 @@ mod imp {
   }
 
   /// Pinned overlays never take the keyboard.
+  /// Whether the overlay is a layer surface.
+  pub fn is_layer_surface(app: &AppHandle) -> bool {
+    app.state::<LayerState>().is_active()
+  }
+
+  /// Fixed placement on a layer surface: the anchor's edges become
+  /// layer-shell anchors with the offsets as their margins (an axis anchored
+  /// to neither edge is centered by the compositor), on the monitor whose
+  /// model (tauri's monitor name on Linux) is @monitor. All values logical.
+  /// @horizontal and @vertical are 0 (start), 1 (center) or 2 (end).
+  #[allow(clippy::too_many_arguments)]
+  pub fn place(
+    window: &WebviewWindow,
+    monitor: Option<&str>,
+    horizontal: u8,
+    vertical: u8,
+    offset_x: f64,
+    offset_y: f64,
+    width: f64,
+    height: f64,
+  ) -> Result<(), String> {
+    let gtk_window = window.gtk_window().map_err(|error| error.to_string())?;
+    let display = WidgetExt::display(&gtk_window);
+    let gdk_monitor = monitor
+      .and_then(|name| {
+        (0..display.n_monitors())
+          .filter_map(|i| display.monitor(i))
+          .find(|candidate| candidate.model().as_deref() == Some(name))
+      })
+      .or_else(|| display.primary_monitor())
+      .or_else(|| display.monitor(0));
+
+    let (mut width, mut height) = (width.ceil() as i32, height.ceil() as i32);
+    if let Some(gdk_monitor) = &gdk_monitor {
+      gtk_window.set_monitor(gdk_monitor);
+      let bounds = gdk_monitor.geometry();
+      width = width.min(bounds.width());
+      height = height.min(bounds.height());
+    }
+
+    let margin = |offset: f64| offset.max(0.0).round() as i32;
+    gtk_window.set_anchor(Edge::Left, horizontal == 0);
+    gtk_window.set_anchor(Edge::Right, horizontal == 2);
+    gtk_window.set_anchor(Edge::Top, vertical == 0);
+    gtk_window.set_anchor(Edge::Bottom, vertical == 2);
+    gtk_window.set_layer_shell_margin(
+      Edge::Left,
+      if horizontal == 0 { margin(offset_x) } else { 0 },
+    );
+    gtk_window.set_layer_shell_margin(
+      Edge::Right,
+      if horizontal == 2 { margin(offset_x) } else { 0 },
+    );
+    gtk_window.set_layer_shell_margin(Edge::Top, if vertical == 0 { margin(offset_y) } else { 0 });
+    gtk_window.set_layer_shell_margin(
+      Edge::Bottom,
+      if vertical == 2 { margin(offset_y) } else { 0 },
+    );
+    apply_size(&gtk_window, width, height);
+
+    log::debug!(
+      "overlay placed: monitor {:?}, anchor {horizontal},{vertical}, offset {offset_x},{offset_y}, {width}x{height}",
+      gdk_monitor.and_then(|m| m.model()).map(|m| m.to_string())
+    );
+    Ok(())
+  }
+
+  /// Back to free positioning: anchored top left at the saved position.
+  pub fn unplace(window: &WebviewWindow) -> Result<(), String> {
+    let gtk_window = window.gtk_window().map_err(|error| error.to_string())?;
+    let position = window
+      .app_handle()
+      .state::<LayerState>()
+      .position
+      .lock()
+      .unwrap()
+      .unwrap_or(DEFAULT_POSITION);
+    gtk_window.set_anchor(Edge::Right, false);
+    gtk_window.set_anchor(Edge::Bottom, false);
+    gtk_window.set_anchor(Edge::Left, true);
+    gtk_window.set_anchor(Edge::Top, true);
+    gtk_window.set_layer_shell_margin(Edge::Right, 0);
+    gtk_window.set_layer_shell_margin(Edge::Bottom, 0);
+    apply_margins(&gtk_window, position);
+    Ok(())
+  }
+
   pub fn set_pinned(window: &WebviewWindow, pinned: bool) {
     if !window.app_handle().state::<LayerState>().is_active() {
       return;
@@ -639,7 +726,8 @@ mod imp {
 
 #[cfg(target_os = "linux")]
 pub use imp::{
-  init, reset_position, set_pinned, set_size, set_taskbar_entry, will_use_layer_shell, LayerState,
+  init, is_layer_surface, place, reset_position, set_pinned, set_size, set_taskbar_entry, unplace,
+  will_use_layer_shell, LayerState,
 };
 
 #[cfg(not(target_os = "linux"))]
@@ -653,6 +741,11 @@ pub fn set_size(_window: &tauri::WebviewWindow, _size: tauri::Size) -> bool {
 
 #[cfg(not(target_os = "linux"))]
 pub fn reset_position(_app: &tauri::AppHandle) {}
+
+#[cfg(not(target_os = "linux"))]
+pub fn is_layer_surface(_app: &tauri::AppHandle) -> bool {
+  false
+}
 
 #[cfg(not(target_os = "linux"))]
 pub fn set_taskbar_entry(_app: &tauri::AppHandle, _visible: bool) -> bool {
